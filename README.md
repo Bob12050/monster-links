@@ -147,3 +147,42 @@ docs      編集・管理ガイド
 
 大規模なファイル整理はしていません。
 データ追加中心のアップデートです。
+
+
+## v3.8 モンスター画像さらに本格化
+
+- 深海系モンスターのSVGアートを強化
+- 魔界系モンスターのSVGアートを強化
+- 深海神殿の背景SVGを強化
+- 魔界門の背景SVGを強化
+- `docs/ART_V38.md` を追加
+
+ゲーム機能は大きく増やさず、見た目を中心に強化しています。
+
+
+## v3.9 アート設計・画像管理整理
+
+v3.9ではゲーム機能は増やさず、全キャラ・全画像を本格制作していくための管理ファイルを追加しました。
+
+追加ファイル:
+
+```text
+docs/ART_STYLE_GUIDE.md
+docs/ART_ASSET_MANIFEST.md
+docs/ART_ASSET_MANIFEST.csv
+docs/IMAGE_PROMPT_TEMPLATES.md
+docs/ART_PRODUCTION_ROADMAP.md
+assets/images/ART_RULES.md
+assets/images/art_manifest.json
+```
+
+画像制作対象数:
+
+```text
+モンスター: 55
+ステージ: 12
+アイテム: 25
+合計: 92
+```
+
+今後は `docs/ART_ASSET_MANIFEST.md` を見ながら、優先度SからPNG画像を差し替えていく方針です。

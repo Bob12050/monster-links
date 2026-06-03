@@ -1,13 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
 <defs>
-<radialGradient id="g" cx="35%" cy="20%" r="85%"><stop offset="0%" stop-color="#224a83"/><stop offset="100%" stop-color="#10172f"/></radialGradient>
-<filter id="s"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".35"/></filter>
+<radialGradient id="bg" cx="36%" cy="20%" r="82%"><stop offset="0%" stop-color="#183e7a"/><stop offset="100%" stop-color="#071428"/></radialGradient>
+<linearGradient id="shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="rgba(255,255,255,.38)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></linearGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="15" flood-color="#000" flood-opacity=".38"/></filter>
+<filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
-<rect width="512" height="512" rx="58" fill="url(#g)"/>
-<circle cx="396" cy="92" r="70" fill="rgba(255,255,255,.12)"/>
-<circle cx="116" cy="410" r="78" fill="rgba(0,0,0,.14)"/>
-<text x="256" y="260" font-size="132" text-anchor="middle" filter="url(#s)">🐉</text>
-<rect x="48" y="382" width="416" height="78" rx="26" fill="rgba(0,0,0,.32)"/>
-<text x="256" y="424" fill="#fff" font-size="29" font-family="system-ui,sans-serif" font-weight="800" text-anchor="middle">アビスリヴァイア</text>
-<text x="256" y="450" fill="#cbd9ff" font-size="16" font-family="system-ui,sans-serif" text-anchor="middle">monster art</text>
+<rect width="512" height="512" rx="58" fill="url(#bg)"/>
+<circle cx="410" cy="88" r="68" fill="rgba(255,255,255,.10)"/>
+<circle cx="96" cy="420" r="76" fill="rgba(0,0,0,.16)"/>
+
+<g filter="url(#shadow)">
+<ellipse cx="256" cy="372" rx="164" ry="44" fill="rgba(0,0,0,.33)"/>
+<path d="M142 334 C130 240 192 168 278 178 C362 190 404 258 372 328 C344 390 196 408 142 334Z" fill="#2566a4"/>
+<path d="M212 178 C218 122 258 90 314 94 C292 138 276 170 268 204Z" fill="#63c9ff"/>
+<path d="M350 250 C410 226 440 264 428 326 C398 292 370 286 350 250Z" fill="#1b4d85"/>
+<path d="M178 220 C234 188 306 198 354 244" stroke="#7ee4ff" stroke-width="12" fill="none" opacity=".65"/>
+<circle cx="226" cy="250" r="13" fill="#07111f"/><circle cx="302" cy="250" r="13" fill="#07111f"/>
+<circle cx="222" cy="245" r="4" fill="#fff"/><circle cx="298" cy="245" r="4" fill="#fff"/>
+<path d="M244 310 Q282 336 326 304" fill="none" stroke="#071428" stroke-width="10" stroke-linecap="round"/>
+<circle cx="214" cy="294" r="24" fill="#89f7ff" opacity=".5" filter="url(#glow)"/>
+</g><rect x="46" y="410" width="420" height="66" rx="24" fill="rgba(0,0,0,.34)"/>
+<text x="256" y="452" fill="#fff" font-size="30" font-family="system-ui,sans-serif" font-weight="900" text-anchor="middle">アビスリヴァイア</text>
 </svg>

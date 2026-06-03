@@ -1,13 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-<defs>
-<radialGradient id="g" cx="35%" cy="20%" r="85%"><stop offset="0%" stop-color="#18547a"/><stop offset="100%" stop-color="#10172f"/></radialGradient>
-<filter id="s"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".35"/></filter>
-</defs>
-<rect width="512" height="512" rx="58" fill="url(#g)"/>
-<circle cx="396" cy="92" r="70" fill="rgba(255,255,255,.12)"/>
-<circle cx="116" cy="410" r="78" fill="rgba(0,0,0,.14)"/>
-<text x="256" y="260" font-size="132" text-anchor="middle" filter="url(#s)">🌊</text>
-<rect x="48" y="382" width="416" height="78" rx="26" fill="rgba(0,0,0,.32)"/>
-<text x="256" y="424" fill="#fff" font-size="29" font-family="system-ui,sans-serif" font-weight="800" text-anchor="middle">深海神殿</text>
-<text x="256" y="450" fill="#cbd9ff" font-size="16" font-family="system-ui,sans-serif" text-anchor="middle">stage background</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a5b89"/><stop offset="100%" stop-color="#061429"/></linearGradient><filter id="blur"><feGaussianBlur stdDeviation="5"/></filter></defs>
+<rect width="960" height="540" fill="url(#g)"/>
+<circle cx="800" cy="90" r="90" fill="rgba(130,230,255,.18)" filter="url(#blur)"/>
+<path d="M0 430 C160 390 280 450 430 410 C570 370 730 410 960 360 L960 540 L0 540 Z" fill="#08233a"/>
+<g fill="rgba(150,230,255,.22)"><circle cx="120" cy="110" r="9"/><circle cx="180" cy="170" r="6"/><circle cx="760" cy="210" r="8"/><circle cx="650" cy="120" r="5"/></g>
+<g fill="#1b6f8e"><rect x="380" y="190" width="200" height="240" rx="18"/><path d="M330 430 L480 130 L630 430 Z"/><rect x="430" y="300" width="100" height="130" rx="48" fill="#0a314a"/></g>
+<g stroke="#65d9ff" stroke-width="8" opacity=".45"><path d="M380 230 H580"/><path d="M360 278 H600"/><path d="M350 326 H610"/></g>
+<text x="480" y="500" text-anchor="middle" fill="#dff8ff" font-family="system-ui,sans-serif" font-size="38" font-weight="900">深海神殿</text>
 </svg>
