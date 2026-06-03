@@ -1,0 +1,33 @@
+(() => {
+  "use strict";
+  const P = window.MonsterLinksParts = window.MonsterLinksParts || {};
+
+  /*
+    v3.2: バランス調整値
+    ここはゲーム全体のテンポをまとめて調整する場所です。
+
+    目安:
+    - 序盤をサクサク進めたい → expMultiplier / scoutBonus を上げる
+    - お金不足を減らしたい → goldMultiplier を上げる
+    - アイテム収集を楽にしたい → dropRateMultiplier を上げる
+    - 公開時にテスト機能を隠す → testMenuEnabled: false
+  */
+  P.BALANCE = {
+    // 通常探索の報酬
+    expMultiplier: 1.22,
+    goldMultiplier: 1.15,
+
+    // 闘技場の報酬。闘技場は周回報酬なので上げすぎ注意。
+    arenaExpMultiplier: 1.08,
+    arenaGoldMultiplier: 1.08,
+
+    // スカウト・ドロップ・逃走の補正
+    scoutBonus: 6,
+    dropRateMultiplier: 1.18,
+    bossDropRateBonus: 5,
+    escapeBonus: 4,
+
+    // 公開版では false 推奨
+    testMenuEnabled: false
+  };
+})();

@@ -1,0 +1,46 @@
+(() => {
+  "use strict";
+  const P = window.MonsterLinksParts = window.MonsterLinksParts || {};
+  P.QUESTS = [
+    {id:"q_first_win",group:"main",title:"はじめての勝利",desc:"通常探索で1回勝利する",type:"winTotal",amount:1,reward:{gold:50,exp:20}},
+    {id:"q_meadow_patrol",group:"main",title:"草原を調査",desc:"はじまり草原で通常探索に2回勝利する",type:"winStage",stage:"meadow",amount:2,reward:{gold:80,item:"life_drop",count:1}},
+    {id:"q_first_scout",group:"main",title:"仲間を増やそう",desc:"モンスターを1体スカウトする",type:"scoutTotal",amount:1,reward:{gold:70,item:"force_ring",count:1}},
+    {id:"q_meadow_boss",group:"main",title:"草原のボス討伐",desc:"モスキングを倒す、またはスカウトする",type:"bossClear",stage:"meadow",amount:1,reward:{gold:120,exp:80,item:"swift_feather",count:1}},
+    {id:"q_first_fusion",group:"main",title:"はじめての配合",desc:"配合を1回行う",type:"fusionTotal",amount:1,reward:{gold:150,item:"mage_charm",count:1}},
+    {id:"q_cave_boss",group:"main",title:"洞くつの支配者",desc:"オアロードを倒す、またはスカウトする",type:"bossClear",stage:"cave",amount:1,reward:{gold:220,exp:120,item:"guard_stone",count:1}},
+    {id:"q_brook_boss",group:"main",title:"湖畔の守護者",desc:"タイダルセラフを倒す、またはスカウトする",type:"bossClear",stage:"brook",amount:1,reward:{gold:320,exp:180,item:"mana_shell",count:1}},
+    {id:"q_volcano_boss",group:"main",title:"火山竜を越えて",desc:"ヴォルカザードを倒す、またはスカウトする",type:"bossClear",stage:"volcano",amount:1,reward:{gold:480,exp:260,item:"volcano_fang",count:1}},
+    {id:"q_tower_boss",group:"main",title:"星晶の塔を制覇",desc:"アストラルワームを倒す、またはスカウトする",type:"bossClear",stage:"tower",amount:1,reward:{gold:800,exp:420,item:"astral_orb",count:1}},
+    {id:"q_snow_boss",group:"main",title:"凍てつく雪原を越えて",desc:"フロストリヴァイアを倒す、またはスカウトする",type:"bossClear",stage:"snowfield",amount:1,reward:{gold:1000,exp:600,item:"frost_scale",count:1}},
+    {id:"q_ruins_boss",group:"main",title:"雷鳴遺跡の中枢",desc:"アークオートマタを倒す、またはスカウトする",type:"bossClear",stage:"thunder_ruins",amount:1,reward:{gold:1300,exp:800,item:"arc_core",count:1}},
+    {id:"q_prism_boss",group:"main",title:"虹晶聖域の覇者",desc:"プリズムドラゴンを倒す、またはスカウトする",type:"bossClear",stage:"prism_sanctuary",amount:1,reward:{gold:2200,exp:1200,item:"prism_feather",count:1}},
+    {id:"q_bog_boss",group:"main",title:"毒霧の王を討て",desc:"ヴェノムハイドラを倒す、またはスカウトする",type:"bossClear",stage:"poison_bog",amount:1,reward:{gold:2600,exp:1500,item:"venom_crown",count:1}},
+    {id:"q_city_boss",group:"main",title:"古代機械都市の心臓",desc:"アークマシンを倒す、またはスカウトする",type:"bossClear",stage:"machine_city",amount:1,reward:{gold:3200,exp:1800,item:"ancient_gear",count:1}},
+
+    {id:"m_win_5",group:"mission",title:"冒険者の足跡",desc:"合計5回勝利する",type:"winTotal",amount:5,reward:{gold:120,exp:60}},
+    {id:"m_win_15",group:"mission",title:"歴戦のテイマー",desc:"合計15回勝利する",type:"winTotal",amount:15,reward:{gold:300,exp:160,item:"life_drop",count:1}},
+    {id:"m_win_40",group:"mission",title:"大陸を渡る者",desc:"合計40回勝利する",type:"winTotal",amount:40,reward:{gold:900,exp:500,item:"astral_orb",count:1}},
+    {id:"m_scout_3",group:"mission",title:"スカウト上手",desc:"モンスターを合計3体スカウトする",type:"scoutTotal",amount:3,reward:{gold:180,item:"mana_shell",count:1}},
+    {id:"m_scout_10",group:"mission",title:"敏腕スカウト",desc:"モンスターを合計10体スカウトする",type:"scoutTotal",amount:10,reward:{gold:600,item:"frost_scale",count:1}},
+    {id:"m_dex_8",group:"mission",title:"図鑑研究員",desc:"図鑑で8種類のモンスターを発見する",type:"dexDiscovered",amount:8,reward:{gold:220,exp:100}},
+    {id:"m_dex_18",group:"mission",title:"図鑑博士",desc:"図鑑で18種類のモンスターを発見する",type:"dexDiscovered",amount:18,reward:{gold:700,exp:420,item:"arc_core",count:1}},
+    {id:"m_dex_scout_6",group:"mission",title:"仲間コレクター",desc:"6種類のモンスターをスカウト済みにする",type:"dexScouted",amount:6,reward:{gold:260,item:"mage_charm",count:1}},
+    {id:"m_dex_scout_15",group:"mission",title:"牧場マスター",desc:"15種類のモンスターをスカウト済みにする",type:"dexScouted",amount:15,reward:{gold:850,item:"prism_feather",count:1}},
+    {id:"m_level_8",group:"mission",title:"育成の成果",desc:"最高Lv8以上の仲間を作る",type:"highestLevel",amount:8,reward:{gold:200,exp:160}},
+    {id:"m_level_25",group:"mission",title:"強者の証",desc:"最高Lv25以上の仲間を作る",type:"highestLevel",amount:25,reward:{gold:900,exp:650,item:"frost_scale",count:1}},
+    {id:"m_personality_4",group:"mission",title:"個性豊かな牧場",desc:"違う性格の仲間を4種類集める",type:"personalityKinds",amount:4,reward:{gold:240,exp:120,item:"mage_charm",count:1}},
+    {id:"m_equip_1",group:"mission",title:"装備してみよう",desc:"アクセサリーを1回装備する",type:"equipTotal",amount:1,reward:{gold:90,item:"swift_feather",count:1}},
+    {id:"m_item_3",group:"mission",title:"ドロップハンター",desc:"アイテムを合計3個入手する",type:"itemTotal",amount:3,reward:{gold:180,item:"force_ring",count:1}},
+    {id:"m_item_12",group:"mission",title:"レア集め職人",desc:"アイテムを合計12個入手する",type:"itemTotal",amount:12,reward:{gold:700,item:"arc_core",count:1}},
+    {id:"m_boss_3",group:"mission",title:"ボスハンター",desc:"ボスを合計3回撃破またはスカウトする",type:"bossTotal",amount:3,reward:{gold:420,exp:220,item:"ore_core",count:1}},
+    {id:"m_boss_7",group:"mission",title:"ボスブレイカー",desc:"ボスを合計7回撃破またはスカウトする",type:"bossTotal",amount:7,reward:{gold:1200,exp:800,item:"prism_feather",count:1}},
+    {id:"m_special_fusion_1",group:"mission",title:"特殊配合の研究者",desc:"レア特殊配合を1回成功させる",type:"specialFusion",amount:1,reward:{gold:1200,exp:700,item:"prism_feather",count:1}},
+    {id:"m_arena_1",group:"mission",title:"闘技場デビュー",desc:"闘技場で1大会を制覇する",type:"arenaWins",amount:1,reward:{gold:300,exp:160,item:"force_ring",count:1}},
+    {id:"m_arena_f",group:"mission",title:"Fランク制覇",desc:"Fランク ビギナー杯を制覇する",type:"arenaClear",arena:"arena_f",amount:1,reward:{gold:180,item:"swift_feather",count:1}},
+    {id:"m_arena_c",group:"mission",title:"Cランク到達者",desc:"Cランク シルバー杯を制覇する",type:"arenaClear",arena:"arena_c",amount:1,reward:{gold:900,exp:500,item:"tide_pearl",count:1}},
+    {id:"m_arena_s",group:"mission",title:"闘技場の覇者",desc:"Sランク レジェンド杯を制覇する",type:"arenaClear",arena:"arena_s",amount:1,reward:{gold:3000,exp:1800,item:"prism_feather",count:1}},
+    {id:"m_dex_26",group:"mission",title:"新世界の図鑑博士",desc:"図鑑で26種類のモンスターを発見する",type:"dexDiscovered",amount:26,reward:{gold:1800,exp:1200,item:"mire_orb",count:1}},
+    {id:"m_boss_10",group:"mission",title:"終盤の覇者",desc:"ボスを合計10回撃破またはスカウトする",type:"bossTotal",amount:10,reward:{gold:2200,exp:1500,item:"ancient_gear",count:1}},
+    {id:"m_special_fusion_3",group:"mission",title:"究極配合への道",desc:"レア特殊配合を合計3回成功させる",type:"specialFusion",amount:3,reward:{gold:2600,exp:1800,item:"venom_crown",count:1}}
+  ];
+})();
