@@ -54,7 +54,18 @@
     {group:"rare",parents:["astralwyrm","tidalseraph"],result:"celestiseraph",minAvg:23,note:"水と星光の最上位サポーター"},
     {group:"rare",parents:["duskwolf","prismdragon"],result:"voiddragon",minAvg:25,note:"虹晶と闇の禁断配合"},
     {group:"rare",parents:["venomhydra","duskwolf"],result:"venomchimera",minAvg:28,note:"毒と闇を極めた凶獣"},
-    {group:"rare",parents:["arkmachine","arcautomaton"],result:"omegaframe",minAvg:28,note:"古代兵器を束ねた究極フレーム"}
+    {group:"rare",parents:["arkmachine","arcautomaton"],result:"omegaframe",minAvg:28,note:"古代兵器を束ねた究極フレーム"},
+    {group:"advanced",parents:["aquan","luminel"],result:"corallume",note:"深海神殿へ向けた光の珊瑚"},
+    {group:"advanced",parents:["aquan","duskwolf"],result:"abyssfin",note:"水と闇の高速アタッカー"},
+    {group:"advanced",parents:["icetortoise","orelord"],result:"shellgolem",note:"海底の高守備ゴーレム"},
+    {group:"advanced",parents:["tidalseraph","corallume"],result:"pearlseraph",note:"深海神殿の上位サポーター"},
+    {group:"advanced",parents:["duskwolf","embercub"],result:"impfang",note:"魔界門への入り口"},
+    {group:"advanced",parents:["impfang","ironmantis"],result:"hellknight",note:"闇の重装アタッカー"},
+    {group:"advanced",parents:["gloomoth","luminel"],result:"doomgazer",note:"光と闇を見通す魔眼"},
+    {group:"advanced",parents:["doomgazer","voiddragon"],result:"chaoswyrm",note:"混沌をまとった竜"},
+    {group:"rare",parents:["abysslevia","pearlseraph"],result:"chaoswyrm",minAvg:34,note:"深海と聖光から生まれる混沌竜"},
+    {group:"rare",parents:["chaoswyrm","demonlord"],result:"voiddragon",minAvg:38,note:"魔界門の先にある禁断配合"},
+    {group:"rare",parents:["abysslevia","chaoswyrm"],result:"demonlord",minAvg:40,note:"深淵と混沌を統べる魔王配合"},
   ];
 
   P.RECIPES = P.RECIPE_LIST.reduce((acc,r)=>{

@@ -22,5 +22,9 @@
     acid:{name:"アシッドクロウ",cost:8,kind:"damage",power:1.48,stat:"atk",element:"nature",text:"腐食の爪で裂く自然属性攻撃"},
     laser:{name:"パルスレーザー",cost:12,kind:"damage",power:1.78,stat:"wis",element:"machine",text:"機械属性の高威力ビーム"},
     overdrive:{name:"オーバードライブ",cost:14,kind:"damage",power:1.92,stat:"atk",element:"machine",text:"機械属性の全力突撃"},
+    abyss:{name:"アビスウェーブ",cost:14,kind:"damage",power:1.88,stat:"wis",element:"water",text:"深海の圧力で押し潰す水属性の大技"},
+    holywave:{name:"ホーリーウェーブ",cost:13,kind:"damage",power:1.82,stat:"wis",element:"light",text:"聖なる波で攻撃する光属性の大技"},
+    chaosflare:{name:"カオスフレア",cost:16,kind:"damage",power:2.05,stat:"wis",element:"dark",text:"混沌の炎を放つ闇属性の超火力技"},
+    demonclaw:{name:"デモンクロウ",cost:11,kind:"damage",power:1.72,stat:"atk",element:"dark",text:"魔界の爪で切り裂く闇属性攻撃"},
   };
 })();

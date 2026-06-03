@@ -45,6 +45,10 @@
     {id:"m_arena_limit_fd",group:"mission",title:"低ランクの意地",desc:"低ランク限定杯を制覇する",type:"arenaClear",arena:"arena_fd_limit",amount:1,reward:{gold:1800,exp:900,item:"bronze_emblem",count:1}},
     {id:"m_arena_slime",group:"mission",title:"ぷるぷるマスター",desc:"ぷるぷる杯を制覇する",type:"arenaClear",arena:"arena_slime",amount:1,reward:{gold:2200,exp:1100,item:"slime_medal",count:1}},
     {id:"m_arena_element",group:"mission",title:"属性王",desc:"属性王決定戦を制覇する",type:"arenaClear",arena:"arena_element",amount:1,reward:{gold:3200,exp:1600,item:"element_badge",count:1}},
-    {id:"m_arena_ex",group:"mission",title:"EX覇者",desc:"EXランク 覇者の試練を制覇する",type:"arenaClear",arena:"arena_ex",amount:1,reward:{gold:6000,exp:3000,item:"ex_champion_core",count:1}}
+    {id:"m_arena_ex",group:"mission",title:"EX覇者",desc:"EXランク 覇者の試練を制覇する",type:"arenaClear",arena:"arena_ex",amount:1,reward:{gold:6000,exp:3000,item:"ex_champion_core",count:1}},
+    {id:"q_deepsea_boss",group:"main",title:"深海神殿の海竜",desc:"アビスリヴァイアを倒す、またはスカウトする",type:"bossClear",stage:"deep_sea_temple",amount:1,reward:{gold:4200,exp:2400,item:"leviathan_scale",count:1}},
+    {id:"q_demon_gate_boss",group:"main",title:"魔界門の支配者",desc:"デモンロードを倒す、またはスカウトする",type:"bossClear",stage:"demon_gate",amount:1,reward:{gold:6200,exp:3600,item:"chaos_crown",count:1}},
+    {id:"m_dex_40",group:"mission",title:"深淵の図鑑博士",desc:"図鑑で40種類のモンスターを発見する",type:"dexDiscovered",amount:40,reward:{gold:3600,exp:2200,item:"abyss_pearl",count:1}},
+    {id:"m_boss_12",group:"mission",title:"終末を越える者",desc:"ボスを合計12回撃破またはスカウトする",type:"bossTotal",amount:12,reward:{gold:4800,exp:3000,item:"demon_horn",count:1}},
   ];
 })();
