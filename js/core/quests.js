@@ -41,6 +41,10 @@
     {id:"m_arena_s",group:"mission",title:"闘技場の覇者",desc:"Sランク レジェンド杯を制覇する",type:"arenaClear",arena:"arena_s",amount:1,reward:{gold:3000,exp:1800,item:"prism_feather",count:1}},
     {id:"m_dex_26",group:"mission",title:"新世界の図鑑博士",desc:"図鑑で26種類のモンスターを発見する",type:"dexDiscovered",amount:26,reward:{gold:1800,exp:1200,item:"mire_orb",count:1}},
     {id:"m_boss_10",group:"mission",title:"終盤の覇者",desc:"ボスを合計10回撃破またはスカウトする",type:"bossTotal",amount:10,reward:{gold:2200,exp:1500,item:"ancient_gear",count:1}},
-    {id:"m_special_fusion_3",group:"mission",title:"究極配合への道",desc:"レア特殊配合を合計3回成功させる",type:"specialFusion",amount:3,reward:{gold:2600,exp:1800,item:"venom_crown",count:1}}
+    {id:"m_special_fusion_3",group:"mission",title:"究極配合への道",desc:"レア特殊配合を合計3回成功させる",type:"specialFusion",amount:3,reward:{gold:2600,exp:1800,item:"venom_crown",count:1}},
+    {id:"m_arena_limit_fd",group:"mission",title:"低ランクの意地",desc:"低ランク限定杯を制覇する",type:"arenaClear",arena:"arena_fd_limit",amount:1,reward:{gold:1800,exp:900,item:"bronze_emblem",count:1}},
+    {id:"m_arena_slime",group:"mission",title:"ぷるぷるマスター",desc:"ぷるぷる杯を制覇する",type:"arenaClear",arena:"arena_slime",amount:1,reward:{gold:2200,exp:1100,item:"slime_medal",count:1}},
+    {id:"m_arena_element",group:"mission",title:"属性王",desc:"属性王決定戦を制覇する",type:"arenaClear",arena:"arena_element",amount:1,reward:{gold:3200,exp:1600,item:"element_badge",count:1}},
+    {id:"m_arena_ex",group:"mission",title:"EX覇者",desc:"EXランク 覇者の試練を制覇する",type:"arenaClear",arena:"arena_ex",amount:1,reward:{gold:6000,exp:3000,item:"ex_champion_core",count:1}}
   ];
 })();

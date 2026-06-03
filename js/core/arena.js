@@ -79,6 +79,52 @@
       ],
       firstReward:{gold:5000,exp:2800,item:"prism_feather",count:1},
       repeatReward:{gold:2000,exp:1100}
+    },
+    {
+      id:"arena_fd_limit", rank:"制限", category:"special", name:"低ランク限定杯", icon:"🥉", req:18, unlock:8,
+      limit:{rankMax:"D",text:"出場条件：パーティ全員がDランク以下"},
+      desc:"F〜Dランクの仲間だけで挑む制限大会。低ランク育成の腕試し。",
+      rounds:[
+        {enemy:"thornhog",level:20,label:"第1戦 トゲの下剋上"},
+        {enemy:"gearbit",level:21,label:"第2戦 小さな歯車兵"},
+        {enemy:"mossking",level:23,label:"決勝 草原王の意地"}
+      ],
+      firstReward:{gold:2200,exp:1200,item:"bronze_emblem",count:1},
+      repeatReward:{gold:850,exp:460}
+    },
+    {
+      id:"arena_slime", rank:"制限", category:"special", name:"ぷるぷる杯", icon:"🫧", req:20, unlock:9,
+      limit:{types:["slime"],text:"出場条件：パーティ全員がスライム系"},
+      desc:"スライム系だけで戦う特殊大会。ぷるミン系を育てて挑もう。",
+      rounds:[
+        {enemy:"plim",level:22,label:"第1戦 ぷるミン隊"},
+        {enemy:"poisonplim",level:24,label:"第2戦 毒ぷるの罠"},
+        {enemy:"kingplim",level:27,label:"決勝 キングぷるミン"}
+      ],
+      firstReward:{gold:2600,exp:1450,item:"slime_medal",count:1},
+      repeatReward:{gold:980,exp:520}
+    },
+    {
+      id:"arena_element", rank:"特殊", category:"special", name:"属性王決定戦", icon:"💠", req:34, unlock:10,
+      desc:"火・水・光・闇の強敵が連続で出る属性大会。弱点を突く編成が重要。",
+      rounds:[
+        {enemy:"volcazard",level:36,label:"第1戦 火山竜の熱波"},
+        {enemy:"frostlevia",level:38,label:"第2戦 氷竜の潮流"},
+        {enemy:"voiddragon",level:40,label:"決勝 虚無竜の闇"}
+      ],
+      firstReward:{gold:4200,exp:2400,item:"element_badge",count:1},
+      repeatReward:{gold:1600,exp:900}
+    },
+    {
+      id:"arena_ex", rank:"EX", category:"ex", name:"EXランク 覇者の試練", icon:"🏆", req:55, unlock:11,
+      desc:"闘技場の上位大会。Sランク突破後のエンドコンテンツ級3連戦。",
+      rounds:[
+        {enemy:"venomchimera",level:58,label:"第1戦 毒闇の凶獣"},
+        {enemy:"omegaframe",level:60,label:"第2戦 古代兵器の中枢"},
+        {enemy:"prismdragon",level:64,label:"決勝 虹晶覇竜・改"}
+      ],
+      firstReward:{gold:9000,exp:5200,item:"ex_champion_core",count:1},
+      repeatReward:{gold:3600,exp:2000}
     }
   ];
 })();

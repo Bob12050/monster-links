@@ -2113,3 +2113,39 @@ button{
     padding:9px;
   }
 }
+
+
+/* ===== v3.5 arena expansion ===== */
+.specialArenaSection{
+  border-color:rgba(255,211,106,.18);
+  background:
+    radial-gradient(circle at 90% 8%,rgba(255,211,106,.12),transparent 34%),
+    linear-gradient(180deg,rgba(35,48,88,.96),rgba(20,29,55,.96));
+}
+.specialArenaCard{
+  border-color:rgba(255,211,106,.22);
+}
+.specialArenaCard .arenaRankBadge{
+  background:linear-gradient(#ffd36a,#a76722);
+  color:#201405;
+}
+.arenaLimit{
+  display:inline-block;
+  margin:7px 0 5px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,211,106,.13);
+  border:1px solid rgba(255,211,106,.26);
+  color:#ffe7aa;
+  font-size:12px;
+  font-weight:900;
+}
+@media(max-width:430px){
+  .specialArenaSection .arenaGrid{
+    gap:10px;
+  }
+  .arenaLimit{
+    font-size:11.5px;
+    line-height:1.35;
+  }
+}

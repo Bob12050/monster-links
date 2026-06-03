@@ -18,7 +18,11 @@
     prism_feather:{name:"虹晶の羽飾り",icon:"🌈",image:"assets/images/items/prism_feather.svg",kind:"accessory",price:0,desc:"虹晶聖域ボスが落とす最高位アクセサリー。全能力が大きく上がる。",stat:{hp:40,mp:20,atk:10,def:10,spd:10,wis:10}},
     mire_orb:{name:"毒沼オーブ",icon:"🟢",image:"assets/images/items/mire_orb.svg",kind:"accessory",price:0,desc:"毒霧の沼地で見つかる妖しい珠。MPと賢さが伸びる。",stat:{mp:14,wis:10}},
     venom_crown:{name:"毒竜の冠",icon:"☠️",image:"assets/images/items/venom_crown.svg",kind:"accessory",price:0,desc:"ヴェノムハイドラが落とす冠。攻撃と素早さが大きく上がる。",stat:{atk:12,spd:8}},
-    ancient_gear:{name:"古代機心",icon:"⚙️",image:"assets/images/items/ancient_gear.svg",kind:"accessory",price:0,desc:"アークマシンが落とす動力炉。攻撃・守備・素早さが上がる。",stat:{atk:10,def:12,spd:6}}
+    ancient_gear:{name:"古代機心",icon:"⚙️",image:"assets/images/items/ancient_gear.svg",kind:"accessory",price:0,desc:"アークマシンが落とす動力炉。攻撃・守備・素早さが上がる。",stat:{atk:10,def:12,spd:6}},
+    bronze_emblem:{name:"低ランク闘章",icon:"🥉",image:"assets/images/items/bronze_emblem.svg",kind:"accessory",price:0,desc:"低ランク限定大会の証。HPと攻撃が上がる。",stat:{hp:35,atk:8}},
+    slime_medal:{name:"ぷるぷるメダル",icon:"🫧",image:"assets/images/items/slime_medal.svg",kind:"accessory",price:0,desc:"スライム杯の記念メダル。HP・MP・素早さが上がる。",stat:{hp:30,mp:18,spd:8}},
+    element_badge:{name:"属性王のバッジ",icon:"💠",image:"assets/images/items/element_badge.svg",kind:"accessory",price:0,desc:"属性別大会の勝者に贈られるバッジ。賢さと素早さが上がる。",stat:{mp:18,spd:10,wis:12}},
+    ex_champion_core:{name:"EX覇者のコア",icon:"🏆",image:"assets/images/items/ex_champion_core.svg",kind:"accessory",price:0,desc:"EX大会の覇者だけが持つコア。全能力が大きく上がる。",stat:{hp:55,mp:28,atk:14,def:14,spd:14,wis:14}}
   };
   P.SHOP_ITEMS = ["force_ring","guard_stone","swift_feather","mage_charm","life_drop","mana_shell"];
   P.DROPS = {

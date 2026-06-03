@@ -16,10 +16,30 @@
     return {id:"arena",image:"assets/images/stages/arena.svg",name:arena.name,icon:arena.icon || "🏟️",req:arena.req,unlock:1,scout:0,exp:[0,0],gold:[0,0],boss:{unlockWins:999}};
   }
 
+  function rankValue(rank){return D.RANK?.[rank] || 99;}
+
+  function arenaLimitReason(arena){
+    const limit = arena.limit;
+    if(!limit) return "";
+    const party = S.state.party || [];
+    if(limit.rankMax){
+      const max = D.RANK[limit.rankMax] || 99;
+      const ng = party.find(m=>(D.RANK[S.def(m.id).rank] || 1) > max);
+      if(ng) return `${limit.text || "出場条件"}。${ng.nickname}は${S.def(ng.id).rank}ランクです。`;
+    }
+    if(limit.types && Array.isArray(limit.types)){
+      const ng = party.find(m=>!limit.types.includes(S.def(m.id).type));
+      if(ng) return `${limit.text || "出場条件"}。${ng.nickname}は${D.TYPES[S.def(ng.id).type]}系です。`;
+    }
+    return "";
+  }
+
   function startArenaCup(id){
     const arena = S.arenaDef(id);
     if(!arena){toast("大会が見つかりません");return;}
-    if(!S.arenaUnlocked(id)){toast("まだこのランクは解放されていません");return;}
+    if(!S.arenaUnlocked(id)){toast("まだこの大会は解放されていません");return;}
+    const limitReason = arenaLimitReason(arena);
+    if(limitReason){toast(limitReason);return;}
     if(S.highestLv() < arena.req){toast(`推奨Lv${arena.req}以上が目安です`);return;}
     if(!S.state.party.some(S.alive)) G.fullHeal(false);
     S.state.reward = null;
@@ -33,15 +53,16 @@
     if(!round) return;
     const enemy = S.makeMonster(round.enemy,round.level);
     enemy.nickname = S.def(round.enemy).name;
-    if(arena.rank === "A" || arena.rank === "S"){
+    if(arena.rank === "A" || arena.rank === "S" || arena.rank === "EX" || arena.category === "ex"){
       const base = S.stats(enemy);
+      const hard = arena.rank === "EX" || arena.category === "ex";
       enemy.bonus = Object.assign(enemy.bonus || {}, {
-        hp:Math.floor(base.hp * (arena.rank === "S" ? .25 : .15)),
-        atk:Math.floor(base.atk * .08),
-        def:Math.floor(base.def * .08),
-        wis:Math.floor(base.wis * .08),
-        mp:Math.floor(base.mp * .08),
-        spd:0
+        hp:Math.floor(base.hp * (hard ? .35 : arena.rank === "S" ? .25 : .15)),
+        atk:Math.floor(base.atk * (hard ? .12 : .08)),
+        def:Math.floor(base.def * (hard ? .12 : .08)),
+        wis:Math.floor(base.wis * (hard ? .12 : .08)),
+        mp:Math.floor(base.mp * (hard ? .12 : .08)),
+        spd:Math.floor(base.spd * (hard ? .08 : 0))
       });
       const fixed = S.stats(enemy);
       enemy.hp = fixed.hp;
