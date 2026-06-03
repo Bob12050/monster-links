@@ -186,3 +186,58 @@ assets/images/art_manifest.json
 ```
 
 今後は `docs/ART_ASSET_MANIFEST.md` を見ながら、優先度SからPNG画像を差し替えていく方針です。
+
+
+## v4.0 主要モンスター本格アート第1弾
+
+今回はまず3体の本格PNGアート試作を実装しました。
+
+```text
+ぷるミン
+リーフリン
+デモンロード
+```
+
+追加ファイル:
+
+```text
+assets/images/monsters/plim.png
+assets/images/monsters/leafling.png
+assets/images/monsters/demonlord.png
+docs/ART_V40_TRIAL.md
+docs/IMAGE_REPLACEMENT_WORKFLOW.md
+```
+
+v3.9で作成したアート管理表も更新し、3体を `done_v4_0_trial` にしています。
+
+
+## v4.1 主要モンスター本格アート第2弾
+
+今回は8体の本格PNGアートを実装しました。
+
+```text
+プフバット
+ペブロン
+ヒノコぐま
+アクアン
+モスキング
+オアロード
+キングぷるミン
+アビスリヴァイア
+```
+
+追加ファイル:
+
+```text
+assets/images/monsters/puffbat.png
+assets/images/monsters/pebblon.png
+assets/images/monsters/embercub.png
+assets/images/monsters/aquan.png
+assets/images/monsters/mossking.png
+assets/images/monsters/orelord.png
+assets/images/monsters/kingplim.png
+assets/images/monsters/abysslevia.png
+docs/ART_V41_PACK2.md
+```
+
+v4.0の3体と合わせて、主要モンスター11体が本格PNGアート化済みです。
