@@ -1,13 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
 <defs>
-<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffe36f"/><stop offset="58%" stop-color="#18244d"/><stop offset="100%" stop-color="#060914"/></linearGradient>
-<radialGradient id="light" cx="38%" cy="22%" r="60%"><stop offset="0%" stop-color="rgba(255,255,255,.34)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient>
-<filter id="soft"><feGaussianBlur stdDeviation="10"/></filter>
+  <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#fff1a6"/>
+    <stop offset="55%" stop-color="#7ec7ff"/>
+    <stop offset="100%" stop-color="#182349"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="35%" cy="18%" r="55%">
+    <stop offset="0%" stop-color="rgba(255,255,255,.42)"/>
+    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+  </radialGradient>
+  <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
+  <filter id="blur16"><feGaussianBlur stdDeviation="16"/></filter>
 </defs>
-<rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#light)"/>
-<circle cx="1280" cy="140" r="150" fill="rgba(255,255,255,.10)" filter="url(#soft)"/>
-<circle cx="220" cy="720" r="210" fill="rgba(0,0,0,.16)" filter="url(#soft)"/>
-<path d="M0 430 L120 260 L240 430 L360 210 L520 430 L700 240 L960 430 L960 540 L0 540 Z" fill="rgba(0,0,0,.34)"/><g opacity=".5" stroke="rgba(255,255,255,.45)" stroke-width="6"><path d="M160 300 L220 420"/><path d="M530 250 L465 415"/><path d="M760 290 L840 425"/></g>
-<g opacity=".18" fill="#fff"><circle cx="180" cy="160" r="9"/><circle cx="270" cy="230" r="5"/><circle cx="1340" cy="260" r="8"/><circle cx="1190" cy="105" r="4"/></g>
-<text x="1320" y="760" font-size="170" text-anchor="middle" opacity=".18">⚡</text>
+<rect width="1280" height="720" fill="url(#sky)"/>
+<rect width="1280" height="720" fill="url(#glow)"/>
+<circle cx="1060" cy="120" r="110" fill="rgba(255,255,255,.12)" filter="url(#blur16)"/>
+<circle cx="220" cy="600" r="180" fill="rgba(0,0,0,.14)" filter="url(#blur16)"/>
+
+<path d="M0 470 C170 430 336 500 535 462 C740 420 955 500 1280 420 L1280 720 L0 720 Z" fill="rgba(38,44,85,.54)"/>
+<path d="M0 545 C170 515 360 575 570 536 C770 499 980 570 1280 505 L1280 720 L0 720 Z" fill="rgba(17,22,53,.86)"/>
+<g fill="rgba(156,167,193,.44)"><rect x="252" y="266" width="72" height="220"/><rect x="902" y="226" width="82" height="260"/><rect x="560" y="186" width="94" height="300"/></g>
+<g stroke="rgba(255,232,132,.82)" stroke-width="10" stroke-linecap="round"><path d="M180 120 L120 240 L165 240 L115 355"/><path d="M890 80 L835 195 L875 195 L820 320"/></g>
+<ellipse cx="605" cy="486" rx="166" ry="20" fill="rgba(110,214,255,.22)"/>
+
+<g opacity=".16" fill="#fff"><circle cx="180" cy="130" r="4"/><circle cx="240" cy="90" r="3"/><circle cx="1060" cy="170" r="4"/><circle cx="1130" cy="120" r="2"/></g>
+<text x="1120" y="615" font-size="140" text-anchor="middle" opacity=".14">⚡</text>
 </svg>

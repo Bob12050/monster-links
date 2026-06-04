@@ -1,13 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
 <defs>
-<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e5b9ff"/><stop offset="58%" stop-color="#1a164a"/><stop offset="100%" stop-color="#060914"/></linearGradient>
-<radialGradient id="light" cx="38%" cy="22%" r="60%"><stop offset="0%" stop-color="rgba(255,255,255,.34)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient>
-<filter id="soft"><feGaussianBlur stdDeviation="10"/></filter>
+  <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#ffd6ff"/>
+    <stop offset="55%" stop-color="#a9b8ff"/>
+    <stop offset="100%" stop-color="#25164d"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="35%" cy="18%" r="55%">
+    <stop offset="0%" stop-color="rgba(255,255,255,.42)"/>
+    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+  </radialGradient>
+  <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
+  <filter id="blur16"><feGaussianBlur stdDeviation="16"/></filter>
 </defs>
-<rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#light)"/>
-<circle cx="1280" cy="140" r="150" fill="rgba(255,255,255,.10)" filter="url(#soft)"/>
-<circle cx="220" cy="720" r="210" fill="rgba(0,0,0,.16)" filter="url(#soft)"/>
-<path d="M0 430 C160 390 300 455 460 405 C620 360 760 425 960 365 L960 540 L0 540 Z" fill="rgba(255,255,255,.12)"/><g opacity=".5" fill="rgba(255,255,255,.34)"><circle cx="170" cy="120" r="5"/><circle cx="260" cy="75" r="4"/><circle cx="720" cy="140" r="6"/><circle cx="820" cy="95" r="3"/></g>
-<g opacity=".18" fill="#fff"><circle cx="180" cy="160" r="9"/><circle cx="270" cy="230" r="5"/><circle cx="1340" cy="260" r="8"/><circle cx="1190" cy="105" r="4"/></g>
-<text x="1320" y="760" font-size="170" text-anchor="middle" opacity=".18">🌈</text>
+<rect width="1280" height="720" fill="url(#sky)"/>
+<rect width="1280" height="720" fill="url(#glow)"/>
+<circle cx="1060" cy="120" r="110" fill="rgba(255,255,255,.12)" filter="url(#blur16)"/>
+<circle cx="220" cy="600" r="180" fill="rgba(0,0,0,.14)" filter="url(#blur16)"/>
+
+<path d="M0 500 C160 468 340 530 530 490 C735 448 955 520 1280 440 L1280 720 L0 720 Z" fill="rgba(54,35,103,.56)"/>
+<path d="M0 575 C180 545 352 605 570 560 C775 520 974 592 1280 525 L1280 720 L0 720 Z" fill="rgba(22,18,74,.86)"/>
+<g opacity=".75"><polygon points="632,160 720,265 632,370 544,265" fill="rgba(255,255,255,.48)"/><polygon points="404,280 456,342 404,404 352,342" fill="rgba(149,255,251,.40)"/><polygon points="896,262 944,320 896,378 848,320" fill="rgba(255,183,244,.42)"/></g>
+<path d="M220 150 C360 225 520 225 650 158 C790 90 960 95 1110 170" fill="none" stroke="rgba(255,255,255,.50)" stroke-width="6" stroke-linecap="round"/>
+<path d="M220 165 C360 240 520 240 650 173 C790 105 960 110 1110 185" fill="none" stroke="rgba(254,162,255,.36)" stroke-width="8" stroke-linecap="round"/>
+
+<g opacity=".16" fill="#fff"><circle cx="180" cy="130" r="4"/><circle cx="240" cy="90" r="3"/><circle cx="1060" cy="170" r="4"/><circle cx="1130" cy="120" r="2"/></g>
+<text x="1120" y="615" font-size="140" text-anchor="middle" opacity=".14">🌈</text>
 </svg>
