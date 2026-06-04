@@ -1,5 +1,16 @@
 # バージョン履歴
 
+## v5.0-pre 管理整理・正式版確認
+- 現在の正式版を v5.0-pre として明記
+- READMEを最新版基準に整理
+- docs/CURRENT_VERSION.md を追加
+- docs/FILE_STRUCTURE.md を追加
+- docs/MAINTENANCE_CHECKLIST.md を追加
+- docs/DOC_INDEX.md を追加
+- docs/ROADMAP_AFTER_V50.md を追加
+- docs/PROJECT_SUMMARY.md を追加
+- 大規模なコード変更・戦闘バランス変更・ギミック追加はなし
+
 ## v4.9 ステージ情報・攻略感の強化
 - ステージごとの危険度を追加
 - ステージごとの属性傾向を追加

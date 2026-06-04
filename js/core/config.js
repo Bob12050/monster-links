@@ -6,7 +6,7 @@
   const SLOT_PREFIX = "monster_links_slot_";
   const ACTIVE_SLOT_KEY = "monster_links_active_slot";
   const SLOT_COUNT = 3;
-  const GAME_VERSION = "4.9";
+  const GAME_VERSION = "5.0-pre";
   const MAX_PARTY = 3;
 
   const TYPES = {
