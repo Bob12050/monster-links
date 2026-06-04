@@ -1,12 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#268c86"/><stop offset="1" stop-color="#121a33"/></linearGradient>
-    <radialGradient id="r" cx="0.32" cy="0.24" r="0.72"><stop offset="0" stop-color="#fff" stop-opacity="0.38"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-    <filter id="s"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#000" flood-opacity="0.35"/></filter>
-  </defs>
-  <rect x="12" y="12" width="232" height="232" rx="54" fill="url(#g)"/>
-  <rect x="12" y="12" width="232" height="232" rx="54" fill="url(#r)"/>
-  <circle cx="190" cy="58" r="32" fill="#fff" opacity="0.14"/>
-  <text x="128" y="120" text-anchor="middle" dominant-baseline="central" font-size="92" filter="url(#s)">🐚</text>
-  <text x="128" y="204" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="900" fill="#fff">マナシェル</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<defs>
+<radialGradient id="bg" cx="35%" cy="18%" r="78%">
+  <stop offset="0%" stop-color="#65d8ff"/>
+  <stop offset="60%" stop-color="#104e68"/>
+  <stop offset="100%" stop-color="#070914"/>
+</radialGradient>
+<filter id="shadow" x="-35%" y="-35%" width="170%" height="170%">
+  <feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="#000" flood-opacity=".35"/>
+</filter>
+<filter id="glow" x="-45%" y="-45%" width="190%" height="190%">
+  <feGaussianBlur stdDeviation="6" result="b"/>
+  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+</defs>
+<rect x="20" y="20" width="472" height="472" rx="96" fill="url(#bg)" opacity=".96"/>
+<circle cx="412" cy="94" r="62" fill="rgba(255,255,255,.13)"/>
+<circle cx="90" cy="418" r="76" fill="rgba(0,0,0,.15)"/>
+<circle cx="80" cy="70" r="3" fill="rgba(255,255,255,.55)"/><circle cx="158" cy="88" r="4" fill="rgba(255,255,255,.55)"/><circle cx="236" cy="70" r="5" fill="rgba(255,255,255,.55)"/><circle cx="314" cy="88" r="3" fill="rgba(255,255,255,.55)"/><circle cx="392" cy="70" r="4" fill="rgba(255,255,255,.55)"/>
+<g filter="url(#shadow)">
+
+<path d="M112 358 C118 210 184 112 256 112 C328 112 394 210 400 358 Z" fill="#65d8ff" stroke="#d8fbff" stroke-width="12"/>
+<path d="M148 358 C160 250 194 172 256 112 C318 172 352 250 364 358" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="10"/>
+<path d="M210 358 C218 250 236 172 256 112 C276 172 294 250 302 358" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="10"/>
+<rect x="118" y="350" width="276" height="48" rx="22" fill="#d8fbff"/>
+
+</g>
 </svg>
