@@ -32,13 +32,39 @@
               </div>
               <span class="tag">${open ? (cleared ? "CLEAR" : "解放済") : "LOCK"}</span>
             </div>
-            <p class="tiny">${st.desc}</p>
-            <div class="tiny">出現：${st.enemies.map(id=>S.def(id).name).join("、")}</div>
+            <p class="tiny stageDesc">${st.desc}</p>
+
+            <div class="stageInfoPanel">
+              <div class="stageInfoLine">
+                <span class="stageInfoLabel">危険度</span>
+                <span class="stageStars">${V.stageDanger(st)}</span>
+              </div>
+              <div class="stageInfoLine">
+                <span class="stageInfoLabel">属性傾向</span>
+                <span class="stageTraitWrap">${V.stageTraits(st)}</span>
+              </div>
+            </div>
+
+            <div class="stageSection">
+              <div class="stageSectionTitle">出現モンスター</div>
+              <div class="stageEnemyList">${V.stageEnemyList(st)}</div>
+            </div>
+
+            <div class="stageSection">
+              <div class="stageSectionTitle">主な報酬</div>
+              <div class="stageDropList">${V.stageDropList(st)}</div>
+            </div>
+
+            <div class="stageHintBox">
+              <b>攻略ヒント</b>
+              <div>${U.esc(st.hint || "パーティのLvと装備を整えて挑もう。")}</div>
+            </div>
+
             <div class="progressWrap">
               <div class="tiny">ボス気配：${Math.min(wins,st.boss.unlockWins)}/${st.boss.unlockWins}</div>
               <div class="bar exp"><i style="width:${progressPct}%"></i></div>
             </div>
-            <div class="bossBox">
+            <div class="bossBox bossBoxV49">
               ${V.monsterInline(st.boss.id,'miniFace')}
               <div>
                 <b>ボス：${S.def(st.boss.id).name}</b>

@@ -2197,3 +2197,122 @@ button{
 .stageThumb:after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.12));pointer-events:none}
 .stageName,.stageReq,.stageDesc{position:relative;z-index:1}
 .battleV23{box-shadow:0 24px 68px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.08)}
+
+
+/* v4.9 stage info / strategy polish */
+.stageInfoPanel{
+  display:grid;
+  gap:7px;
+  margin:10px 0;
+  padding:10px;
+  border-radius:16px;
+  background:rgba(0,0,0,.22);
+  border:1px solid rgba(255,255,255,.10);
+}
+.stageInfoLine{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+.stageInfoLabel{
+  font-size:12px;
+  font-weight:1000;
+  color:#d8e4ff;
+  opacity:.92;
+}
+.stageStars{
+  color:#ffd36a;
+  letter-spacing:.06em;
+  font-weight:1000;
+  text-shadow:0 2px 0 rgba(0,0,0,.28);
+}
+.smallStars{font-size:12px}
+.stageTraitWrap{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.stageTrait{
+  display:inline-flex;
+  align-items:center;
+  min-height:24px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:rgba(110,231,255,.13);
+  border:1px solid rgba(110,231,255,.28);
+  color:#d8fbff;
+  font-size:12px;
+  font-weight:900;
+}
+.stageSection{
+  margin-top:10px;
+}
+.stageSectionTitle{
+  font-size:12px;
+  font-weight:1000;
+  color:#fff1b8;
+  margin-bottom:6px;
+  letter-spacing:.03em;
+}
+.stageEnemyList,
+.stageDropList{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.stageEnemyChip,
+.stageDrop{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.11);
+  font-size:12px;
+  font-weight:850;
+}
+.stageDrop .miniItemIcon,
+.stageEnemyChip .miniFace{
+  width:24px;
+  height:24px;
+  flex:0 0 24px;
+}
+.stageHintBox{
+  margin-top:10px;
+  padding:10px;
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(255,211,106,.12),rgba(255,255,255,.055));
+  border:1px solid rgba(255,211,106,.20);
+  font-size:12px;
+  color:#fff7d6;
+}
+.stageHintBox b{
+  display:block;
+  margin-bottom:4px;
+  color:#ffd36a;
+}
+.bossBoxV49{
+  background:linear-gradient(180deg,rgba(255,107,122,.13),rgba(255,255,255,.06));
+  border-color:rgba(255,107,122,.24);
+}
+.battleStageTraits{
+  margin-top:5px;
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.battleStageTraits .stageTrait{
+  font-size:11px;
+  min-height:22px;
+  padding:3px 7px;
+}
+@media(max-width:520px){
+  .stageInfoLine{align-items:flex-start}
+  .stageTraitWrap{justify-content:flex-start}
+  .stageEnemyChip,.stageDrop{font-size:11px;padding:5px 7px}
+}

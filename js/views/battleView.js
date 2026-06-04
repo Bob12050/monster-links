@@ -23,6 +23,7 @@
           <div>
             <div class="battlePlace">${b.stage.icon} ${b.stage.name}</div>
             <div class="tiny">${modeText} / ${turnText}</div>
+            <div class="battleStageTraits">${V.stageTraits(b.stage)} <span class="stageStars smallStars">${V.stageDanger(b.stage)}</span></div>
           </div>
           <div class="battleMode ${b.isBoss ? "bossMode" : ""} ${b.isArena ? "arenaMode" : ""}">${modeLabel}</div>
         </div>

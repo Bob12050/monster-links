@@ -56,6 +56,37 @@
     return `<div class="${className}">${fallback}</div>`;
   }
 
+
+  function stageDanger(st){
+    const n = Math.max(1, Math.min(5, Number(st?.danger || 1)));
+    return "★".repeat(n) + "☆".repeat(5-n);
+  }
+
+  function stageTraits(st){
+    const traits = st?.traits || [];
+    if(!traits.length) return "";
+    return traits.map(x=>`<span class="stageTrait">${U.esc(x)}</span>`).join("");
+  }
+
+  function stageDropList(st){
+    const drops = st?.drops || [];
+    if(!drops.length) return "";
+    return drops.map(id=>{
+      const item = D.ITEMS[id];
+      if(!item) return "";
+      return `<span class="stageDrop">${itemVisual(id,"miniItemIcon")}<span>${U.esc(item.name)}</span></span>`;
+    }).join("");
+  }
+
+  function stageEnemyList(st){
+    const enemies = st?.enemies || [];
+    if(!enemies.length) return "";
+    return enemies.map(id=>{
+      const d = S.def(id);
+      return `<span class="stageEnemyChip">${monsterInline(id,"miniFace")}<span>${U.esc(d.name)}</span></span>`;
+    }).join("");
+  }
+
   function stageStyle(st){
     if(!st || !st.image) return "";
     const srcInfo = pngPreferred(st.image);
@@ -72,7 +103,11 @@
     monsterInline,
     itemVisual,
     stageStyle,
-    stageThumb
+    stageThumb,
+    stageDanger,
+    stageTraits,
+    stageDropList,
+    stageEnemyList
   });
 
 })();
