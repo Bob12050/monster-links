@@ -12,7 +12,7 @@
     <main>
       <section class="hero heroCompact">
         <h1>拠点</h1>
-        <p>v${D.GAME_VERSION}：スマホで押しやすいように、ボタン・戦闘操作・メニュー表示を調整しました。</p>
+        <p>v${D.GAME_VERSION}：画面全体の見やすさ、カードの整理、メニューの押しやすさを調整しました。</p>
       </section>
 
       ${V.nextGoalPanel()}

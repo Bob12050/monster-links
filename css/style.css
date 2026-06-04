@@ -2341,3 +2341,191 @@ button{
 .stageDrop .miniItemIcon{
   box-shadow:0 4px 10px rgba(0,0,0,.18);
 }
+
+
+/* v5.1 UI polish: overall readability and card hierarchy */
+:root{
+  --cardGlow:rgba(110,231,255,.10);
+  --softGold:rgba(255,211,106,.14);
+}
+body{
+  background:
+    radial-gradient(circle at 20% 0%,rgba(110,231,255,.12),transparent 28%),
+    radial-gradient(circle at 84% 8%,rgba(255,211,106,.10),transparent 28%),
+    radial-gradient(circle at top,#263b76,#0b1024 55%,#050814);
+}
+.app{
+  padding-left:14px;
+  padding-right:14px;
+}
+.top{
+  box-shadow:0 10px 30px rgba(0,0,0,.28);
+}
+.title{
+  letter-spacing:.02em;
+}
+.hero{
+  border-color:rgba(110,231,255,.18);
+  box-shadow:0 18px 42px rgba(0,0,0,.34), inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.hero h1{
+  font-size:clamp(23px,5vw,31px);
+  line-height:1.15;
+}
+.hero p{
+  max-width:760px;
+}
+.card{
+  border-color:rgba(255,255,255,.13);
+  box-shadow:0 14px 34px rgba(0,0,0,.30), inset 0 0 0 1px rgba(255,255,255,.035);
+}
+.card:hover{
+  border-color:rgba(110,231,255,.19);
+}
+.grid{
+  gap:12px;
+}
+.sectionTitle,
+.sectionHead,
+.card h2{
+  letter-spacing:.02em;
+}
+button{
+  position:relative;
+  overflow:hidden;
+}
+button:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.10),transparent);
+  transform:translateX(-120%);
+  transition:transform .32s ease;
+  pointer-events:none;
+}
+button:hover:before{
+  transform:translateX(120%);
+}
+.actions{
+  gap:9px;
+}
+.actions button,
+.menu button{
+  line-height:1.25;
+}
+.menuV28 button,
+.hubMenu button{
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:4px;
+}
+.menuV28 button b,
+.hubMenu button b{
+  font-size:15px;
+}
+.menuV28 button span,
+.hubMenu button span{
+  font-size:11px;
+  opacity:.86;
+  line-height:1.35;
+}
+.notice,
+.compactNotice{
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.18);
+}
+.pill{
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.tag,
+.type{
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.stage{
+  min-height:100%;
+}
+.stageTop{
+  gap:10px;
+}
+.stageName{
+  font-size:16px;
+}
+.stageDesc{
+  margin-top:9px;
+  line-height:1.55;
+}
+.stageInfoPanel{
+  background:linear-gradient(180deg,rgba(0,0,0,.23),rgba(255,255,255,.045));
+}
+.stageEnemyChip,
+.stageDrop{
+  backdrop-filter:blur(6px);
+}
+.bossBox{
+  border-radius:18px;
+}
+.bossBoxV49{
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.itemAsset,
+.miniItemIcon,
+.rewardIcon{
+  border-radius:14px;
+}
+.monsterAsset img,
+.itemAsset img,
+.stageThumb img{
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.battleHeader,
+.fighterV23,
+.vsRibbon{
+  backdrop-filter:blur(4px);
+}
+.vsRibbon{
+  box-shadow:0 8px 18px rgba(0,0,0,.22);
+}
+@media(max-width:640px){
+  .app{
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .hero{
+    padding:16px;
+    border-radius:18px;
+  }
+  .card{
+    padding:13px;
+    border-radius:18px;
+  }
+  .grid.two{
+    grid-template-columns:1fr;
+  }
+  .menuV28 button,
+  .hubMenu button{
+    min-height:68px;
+  }
+  .stageTop{
+    align-items:flex-start;
+  }
+  .stageName{
+    font-size:15px;
+  }
+}
+@media(max-width:390px){
+  .status{
+    gap:6px;
+  }
+  .pill{
+    font-size:11px;
+    padding:6px 5px;
+  }
+  .actions{
+    grid-template-columns:1fr;
+  }
+}
