@@ -2149,3 +2149,42 @@ button{
     line-height:1.35;
   }
 }
+
+
+/* v4.6 reupload: stage world polish */
+.stageArt:before{
+  opacity:.38;
+  filter:saturate(1.25) contrast(1.08);
+}
+.stageBattleBg:before{
+  opacity:.46;
+  filter:saturate(1.35) contrast(1.1);
+  transform:scale(1.04);
+}
+.stageArt:after{
+  background:
+    linear-gradient(180deg,rgba(15,22,45,.46),rgba(8,13,28,.88)),
+    radial-gradient(circle at 20% 10%,rgba(255,255,255,.14),transparent 35%);
+}
+.stageBattleBg:after{
+  background:
+    linear-gradient(180deg,rgba(7,10,22,.34),rgba(5,8,18,.82)),
+    radial-gradient(circle at 50% 38%,rgba(255,255,255,.10),transparent 36%);
+}
+.stageThumb{
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.10), 0 10px 24px rgba(0,0,0,.22);
+}
+.stageThumb img{transform:scale(1.04)}
+.battleSceneV23:before{
+  content:"";
+  position:absolute;
+  left:6%;
+  right:6%;
+  bottom:8px;
+  height:22%;
+  border-radius:999px;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.36),rgba(0,0,0,0) 70%);
+  z-index:0;
+  pointer-events:none;
+}
+.fighterV23{z-index:1}

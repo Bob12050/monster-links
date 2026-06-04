@@ -1,6 +1,6 @@
 # アート制作対象リスト
 
-v4.3時点の全画像制作対象です。
+v4.5-A時点の全画像制作対象です。
 
 ## 件数
 
@@ -17,7 +17,9 @@ v4.3時点の全画像制作対象です。
 done_v4_0_trial    : v4.0で本格PNG試作を実装済み
 done_v4_1_art      : v4.1で本格PNGアートを実装済み
 done_v4_3_art      : v4.3で本格PNGアートを実装済み
+done_v4_5_a_art    : v4.5-Aで本格PNGアートを実装済み
 converted_v4_2_png : v4.2でSVGから透過PNGへ変換済み
+planned_v4_5_upper : 今後の上位モンスター候補
 planned            : 未着手
 ```
 
@@ -47,15 +49,15 @@ planned            : 未着手
 |done_v4_3_art|A|v4.1 第2弾|tidalseraph|タイダルセラフ|B|water|assets/images/monsters/tidalseraph.png|
 |done_v4_3_art|A|v4.1 第2弾|volcazard|ヴォルカザード|B|dragon|assets/images/monsters/volcazard.png|
 |converted_v4_2_png|A|v4.1 第2弾|duskwolf|ヨミオオカミ|B|dark|assets/images/monsters/duskwolf.png|
-|converted_v4_2_png|A|v4.1 第2弾|frostlevia|フロストリヴァイア|A|water|assets/images/monsters/frostlevia.png|
-|converted_v4_2_png|A|v4.1 第2弾|arcautomaton|アークオートマタ|A|machine|assets/images/monsters/arcautomaton.png|
-|converted_v4_2_png|A|v4.1 第2弾|astralwyrm|アストラルワーム|A|light|assets/images/monsters/astralwyrm.png|
+|done_v4_5_a_art|A|v4.5-A upper art|frostlevia|フロストリヴァイア|A|water|assets/images/monsters/frostlevia.png|
+|done_v4_5_a_art|A|v4.5-A upper art|arcautomaton|アークオートマタ|A|machine|assets/images/monsters/arcautomaton.png|
+|done_v4_5_a_art|A|v4.5-A upper art|astralwyrm|アストラルワーム|A|light|assets/images/monsters/astralwyrm.png|
 |done_v4_1_art|S|v4.0 第1弾|kingplim|キングぷるミン|B|slime|assets/images/monsters/kingplim.png|
-|converted_v4_2_png|A|v4.1 第2弾|auroracat|オーロラニャ|A|light|assets/images/monsters/auroracat.png|
-|converted_v4_2_png|A|v4.1 第2弾|eclipsewolf|エクリプスウルフ|A|dark|assets/images/monsters/eclipsewolf.png|
-|converted_v4_2_png|A|v4.1 第2弾|gigacore|ギガントコア|A|machine|assets/images/monsters/gigacore.png|
-|converted_v4_2_png|A|v4.1 第2弾|phoenixdrake|フェニックスドレイク|S|fire|assets/images/monsters/phoenixdrake.png|
-|converted_v4_2_png|A|v4.1 第2弾|celestiseraph|セレスティアルセラフ|S|light|assets/images/monsters/celestiseraph.png|
+|done_v4_5_a_art|A|v4.5-A upper art|auroracat|オーロラニャ|A|light|assets/images/monsters/auroracat.png|
+|planned_v4_5_upper|A|v4.5 upper art|eclipsewolf|エクリプスウルフ|A|dark|assets/images/monsters/eclipsewolf.png|
+|planned_v4_5_upper|A|v4.5 upper art|gigacore|ギガントコア|A|machine|assets/images/monsters/gigacore.png|
+|planned_v4_5_upper|A|v4.5 upper art|phoenixdrake|フェニックスドレイク|S|fire|assets/images/monsters/phoenixdrake.png|
+|planned_v4_5_upper|A|v4.5 upper art|celestiseraph|セレスティアルセラフ|S|light|assets/images/monsters/celestiseraph.png|
 |done_v4_3_art|S|v4.0 第1弾|voiddragon|ヴォイドドラゴン|S|dark|assets/images/monsters/voiddragon.png|
 |done_v4_3_art|S|v4.0 第1弾|prismdragon|プリズムドラゴン|S|dragon|assets/images/monsters/prismdragon.png|
 |converted_v4_2_png|B|v4.2 第3弾|poisonplim|ポイズンぷる|E|dark|assets/images/monsters/poisonplim.png|

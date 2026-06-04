@@ -1,4 +1,4 @@
-# モンスターリンクス v4.4
+# モンスターリンクス v4.6-reupload
 
 HTML / CSS / JavaScript だけで動く、スマホ対応のモンスター育成・スカウト・配合RPGです。
 
@@ -323,3 +323,67 @@ docs/IMAGE_GENERATION_CAUTION.md
 ```
 
 次回は v4.5 として、4体ずつ個別PNGで追加する方針です。
+
+
+## v4.5-A 上位モンスター本格アート第1弾
+
+今回は4体の本格PNGアートを追加しました。
+
+```text
+フロストリヴァイア
+アークオートマタ
+アストラルワーム
+オーロラニャ
+```
+
+追加ファイル:
+
+```text
+assets/images/monsters/frostlevia.png
+assets/images/monsters/arcautomaton.png
+assets/images/monsters/astralwyrm.png
+assets/images/monsters/auroracat.png
+docs/ART_V45A_PACK1.md
+```
+
+これで本格PNGアート化済みモンスターは合計23体になりました。
+
+
+## v4.5-B-ready 残り上位4体の差し替え準備版
+
+今回は、画像生成が一覧画像になってしまったため、無理にゲーム素材として採用せず、残り上位4体の差し替え準備を行いました。
+
+```text
+エクリプスウルフ
+ギガントコア
+フェニックスドレイク
+セレスティアルセラフ
+```
+
+追加ファイル:
+
+```text
+docs/ART_V45B_READY.md
+docs/PROMPTS_V45B_INDIVIDUAL.md
+```
+
+個別PNG素材がそろったら、次版で `done_v4_5_b_art` として実装します。
+
+
+## v4.6-reupload ステージ背景・世界観強化
+
+初回のv4.6ファイルでダウンロードが不安定だったため、別名で再作成した版です。
+
+```text
+全ステージ背景PNG化
+stage image参照を .png に統一
+冒険ステージカードの背景表示を調整
+戦闘画面の背景表示を強化
+戦闘画面に足元の影を追加
+```
+
+追加ファイル:
+
+```text
+docs/STAGE_WORLD_V46.md
+```
