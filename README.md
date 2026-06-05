@@ -1,11 +1,11 @@
-# モンスターリンクス v6.6
+# モンスターリンクス v7.0
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
 
 ## 現在の安定版
 
 ```text
-v6.6 キャラデザ確認・モンスター追加準備
+v7.0 追加モンスター第1弾：ステージ出現追加
 ```
 
 ## ゲーム概要
@@ -106,7 +106,7 @@ docs索引更新
 ```
 
 
-## v6.6 キャラデザ確認・モンスター追加準備
+## v7.0 追加モンスター第1弾：ステージ出現追加
 
 150匹規模へ拡張する前に、既存キャラデザイン確認と追加第1弾の管理表を追加しました。
 
@@ -127,3 +127,89 @@ docs/CHARACTER_DESIGN_DIRECTION_V66.md
 ```
 
 モンスター本体・画像・配合内容・戦闘バランスは変更していません。
+
+
+## v7.0 追加モンスター第1弾：ステージ出現追加
+
+追加モンスター第1弾20体のID・名前・ランク・属性・画像ファイル名・画像生成プロンプトを確定しました。
+
+```text
+追加候補20体
+画像生成プロンプト20体分
+JSON管理ファイル
+monsters.js追加時の仮コード
+```
+
+追加ファイル:
+
+```text
+data/planned_monsters_batch1_v67.json
+docs/MONSTER_BATCH1_DATA_V67.md
+docs/MONSTER_BATCH1_PROMPTS_V67.md
+docs/MONSTER_BATCH1_IMPLEMENTATION_NOTES_V67.md
+```
+
+今回はまだゲーム本体への正式追加、画像追加、ステージ出現、配合レシピ追加は行っていません。
+
+
+## v7.0 追加モンスター第1弾：ステージ出現追加
+
+v6.7で決めた追加候補20体について、透明PNGの仮画像を追加しました。
+
+```text
+追加候補20体の仮画像PNG
+画像レビュー表
+画像管理JSON
+```
+
+追加ファイル:
+
+```text
+data/planned_monsters_batch1_v68.json
+docs/MONSTER_BATCH1_IMAGES_V68.md
+docs/MONSTER_BATCH1_IMAGE_REVIEW_V68.md
+```
+
+今回はまだmonsters.jsへの正式追加、ステージ出現、配合レシピ追加は行っていません。
+
+
+## v7.0 追加モンスター第1弾：ステージ出現追加
+
+v6.7でデータ枠を作り、v6.8で仮画像を用意した20体を、正式に `js/core/monsters.js` へ追加しました。
+
+```text
+追加前: 55体
+追加後: 75体
+追加数: 20体
+```
+
+追加ファイル:
+
+```text
+data/planned_monsters_batch1_v69.json
+docs/MONSTER_BATCH1_FORMAL_ADD_V69.md
+docs/MONSTER_BATCH1_BALANCE_V69.md
+```
+
+今回はまだステージ出現・配合レシピ・ドロップは追加していません。
+
+
+## v7.0 追加モンスター第1弾：ステージ出現追加
+
+v6.9で正式追加した20体のうち、通常出現向けの13体を各ステージに配置しました。
+
+```text
+総モンスター数: 75
+通常出現追加: 13体
+未配置: 7体
+```
+
+追加ファイル:
+
+```text
+data/planned_monsters_batch1_v70.json
+docs/MONSTER_BATCH1_STAGE_APPEARANCE_V70.md
+docs/STAGE_APPEARANCE_CHECKLIST_V70.md
+```
+
+今回はまだ配合レシピ、ドロップ、新ボス、正式な2枠/3枠制限は追加していません。

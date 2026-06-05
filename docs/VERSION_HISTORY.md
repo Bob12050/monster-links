@@ -1,5 +1,34 @@
 # バージョン履歴
 
+## v7.0 追加モンスター第1弾：ステージ出現追加
+- 追加モンスター第1弾のうち通常出現向け13体をステージに配置
+- data/planned_monsters_batch1_v70.json を追加
+- docs/MONSTER_BATCH1_STAGE_APPEARANCE_V70.md を追加
+- docs/STAGE_APPEARANCE_CHECKLIST_V70.md を追加
+- 配合レシピ・ドロップ・新ボス・正式な2枠/3枠制限はまだ追加しない
+
+## v6.9 追加モンスター第1弾：monsters.js正式追加
+- 追加候補20体を js/core/monsters.js に正式追加
+- モンスター数が55体から75体に増加
+- 各モンスターの能力値・成長値・習得スキルを設定
+- size候補をデータとして追加
+- data/planned_monsters_batch1_v69.json を追加
+- ステージ出現・配合レシピ・ドロップはまだ追加しない
+
+## v6.8 追加モンスター第1弾：仮画像準備
+- 追加候補20体の透明PNG仮画像を追加
+- data/planned_monsters_batch1_v68.json を追加
+- docs/MONSTER_BATCH1_IMAGES_V68.md を追加
+- docs/MONSTER_BATCH1_IMAGE_REVIEW_V68.md を追加
+- monsters.jsへの正式追加、ステージ出現、配合レシピ追加はまだ実施しない
+
+## v6.7 追加モンスター第1弾：データ枠作成
+- 追加候補20体のID・名前・ランク・属性を確定
+- 画像ファイル名を確定
+- 画像生成プロンプト20体分を追加
+- data/planned_monsters_batch1_v67.json を追加
+- monsters.jsへの正式追加、画像追加、ステージ出現、配合レシピ追加はまだ実施しない
+
 ## v6.6 キャラデザ確認・モンスター追加準備
 - 既存55体のキャラデザ確認表を追加
 - モンスター画像チェックリストを追加

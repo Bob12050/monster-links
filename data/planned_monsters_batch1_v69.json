@@ -1,0 +1,874 @@
+[
+  {
+    "id": "dewplim",
+    "name": "しずくぷる",
+    "rank": "F",
+    "type": "water",
+    "area": "しずく湖畔",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/dewplim.png",
+    "role": "序盤の水スライム枠",
+    "skills": [
+      [
+        "splash",
+        2
+      ],
+      [
+        "heal",
+        6
+      ]
+    ],
+    "prompt": "透明背景PNG。水滴のようなぷるぷるした小型スライムモンスター。淡い青色、丸く柔らかい体、かわいい表情、水のしずくと泡のモチーフ。ゲーム用モンスター単体、正面斜め、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "💧",
+    "base": {
+      "hp": 32,
+      "mp": 16,
+      "atk": 9,
+      "def": 10,
+      "spd": 11,
+      "wis": 14
+    },
+    "grow": {
+      "hp": 7,
+      "mp": 4,
+      "atk": 2,
+      "def": 3,
+      "spd": 3,
+      "wis": 4
+    }
+  },
+  {
+    "id": "budbunny",
+    "name": "つぼみラビ",
+    "rank": "F",
+    "type": "nature",
+    "area": "はじまり草原",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/budbunny.png",
+    "role": "草原のかわいい小型枠",
+    "skills": [
+      [
+        "needle",
+        2
+      ],
+      [
+        "heal",
+        7
+      ]
+    ],
+    "prompt": "透明背景PNG。小さなウサギ型の自然属性モンスター。耳の先が若葉やつぼみになっている。黄緑色とクリーム色、かわいい表情、序盤モンスターらしい親しみやすさ。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🌷",
+    "base": {
+      "hp": 29,
+      "mp": 12,
+      "atk": 11,
+      "def": 9,
+      "spd": 15,
+      "wis": 10
+    },
+    "grow": {
+      "hp": 7,
+      "mp": 3,
+      "atk": 3,
+      "def": 2,
+      "spd": 4,
+      "wis": 3
+    }
+  },
+  {
+    "id": "cavemole",
+    "name": "ドリモール",
+    "rank": "E",
+    "type": "stone",
+    "area": "こだま洞くつ",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/cavemole.png",
+    "role": "洞くつの地中けもの枠",
+    "skills": [
+      [
+        "crush",
+        3
+      ],
+      [
+        "bite",
+        6
+      ]
+    ],
+    "prompt": "透明背景PNG。モグラ型の岩属性モンスター。大きな爪、石のヘルメットのような頭部、茶色と灰色の配色。洞くつに住む小型モンスター。ゲーム用キャラクター、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🦡",
+    "base": {
+      "hp": 43,
+      "mp": 7,
+      "atk": 17,
+      "def": 18,
+      "spd": 8,
+      "wis": 6
+    },
+    "grow": {
+      "hp": 10,
+      "mp": 1,
+      "atk": 5,
+      "def": 5,
+      "spd": 2,
+      "wis": 1
+    }
+  },
+  {
+    "id": "sparkbug",
+    "name": "スパークバグ",
+    "rank": "E",
+    "type": "light",
+    "area": "雷鳴遺跡",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/sparkbug.png",
+    "role": "雷系の低ランク虫",
+    "skills": [
+      [
+        "spark",
+        2
+      ],
+      [
+        "thunder",
+        8
+      ]
+    ],
+    "prompt": "透明背景PNG。小さな甲虫型の光属性モンスター。黄色い発光ライン、触角に小さな電気の火花、丸い装甲。かわいいが少し機械的。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "⚡",
+    "base": {
+      "hp": 34,
+      "mp": 18,
+      "atk": 12,
+      "def": 10,
+      "spd": 17,
+      "wis": 16
+    },
+    "grow": {
+      "hp": 8,
+      "mp": 4,
+      "atk": 3,
+      "def": 3,
+      "spd": 5,
+      "wis": 4
+    }
+  },
+  {
+    "id": "ashimp",
+    "name": "アッシュインプ",
+    "rank": "E",
+    "type": "fire",
+    "area": "燃ゆる火山",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/ashimp.png",
+    "role": "火山の小悪魔枠",
+    "skills": [
+      [
+        "flame",
+        2
+      ],
+      [
+        "bite",
+        5
+      ]
+    ],
+    "prompt": "透明背景PNG。小さな火属性のインプ型モンスター。灰色の肌、赤い角、小さな尻尾、手に火の粉。悪そうだが低ランクでかわいげがある。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🔥",
+    "base": {
+      "hp": 37,
+      "mp": 15,
+      "atk": 16,
+      "def": 10,
+      "spd": 14,
+      "wis": 13
+    },
+    "grow": {
+      "hp": 9,
+      "mp": 3,
+      "atk": 5,
+      "def": 3,
+      "spd": 4,
+      "wis": 3
+    }
+  },
+  {
+    "id": "reefowl",
+    "name": "リーファウル",
+    "rank": "D",
+    "type": "wing",
+    "area": "しずく湖畔",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/reefowl.png",
+    "role": "水辺の鳥モンスター",
+    "skills": [
+      [
+        "splash",
+        2
+      ],
+      [
+        "needle",
+        5
+      ],
+      [
+        "heal",
+        9
+      ]
+    ],
+    "prompt": "透明背景PNG。水辺に住む鳥型モンスター。羽に水草や葉の模様、青緑色、細い脚、軽やかなシルエット。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🪽",
+    "base": {
+      "hp": 48,
+      "mp": 22,
+      "atk": 15,
+      "def": 13,
+      "spd": 24,
+      "wis": 19
+    },
+    "grow": {
+      "hp": 10,
+      "mp": 5,
+      "atk": 4,
+      "def": 3,
+      "spd": 6,
+      "wis": 5
+    }
+  },
+  {
+    "id": "miretoad",
+    "name": "ミアトード",
+    "rank": "D",
+    "type": "water",
+    "area": "毒霧の沼地",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/miretoad.png",
+    "role": "毒沼のカエル枠",
+    "skills": [
+      [
+        "splash",
+        1
+      ],
+      [
+        "toxic",
+        5
+      ],
+      [
+        "acid",
+        8
+      ]
+    ],
+    "prompt": "透明背景PNG。毒沼にいるカエル型モンスター。暗い緑と紫の斑点、ぬめり感、大きな目。かわいさと不気味さの中間。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🐸",
+    "base": {
+      "hp": 62,
+      "mp": 20,
+      "atk": 17,
+      "def": 18,
+      "spd": 11,
+      "wis": 20
+    },
+    "grow": {
+      "hp": 14,
+      "mp": 4,
+      "atk": 4,
+      "def": 5,
+      "spd": 3,
+      "wis": 5
+    }
+  },
+  {
+    "id": "gearcat",
+    "name": "ギアキャット",
+    "rank": "D",
+    "type": "machine",
+    "area": "機械都市",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/gearcat.png",
+    "role": "機械都市の素早い猫型",
+    "skills": [
+      [
+        "spark",
+        2
+      ],
+      [
+        "laser",
+        8
+      ]
+    ],
+    "prompt": "透明背景PNG。機械仕掛けの猫型モンスター。銀色のボディ、歯車の尻尾、青い発光目、素早そうな細身のシルエット。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🐱",
+    "base": {
+      "hp": 50,
+      "mp": 17,
+      "atk": 20,
+      "def": 16,
+      "spd": 25,
+      "wis": 14
+    },
+    "grow": {
+      "hp": 11,
+      "mp": 3,
+      "atk": 5,
+      "def": 4,
+      "spd": 7,
+      "wis": 3
+    }
+  },
+  {
+    "id": "snowfairy",
+    "name": "スノーフェア",
+    "rank": "D",
+    "type": "water",
+    "area": "霜降り雪原",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/snowfairy.png",
+    "role": "雪原のサポート枠",
+    "skills": [
+      [
+        "blizzard",
+        1
+      ],
+      [
+        "heal",
+        4
+      ],
+      [
+        "megaheal",
+        10
+      ]
+    ],
+    "prompt": "透明背景PNG。雪の妖精型モンスター。白と淡い水色、小さな羽、氷の結晶の髪飾り、回復役らしい優しい表情。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "❄️",
+    "base": {
+      "hp": 46,
+      "mp": 28,
+      "atk": 12,
+      "def": 14,
+      "spd": 19,
+      "wis": 25
+    },
+    "grow": {
+      "hp": 10,
+      "mp": 6,
+      "atk": 3,
+      "def": 3,
+      "spd": 5,
+      "wis": 6
+    }
+  },
+  {
+    "id": "cinderhorn",
+    "name": "シンダーホーン",
+    "rank": "C",
+    "type": "fire",
+    "area": "燃ゆる火山",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/cinderhorn.png",
+    "role": "火山の攻撃寄り中型",
+    "skills": [
+      [
+        "flame",
+        1
+      ],
+      [
+        "crush",
+        5
+      ],
+      [
+        "inferno",
+        10
+      ]
+    ],
+    "prompt": "透明背景PNG。火山に住む角獣型モンスター。黒い岩のような体、赤く燃える角、蹄に火の粉。中ランクらしく少し強そう。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "♈",
+    "base": {
+      "hp": 70,
+      "mp": 20,
+      "atk": 29,
+      "def": 22,
+      "spd": 15,
+      "wis": 18
+    },
+    "grow": {
+      "hp": 15,
+      "mp": 4,
+      "atk": 8,
+      "def": 5,
+      "spd": 4,
+      "wis": 4
+    }
+  },
+  {
+    "id": "cragbear",
+    "name": "クラッグベア",
+    "rank": "C",
+    "type": "stone",
+    "area": "こだま洞くつ",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/cragbear.png",
+    "role": "高耐久の岩熊",
+    "skills": [
+      [
+        "crush",
+        1
+      ],
+      [
+        "quake",
+        8
+      ]
+    ],
+    "prompt": "透明背景PNG。岩をまとった熊型モンスター。灰色の岩装甲、重そうな前足、優しさよりも頑丈さを感じる表情。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🐻",
+    "base": {
+      "hp": 78,
+      "mp": 12,
+      "atk": 27,
+      "def": 33,
+      "spd": 9,
+      "wis": 12
+    },
+    "grow": {
+      "hp": 17,
+      "mp": 3,
+      "atk": 7,
+      "def": 9,
+      "spd": 2,
+      "wis": 3
+    }
+  },
+  {
+    "id": "lumenowl",
+    "name": "ルーメンオウル",
+    "rank": "C",
+    "type": "light",
+    "area": "星晶の塔",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/lumenowl.png",
+    "role": "光属性の賢さ枠",
+    "skills": [
+      [
+        "spark",
+        1
+      ],
+      [
+        "starfall",
+        9
+      ],
+      [
+        "heal",
+        6
+      ]
+    ],
+    "prompt": "透明背景PNG。光をまとったフクロウ型モンスター。白と金の羽、星のような目、賢そうで神秘的。中ランクの光属性。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🦉",
+    "base": {
+      "hp": 56,
+      "mp": 32,
+      "atk": 16,
+      "def": 17,
+      "spd": 24,
+      "wis": 30
+    },
+    "grow": {
+      "hp": 12,
+      "mp": 7,
+      "atk": 4,
+      "def": 4,
+      "spd": 6,
+      "wis": 8
+    }
+  },
+  {
+    "id": "abyssjelly",
+    "name": "アビスジェリー",
+    "rank": "C",
+    "type": "water",
+    "area": "深海神殿",
+    "method": "通常出現",
+    "size": 1,
+    "image": "assets/images/monsters/abyssjelly.png",
+    "role": "深海の魔法寄り枠",
+    "skills": [
+      [
+        "splash",
+        1
+      ],
+      [
+        "abyss",
+        8
+      ],
+      [
+        "megaheal",
+        10
+      ]
+    ],
+    "prompt": "透明背景PNG。深海クラゲ型モンスター。濃い青、半透明の傘、発光する触手、神秘的で少し不気味。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🪼",
+    "base": {
+      "hp": 60,
+      "mp": 34,
+      "atk": 14,
+      "def": 19,
+      "spd": 16,
+      "wis": 31
+    },
+    "grow": {
+      "hp": 13,
+      "mp": 7,
+      "atk": 3,
+      "def": 5,
+      "spd": 4,
+      "wis": 8
+    }
+  },
+  {
+    "id": "venomqueen",
+    "name": "ヴェノムクイーン",
+    "rank": "B",
+    "type": "dark",
+    "area": "毒霧の沼地",
+    "method": "ボス/配合",
+    "size": 1,
+    "image": "assets/images/monsters/venomqueen.png",
+    "role": "毒沼系の上位女性型",
+    "skills": [
+      [
+        "toxic",
+        1
+      ],
+      [
+        "shadow",
+        5
+      ],
+      [
+        "acid",
+        9
+      ]
+    ],
+    "prompt": "透明背景PNG。毒沼の女王モンスター。人型に寄せすぎず、花・蛇・毒霧を組み合わせた魔物。紫と緑、冠のような毒花、強敵感。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "☠️",
+    "base": {
+      "hp": 82,
+      "mp": 36,
+      "atk": 25,
+      "def": 24,
+      "spd": 23,
+      "wis": 34
+    },
+    "grow": {
+      "hp": 17,
+      "mp": 7,
+      "atk": 6,
+      "def": 6,
+      "spd": 6,
+      "wis": 8
+    }
+  },
+  {
+    "id": "thunderlion",
+    "name": "サンダーライオン",
+    "rank": "B",
+    "type": "light",
+    "area": "雷鳴遺跡",
+    "method": "配合",
+    "size": 1,
+    "image": "assets/images/monsters/thunderlion.png",
+    "role": "雷系の物理アタッカー",
+    "skills": [
+      [
+        "thunder",
+        1
+      ],
+      [
+        "bite",
+        4
+      ],
+      [
+        "overdrive",
+        10
+      ]
+    ],
+    "prompt": "透明背景PNG。雷をまとったライオン型モンスター。金色のたてがみ、青白い電撃、筋肉質で素早そう。Bランクらしい迫力。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🦁",
+    "base": {
+      "hp": 88,
+      "mp": 28,
+      "atk": 36,
+      "def": 24,
+      "spd": 33,
+      "wis": 25
+    },
+    "grow": {
+      "hp": 18,
+      "mp": 6,
+      "atk": 9,
+      "def": 6,
+      "spd": 8,
+      "wis": 6
+    }
+  },
+  {
+    "id": "forgegolem",
+    "name": "フォージゴーレム",
+    "rank": "B",
+    "type": "machine",
+    "area": "機械都市",
+    "method": "ボス/配合",
+    "size": 2,
+    "image": "assets/images/monsters/forgegolem.png",
+    "role": "将来2枠化候補の大型機械",
+    "skills": [
+      [
+        "quake",
+        1
+      ],
+      [
+        "laser",
+        6
+      ],
+      [
+        "overdrive",
+        10
+      ]
+    ],
+    "prompt": "透明背景PNG。鍛冶炉と機械が合体した大型ゴーレム。鉄の巨体、胸に炉の赤い光、太い腕、歯車と鋼鉄。2枠候補らしい大型感。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🏭",
+    "base": {
+      "hp": 112,
+      "mp": 24,
+      "atk": 39,
+      "def": 45,
+      "spd": 12,
+      "wis": 24
+    },
+    "grow": {
+      "hp": 23,
+      "mp": 5,
+      "atk": 10,
+      "def": 11,
+      "spd": 3,
+      "wis": 5
+    }
+  },
+  {
+    "id": "glacierfang",
+    "name": "グレイシャーファング",
+    "rank": "A",
+    "type": "water",
+    "area": "霜降り雪原",
+    "method": "配合",
+    "size": 1,
+    "image": "assets/images/monsters/glacierfang.png",
+    "role": "氷牙系の上位アタッカー",
+    "skills": [
+      [
+        "blizzard",
+        1
+      ],
+      [
+        "bite",
+        4
+      ],
+      [
+        "abyss",
+        10
+      ]
+    ],
+    "prompt": "透明背景PNG。氷の牙を持つ狼または虎型モンスター。白銀の毛、氷晶の爪、鋭い目、Aランクの強敵感。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🧊",
+    "base": {
+      "hp": 104,
+      "mp": 36,
+      "atk": 42,
+      "def": 31,
+      "spd": 36,
+      "wis": 31
+    },
+    "grow": {
+      "hp": 21,
+      "mp": 7,
+      "atk": 10,
+      "def": 7,
+      "spd": 9,
+      "wis": 7
+    }
+  },
+  {
+    "id": "solarwyrm",
+    "name": "ソーラーウィルム",
+    "rank": "A",
+    "type": "light",
+    "area": "虹晶聖域",
+    "method": "配合",
+    "size": 1,
+    "image": "assets/images/monsters/solarwyrm.png",
+    "role": "光竜系の上位枠",
+    "skills": [
+      [
+        "starfall",
+        1
+      ],
+      [
+        "holywave",
+        5
+      ],
+      [
+        "thunder",
+        9
+      ]
+    ],
+    "prompt": "透明背景PNG。太陽光をまとった細長い竜モンスター。白金色の鱗、太陽の輪のような飾り、神聖で強そう。Aランクの光竜。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "☀️",
+    "base": {
+      "hp": 98,
+      "mp": 48,
+      "atk": 34,
+      "def": 31,
+      "spd": 30,
+      "wis": 43
+    },
+    "grow": {
+      "hp": 20,
+      "mp": 9,
+      "atk": 8,
+      "def": 7,
+      "spd": 7,
+      "wis": 10
+    }
+  },
+  {
+    "id": "nightmarestag",
+    "name": "ナイトメアスタッグ",
+    "rank": "A",
+    "type": "dark",
+    "area": "魔界門",
+    "method": "配合",
+    "size": 1,
+    "image": "assets/images/monsters/nightmarestag.png",
+    "role": "闇系の状態異常候補",
+    "skills": [
+      [
+        "shadow",
+        1
+      ],
+      [
+        "toxic",
+        5
+      ],
+      [
+        "chaosflare",
+        12
+      ]
+    ],
+    "prompt": "透明背景PNG。悪夢をまとう鹿型モンスター。黒紫の体、枝分かれした魔法陣のような角、赤い目、闇の霧。Aランクの不気味で美しい魔物。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🌙",
+    "base": {
+      "hp": 100,
+      "mp": 42,
+      "atk": 36,
+      "def": 28,
+      "spd": 34,
+      "wis": 39
+    },
+    "grow": {
+      "hp": 20,
+      "mp": 8,
+      "atk": 9,
+      "def": 7,
+      "spd": 8,
+      "wis": 9
+    }
+  },
+  {
+    "id": "titanplim",
+    "name": "タイタンぷる",
+    "rank": "S",
+    "type": "slime",
+    "area": "配合限定",
+    "method": "レア配合",
+    "size": 2,
+    "image": "assets/images/monsters/titanplim.png",
+    "role": "将来2枠化候補の大型スライム",
+    "skills": [
+      [
+        "crush",
+        1
+      ],
+      [
+        "megaheal",
+        5
+      ],
+      [
+        "starfall",
+        10
+      ]
+    ],
+    "prompt": "透明背景PNG。巨大なスライム王モンスター。ぷるミン系の大型進化、王冠ではなく古代巨人のような紋様、透明感のある青い体、Sランクの迫力とかわいさ。ゲーム用モンスター単体、全身、背景なし。",
+    "assetStatus": "placeholder_png_added_v68",
+    "formalStatus": "added_to_monsters_js_v69",
+    "emoji": "🫧",
+    "base": {
+      "hp": 148,
+      "mp": 54,
+      "atk": 48,
+      "def": 46,
+      "spd": 22,
+      "wis": 42
+    },
+    "grow": {
+      "hp": 29,
+      "mp": 10,
+      "atk": 11,
+      "def": 11,
+      "spd": 5,
+      "wis": 10
+    }
+  }
+]
