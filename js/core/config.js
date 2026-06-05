@@ -6,7 +6,7 @@
   const SLOT_PREFIX = "monster_links_slot_";
   const ACTIVE_SLOT_KEY = "monster_links_active_slot";
   const SLOT_COUNT = 3;
-  const GAME_VERSION = "6.2.2";
+  const GAME_VERSION = "6.3";
   const DEV_PASSWORD = "rei-dev";
   const MAX_PARTY = 3;
 

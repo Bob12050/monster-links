@@ -1,5 +1,15 @@
 # バージョン履歴
 
+## v6.3 軽い整理・品質チェック
+- READMEを最新版基準に整理
+- docs/CURRENT_VERSION.md をv6.3基準に更新
+- docs/QUALITY_CHECK_V63.md を追加
+- docs/GITHUB_RELEASE_CHECKLIST_V63.md を追加
+- docs/DEV_MODE_CHECKLIST_V63.md を追加
+- docs/DOC_INDEX_V63.md を追加
+- ファイル数・画像数を記録
+- 戦闘バランス・配合内容・画像アセットの変更はなし
+
 ## v6.2.2 アクセサリーまとめ買い削除
 - アクセサリー販売を1個購入に戻す
 - 修練の書のまとめ買いは維持
