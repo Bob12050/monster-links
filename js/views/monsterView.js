@@ -6,8 +6,42 @@
   const S = window.MonsterLinksState;
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
+  function opt(value,label,current){
+    return `<option value="${U.esc(value)}" ${String(current) === String(value) ? "selected" : ""}>${U.esc(label)}</option>`;
+  }
+
+  function monsterFilterControls(f,total){
+    const ranks = Object.keys(D.RANK || {}).sort((a,b)=>D.RANK[a]-D.RANK[b]);
+    const types = Object.keys(D.TYPES || {});
+    return `<section class="card filterPanel">
+      <div class="filterHead">
+        <div><h2>仲間検索</h2><p class="tiny">仲間が増えても、名前・ランク・属性・場所で探せます。現在${total}体。</p></div>
+        <button onclick="Game.clearListFilter('monsters')">リセット</button>
+      </div>
+      <div class="filterGrid">
+        <label><span>名前検索</span><input value="${U.esc(f.q)}" placeholder="名前・ニックネームで検索" oninput="Game.setListFilter('monsters','q',this.value)" /></label>
+        <label><span>ランク</span><select onchange="Game.setListFilter('monsters','rank',this.value)">
+          ${opt("all","すべて",f.rank)}${ranks.map(r=>opt(r,`${r}ランク`,f.rank)).join("")}
+        </select></label>
+        <label><span>属性</span><select onchange="Game.setListFilter('monsters','type',this.value)">
+          ${opt("all","すべて",f.type)}${types.map(t=>opt(t,D.TYPES[t],f.type)).join("")}
+        </select></label>
+        <label><span>場所</span><select onchange="Game.setListFilter('monsters','place',this.value)">
+          ${opt("all","すべて",f.place)}
+          ${opt("party","パーティ",f.place)}
+          ${opt("box","牧場",f.place)}
+        </select></label>
+      </div>
+    </section>`;
+  }
+
   function monstersHtml(){
     const state = S.state;
+    const filter = window.MonsterLinksGame.listFilter ? window.MonsterLinksGame.listFilter("monsters") : {q:"",rank:"all",type:"all",place:"all"};
+    const party = state.party.filter(m=>window.MonsterLinksGame.matchOwnedMonster ? window.MonsterLinksGame.matchOwnedMonster(m,"party") : true);
+    const box = state.box.filter(m=>window.MonsterLinksGame.matchOwnedMonster ? window.MonsterLinksGame.matchOwnedMonster(m,"box") : true);
+    const total = state.party.length + state.box.length;
+    const shown = party.length + box.length;
     return `
     <main>
       <section class="hero">
@@ -27,14 +61,21 @@
         </div>
       </section>
 
+      ${monsterFilterControls(filter,total)}
+
+      <section class="card listSummaryCard">
+        <b>表示中 ${shown}/${total}体</b>
+        <span class="tiny">検索・フィルター条件に一致した仲間だけを表示しています。</span>
+      </section>
+
       <section class="grid two">
         <div class="card">
-          <h2>パーティ ${state.party.length}/${D.MAX_PARTY}</h2>
-          <div class="list">${state.party.map(m=>V.monsterCard(m,{mode:"party"})).join("") || `<div class="empty">空です</div>`}</div>
+          <h2>パーティ ${party.length}/${state.party.length}表示</h2>
+          <div class="list">${party.map(m=>V.monsterCard(m,{mode:"party"})).join("") || `<div class="empty">条件に一致するパーティメンバーはいません</div>`}</div>
         </div>
         <div class="card">
-          <h2>牧場 ${state.box.length}体</h2>
-          <div class="list">${state.box.map(m=>V.monsterCard(m,{mode:"box"})).join("") || `<div class="empty">牧場に仲間はいません</div>`}</div>
+          <h2>牧場 ${box.length}/${state.box.length}表示</h2>
+          <div class="list">${box.map(m=>V.monsterCard(m,{mode:"box"})).join("") || `<div class="empty">条件に一致する牧場の仲間はいません</div>`}</div>
         </div>
       </section>
       <div id="modal"></div>
