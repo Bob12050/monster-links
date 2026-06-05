@@ -22,6 +22,8 @@
     if(state.view === "quest") html += V.questHtml();
     if(state.view === "shop") html += V.shopHtml();
     if(state.view === "settings") html += V.settingsHtml();
+    if(state.view === "help") html += V.helpHtml();
+    if(state.view === "devtools") html += V.devToolsHtml();
     if(state.view === "battle") html += V.battleHtml();
     if(state.view === "reward") html += V.rewardHtml();
     html += V.tabsHtml();

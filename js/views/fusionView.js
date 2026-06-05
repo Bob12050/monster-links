@@ -17,7 +17,11 @@
     <main>
       <section class="hero fusionHeroV34">
         <h1>モンスター配合</h1>
-        <p>2体を選んで新しい仲間を生み出します。v3.4では、結果プレビューと引き継ぎ技選択を強化しました。</p>
+        <p>仲間2体を選んで新しい仲間を生み出します。配合は「仲間」から進む育成要素です。</p>
+        <div class="actions fusionBackActions">
+          <button onclick="Game.setView('monsters')">仲間へ戻る</button>
+          <button onclick="Game.setView('help')">遊び方</button>
+        </div>
       </section>
 
       <section class="card fusionMainCard">
@@ -32,16 +36,18 @@
       ${recommendedFusionHtml()}
 
       <section class="card recipeSummary">
-        <div class="stageTop">
-          <div>
-            <h2>配合リスト</h2>
-            <p class="tiny">基本・上位・レア特殊配合を確認できます。</p>
+        <details class="recipeDetails">
+          <summary>
+            <span>
+              <b>配合リスト</b>
+              <small>基本・上位・レア特殊配合を確認できます。</small>
+            </span>
+            <span class="tag">${(window.MonsterLinksGame.fusionRecipeEntries ? window.MonsterLinksGame.fusionRecipeEntries() : (D.RECIPE_LIST || Object.keys(D.RECIPES || {}))).length}件</span>
+          </summary>
+          <div class="recipeDetailsBody">
+            ${recipeBookHtml()}
           </div>
-          <span class="tag">${(D.RECIPE_LIST || Object.keys(D.RECIPES)).length}件</span>
-        </div>
-        <div class="actions">
-          <button class="gold" onclick="Game.openFusionRecipeList()">配合リストを開く</button>
-        </div>
+        </details>
       </section>
 
       <section class="grid two">
@@ -65,6 +71,7 @@
         <div class="fusionResultInfo">
           <div class="name">${d.name} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span></div>
           <div class="tiny">予想Lv ${prev.level} / ${group} / 親平均Lv ${prev.avgLevel}</div>
+          ${prev.recipe ? `<div class="fusionGuarantee">✅ 配合リストと同じ結果になります</div>` : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`}
           ${lock}
           ${note}
           ${fusionBonusHtml(prev)}
@@ -126,11 +133,14 @@
   }
 
   function recipeBookHtml(){
-    const entries = D.RECIPE_LIST || Object.entries(D.RECIPES).map(([key,result])=>({parents:key.split("+"),result,group:"basic"}));
+    const entries = window.MonsterLinksGame.fusionRecipeEntries ? window.MonsterLinksGame.fusionRecipeEntries() : (D.RECIPE_LIST || Object.entries(D.RECIPES || {}).map(([key,result])=>({parents:key.split("+"),result,group:"basic"})));
     const groups = ["basic","advanced","rare"];
     const discovered = S.state.dex?.discovered || {};
     const scouted = S.state.dex?.scouted || {};
-    return `<div class="recipeSections">${groups.map(group=>{
+
+    const safeDef = id => D.MONSTERS?.[id] || {name:id || "不明",rank:"?",type:"slime",emoji:"❔"};
+    const safeMonster = (id,cls="miniFace") => D.MONSTERS?.[id] ? V.monsterInline(id,cls) : `<span class="${cls}">❔</span>`;
+    const groupHtml = group => {
       const groupEntries = entries.filter(r=>r.group === group);
       if(!groupEntries.length) return "";
       const info = D.RECIPE_GROUPS?.[group] || {name:group,desc:""};
@@ -140,22 +150,32 @@
           <span class="tag">${groupEntries.length}件</span>
         </div>
         <div class="recipeGrid">${groupEntries.map(r=>{
-          const parents = r.parents;
+          const parents = r.parents || [];
+          const p0 = parents[0] || "";
+          const p1 = parents[1] || "";
+          const p0d = safeDef(p0);
+          const p1d = safeDef(p1);
+          const rd = safeDef(r.result);
           const cond = r.minAvg ? `<div class="tiny rareLock">条件：親平均Lv${r.minAvg}以上</div>` : "";
           const note = r.note ? `<div class="tiny recipeNote">${U.esc(r.note)}</div>` : "";
           const resultKnown = discovered[r.result] || scouted[r.result];
           const status = resultKnown ? `<span class="type">発見済み</span>` : `<span class="tag">未発見</span>`;
+          const setStatus = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false,label:"素材不足",cls:""};
+          const setButton = `<button class="${setStatus.cls || "ghost"} recipeSetBtn" ${setStatus.ok ? "" : "disabled"} onclick="Game.setFusionFromRecipe('${U.esc(r.recipeKey || [p0,p1].sort().join("+"))}')">${U.esc(setStatus.label)}</button>`;
           return `<div class="recipe ${r.group === "rare" ? "rareRecipe" : ""}">
-            <div>${V.monsterInline(parents[0],'miniFace')} ${S.def(parents[0]).name}</div>
+            <div>${safeMonster(p0,'miniFace')} ${U.esc(p0d.name)}</div>
             <div class="tiny">＋</div>
-            <div>${V.monsterInline(parents[1],'miniFace')} ${S.def(parents[1]).name}</div>
+            <div>${safeMonster(p1,'miniFace')} ${U.esc(p1d.name)}</div>
             <div class="recipeArrow">↓</div>
-            <div><b>${resultKnown ? `${V.monsterInline(r.result,'miniFace')} ${S.def(r.result).name}` : "？？？？"}</b> ${status}</div>
+            <div><b>${resultKnown ? `${safeMonster(r.result,'miniFace')} ${U.esc(rd.name)}` : "？？？？"}</b> ${status}</div>
             ${cond}${note}
+            <div class="recipeSetArea">${setButton}</div>
           </div>`;
         }).join("")}</div>
       </section>`;
-    }).join("")}</div>`;
+    };
+
+    return `<div class="recipeSections">${groups.map(groupHtml).join("")}</div>`;
   }
 
   Object.assign(V, {

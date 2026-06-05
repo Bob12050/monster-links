@@ -17,7 +17,7 @@
           <span>🐲</span>
           <h1>モンスター<br>リンクス</h1>
         </div>
-        <p class="titleCatch">スカウトして、育てて、配合する。<br>君だけのモンスター牧場を作ろう。</p>
+        <p class="titleCatch">スカウトして、育てて、配合する。<br>ひとりでじっくり遊べるモンスター育成RPG。</p>
         <div class="titleStats">
           <div>💰<b>${state.gold}</b><small>GOLD</small></div>
           <div>👥<b>${state.party.length}</b><small>PARTY</small></div>
@@ -25,12 +25,12 @@
           <div>✅<b>${quest.claimed}/${quest.total}</b><small>QUEST</small></div>
         </div>
         <div class="titleActions">
-          <button class="primary startBtn" onclick="Game.startGame()">ゲーム開始</button>
-          <button onclick="Game.setView('stage')">冒険へ直接行く</button>
-          <button class="ghost" onclick="Game.setView('home')">拠点へ</button>
+          <button class="primary startBtn" onclick="Game.startGame()">続きから遊ぶ</button>
+          <button onclick="Game.setView('stage')">冒険へ</button>
+          <button class="gold" onclick="Game.setView('help')">遊び方</button>
           <button class="ghost" onclick="Game.setView('settings')">設定・セーブ</button>
         </div>
-        <div class="titleVersion">v${D.GAME_VERSION} / タイトル画面シンプル版</div>
+        <div class="titleVersion">v${D.GAME_VERSION} / 友達プレイ確認版</div>
       </section>
     </main>`;
   }

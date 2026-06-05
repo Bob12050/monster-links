@@ -6,7 +6,8 @@
   const SLOT_PREFIX = "monster_links_slot_";
   const ACTIVE_SLOT_KEY = "monster_links_active_slot";
   const SLOT_COUNT = 3;
-  const GAME_VERSION = "5.1";
+  const GAME_VERSION = "6.2.2";
+  const DEV_PASSWORD = "rei-dev";
   const MAX_PARTY = 3;
 
   const TYPES = {
@@ -42,5 +43,5 @@
 
   const RANK = {F:1,E:2,D:3,C:4,B:5,A:6,S:7};
 
-  Object.assign(P,{SAVE_KEY,SLOT_PREFIX,ACTIVE_SLOT_KEY,SLOT_COUNT,GAME_VERSION,MAX_PARTY,TYPES,TYPE_CHART,PERSONALITIES,RANK});
+  Object.assign(P,{SAVE_KEY,SLOT_PREFIX,ACTIVE_SLOT_KEY,SLOT_COUNT,GAME_VERSION,DEV_PASSWORD,MAX_PARTY,TYPES,TYPE_CHART,PERSONALITIES,RANK});
 })();

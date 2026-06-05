@@ -55,7 +55,7 @@
     {group:"rare",parents:["duskwolf","prismdragon"],result:"voiddragon",minAvg:25,note:"虹晶と闇の禁断配合"},
     {group:"rare",parents:["venomhydra","duskwolf"],result:"venomchimera",minAvg:28,note:"毒と闇を極めた凶獣"},
     {group:"rare",parents:["arkmachine","arcautomaton"],result:"omegaframe",minAvg:28,note:"古代兵器を束ねた究極フレーム"},
-    {group:"advanced",parents:["aquan","luminel"],result:"corallume",note:"深海神殿へ向けた光の珊瑚"},
+    {group:"advanced",parents:["tidalseraph","aquan"],result:"corallume",note:"深海神殿へ向けた光の珊瑚"},
     {group:"advanced",parents:["aquan","duskwolf"],result:"abyssfin",note:"水と闇の高速アタッカー"},
     {group:"advanced",parents:["icetortoise","orelord"],result:"shellgolem",note:"海底の高守備ゴーレム"},
     {group:"advanced",parents:["tidalseraph","corallume"],result:"pearlseraph",note:"深海神殿の上位サポーター"},

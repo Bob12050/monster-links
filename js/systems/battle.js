@@ -39,7 +39,7 @@
       scoutBase:st.scout,
       fx:null
     };
-    state.scoutCharm = 0;
+    state.scoutCharm = Math.max(0,(state.scoutCharm || 0) - 1);
     state.view = "battle";
     S.save();
     render();
@@ -82,7 +82,7 @@
       scoutBase:boss.scout,
       fx:{kind:"bossIntro",target:"enemy",text:"BOSS",ts:Date.now()}
     };
-    state.scoutCharm = 0;
+    state.scoutCharm = Math.max(0,(state.scoutCharm || 0) - 1);
     state.view = "battle";
     S.save();
     render();
@@ -115,7 +115,8 @@
       a.mp -= sk.cost;
       if(sk.kind === "heal"){
         const s = S.stats(a);
-        const heal = Math.floor(16 + s[sk.stat]*sk.power + U.rand(0,8));
+        const healRate = Number(balance().healMultiplier) || 1;
+        const heal = Math.floor((18 + s[sk.stat]*sk.power + U.rand(0,8)) * healRate);
         a.hp = U.clamp(a.hp + heal,0,s.hp);
         setFx("heal","ally",`+${heal}`);
         G.playSe("heal");
@@ -183,13 +184,27 @@
     return "";
   }
 
+  function adjustedMultiplier(mult){
+    const bonus = Number(balance().weaknessMultiplierBonus) || 0;
+    if(mult >= 1.3) return mult + bonus;
+    if(mult >= 1.15) return mult + bonus * .5;
+    return mult;
+  }
+
+  function skillRate(sk){
+    const b = balance();
+    const normal = sk === D.SKILLS.attack || sk.name === "こうげき";
+    return (normal ? Number(b.normalAttackMultiplier) || 1 : Number(b.skillDamageMultiplier) || 1);
+  }
+
   function damage(attacker,target,sk){
     const a = S.stats(attacker);
     const t = S.stats(target);
     const element = skillElement(attacker,sk);
-    const mult = typeMultiplier(element,target);
-    const base = ((a[sk.stat] || a.atk) * sk.power - t.def * .42 + attacker.level*1.7 + U.rand(-3,5)) * mult;
-    const dmg = U.clamp(Math.floor(base),2,999);
+    const mult = adjustedMultiplier(typeMultiplier(element,target));
+    const dmgRate = (Number(balance().playerDamageMultiplier) || 1) * skillRate(sk);
+    const raw = ((a[sk.stat] || a.atk) * sk.power - t.def * .52 + attacker.level*1.35 + U.rand(-3,4)) * mult * dmgRate;
+    const dmg = U.clamp(Math.floor(raw),2,999);
     target.hp = U.clamp(target.hp - dmg,0,S.stats(target).hp);
     setFx("damage", target === S.state.battle.enemy ? "enemy" : "ally", `-${dmg}`, affinityFxNote(mult));
     G.playSe("hit");
@@ -232,9 +247,10 @@
     const a = S.stats(attacker);
     const t = S.stats(target);
     const element = skillElement(attacker,sk);
-    const mult = typeMultiplier(element,target);
-    let dmg = Math.floor(((a[sk.stat] || a.atk)*sk.power - t.def*.38 + attacker.level*1.6 + U.rand(-2,5)) * mult);
-    if(S.state.battle.guard) dmg = Math.floor(dmg*.45);
+    const mult = adjustedMultiplier(typeMultiplier(element,target));
+    const dmgRate = (Number(balance().enemyDamageMultiplier) || 1) * skillRate(sk);
+    let dmg = Math.floor(((a[sk.stat] || a.atk)*sk.power - t.def*.50 + attacker.level*1.30 + U.rand(-2,4)) * mult * dmgRate);
+    if(S.state.battle.guard) dmg = Math.floor(dmg*(Number(balance().guardMultiplier) || .38));
     dmg = U.clamp(dmg,1,999);
     target.hp = U.clamp(target.hp - dmg,0,S.stats(target).hp);
     setFx("damage", target === S.state.battle.enemy ? "enemy" : "ally", `-${dmg}`, affinityFxNote(mult));

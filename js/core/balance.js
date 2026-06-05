@@ -27,6 +27,16 @@
     bossDropRateBonus: 5,
     escapeBonus: 4,
 
+    // v6.1 戦闘ダメージ調整
+    // 敵味方どちらも一撃が重すぎたため、全体ダメージを少し抑えます。
+    playerDamageMultiplier: 0.82,
+    enemyDamageMultiplier: 0.82,
+    normalAttackMultiplier: 0.88,
+    skillDamageMultiplier: 0.96,
+    weaknessMultiplierBonus: 0.08,
+    guardMultiplier: 0.38,
+    healMultiplier: 1.12,
+
     // 公開版では false 推奨
     testMenuEnabled: false
   };

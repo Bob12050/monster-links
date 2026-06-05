@@ -70,10 +70,10 @@
 
     return {
       icon:"🧬",
-      title:"配合でさらに強くしよう",
-      text:"図鑑や配合リストを見ながら、上位・レア特殊配合を狙ってみましょう。",
-      button:"配合へ",
-      view:"fusion",
+      title:"仲間を育成・配合しよう",
+      text:"仲間画面から装備や配合へ進めます。配合リストを見ながら上位種を狙いましょう。",
+      button:"仲間へ",
+      view:"monsters",
       cls:"gold"
     };
   }
@@ -102,18 +102,19 @@
       <button onclick="Game.setView('quest')"><span>✅</span><b>${quest.claimable}</b><small>受取可</small></button>
       <button onclick="Game.setView('shop')"><span>🎒</span><b>${bagCount}</b><small>道具</small></button>
       <button onclick="Game.setView('arena')"><span>🏟️</span><b>${arenaClears}</b><small>闘技場</small></button>
-      <button onclick="Game.setView('fusion')"><span>🧬</span><b>${S.state.records?.fusions || 0}</b><small>配合</small></button>
+      <button onclick="Game.setView('monsters')"><span>🧬</span><b>${S.state.records?.fusions || 0}</b><small>配合</small></button>
     </div>`;
   }
 
   function quickActionsHtml(){
     return `<div class="quickGrid">
       <button class="primary" onclick="Game.setView('stage')"><b>冒険</b><span>通常戦・ボス</span></button>
-      <button class="gold" onclick="Game.setView('fusion')"><b>配合</b><span>レシピ確認</span></button>
-      <button class="green" onclick="Game.setView('monsters')"><b>仲間</b><span>装備・入替</span></button>
-      <button onclick="Game.setView('menu')"><b>全メニュー</b><span>図鑑・店・設定</span></button>
+      <button class="gold" onclick="Game.setView('monsters')"><b>仲間・配合</b><span>育成と装備</span></button>
+      <button class="green" onclick="Game.setView('quest')"><b>任務</b><span>報酬受取</span></button>
+      <button onclick="Game.setView('menu')"><b>メニュー</b><span>図鑑・店・設定</span></button>
     </div>`;
   }
+
 
   function sectionTitle(title,sub=""){
     return `<div class="sectionTitle"><h2>${U.esc(title)}</h2>${sub ? `<span>${U.esc(sub)}</span>` : ""}</div>`;

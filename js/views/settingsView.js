@@ -26,6 +26,10 @@
               <div><b>SE</b><span>攻撃、回復、スカウトなどの効果音。</span></div>
               <button class="${settings.sound ? "green" : "ghost"}" onclick="Game.toggleSetting('sound')">${settings.sound ? "ON" : "OFF"}</button>
             </div>
+            <div class="settingRow devSettingRow">
+              <div><b>開発者モード</b><span>配合レシピ検証やテスト用ショートカットを表示します。ONにするにはパスワードが必要です。</span></div>
+              <button class="${settings.devMode ? "red" : "ghost"}" onclick="Game.toggleDevMode()">${settings.devMode ? "ON" : "OFF"}</button>
+            </div>
           </div>
           <h2 style="margin-top:14px">演出速度</h2>
           <div class="speedButtons">
@@ -36,7 +40,7 @@
           <div class="notice">「速い」にすると戦闘テンポが上がります。周回時におすすめです。</div>
           <div class="balanceMini">
             <b>v2.6 バランス補正</b>
-            <span>EXP ${D.BALANCE?.expMultiplier || 1}倍 / GOLD ${D.BALANCE?.goldMultiplier || 1}倍 / スカウト +${D.BALANCE?.scoutBonus || 0}% / ドロップ ${D.BALANCE?.dropRateMultiplier || 1}倍</span>
+            <span>EXP ${D.BALANCE?.expMultiplier || 1}倍 / GOLD ${D.BALANCE?.goldMultiplier || 1}倍 / 与ダメ ${D.BALANCE?.playerDamageMultiplier || 1}倍 / 被ダメ ${D.BALANCE?.enemyDamageMultiplier || 1}倍</span>
           </div>
         </div>
         <div class="card">
@@ -63,7 +67,7 @@
         <h2>セーブスロット</h2>
         <div class="slotGrid">${S.slotSummaries().map(slotCard).join("")}</div>
       </div>
-      ${D.BALANCE?.testMenuEnabled ? devMenuHtml() : ""}
+      ${settings.devMode ? `<div class="card devPanel"><h2>開発者モード</h2><p class="tiny">配合・戦闘・表示確認用のテスト画面を開けます。</p><div class="actions"><button class="red" onclick="Game.setView('devtools')">開発者モードを開く</button></div></div>` : ""}
     </main>`;
   }
 

@@ -135,26 +135,93 @@
     </div>`;
   }
 
+  function rewardIcon(r){
+    if(r.type === "scout") return "🤝";
+    if(r.type === "lose") return "💤";
+    if(r.isBoss) return "👑";
+    return "🏆";
+  }
+
+  function rewardSubText(r){
+    if(r.type === "scout") return r.isBoss ? "ボスを仲間にした！" : "新しい仲間が加わった！";
+    if(r.type === "lose") return "キャンプで体勢を立て直そう";
+    if(r.isBoss) return "次の地域へ進む大きな一歩";
+    return "探索成功。育成と報酬を確認しよう";
+  }
+
   function rewardHtml(){
     const r = S.state.reward;
     if(!r) return V.homeHtml();
+
+    const lines = r.lines || [];
+    const levelLines = lines.filter(x=>/Lv\d+に上がった/.test(x));
+    const otherLines = lines.filter(x=>!/Lv\d+に上がった/.test(x));
+    const dropCount = (r.drops || []).reduce((sum,x)=>sum + (x.count || 1),0);
+
     const dropHtml = r.drops && r.drops.length ? r.drops.map(x=>{
       const item = D.ITEMS[x.id];
-      return `<div class="rewardItem">${V.itemVisual(x.id,'rewardIcon')}<b>${item.name}</b><em>×${x.count}</em><small>${S.itemStatsText(x.id)}</small></div>`;
-    }).join("") : `<div class="empty">アイテム入手なし</div>`;
+      if(!item) return "";
+      return `<div class="rewardItem rewardItemV53">${V.itemVisual(x.id,'rewardIcon')}<div><b>${U.esc(item.name)}</b><small>${S.itemStatsText(x.id)}</small></div><em>×${x.count}</em></div>`;
+    }).join("") : `<div class="empty rewardEmpty">アイテム入手なし</div>`;
+
+    const levelHtml = levelLines.length ? `
+      <div class="rewardLevelBox">
+        <h2>レベルアップ</h2>
+        <div class="rewardLevelList">${levelLines.map(x=>`<div>✨ ${U.esc(x)}</div>`).join("")}</div>
+      </div>` : "";
+
+    const logHtml = otherLines.length ? `
+      <details class="rewardDetailLog">
+        <summary>詳細ログ</summary>
+        <div class="log rewardLog">${otherLines.map(x=>`<div>${U.esc(x)}</div>`).join("")}</div>
+      </details>` : "";
+
+    const scoutPanel = r.type === "scout" ? `
+      <div class="scoutSuccessPanel">
+        ${r.enemyId ? V.monsterVisual(r.enemyId,'rewardScoutFace') : `<div class="rewardScoutFace">${U.esc(r.enemyEmoji || "🤝")}</div>`}
+        <div>
+          <b>${U.esc(r.enemyName)}が仲間になった！</b>
+          <span>仲間画面でステータスや装備を確認できます。</span>
+        </div>
+      </div>` : "";
+
     return `
     <main>
-      <section class="rewardBox ${r.type}">
-        <div class="rewardTitle">${r.title}</div>
-        <div class="rewardEnemy">${r.enemyId ? V.monsterInline(r.enemyId,'miniFace') : r.enemyEmoji} ${U.esc(r.enemyName)}</div>
-        <div class="rewardNums">
-          <div>EXP<b>${r.exp}</b></div>
-          <div>GOLD<b>${r.gold >= 0 ? "+"+r.gold : r.gold}</b></div>
+      <section class="rewardBox rewardBoxV53 ${r.type}">
+        <div class="rewardBurst" aria-hidden="true"></div>
+
+        <div class="rewardHero">
+          <div class="rewardBigIcon">${rewardIcon(r)}</div>
+          <div>
+            <div class="rewardTitle rewardTitleV53">${U.esc(r.title)}</div>
+            <div class="rewardSub">${U.esc(rewardSubText(r))}</div>
+          </div>
         </div>
-        <h2>入手アイテム</h2>
-        <div class="rewardItems">${dropHtml}</div>
-        ${r.lines && r.lines.length ? `<div class="log rewardLog">${r.lines.map(x=>`<div>${U.esc(x)}</div>`).join("")}</div>` : ""}
-        <div class="actions">
+
+        <div class="rewardEnemy rewardEnemyV53">
+          ${r.enemyId ? V.monsterInline(r.enemyId,'miniFace') : U.esc(r.enemyEmoji || "❔")}
+          <span>${U.esc(r.enemyName)}</span>
+        </div>
+
+        ${scoutPanel}
+
+        <div class="rewardNums rewardNumsV53">
+          <div><span>EXP</span><b>${r.exp}</b></div>
+          <div><span>GOLD</span><b>${r.gold >= 0 ? "+"+r.gold : r.gold}</b></div>
+          <div><span>DROP</span><b>${dropCount}</b></div>
+          <div><span>LEVEL UP</span><b>${levelLines.length}</b></div>
+        </div>
+
+        ${levelHtml}
+
+        <div class="rewardItemSection">
+          <h2>入手アイテム</h2>
+          <div class="rewardItems rewardItemsV53">${dropHtml}</div>
+        </div>
+
+        ${logHtml}
+
+        <div class="actions rewardActionsV53">
           <button class="primary" onclick="Game.rewardContinue()">続ける</button>
           <button onclick="Game.setView('shop')">道具袋を見る</button>
           <button onclick="Game.setView('monsters')">仲間を見る</button>
@@ -162,6 +229,7 @@
       </section>
     </main>`;
   }
+
 
   Object.assign(V, {
     battleHtml,

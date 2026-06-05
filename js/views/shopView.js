@@ -11,23 +11,24 @@
     <main>
       <section class="hero">
         <h1>どうぐ屋・道具袋</h1>
-        <p>冒険で稼いだゴールドで回復、育成、基本アクセサリー購入ができます。レア装備は敵やボスから入手できます。</p>
+        <p>冒険で稼いだゴールドで回復、育成、基本アクセサリー購入ができます。修練の書・スカウト笛はまとめ買い対応です。アクセサリーは1個ずつ購入できます。</p>
       </section>
       <section class="grid two">
-        <div class="card">
+        <div class="card serviceShopCard">
           <h2>キャンプセット</h2>
-          <p class="tiny">全モンスターのHP/MPを回復します。</p>
-          <div class="actions"><button class="green" onclick="Game.buyHeal()">30Gで全回復</button></div>
+          <p class="tiny">全モンスターのHP/MPを回復します。これはその場で使うため1回購入です。</p>
+          <div class="shopPriceLine"><span>30G / 1回</span><span>即時全回復</span></div>
+          <div class="actions"><button class="green" ${S.state.gold < 30 ? "disabled" : ""} onclick="Game.buyHeal()">30Gで全回復</button></div>
         </div>
-        <div class="card">
+        <div class="card serviceShopCard">
           <h2>修練の書</h2>
-          <p class="tiny">パーティ全員に40EXPを与えます。</p>
-          <div class="actions"><button class="gold" onclick="Game.buyTraining()">60Gで購入</button></div>
+          <p class="tiny">パーティ全員に40EXPを与えます。まとめて買うと回数分まとめてEXPが入ります。</p>
+          ${V.serviceBuyButtons ? V.serviceBuyButtons("buyTraining",60) : ""}
         </div>
-        <div class="card">
+        <div class="card serviceShopCard">
           <h2>スカウト笛</h2>
-          <p class="tiny">次の1戦だけスカウト率が少し上がります。</p>
-          <div class="actions"><button class="primary" onclick="Game.buyScout()">50Gで購入</button></div>
+          <p class="tiny">次の戦闘から、購入回数分だけスカウト率が少し上がります。現在 ${S.state.scoutCharm || 0}回分。</p>
+          ${V.serviceBuyButtons ? V.serviceBuyButtons("buyScout",50) : ""}
         </div>
         <div class="card">
           <h2>設定・データ管理</h2>
@@ -46,15 +47,41 @@
     </main>`;
   }
 
+  function serviceBuyButtons(fn,cost){
+    const max = Math.floor(S.state.gold / cost);
+    const disabled = max <= 0 ? "disabled" : "";
+    return `<div>
+      <div class="shopPriceLine">
+        <span>${cost}G / 1回</span>
+        <span>買える回数 ${max}</span>
+      </div>
+      <div class="bulkBuyGrid serviceBulkGrid">
+        <button ${disabled} onclick="Game.${fn}(1)">1回</button>
+        <button ${disabled} onclick="Game.${fn}(5)">5回</button>
+        <button ${disabled} onclick="Game.${fn}(10)">10回</button>
+        <button class="gold" ${disabled} onclick="Game.${fn}(-1)">買えるだけ</button>
+      </div>
+    </div>`;
+  }
+
   function shopItemCard(id){
     const item = D.ITEMS[id];
-    return `<div class="itemCard">
+    const owned = S.state.bag?.[id] || 0;
+    const disabled = S.state.gold < item.price ? "disabled" : "";
+    return `<div class="itemCard shopItemV622">
       ${V.itemVisual(id,'itemIcon')}
       <div>
-        <b>${item.name}</b>
+        <div class="shopItemHead">
+          <b>${item.name}</b>
+          <span class="tag">所持 ${owned}</span>
+        </div>
         <div class="tiny">${S.itemStatsText(id)}</div>
         <div class="tiny">${item.desc}</div>
-        <button onclick="Game.buyItem('${id}')">${item.price}Gで購入</button>
+        <div class="shopPriceLine">
+          <span>${item.price}G</span>
+          <span>アクセサリーは1個ずつ購入</span>
+        </div>
+        <button ${disabled} onclick="Game.buyItem('${id}',1)">${item.price}Gで1個購入</button>
       </div>
     </div>`;
   }
@@ -75,6 +102,7 @@
 
   Object.assign(V, {
     shopHtml,
+    serviceBuyButtons,
     shopItemCard,
     bagHtml
   });

@@ -2,12 +2,12 @@
   "use strict";
   const P = window.MonsterLinksParts = window.MonsterLinksParts || {};
   P.ITEMS = {
-    force_ring:{name:"ちからのリング",icon:"💍",image:"assets/images/items/force_ring.png",kind:"accessory",price:120,desc:"攻撃力が少し上がる基本アクセサリー。",stat:{atk:5}},
-    guard_stone:{name:"まもりの石",icon:"🪨",image:"assets/images/items/guard_stone.png",kind:"accessory",price:120,desc:"守備力が少し上がる基本アクセサリー。",stat:{def:5}},
-    swift_feather:{name:"はやての羽",icon:"🪶",image:"assets/images/items/swift_feather.png",kind:"accessory",price:120,desc:"素早さが少し上がる基本アクセサリー。",stat:{spd:5}},
-    mage_charm:{name:"まどうの首飾り",icon:"🔮",image:"assets/images/items/mage_charm.png",kind:"accessory",price:140,desc:"賢さが少し上がる魔法向けアクセサリー。",stat:{wis:5}},
-    life_drop:{name:"命のしずく",icon:"❤️",image:"assets/images/items/life_drop.png",kind:"accessory",price:160,desc:"最大HPが上がる安定アクセサリー。",stat:{hp:20}},
-    mana_shell:{name:"マナシェル",icon:"🐚",image:"assets/images/items/mana_shell.png",kind:"accessory",price:150,desc:"最大MPが上がる特技向けアクセサリー。",stat:{mp:12}},
+    force_ring:{name:"ちからのリング",icon:"💍",image:"assets/images/items/force_ring.png",kind:"accessory",price:95,desc:"攻撃力が少し上がる基本アクセサリー。",stat:{atk:5}},
+    guard_stone:{name:"まもりの石",icon:"🪨",image:"assets/images/items/guard_stone.png",kind:"accessory",price:95,desc:"守備力が少し上がる基本アクセサリー。",stat:{def:5}},
+    swift_feather:{name:"はやての羽",icon:"🪶",image:"assets/images/items/swift_feather.png",kind:"accessory",price:95,desc:"素早さが少し上がる基本アクセサリー。",stat:{spd:5}},
+    mage_charm:{name:"まどうの首飾り",icon:"🔮",image:"assets/images/items/mage_charm.png",kind:"accessory",price:110,desc:"賢さが少し上がる魔法向けアクセサリー。",stat:{wis:5}},
+    life_drop:{name:"命のしずく",icon:"❤️",image:"assets/images/items/life_drop.png",kind:"accessory",price:125,desc:"最大HPが上がる安定アクセサリー。",stat:{hp:20}},
+    mana_shell:{name:"マナシェル",icon:"🐚",image:"assets/images/items/mana_shell.png",kind:"accessory",price:120,desc:"最大MPが上がる特技向けアクセサリー。",stat:{mp:12}},
     woodland_crown:{name:"森王の冠",icon:"👑",image:"assets/images/items/woodland_crown.png",kind:"accessory",price:0,desc:"草原ボスが落とすレア装備。HPと守備が上がる。",stat:{hp:28,def:4}},
     ore_core:{name:"鉱王の核",icon:"🟤",image:"assets/images/items/ore_core.png",kind:"accessory",price:0,desc:"洞くつボスが落とすレア装備。守備が大きく上がる。",stat:{def:11,atk:3}},
     tide_pearl:{name:"潮騒の真珠",icon:"🦪",image:"assets/images/items/tide_pearl.png",kind:"accessory",price:0,desc:"湖畔ボスが落とすレア装備。MPと賢さが上がる。",stat:{mp:24,wis:7}},

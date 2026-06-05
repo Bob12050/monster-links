@@ -12,11 +12,27 @@
   let fusionPick = [];
   let fusionSkillPick = [];
 
-  function recipeKeyFromIds(a,b){return [a,b].sort().join("+");}
+  function recipeKeyFromIds(a,b){
+    return [String(a || ""),String(b || "")].sort().join("+");
+  }
+
+  function fusionRecipeEntries(){
+    const raw = D.RECIPE_LIST || Object.entries(D.RECIPES || {}).map(([key,result])=>({parents:key.split("+"),result,group:"basic"}));
+    const seen = new Set();
+    const out = [];
+    raw.forEach((r,index)=>{
+      if(!r || !Array.isArray(r.parents) || r.parents.length < 2 || !r.result) return;
+      const key = recipeKeyFromIds(r.parents[0],r.parents[1]);
+      if(seen.has(key)) return;
+      seen.add(key);
+      out.push(Object.assign({recipeKey:key,order:index},r));
+    });
+    return out;
+  }
 
   function findRecipe(a,b){
     const key = recipeKeyFromIds(a.id,b.id);
-    return (D.RECIPE_LIST || []).find(r=>recipeKeyFromIds(r.parents[0],r.parents[1]) === key) || null;
+    return fusionRecipeEntries().find(r=>r.recipeKey === key) || null;
   }
 
   function recipeLockReason(recipe,a,b){
@@ -129,6 +145,7 @@
       id,
       level,
       recipe:!!recipe,
+      recipeKey:recipe?.recipeKey || "",
       group:recipe?.group || "normal",
       special:recipe?.group === "rare",
       locked:!!lockReason,
@@ -217,6 +234,85 @@
     return list;
   }
 
+
+  function openFusionRecipeList(){
+    let m = document.getElementById("modal");
+    if(!m){
+      m = document.createElement("div");
+      m.id = "modal";
+      document.body.appendChild(m);
+    }
+    const count = (D.RECIPE_LIST || Object.keys(D.RECIPES || {})).length;
+    const body = V.recipeBookHtml ? V.recipeBookHtml() : `<div class="empty">配合リストを読み込めませんでした。</div>`;
+    m.innerHTML = `
+      <div class="modalBg" onclick="Game.closeModal(event)">
+        <div class="modal recipeModal" onclick="event.stopPropagation()">
+          <div class="stageTop recipeModalHead">
+            <div>
+              <h2>配合リスト</h2>
+              <p class="tiny">基本・上位・レア特殊配合を確認できます。全${count}件。</p>
+            </div>
+            <button onclick="Game.closeModal()">閉じる</button>
+          </div>
+          ${body}
+          <div class="actions">
+            <button onclick="Game.closeModal()">閉じる</button>
+          </div>
+        </div>
+      </div>`;
+    if(G.playSe) G.playSe("tap");
+  }
+
+
+  function recipeSetStatus(recipe){
+    if(!recipe || !Array.isArray(recipe.parents) || recipe.parents.length < 2) return {ok:false,label:"レシピ不明",cls:"",uids:[]};
+    const all = S.owned();
+    const p0 = recipe.parents[0];
+    const p1 = recipe.parents[1];
+    const list0 = all.filter(m=>m.id === p0);
+    const list1 = all.filter(m=>m.id === p1);
+
+    if(p0 === p1){
+      if(list0.length < 2) return {ok:false,label:"素材不足",cls:"",uids:[]};
+      const sorted = list0.slice().sort((a,b)=>b.level-a.level);
+      const a = sorted[0], b = sorted[1];
+      const avg = Math.floor((a.level + b.level) / 2);
+      if(recipe.minAvg && avg < recipe.minAvg) return {ok:true,label:"Lv条件確認",cls:"gold",uids:[a.uid,b.uid],locked:true};
+      return {ok:true,label:"この配合をセット",cls:"gold",uids:[a.uid,b.uid],locked:false};
+    }
+
+    if(!list0.length || !list1.length) return {ok:false,label:"素材不足",cls:"",uids:[]};
+
+    let best = null;
+    list0.forEach(a=>{
+      list1.forEach(b=>{
+        if(a.uid === b.uid) return;
+        const avg = Math.floor((a.level + b.level) / 2);
+        const locked = !!(recipe.minAvg && avg < recipe.minAvg);
+        const score = (locked ? 0 : 100000) + avg * 100 + a.level + b.level;
+        if(!best || score > best.score) best = {a,b,avg,locked,score};
+      });
+    });
+
+    if(!best) return {ok:false,label:"素材不足",cls:"",uids:[]};
+    if(best.locked) return {ok:true,label:"Lv条件確認",cls:"gold",uids:[best.a.uid,best.b.uid],locked:true};
+    return {ok:true,label:"この配合をセット",cls:"gold",uids:[best.a.uid,best.b.uid],locked:false};
+  }
+
+  function setFusionFromRecipe(key){
+    const recipe = fusionRecipeEntries().find(r=>r.recipeKey === key);
+    if(!recipe){toast("レシピが見つかりません");return;}
+    const status = recipeSetStatus(recipe);
+    if(!status.ok || status.uids.length < 2){toast("素材モンスターが足りません");return;}
+    fusionPick = status.uids.slice(0,2);
+    fusionSkillPick = [];
+    const prev = fusionPreview(fusionPick[0],fusionPick[1]);
+    S.save();
+    render();
+    if(prev?.locked) toast(prev.reason || "レベル条件を満たしていません");
+    else toast("配合候補をセットしました");
+  }
+
   function doFusion(){
     if(fusionPick.length !== 2) return;
     const all = S.owned();
@@ -281,6 +377,10 @@
     fusionPreview,
     toggleFusionSkill,
     recommendedFusions,
+    fusionRecipeEntries,
+    recipeSetStatus,
+    setFusionFromRecipe,
+    openFusionRecipeList,
     _clearFusionPickNoRender
   });
 

@@ -29,7 +29,8 @@
 
   function tabsHtml(){
     const state = S.state;
-    const menuViews = ["menu","fusion","dex","quest","shop","settings","arena"];
+    const menuViews = ["menu","dex","quest","shop","settings","arena","help","devtools"];
+    const monsterViews = ["monsters","fusion"];
     const items = [
       ["home","🏠","拠点"],
       ["stage","🗺️","冒険"],
@@ -37,7 +38,7 @@
       ["menu","☰","メニュー"]
     ];
     return `<div class="tabs tabsMain">${items.map(([v,i,t])=>{
-      const active = state.view === v || (v === "menu" && menuViews.includes(state.view));
+      const active = state.view === v || (v === "menu" && menuViews.includes(state.view)) || (v === "monsters" && monsterViews.includes(state.view));
       return `
       <button class="${active ? "on" : ""}" onclick="Game.setView('${v}')">
         <span class="ico">${i}</span>${t}

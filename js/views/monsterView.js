@@ -12,8 +12,21 @@
     <main>
       <section class="hero">
         <h1>仲間モンスター</h1>
-        <p>パーティは最大3体。アクセサリーを1つ装備できます。性格と個体値で同じ種族でも能力が変わります。</p>
+        <p>仲間の確認・装備変更・配合への入口です。パーティは最大3体まで編成できます。</p>
       </section>
+
+      <section class="card fusionRouteCard">
+        <div class="fusionRouteIcon">🧬</div>
+        <div>
+          <h2>配合・育成</h2>
+          <p class="tiny">仲間2体から新しい仲間を生み出します。上位種やレア特殊配合を狙う時はこちら。</p>
+          <div class="actions">
+            <button class="gold" onclick="Game.setView('fusion')">配合へ</button>
+            <button onclick="Game.setView('help')">遊び方を見る</button>
+          </div>
+        </div>
+      </section>
+
       <section class="grid two">
         <div class="card">
           <h2>パーティ ${state.party.length}/${D.MAX_PARTY}</h2>
