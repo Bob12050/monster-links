@@ -1,11 +1,11 @@
-# モンスターリンクス v6.4
+# モンスターリンクス v6.5
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
 
 ## 現在の安定版
 
 ```text
-v6.4 図鑑・仲間一覧の検索/フィルター強化
+v6.5 軽いコード整理・管理整理
 ```
 
 ## ゲーム概要
@@ -28,7 +28,8 @@ v6.4 図鑑・仲間一覧の検索/フィルター強化
 配合
 配合リストから配合セット
 装備
-図鑑
+図鑑検索/フィルター
+仲間検索/フィルター
 任務
 闘技場
 複数セーブスロット
@@ -45,9 +46,9 @@ v6.4 図鑑・仲間一覧の検索/フィルター強化
 モンスターPNG: 55
 ステージ背景PNG: 12
 アイテムPNG: 25
-JavaScriptファイル: 40
+JavaScriptファイル: 41
 CSSファイル: 1
-docsファイル: 65
+docsファイル: 70
 ```
 
 ## 更新手順
@@ -64,10 +65,11 @@ docsファイル: 65
 
 ```text
 docs/CURRENT_VERSION.md
-docs/QUALITY_CHECK_V63.md
-docs/GITHUB_RELEASE_CHECKLIST_V63.md
-docs/DEV_MODE_CHECKLIST_V63.md
-docs/DOC_INDEX_V63.md
+docs/LIGHT_CODE_CLEANUP_V65.md
+docs/FILE_STRUCTURE_V65.md
+docs/QUALITY_CHECK_V65.md
+docs/CLEANUP_ROADMAP_V65.md
+docs/DOC_INDEX_V65.md
 docs/VERSION_HISTORY.md
 ```
 
@@ -81,18 +83,18 @@ SS/SSSランクを将来追加
 ドラクエモンスターズ風の育成・配合体験に寄せる
 ```
 
-## v6.3の内容
+## v6.5の内容
 
 ```text
 README整理
-docs索引追加
 現在版情報更新
-GitHub反映前チェックリスト追加
-開発者モード確認手順追加
-品質チェックdocs追加
+ファイル構成表追加
+品質チェック手順追加
+今後の整理ロードマップ追加
+docs索引更新
 ```
 
-## v6.3で変更していないもの
+## v6.5で変更していないもの
 
 ```text
 戦闘バランス
@@ -100,25 +102,5 @@ GitHub反映前チェックリスト追加
 アイテム性能
 ステージ構成
 画像アセット
+画面UI
 ```
-
-
-## v6.4 図鑑・仲間一覧の検索/フィルター強化
-
-150匹規模のモンスター追加に備えて、図鑑と仲間一覧に検索・フィルターを追加しました。
-
-```text
-図鑑: 名前検索 / ランク / 属性 / 状態
-仲間: 名前検索 / ランク / 属性 / 場所
-表示中件数
-リセットボタン
-```
-
-追加ファイル:
-
-```text
-js/systems/filters.js
-docs/DEX_MONSTER_FILTERS_V64.md
-```
-
-モンスター性能・配合内容・戦闘バランスは変更していません。

@@ -1,5 +1,16 @@
 # バージョン履歴
 
+## v6.5 軽いコード整理・管理整理
+- READMEをv6.5基準で整理
+- docs/CURRENT_VERSION.md を更新
+- docs/LIGHT_CODE_CLEANUP_V65.md を追加
+- docs/FILE_STRUCTURE_V65.md を追加
+- docs/QUALITY_CHECK_V65.md を追加
+- docs/CLEANUP_ROADMAP_V65.md を追加
+- docs/DOC_INDEX_V65.md を追加
+- JavaScript構文チェックとZIP破損チェックを実施
+- 戦闘バランス・配合内容・画像アセット・画面UIの変更はなし
+
 ## v6.4 図鑑・仲間一覧の検索/フィルター強化
 - 図鑑に名前検索を追加
 - 図鑑にランク/属性/状態フィルターを追加
