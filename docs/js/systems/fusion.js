@@ -1,0 +1,387 @@
+(() => {
+  "use strict";
+
+  const D = window.MonsterLinksData;
+  const U = window.MonsterLinksUtils;
+  const S = window.MonsterLinksState;
+  const G = window.MonsterLinksGame;
+
+  function render(){G.render();}
+  function toast(msg){G.toast(msg);}
+
+  let fusionPick = [];
+  let fusionSkillPick = [];
+
+  function recipeKeyFromIds(a,b){
+    return [String(a || ""),String(b || "")].sort().join("+");
+  }
+
+  function fusionRecipeEntries(){
+    const raw = D.RECIPE_LIST || Object.entries(D.RECIPES || {}).map(([key,result])=>({parents:key.split("+"),result,group:"basic"}));
+    const seen = new Set();
+    const out = [];
+    raw.forEach((r,index)=>{
+      if(!r || !Array.isArray(r.parents) || r.parents.length < 2 || !r.result) return;
+      const key = recipeKeyFromIds(r.parents[0],r.parents[1]);
+      if(seen.has(key)) return;
+      seen.add(key);
+      out.push(Object.assign({recipeKey:key,order:index},r));
+    });
+    return out;
+  }
+
+  function findRecipe(a,b){
+    const key = recipeKeyFromIds(a.id,b.id);
+    return fusionRecipeEntries().find(r=>r.recipeKey === key) || null;
+  }
+
+  function recipeLockReason(recipe,a,b){
+    if(!recipe) return "";
+    const avg = Math.floor((a.level + b.level) / 2);
+    if(recipe.minAvg && avg < recipe.minAvg) return `親2体の平均Lv${recipe.minAvg}以上で成立します`;
+    return "";
+  }
+
+  function chooseChild(a,b){
+    const types = [S.def(a.id).type,S.def(b.id).type].sort().join("+");
+    const high = Math.max(D.RANK[S.def(a.id).rank],D.RANK[S.def(b.id).rank]);
+    const table = {
+      "beast+fire":"embercub",
+      "dark+water":"gloomoth",
+      "dragon+machine":"crystagon",
+      "fire+stone":"cindrake",
+      "light+water":"tidalseraph",
+      "nature+wing":"thornhog",
+      "slime+stone":"gearbit",
+      "nature+slime":"mossking",
+      "stone+stone":"orelord",
+      "slime+water":"frostpup",
+      "water+wing":"snowcat",
+      "stone+water":"icetortoise",
+      "light+machine":"voltfox",
+      "beast+machine":"ironmantis",
+      "beast+dark":"duskwolf",
+      "machine+machine":"arcautomaton",
+      "dragon+light":"prismdragon",
+      "slime+nature":"kingplim",
+      "light+wing":"auroracat",
+      "dark+light":"eclipsewolf",
+      "dark+slime":"poisonplim",
+      "dark+nature":"toxicshroom",
+      "dark+wing":"venomwing",
+      "machine+slime":"gearslime",
+      "machine+stone":"corewalker"
+    };
+    if(table[types]) return table[types];
+    if(high >= 7) return ["prismdragon","phoenixdrake","celestiseraph","voiddragon","omegaframe","venomchimera"][U.rand(0,5)];
+    if(high >= 6) return ["frostlevia","arcautomaton","astralwyrm","prismdragon","arkmachine","venomhydra"][U.rand(0,5)];
+    if(high >= 5) return ["tidalseraph","volcazard","duskwolf","frostlevia","arcautomaton","corewalker"][U.rand(0,5)];
+    if(high >= 4) return ["luminel","crystagon","tidalseraph","icetortoise","ironmantis","steelbug","thunderdrone"][U.rand(0,6)];
+    if(high === 3) return ["cindrake","gearbit","gloomoth","mossking","orelord","snowcat","voltfox","toxicshroom","gearslime"][U.rand(0,8)];
+    if(high === 2) return ["embercub","aquan","thornhog","frostpup","poisonplim"][U.rand(0,4)];
+    return ["plim","leafling","puffbat","pebblon"][U.rand(0,3)];
+  }
+
+  function childLevel(a,b){
+    return U.clamp(Math.floor((a.level+b.level)/2),1,99);
+  }
+
+  function inheritedBonus(a,b){
+    const bonus = {hp:0,mp:0,atk:0,def:0,spd:0,wis:0};
+    ["hp","mp","atk","def","spd","wis"].forEach(k=>{
+      bonus[k] = Math.floor((S.stats(a)[k] + S.stats(b)[k]) * .055);
+    });
+    return bonus;
+  }
+
+  function skillCandidates(a,b){
+    const map = new Map();
+    const add = (m,label) => {
+      S.skills(m).filter(id=>id !== "attack").forEach(id=>{
+        if(!D.SKILLS[id]) return;
+        if(!map.has(id)) map.set(id,{id,from:label});
+        else map.get(id).from += ` / ${label}`;
+      });
+    };
+    add(a,"親A");
+    add(b,"親B");
+    return [...map.values()].sort((x,y)=>{
+      const sx = D.SKILLS[x.id], sy = D.SKILLS[y.id];
+      if((sx.cost || 0) !== (sy.cost || 0)) return (sy.cost || 0) - (sx.cost || 0);
+      return sx.name.localeCompare(sy.name,"ja");
+    });
+  }
+
+  function selectedSkillsFor(a,b){
+    const ids = skillCandidates(a,b).map(x=>x.id);
+    fusionSkillPick = fusionSkillPick.filter(id=>ids.includes(id)).slice(0,2);
+    if(fusionSkillPick.length === 0 && ids.length){
+      fusionSkillPick = ids.slice(0,Math.min(2,ids.length));
+    }
+    return fusionSkillPick.slice(0,2);
+  }
+
+  function inheritedIvsPreview(a,b){
+    const out = {};
+    ["hp","mp","atk","def","spd","wis"].forEach(k=>{
+      const max = Math.max(a.ivs?.[k] || 0,b.ivs?.[k] || 0);
+      out[k] = max;
+    });
+    return out;
+  }
+
+  function fusionPreview(aid,bid){
+    const all = S.owned();
+    const a = all.find(m=>m.uid===aid);
+    const b = all.find(m=>m.uid===bid);
+    if(!a || !b || a.uid===b.uid) return null;
+    const recipe = findRecipe(a,b);
+    const lockReason = recipeLockReason(recipe,a,b);
+    const id = recipe ? recipe.result : chooseChild(a,b);
+    const level = childLevel(a,b);
+    const skillList = skillCandidates(a,b);
+    const selected = selectedSkillsFor(a,b);
+    return {
+      id,
+      level,
+      recipe:!!recipe,
+      recipeKey:recipe?.recipeKey || "",
+      group:recipe?.group || "normal",
+      special:recipe?.group === "rare",
+      locked:!!lockReason,
+      reason:lockReason,
+      note:recipe?.note || "",
+      bonus:inheritedBonus(a,b),
+      ivs:inheritedIvsPreview(a,b),
+      skillCandidates:skillList,
+      selectedSkills:selected,
+      avgLevel:Math.floor((a.level + b.level) / 2),
+      parents:[a,b]
+    };
+  }
+
+  function pickFusion(uid){
+    if(fusionPick.includes(uid)) fusionPick = fusionPick.filter(x=>x!==uid);
+    else if(fusionPick.length < 2) fusionPick.push(uid);
+    else fusionPick = [fusionPick[1],uid];
+
+    fusionSkillPick = [];
+    if(fusionPick.length === 2){
+      const prev = fusionPreview(fusionPick[0],fusionPick[1]);
+      if(prev) fusionSkillPick = prev.selectedSkills;
+    }
+    render();
+  }
+
+  function setFusionPair(uidA,uidB){
+    if(!uidA || !uidB || uidA === uidB) return;
+    fusionPick = [uidA,uidB];
+    fusionSkillPick = [];
+    const prev = fusionPreview(uidA,uidB);
+    if(prev) fusionSkillPick = prev.selectedSkills;
+    render();
+  }
+
+  function clearFusion(){
+    fusionPick = [];
+    fusionSkillPick = [];
+    render();
+  }
+
+  function toggleFusionSkill(id){
+    if(fusionPick.length !== 2) return;
+    const prev = fusionPreview(fusionPick[0],fusionPick[1]);
+    if(!prev || !prev.skillCandidates.some(s=>s.id === id)) return;
+    if(fusionSkillPick.includes(id)){
+      fusionSkillPick = fusionSkillPick.filter(x=>x !== id);
+    }else{
+      if(fusionSkillPick.length >= 2){
+        toast("引き継ぎ技は最大2つまでです");
+        return;
+      }
+      fusionSkillPick.push(id);
+    }
+    render();
+  }
+
+  function candidatePairs(){
+    const all = S.owned();
+    const out = [];
+    for(let i=0;i<all.length;i++){
+      for(let j=i+1;j<all.length;j++){
+        const a = all[i], b = all[j];
+        const prev = fusionPreview(a.uid,b.uid);
+        if(!prev) continue;
+        const rankValue = D.RANK[S.def(prev.id).rank] || 1;
+        const score = rankValue * 100 + prev.level + (prev.recipe ? 30 : 0) + (prev.special ? 70 : 0) - (prev.locked ? 120 : 0);
+        out.push({a,b,prev,score});
+      }
+    }
+    return out.sort((x,y)=>y.score-x.score);
+  }
+
+  function recommendedFusions(limit=5){
+    const pairs = candidatePairs();
+    const seen = new Set();
+    const list = [];
+    for(const p of pairs){
+      const key = `${p.prev.id}:${p.prev.group}:${p.prev.locked}`;
+      if(seen.has(key) && !p.prev.special) continue;
+      seen.add(key);
+      list.push(p);
+      if(list.length >= limit) break;
+    }
+    return list;
+  }
+
+
+  function openFusionRecipeList(){
+    let m = document.getElementById("modal");
+    if(!m){
+      m = document.createElement("div");
+      m.id = "modal";
+      document.body.appendChild(m);
+    }
+    const count = (D.RECIPE_LIST || Object.keys(D.RECIPES || {})).length;
+    const body = V.recipeBookHtml ? V.recipeBookHtml() : `<div class="empty">配合リストを読み込めませんでした。</div>`;
+    m.innerHTML = `
+      <div class="modalBg" onclick="Game.closeModal(event)">
+        <div class="modal recipeModal" onclick="event.stopPropagation()">
+          <div class="stageTop recipeModalHead">
+            <div>
+              <h2>配合リスト</h2>
+              <p class="tiny">基本・上位・レア特殊配合を確認できます。全${count}件。</p>
+            </div>
+            <button onclick="Game.closeModal()">閉じる</button>
+          </div>
+          ${body}
+          <div class="actions">
+            <button onclick="Game.closeModal()">閉じる</button>
+          </div>
+        </div>
+      </div>`;
+    if(G.playSe) G.playSe("tap");
+  }
+
+
+  function recipeSetStatus(recipe){
+    if(!recipe || !Array.isArray(recipe.parents) || recipe.parents.length < 2) return {ok:false,label:"レシピ不明",cls:"",uids:[]};
+    const all = S.owned();
+    const p0 = recipe.parents[0];
+    const p1 = recipe.parents[1];
+    const list0 = all.filter(m=>m.id === p0);
+    const list1 = all.filter(m=>m.id === p1);
+
+    if(p0 === p1){
+      if(list0.length < 2) return {ok:false,label:"素材不足",cls:"",uids:[]};
+      const sorted = list0.slice().sort((a,b)=>b.level-a.level);
+      const a = sorted[0], b = sorted[1];
+      const avg = Math.floor((a.level + b.level) / 2);
+      if(recipe.minAvg && avg < recipe.minAvg) return {ok:true,label:"Lv条件確認",cls:"gold",uids:[a.uid,b.uid],locked:true};
+      return {ok:true,label:"この配合をセット",cls:"gold",uids:[a.uid,b.uid],locked:false};
+    }
+
+    if(!list0.length || !list1.length) return {ok:false,label:"素材不足",cls:"",uids:[]};
+
+    let best = null;
+    list0.forEach(a=>{
+      list1.forEach(b=>{
+        if(a.uid === b.uid) return;
+        const avg = Math.floor((a.level + b.level) / 2);
+        const locked = !!(recipe.minAvg && avg < recipe.minAvg);
+        const score = (locked ? 0 : 100000) + avg * 100 + a.level + b.level;
+        if(!best || score > best.score) best = {a,b,avg,locked,score};
+      });
+    });
+
+    if(!best) return {ok:false,label:"素材不足",cls:"",uids:[]};
+    if(best.locked) return {ok:true,label:"Lv条件確認",cls:"gold",uids:[best.a.uid,best.b.uid],locked:true};
+    return {ok:true,label:"この配合をセット",cls:"gold",uids:[best.a.uid,best.b.uid],locked:false};
+  }
+
+  function setFusionFromRecipe(key){
+    const recipe = fusionRecipeEntries().find(r=>r.recipeKey === key);
+    if(!recipe){toast("レシピが見つかりません");return;}
+    const status = recipeSetStatus(recipe);
+    if(!status.ok || status.uids.length < 2){toast("素材モンスターが足りません");return;}
+    fusionPick = status.uids.slice(0,2);
+    fusionSkillPick = [];
+    const prev = fusionPreview(fusionPick[0],fusionPick[1]);
+    S.save();
+    render();
+    if(prev?.locked) toast(prev.reason || "レベル条件を満たしていません");
+    else toast("配合候補をセットしました");
+  }
+
+  function doFusion(){
+    if(fusionPick.length !== 2) return;
+    const all = S.owned();
+    const a = all.find(m=>m.uid===fusionPick[0]);
+    const b = all.find(m=>m.uid===fusionPick[1]);
+    if(!a || !b || a.uid===b.uid){toast("配合できません");return;}
+    if(S.owned().length <= 2){toast("仲間が2体だけの時は配合できません");return;}
+
+    const prev = fusionPreview(a.uid,b.uid);
+    if(prev.locked){toast(prev.reason || "特殊配合の条件を満たしていません");return;}
+
+    const candidateIds = prev.skillCandidates.map(s=>s.id);
+    let selected = fusionSkillPick.filter(id=>candidateIds.includes(id)).slice(0,2);
+    if(selected.length === 0) selected = candidateIds.slice(0,2);
+
+    const inherited = {
+      bonus:prev.bonus,
+      skillPlus:selected,
+      ivs:S.inheritIvs(a,b),
+      personality:Math.random() < .5 ? a.personality : b.personality
+    };
+    if(Math.random() < .18) inherited.personality = S.randomPersonality();
+
+    if(a.equip) S.addItem(a.equip,1);
+    if(b.equip) S.addItem(b.equip,1);
+
+    S.removeMonster(a.uid);
+    S.removeMonster(b.uid);
+
+    const child = S.makeMonster(prev.id,prev.level,inherited);
+    child.nickname = S.def(child.id).name + "＋";
+    S.addMonster(child);
+    S.recordFusion(!!prev.special);
+
+    fusionPick = [];
+    fusionSkillPick = [];
+    S.save();
+    render();
+    toast(`${child.nickname}が生まれました！`);
+  }
+
+  function _clearFusionPickNoRender(){
+    fusionPick = [];
+    fusionSkillPick = [];
+  }
+
+  Object.defineProperty(G, "fusionPick", {
+    configurable:true,
+    get(){return fusionPick;}
+  });
+
+  Object.defineProperty(G, "fusionSkillPick", {
+    configurable:true,
+    get(){return fusionSkillPick;}
+  });
+
+  Object.assign(G, {
+    pickFusion,
+    setFusionPair,
+    clearFusion,
+    doFusion,
+    fusionPreview,
+    toggleFusionSkill,
+    recommendedFusions,
+    fusionRecipeEntries,
+    recipeSetStatus,
+    setFusionFromRecipe,
+    openFusionRecipeList,
+    _clearFusionPickNoRender
+  });
+
+})();
