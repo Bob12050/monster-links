@@ -51,6 +51,8 @@
         <button class="${goal.cls}" onclick="Game.setView('${goal.view}')">${U.esc(goal.button)}</button>
       </section>
 
+      ${V.homeFusionGoalHtml ? V.homeFusionGoalHtml() : ""}
+
       <section class="hubWorldV82">
         <div class="hubHeadingV82">
           <div>

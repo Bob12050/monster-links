@@ -6424,3 +6424,210 @@ button:hover:before{
   .pastureMonsterFaceV831{width:78px;height:78px}
   .pastureCardActionV831{padding:0 7px 7px}
 }
+
+/* v8.3.2: fusion goals and favorites */
+.dexCardRouteV83{position:relative}
+.dexCardRouteV83.fusionGoalV832{
+  border-color:rgba(255,215,100,.48);
+  box-shadow:inset 0 0 25px rgba(255,194,61,.08);
+}
+.dexGoalButtonV832{
+  position:absolute;
+  z-index:4;
+  top:7px;
+  right:7px;
+  width:35px;
+  height:35px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:50%;
+  background:rgba(8,15,30,.74);
+  color:#b9c4d5;
+  font-size:18px;
+  line-height:1;
+  backdrop-filter:blur(8px);
+}
+.dexGoalButtonV832.on{
+  border-color:rgba(255,220,117,.5);
+  background:rgba(156,107,25,.84);
+  color:#ffe89f;
+  box-shadow:0 0 18px rgba(255,198,65,.22);
+}
+.dexGoalDetailButtonV832{
+  margin-top:10px;
+  min-height:38px;
+  border-color:rgba(255,218,106,.25);
+  color:#ffe39a;
+}
+.dexGoalDetailButtonV832.on{background:linear-gradient(180deg,#a8731f,#785015);color:#fff3c2}
+.homeFusionGoalV832{
+  display:grid;
+  grid-template-columns:minmax(240px,.68fr) minmax(0,1fr);
+  gap:13px;
+  overflow:hidden;
+  padding:14px;
+  border:1px solid rgba(255,218,106,.28);
+  border-radius:19px;
+  background:
+    radial-gradient(circle at 10% 20%,rgba(255,209,83,.13),transparent 32%),
+    linear-gradient(145deg,rgba(70,53,31,.92),rgba(25,32,54,.96));
+  box-shadow:0 15px 34px rgba(0,0,0,.22);
+}
+.homeFusionGoalV832.complete{border-color:rgba(116,240,160,.3);background:linear-gradient(145deg,rgba(34,78,57,.88),rgba(24,34,53,.96))}
+.homeGoalTargetV832{
+  min-width:0;
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr);
+  gap:11px;
+  align-items:center;
+}
+.homeGoalArtV832{
+  width:110px;
+  height:110px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:17px;
+  background:radial-gradient(circle,rgba(255,225,134,.17),rgba(0,0,0,.1));
+  font-size:54px;
+}
+.homeGoalArtV832 img{width:100%;height:100%;object-fit:contain}
+.homeGoalTargetV832 span,.fusionGoalsHeadV832 > div > span{
+  display:block;
+  color:#ffe18d;
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.16em;
+}
+.homeGoalTargetV832 h2{margin:4px 0 2px;font-size:20px}
+.homeGoalTargetV832 p{margin:0;color:#b9c5d8;font-size:9px}
+.homeGoalProgressV832{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+.homeGoalActionsV832{display:grid;gap:6px}
+.homeGoalActionsV832 button{min-width:120px}
+.fusionGoalsPanelV832{
+  padding:15px;
+  border:1px solid rgba(255,218,106,.2);
+  border-radius:20px;
+  background:linear-gradient(155deg,rgba(54,45,48,.92),rgba(21,27,48,.96));
+}
+.fusionGoalsHeadV832{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+}
+.fusionGoalsHeadV832 h2{margin:3px 0 2px;font-size:21px}
+.fusionGoalsHeadV832 p{margin:0;color:var(--muted);font-size:9px}
+.fusionGoalsGridV832{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.fusionGoalCardV832{
+  min-width:0;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:15px;
+  background:linear-gradient(180deg,rgba(52,56,82,.86),rgba(24,28,50,.94));
+}
+.fusionGoalCardV832:first-child{border-color:rgba(255,215,99,.38)}
+.fusionGoalCardV832.complete{border-color:rgba(116,240,160,.28)}
+.fusionGoalTargetV832{
+  display:grid;
+  grid-template-columns:82px minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+  padding:9px;
+  background:rgba(255,255,255,.025);
+}
+.fusionGoalArtV832{
+  width:82px;
+  height:82px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:12px;
+  background:radial-gradient(circle,rgba(255,221,126,.13),rgba(0,0,0,.12));
+  font-size:40px;
+}
+.fusionGoalArtV832 img{width:100%;height:100%;object-fit:contain}
+.fusionGoalTargetV832 span{display:block;color:#ffe08a;font-size:8px;font-weight:1000}
+.fusionGoalTargetV832 h3{margin:3px 0 2px;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fusionGoalTargetV832 p{margin:0;color:#aebbd0;font-size:8px;line-height:1.35}
+.goalRouteV832{margin:0 9px;padding:8px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:rgba(0,0,0,.13)}
+.goalRouteV832.ready{border-color:rgba(116,240,160,.25);background:rgba(42,132,78,.1)}
+.goalRouteV832.condition{border-color:rgba(255,211,106,.23);background:rgba(139,99,29,.1)}
+.goalRouteMaterialsV832{display:flex;align-items:center;gap:4px;min-width:0}
+.goalMaterialV832{
+  min-width:0;
+  flex:1;
+  display:grid;
+  grid-template-columns:39px minmax(0,1fr);
+  gap:5px;
+  align-items:center;
+  padding:5px;
+  border:1px solid rgba(255,107,122,.16);
+  border-radius:9px;
+  background:rgba(136,43,60,.08);
+}
+.goalMaterialV832.ready{border-color:rgba(116,240,160,.17);background:rgba(41,128,75,.08)}
+.goalMaterialFaceV832,.goalMaterialFaceSmallV832{
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:8px;
+  background:rgba(255,255,255,.06);
+  font-size:19px;
+}
+.goalMaterialFaceSmallV832{width:31px;height:31px;font-size:16px}
+.goalMaterialFaceV832 img,.goalMaterialFaceSmallV832 img{width:100%;height:100%;object-fit:contain}
+.goalMaterialV832 b,.goalMaterialV832 small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.goalMaterialV832 b{font-size:8px}
+.goalMaterialV832 small{margin-top:2px;color:#aebbd0;font-size:7px}
+.goalPlusV832{flex:0 0 auto;color:#ffe292;font-size:11px;font-weight:1000}
+.goalRouteStateV832{margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.07)}
+.goalRouteStateV832 span,.goalRouteStateV832 small{display:block}
+.goalRouteStateV832 span{color:#ffb0bc;font-size:8px;font-weight:1000}
+.ready .goalRouteStateV832 span{color:#aaf4c2}
+.condition .goalRouteStateV832 span{color:#ffe09a}
+.goalRouteStateV832 small{margin-top:2px;color:#9eacc0;font-size:7px}
+.goalNoRouteV832{margin:0 9px;padding:12px;border:1px dashed rgba(255,255,255,.12);border-radius:11px;color:#a5b3c7;font-size:8px;text-align:center}
+.fusionGoalActionsV832{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:9px}
+.fusionGoalActionsV832 button{min-height:33px;padding:5px;font-size:8px}
+.fusionGoalsEmptyV832{
+  display:grid;
+  justify-items:center;
+  gap:5px;
+  margin-top:12px;
+  padding:22px;
+  border:1px dashed rgba(255,255,255,.15);
+  border-radius:13px;
+  color:#aebbd0;
+  text-align:center;
+}
+.fusionGoalsEmptyV832 b{color:#fff;font-size:12px}
+.fusionGoalsEmptyV832 span{font-size:9px}
+.fusionGoalsEmptyV832 button{margin-top:5px}
+@media(max-width:800px){
+  .homeFusionGoalV832{grid-template-columns:1fr}
+  .fusionGoalsGridV832{grid-template-columns:1fr}
+  .fusionGoalCardV832{display:grid;grid-template-columns:220px minmax(0,1fr) 170px;align-items:center}
+  .fusionGoalActionsV832{grid-template-columns:1fr}
+}
+@media(max-width:580px){
+  .dexGoalButtonV832{width:32px;height:32px;font-size:16px}
+  .homeFusionGoalV832{padding:10px;border-radius:15px}
+  .homeGoalTargetV832{grid-template-columns:86px minmax(0,1fr)}
+  .homeGoalArtV832{width:86px;height:86px}
+  .homeGoalProgressV832{grid-template-columns:1fr}
+  .homeGoalActionsV832{grid-template-columns:1fr 1fr}
+  .homeGoalActionsV832 button{min-width:0}
+  .fusionGoalsPanelV832{padding:10px;border-radius:16px}
+  .fusionGoalsHeadV832{align-items:flex-start;flex-direction:column}
+  .fusionGoalsHeadV832 > button{width:100%}
+  .fusionGoalCardV832{display:block}
+  .fusionGoalTargetV832{grid-template-columns:72px minmax(0,1fr)}
+  .fusionGoalArtV832{width:72px;height:72px}
+  .goalMaterialV832{grid-template-columns:31px minmax(0,1fr)}
+  .fusionGoalActionsV832{grid-template-columns:1fr 1fr}
+}

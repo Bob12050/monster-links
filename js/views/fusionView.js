@@ -24,6 +24,8 @@
         </div>
       </section>
 
+      ${V.fusionGoalsPanelHtml ? V.fusionGoalsPanelHtml() : ""}
+
       <section id="fusionMainCard" class="card fusionMainCard">
         <div id="fusionPreviewAnchor"></div>
         ${V.sectionTitle ? V.sectionTitle(`選択中：${pick.length}/2`, "親2体を選ぶと詳細プレビューが出ます") : `<h2>選択中：${pick.length}/2</h2>`}

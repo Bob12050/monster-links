@@ -307,6 +307,7 @@
       stageWins:{},
       bossCleared:{},
       dex:{discovered:{},scouted:{}},
+      fusionGoals:[],
       bag:{force_ring:1},
       records:{scouts:0,fusions:0,specialFusions:0,equips:0,bossWins:0,bossScouts:0,items:{}},
       quests:{claimed:{}},
@@ -366,6 +367,9 @@
       data.dex.discovered[m.id] = true;
       data.dex.scouted[m.id] = true;
     });
+    data.fusionGoals = Array.isArray(data.fusionGoals)
+      ? [...new Set(data.fusionGoals.filter(id=>D.MONSTERS[id]))].slice(0,3)
+      : [];
     data.records = data.records && typeof data.records === "object" ? data.records : {};
     data.records.scouts = Number.isFinite(data.records.scouts) ? data.records.scouts : Math.max(0,Object.keys(data.dex.scouted).filter(id=>data.dex.scouted[id]).length - data.party.length - data.box.length + data.party.length + data.box.length);
     data.records.fusions = Number.isFinite(data.records.fusions) ? data.records.fusions : 0;

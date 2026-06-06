@@ -113,6 +113,7 @@ function loadGameData(scriptRefs){
   }
   if(state.gold !== oldSave.gold) fail("旧セーブ移行で所持GOLDが保持されませんでした");
   if(state.party[0]?.nickname !== "互換テスト") fail("旧セーブ移行で仲間情報が保持されませんでした");
+  if(!Array.isArray(state.fusionGoals) || state.fusionGoals.length !== 0) fail("旧セーブに空の配合目標が補完されませんでした");
   if(state.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION) fail("旧セーブが現行の保存形式へ移行されませんでした");
   if(!localStorage.getItem("monster_links_slot_1")) fail("旧単一セーブがスロット1へ移行されませんでした");
 
@@ -335,12 +336,20 @@ function loadGameData(scriptRefs){
 
     const dexViewFile = path.join(root,"js","views","dexView.js");
     const dexSystemFile = path.join(root,"js","systems","dex.js");
+    const fusionGoalsSystemFile = path.join(root,"js","systems","fusionGoals.js");
+    const fusionGoalsViewFile = path.join(root,"js","views","fusionGoalsView.js");
+    vm.runInContext(fs.readFileSync(fusionGoalsSystemFile,"utf8"),context,{filename:"js/systems/fusionGoals.js"});
+    vm.runInContext(fs.readFileSync(fusionGoalsViewFile,"utf8"),context,{filename:"js/views/fusionGoalsView.js"});
     vm.runInContext(fs.readFileSync(dexViewFile,"utf8"),context,{filename:"js/views/dexView.js"});
     vm.runInContext(fs.readFileSync(dexSystemFile,"utf8"),context,{filename:"js/systems/dex.js"});
+
+    context.MonsterLinksGame.toggleFusionGoal("aquan");
+    if(!context.MonsterLinksGame.isFusionGoal("aquan")) fail("図鑑から配合目標を登録できません");
 
     const dexCard = context.MonsterLinksViews.dexCard("aquan",true,false);
     if(!dexCard.includes("Game.openDexDetail('aquan')")) fail("発見済み図鑑カードから詳細を開けません");
     if(!dexCard.includes("配合ルート")) fail("図鑑カードに配合ルート案内がありません");
+    if(!dexCard.includes("dexGoalButtonV832 on")) fail("配合目標中の図鑑カードに星表示がありません");
 
     const dexDetail = context.MonsterLinksViews.dexDetailHtml("aquan");
     if(!dexDetail.includes("このモンスターを作る配合")) fail("図鑑詳細に作成配合ルートがありません");
@@ -349,6 +358,29 @@ function loadGameData(scriptRefs){
     if(!dexDetail.includes("dexSecretMonsterV83") || !dexDetail.includes("結果未発見")) fail("未発見結果のネタバレ防止表示がありません");
     if(dexDetail.includes("ユキまる")) fail("未発見の配合結果名が図鑑詳細に表示されました");
     if(dexDetail.includes("Game.setFusionFromDex('aquan+puffbat')")) fail("未発見結果の配合セットキーが図鑑詳細に出力されました");
+    if(!dexDetail.includes("配合目標に登録中")) fail("図鑑詳細に配合目標の登録状態がありません");
+
+    const goalInfo = context.MonsterLinksGame.fusionGoalInfo("aquan");
+    if(!goalInfo?.best?.ready) fail("所持素材が揃った配合目標を作成可能と判定できません");
+    if(goalInfo.best.materials.length !== 2) fail("配合目標の素材進捗を計算できません");
+    const goalsPanel = context.MonsterLinksViews.fusionGoalsPanelHtml();
+    if(!goalsPanel.includes("配合目標") || !goalsPanel.includes("今すぐ配合可能")) fail("配合画面に目標進捗が表示されません");
+    const goalHome = context.MonsterLinksViews.homeFusionGoalHtml();
+    if(!goalHome.includes("PRIORITY FUSION GOAL") || !goalHome.includes("アクアン")) fail("拠点に最優先の配合目標が表示されません");
+    context.MonsterLinksGame.openFusionGoal("aquan");
+    if(context.MonsterLinksState.state.view !== "fusion" || context.MonsterLinksGame.fusionPick.length !== 2){
+      fail("作成可能な配合目標から親2体をセットできません");
+    }
+
+    context.MonsterLinksState.state.fusionGoals = ["aquan","plim","leafling"];
+    context.MonsterLinksGame.toggleFusionGoal("puffbat");
+    if(context.MonsterLinksState.state.fusionGoals.includes("puffbat")) fail("配合目標の最大3件制限が機能しません");
+    context.MonsterLinksState.state.fusionGoals = ["aquan","unknown_monster","plim","leafling","puffbat"];
+    context.MonsterLinksState.save();
+    if(context.MonsterLinksState.state.fusionGoals.length !== 3 || context.MonsterLinksState.state.fusionGoals.includes("unknown_monster")){
+      fail("保存時に配合目標の不正ID・最大件数が正規化されません");
+    }
+    context.MonsterLinksState.state.fusionGoals = ["aquan"];
 
     const dexModal = {innerHTML:""};
     context.document = {

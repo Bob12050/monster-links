@@ -34,7 +34,7 @@
           <button onclick="Game.clearListFilter('dex')">リセット</button>
         </div>
         <div class="filterGrid">
-          <label><span>名前検索</span><input value="${U.esc(f.q)}" placeholder="名前・IDで検索" oninput="Game.setListFilter('dex','q',this.value)" /></label>
+          <label><span>名前検索</span><input data-list-filter="dex:q" value="${U.esc(f.q)}" placeholder="名前・IDで検索" oninput="Game.setListFilter('dex','q',this.value,this)" /></label>
           <label><span>ランク</span><select onchange="Game.setListFilter('dex','rank',this.value)">
             ${opt("all","すべて",f.rank)}${ranks.map(r=>opt(r,`${r}ランク`,f.rank)).join("")}
           </select></label>
@@ -118,6 +118,7 @@
   function dexCard(id,discovered,scouted){
     const d = S.def(id);
     const recipeCount = (window.MonsterLinksGame.fusionRecipeEntries?.() || []).filter(recipe=>recipe.result === id).length;
+    const isGoal = !!window.MonsterLinksGame.isFusionGoal?.(id);
     if(!discovered){
       return `<div class="dexCard dexCardV31 unknown">
         <div class="dexFace dexFaceV31">❔</div>
@@ -125,7 +126,8 @@
         <div class="dexMetaLine"><span class="type">${typeLabel(d.type)}</span>${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}<span class="type">未発見</span></div>
       </div>`;
     }
-    return `<div class="dexCard dexCardV31 dexCardRouteV83 ${scouted ? "scouted" : ""}" role="button" tabindex="0" onclick="Game.openDexDetail('${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Game.openDexDetail('${id}')}">
+    return `<div class="dexCard dexCardV31 dexCardRouteV83 ${scouted ? "scouted" : ""} ${isGoal ? "fusionGoalV832" : ""}" role="button" tabindex="0" onclick="Game.openDexDetail('${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Game.openDexDetail('${id}')}">
+      <button class="dexGoalButtonV832 ${isGoal ? "on" : ""}" aria-label="${isGoal ? "配合目標から外す" : "配合目標に登録"}" onclick="event.stopPropagation();Game.toggleFusionGoal('${id}')">${isGoal ? "★" : "☆"}</button>
       <div class="dexArtFrame">${V.monsterVisual(id,'dexFace dexFaceV31')}</div>
       <div class="name">${d.name} <span class="tag">${d.rank}</span></div>
       <div class="dexMetaLine">
@@ -238,6 +240,7 @@
     const outgoing = recipes.filter(recipe=>recipe.parents.includes(id)).map(recipe=>Object.assign({_sourceId:id},recipe));
     const owned = S.owned().filter(monster=>monster.id === id);
     const scouted = !!S.state.dex?.scouted?.[id];
+    const isGoal = !!window.MonsterLinksGame.isFusionGoal?.(id);
     const skills = skillTextForDex(d);
 
     return `<div class="modalBg" onclick="Game.closeModal(event)">
@@ -257,6 +260,7 @@
             <div class="dexDetailBadgesV83"><span class="tag">${d.rank}</span><span class="type">${U.esc(typeLabel(d.type))}</span>${V.sizeBadge ? V.sizeBadge(d) : ""}</div>
             <h3>${U.esc(d.name)}</h3>
             <p>技：${U.esc(skills)}</p>
+            <button class="dexGoalDetailButtonV832 ${isGoal ? "on" : ""}" onclick="Game.toggleFusionGoal('${id}',true)">${isGoal ? "★ 配合目標に登録中" : "☆ 配合目標に登録"}</button>
             <div class="dexDetailRecordV83">
               <div><span>図鑑状態</span><b>${scouted ? "スカウト済み" : "発見済み"}</b></div>
               <div><span>現在の所持</span><b>${owned.length}体</b></div>
@@ -287,6 +291,7 @@
         </section>
 
         <div class="actions dexDetailActionsV83">
+          ${isGoal ? `<button class="green" onclick="Game.closeModal();Game.openFusionGoal('${id}')">目標の進捗を見る</button>` : ""}
           <button class="gold" onclick="Game.closeModal();Game.setView('fusion')">配合画面を見る</button>
           <button onclick="Game.closeModal()">閉じる</button>
         </div>
