@@ -250,6 +250,27 @@ function loadGameData(scriptRefs){
     fail(`js/views/fusionView.js: 配合画面生成エラー: ${error.stack || error.message}`);
   }
 
+  try{
+    for(const name of ["uiView.js","titleView.js","homeView.js","layoutView.js"]){
+      const viewFile = path.join(root,"js","views",name);
+      vm.runInContext(fs.readFileSync(viewFile,"utf8"),context,{filename:`js/views/${name}`});
+    }
+    const titleHtml = context.MonsterLinksViews.titleHtml();
+    const homeHtml = context.MonsterLinksViews.homeHtml();
+    const topHtml = context.MonsterLinksViews.topHtml();
+    const tabsHtml = context.MonsterLinksViews.tabsHtml();
+    if(!titleHtml.includes("titleScreenV82")) fail("タイトル画面にv8.2のゲーム画面UIがありません");
+    if(!titleHtml.includes("Game.startGame()")) fail("タイトル画面に冒険再開ボタンがありません");
+    if(!homeHtml.includes("hubWorldV82")) fail("拠点画面に施設選択UIがありません");
+    for(const view of ["stage","monsters","fusion","arena","quest","shop"]){
+      if(!homeHtml.includes(`Game.setView('${view}')`)) fail(`拠点画面から${view}へ移動できません`);
+    }
+    if(!topHtml.includes("assets/images/ui/logo_mark.svg")) fail("共通ヘッダーにロゴ画像がありません");
+    if(!tabsHtml.includes("tabsV82")) fail("下部ナビにv8.2のUIがありません");
+  }catch(error){
+    fail(`v8.2画面生成エラー: ${error.stack || error.message}`);
+  }
+
   return data;
 }
 

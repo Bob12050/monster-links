@@ -10,12 +10,15 @@
     const dex = S.dexCounts();
     const quest = S.questCounts();
     return `
-    <div class="top topV28">
+    <div class="top topV28 topV82">
       <div class="title">
-        <button class="logoBtn" onclick="Game.openTitle()">🐲 モンスターリンクス</button>
+        <button class="logoBtn logoBtnV82" onclick="Game.openTitle()">
+          <img src="assets/images/ui/logo_mark.svg" alt="">
+          <span><b>モンスターリンクス</b><small>MONSTER LINKS</small></span>
+        </button>
         <div class="topActions">
-          <button class="ghost miniTopBtn" onclick="Game.setView('menu')">☰</button>
-          <button class="ghost miniTopBtn" onclick="Game.saveNow()">保存</button>
+          <button class="ghost miniTopBtn" onclick="Game.setView('menu')" aria-label="メニュー">☰</button>
+          <button class="ghost miniTopBtn saveTopBtnV82" onclick="Game.saveNow()">保存</button>
         </div>
       </div>
       <div class="status status4 statusV28">
@@ -32,12 +35,12 @@
     const menuViews = ["menu","dex","quest","shop","settings","arena","help","devtools"];
     const monsterViews = ["monsters","fusion"];
     const items = [
-      ["home","🏠","拠点"],
+      ["home","🏰","拠点"],
       ["stage","🗺️","冒険"],
-      ["monsters","👥","仲間"],
+      ["monsters","🐲","仲間"],
       ["menu","☰","メニュー"]
     ];
-    return `<div class="tabs tabsMain">${items.map(([v,i,t])=>{
+    return `<div class="tabs tabsMain tabsV82">${items.map(([v,i,t])=>{
       const active = state.view === v || (v === "menu" && menuViews.includes(state.view)) || (v === "monsters" && monsterViews.includes(state.view));
       return `
       <button class="${active ? "on" : ""}" onclick="Game.setView('${v}')">
