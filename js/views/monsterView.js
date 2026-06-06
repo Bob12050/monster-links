@@ -68,14 +68,27 @@
         <span class="tiny">検索・フィルター条件に一致した仲間だけを表示しています。</span>
       </section>
 
-      <section class="grid two">
-        <div class="card">
-          <h2>パーティ ${party.length}/${state.party.length}表示</h2>
-          <div class="list">${party.map(m=>V.monsterCard(m,{mode:"party"})).join("") || `<div class="empty">条件に一致するパーティメンバーはいません</div>`}</div>
+      <section class="monsterManageLayoutV761">
+        <div class="card partyCardV761">
+          <div class="stageTop">
+            <div>
+              <h2>パーティ ${party.length}/${state.party.length}表示</h2>
+              <p class="tiny">現在の編成。牧場からパーティへ移動できます。</p>
+            </div>
+            <span class="tag">${state.party.length}/${D.MAX_PARTY}</span>
+          </div>
+          <div class="list partyListV761">${party.map(m=>V.monsterCard(m,{mode:"party"})).join("") || `<div class="empty">条件に一致するパーティメンバーはいません</div>`}</div>
         </div>
-        <div class="card">
-          <h2>牧場 ${box.length}/${state.box.length}表示</h2>
-          <div class="list">${box.map(m=>V.monsterCard(m,{mode:"box"})).join("") || `<div class="empty">条件に一致する牧場の仲間はいません</div>`}</div>
+
+        <div class="card pastureCardV761">
+          <div class="stageTop">
+            <div>
+              <h2>牧場 ${box.length}/${state.box.length}表示</h2>
+              <p class="tiny">牧場はPC・横幅の広い画面では2列表示になります。</p>
+            </div>
+            <span class="tag">${box.length}体</span>
+          </div>
+          <div class="pastureGridV761">${box.map(m=>V.monsterCard(m,{mode:"box"})).join("") || `<div class="empty">条件に一致する牧場の仲間はいません</div>`}</div>
         </div>
       </section>
       <div id="modal"></div>

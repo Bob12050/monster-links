@@ -3692,3 +3692,36 @@ button:hover:before{
   padding:1px 6px;
   font-size:10px;
 }
+
+
+/* v7.6.1 pasture grid improvement */
+.monsterManageLayoutV761{
+  display:grid;
+  gap:12px;
+}
+.partyCardV761,
+.pastureCardV761{
+  width:100%;
+}
+.partyListV761{
+  display:grid;
+  gap:12px;
+}
+.pastureGridV761{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+.pastureGridV761 > .empty{
+  grid-column:1/-1;
+}
+@media (min-width:900px){
+  .pastureGridV761{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media (min-width:1120px){
+  .partyListV761{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
