@@ -115,7 +115,7 @@
       return `<div class="dexCard dexCardV31 unknown">
         <div class="dexFace dexFaceV31">❔</div>
         <div class="name">？？？？ <span class="tag">${d.rank}</span></div>
-        <div class="dexMetaLine"><span class="type">${typeLabel(d.type)}</span><span class="type">未発見</span></div>
+        <div class="dexMetaLine"><span class="type">${typeLabel(d.type)}</span>${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}<span class="type">未発見</span></div>
       </div>`;
     }
     return `<div class="dexCard dexCardV31 ${scouted ? "scouted" : ""}">
@@ -123,6 +123,7 @@
       <div class="name">${d.name} <span class="tag">${d.rank}</span></div>
       <div class="dexMetaLine">
         <span class="type">${typeLabel(d.type)}</span>
+        ${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}
         <span class="type">${scouted ? "スカウト済み" : "発見のみ"}</span>
       </div>
       <div class="tiny">技：${skillTextForDex(d)}</div>

@@ -76,7 +76,7 @@
         ${V.monsterInline(m.id,"miniFace")}
         <div>
           <b>親${index}: ${U.esc(m.nickname)}</b>
-          <div class="tiny">${U.esc(d.name)} / ${d.rank} / Lv${m.level}${m.locked ? " / 🔒保護中" : ""}</div>
+          <div class="tiny">${U.esc(d.name)} / ${d.rank} / ${V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`} / Lv${m.level}${m.locked ? " / 🔒保護中" : ""}</div>
         </div>
       </div>`;
     };
@@ -97,7 +97,7 @@
           ${result ? V.monsterInline(prev.id,"miniFace") : `<div class="miniFace">?</div>`}
           <div>
             <b>${result ? `結果: ${U.esc(result.name)}` : "結果"}</b>
-            <div class="tiny">${result ? `${result.rank} / Lv${prev.level}${prev.forcedRecipe ? " / リスト選択中" : ""}` : "親2体で表示"}</div>
+            <div class="tiny">${result ? `${result.rank} / ${V.sizeLabel ? V.sizeLabel(result) : `${result.size || 1}枠`} / Lv${prev.level}${prev.forcedRecipe ? " / リスト選択中" : ""}` : "親2体で表示"}</div>
           </div>
         </div>
       </div>
@@ -123,8 +123,8 @@
           ${V.monsterVisual(prev.id,"fusionResultFace")}
         </div>
         <div class="fusionResultInfo">
-          <div class="name">${d.name} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span></div>
-          <div class="tiny">誕生Lv ${prev.level} / ${group} / 親平均Lv ${prev.avgLevel}</div>
+          <div class="name">${d.name} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}</div>
+          <div class="tiny">誕生Lv ${prev.level} / ${group} / 親平均Lv ${prev.avgLevel} / サイズ ${V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`}</div>
           <div class="fusionGuarantee">🔁 配合後の子はLv1で生まれます。親の個体値・ボーナス・一部スキルは引き継ぎます。</div>
           ${recipeBadge}
           ${lock}
@@ -187,8 +187,8 @@
           const lock = x.prev.locked ? `<span class="rareLock">条件未達</span>` : `<span class="type">配合可</span>`;
           return `<div class="recommendCard">
             <div class="tiny">${V.monsterInline(x.a.id,'miniFace')} ${x.a.nickname} ＋ ${V.monsterInline(x.b.id,'miniFace')} ${x.b.nickname}</div>
-            <div class="name">→ ${V.monsterInline(x.prev.id,'miniFace')} ${d.name} <span class="tag">${d.rank}</span></div>
-            <div class="tiny">${group} / 誕生Lv${x.prev.level} ${lock}</div>
+            <div class="name">→ ${V.monsterInline(x.prev.id,'miniFace')} ${d.name} <span class="tag">${d.rank}</span>${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}</div>
+            <div class="tiny">${group} / 誕生Lv${x.prev.level} / ${V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`} ${lock}</div>
             <button ${x.prev.locked ? "disabled" : ""} onclick="Game.setFusionPair('${x.a.uid}','${x.b.uid}')">この2体を選ぶ</button>
           </div>`;
         }).join("")}
@@ -303,12 +303,12 @@
             <div class="routeStatusWrap">${routeStatusHtml(r,setStatus)}</div>
             <div class="routeParents">
               <div class="routeParentBox">
-                <div>${safeMonster(p0,'miniFace')} ${U.esc(p0d.name)}</div>
+                <div>${safeMonster(p0,'miniFace')} ${U.esc(p0d.name)} ${V.sizeBadge ? V.sizeBadge(p0d,"miniSize") : `<span class="sizeBadge miniSize">🧩 ${p0d.size || 1}枠</span>`}</div>
                 ${parentMaterialHtml(p0,sameParent ? 2 : 1)}
               </div>
               <div class="tiny routePlus">＋</div>
               <div class="routeParentBox">
-                <div>${safeMonster(p1,'miniFace')} ${U.esc(p1d.name)}</div>
+                <div>${safeMonster(p1,'miniFace')} ${U.esc(p1d.name)} ${V.sizeBadge ? V.sizeBadge(p1d,"miniSize") : `<span class="sizeBadge miniSize">🧩 ${p1d.size || 1}枠</span>`}</div>
                 ${sameParent ? `<div class="routeMaterial same">同種2体必要</div>` : parentMaterialHtml(p1,1)}
               </div>
             </div>
@@ -316,7 +316,7 @@
             <div class="routeResult">
               <b>${resultKnown ? `${safeMonster(r.result,'miniFace')} ${U.esc(rd.name)}` : "？？？？"}</b>
               ${status}
-              <div class="tiny">${rd.rank} / ${D.TYPES?.[rd.type] || rd.type || "?"}</div>
+              <div class="tiny">${rd.rank} / ${D.TYPES?.[rd.type] || rd.type || "?"} / ${V.sizeLabel ? V.sizeLabel(rd) : `${rd.size || 1}枠`}</div>
             </div>
             ${cond}${note}
             <div class="recipeSetArea">${setButton}</div>

@@ -3661,3 +3661,34 @@ button:hover:before{
     transform:rotate(90deg);
   }
 }
+
+
+/* v7.6 monster size display */
+.sizeBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  border-radius:999px;
+  padding:2px 7px;
+  font-size:11px;
+  font-weight:900;
+  background:rgba(180,160,255,.13);
+  border:1px solid rgba(180,160,255,.30);
+  color:#e2dcff;
+  white-space:nowrap;
+}
+.sizeBadge.size2{
+  background:rgba(255,154,86,.14);
+  border-color:rgba(255,154,86,.34);
+  color:#ffd1b7;
+}
+.sizeBadge.size3{
+  background:rgba(255,110,140,.14);
+  border-color:rgba(255,110,140,.34);
+  color:#ffc4d0;
+}
+.sizeBadge.miniSize{
+  margin-left:4px;
+  padding:1px 6px;
+  font-size:10px;
+}

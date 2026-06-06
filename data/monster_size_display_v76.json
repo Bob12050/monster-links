@@ -1,0 +1,115 @@
+{
+  "version": "7.6",
+  "purpose": "サイズ表示だけ追加",
+  "sizeCounts": {
+    "1": 18,
+    "2": 2
+  },
+  "sizeMonsters": {
+    "1": [
+      {
+        "id": "dewplim",
+        "name": "しずくぷる",
+        "rank": "F"
+      },
+      {
+        "id": "budbunny",
+        "name": "つぼみラビ",
+        "rank": "F"
+      },
+      {
+        "id": "cavemole",
+        "name": "ドリモール",
+        "rank": "E"
+      },
+      {
+        "id": "sparkbug",
+        "name": "スパークバグ",
+        "rank": "E"
+      },
+      {
+        "id": "ashimp",
+        "name": "アッシュインプ",
+        "rank": "E"
+      },
+      {
+        "id": "reefowl",
+        "name": "リーファウル",
+        "rank": "D"
+      },
+      {
+        "id": "miretoad",
+        "name": "ミアトード",
+        "rank": "D"
+      },
+      {
+        "id": "gearcat",
+        "name": "ギアキャット",
+        "rank": "D"
+      },
+      {
+        "id": "snowfairy",
+        "name": "スノーフェア",
+        "rank": "D"
+      },
+      {
+        "id": "cinderhorn",
+        "name": "シンダーホーン",
+        "rank": "C"
+      },
+      {
+        "id": "cragbear",
+        "name": "クラッグベア",
+        "rank": "C"
+      },
+      {
+        "id": "lumenowl",
+        "name": "ルーメンオウル",
+        "rank": "C"
+      },
+      {
+        "id": "abyssjelly",
+        "name": "アビスジェリー",
+        "rank": "C"
+      },
+      {
+        "id": "venomqueen",
+        "name": "ヴェノムクイーン",
+        "rank": "B"
+      },
+      {
+        "id": "thunderlion",
+        "name": "サンダーライオン",
+        "rank": "B"
+      },
+      {
+        "id": "glacierfang",
+        "name": "グレイシャーファング",
+        "rank": "A"
+      },
+      {
+        "id": "solarwyrm",
+        "name": "ソーラーウィルム",
+        "rank": "A"
+      },
+      {
+        "id": "nightmarestag",
+        "name": "ナイトメアスタッグ",
+        "rank": "A"
+      }
+    ],
+    "2": [
+      {
+        "id": "forgegolem",
+        "name": "フォージゴーレム",
+        "rank": "B"
+      },
+      {
+        "id": "titanplim",
+        "name": "タイタンぷる",
+        "rank": "S"
+      }
+    ]
+  },
+  "note": "この版では表示だけ。パーティ枠制限や2枠/3枠の実制限は未実装。"
+}
