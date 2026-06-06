@@ -36,6 +36,15 @@
     }
   }
 
+  function toggleMonsterLock(uid){
+    const m = S.owned().find(x=>x.uid===uid);
+    if(!m){toast("対象が見つかりません");return;}
+    m.locked = !m.locked;
+    S.save();
+    render();
+    toast(m.locked ? "保護ロックしました" : "保護ロックを解除しました");
+  }
+
   function equipModal(uid){
     const m = S.owned().find(x=>x.uid===uid);
     if(!m) return;
@@ -79,6 +88,7 @@
     toBox,
     toParty,
     leader,
+    toggleMonsterLock,
     equipModal,
     equip,
     unequip

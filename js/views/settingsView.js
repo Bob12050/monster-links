@@ -52,6 +52,14 @@
             <button class="red" onclick="Game.reset()">現在のスロットを最初から</button>
           </div>
           <div class="notice">空スロットは「新しく作成」で開始できます。削除・コピー・上書き作成はゲーム内の確認画面が出ます。</div>
+          <div class="backupBoxV716">
+            <h3>セーブバックアップ</h3>
+            <p class="tiny">アップデート前や配合レシピ追加前に、現在スロットのバックアップを保存できます。</p>
+            <div class="actions">
+              <button class="primary" onclick="Game.openBackupModal()">バックアップを書き出し</button>
+              <button class="red" onclick="Game.openRestoreModal()">バックアップから復元</button>
+            </div>
+          </div>
         </div>
       </section>
       <div class="card assetPanel">

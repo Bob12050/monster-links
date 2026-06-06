@@ -163,6 +163,7 @@
       personality:inherited.personality || randomPersonality(),
       ivs:inherited.ivs || randomIvs(),
       equip:null,
+      locked:false,
       hp:1,
       mp:1
     };
@@ -291,6 +292,7 @@
       m.ivs[k] = Number.isFinite(m.ivs[k]) ? U.clamp(Math.floor(m.ivs[k]),0,12) : U.rand(0,8);
     });
     m.equip = D.ITEMS[m.equip] ? m.equip : null;
+    m.locked = !!m.locked;
     const s = stats(m);
     m.hp = Number.isFinite(m.hp) ? U.clamp(m.hp,0,s.hp) : s.hp;
     m.mp = Number.isFinite(m.mp) ? U.clamp(m.mp,0,s.mp) : s.mp;
@@ -371,6 +373,49 @@
       save();
     }
     return slotSummary(n);
+  }
+
+  function backupCurrentSlot(){
+    save();
+    const copy = JSON.parse(JSON.stringify(state));
+    copy.activeSlot = activeSlot();
+    copy.view = "home";
+    copy.battle = null;
+    copy.reward = null;
+    copy.updatedAt = Date.now();
+    return {
+      kind:"monster-links-save-backup",
+      format:1,
+      gameVersion:D.GAME_VERSION,
+      exportedAt:Date.now(),
+      slot:activeSlot(),
+      summary:slotSummary(activeSlot()),
+      data:copy
+    };
+  }
+
+  function backupCurrentSlotString(){
+    return JSON.stringify(backupCurrentSlot(),null,2);
+  }
+
+  function restoreCurrentSlotFromBackup(input){
+    let backup = input;
+    if(typeof backup === "string"){
+      backup = JSON.parse(backup);
+    }
+    const data = backup?.data || backup;
+    if(!data || !Array.isArray(data.party)){
+      throw new Error("バックアップ形式が正しくありません");
+    }
+    const restored = JSON.parse(JSON.stringify(data));
+    restored.activeSlot = activeSlot();
+    restored.view = "home";
+    restored.battle = null;
+    restored.reward = null;
+    restored.updatedAt = Date.now();
+    state = normalizeState(restored,true);
+    save();
+    return state;
   }
 
   function setSetting(key,value){
@@ -599,6 +644,9 @@
     createNewSlot,
     copyCurrentToSlot,
     deleteSlot,
+    backupCurrentSlot,
+    backupCurrentSlotString,
+    restoreCurrentSlotFromBackup,
     setSetting,
     owned,
     highestLv,

@@ -248,6 +248,135 @@
     );
   }
 
+  function openBackupModal(){
+    let text = "";
+    try{text = S.backupCurrentSlotString();}
+    catch(e){toast("バックアップ作成に失敗しました");return;}
+    let m = document.getElementById("modal");
+    if(!m){
+      m = document.createElement("div");
+      m.id = "modal";
+      document.body.appendChild(m);
+    }
+    const info = S.slotSummary(S.activeSlot());
+    m.innerHTML = `
+      <div class="modalBg" onclick="Game.closeModal(event)">
+        <div class="modal backupModal" onclick="event.stopPropagation()">
+          <div class="stageTop">
+            <div>
+              <h2>セーブバックアップ</h2>
+              <p class="tiny">現在のスロット${S.activeSlot()}を書き出します。コピーしてメモ帳などに保存してください。</p>
+            </div>
+            <button onclick="Game.closeModal()">閉じる</button>
+          </div>
+          <div class="backupSummary">
+            <span>仲間 ${info.party + info.box}体</span>
+            <span>GOLD ${info.gold}</span>
+            <span>最高Lv ${info.highest}</span>
+            <span>発見 ${info.dex}</span>
+          </div>
+          <textarea id="backupText" class="backupTextarea" spellcheck="false">${U.esc(text)}</textarea>
+          <div class="actions">
+            <button class="primary" onclick="Game.copyBackupText()">バックアップをコピー</button>
+            <button class="gold" onclick="Game.selectBackupText()">全文選択</button>
+            <button onclick="Game.closeModal()">閉じる</button>
+          </div>
+          <div class="notice">復元は下の「セーブ復元」から行います。SNSやチャットへ貼る場合は、長文になるのでメモアプリ保存がおすすめです。</div>
+        </div>
+      </div>`;
+  }
+
+  function selectBackupText(){
+    const el = document.getElementById("backupText");
+    if(!el) return;
+    el.focus();
+    el.select();
+    toast("バックアップ文字列を選択しました");
+  }
+
+  async function copyBackupText(){
+    const el = document.getElementById("backupText");
+    if(!el) return;
+    const text = el.value;
+    try{
+      if(navigator.clipboard?.writeText){
+        await navigator.clipboard.writeText(text);
+      }else{
+        el.focus();
+        el.select();
+        document.execCommand("copy");
+      }
+      toast("バックアップをコピーしました");
+    }catch(e){
+      el.focus();
+      el.select();
+      toast("コピーできない場合は手動でコピーしてください");
+    }
+  }
+
+  function openRestoreModal(){
+    let m = document.getElementById("modal");
+    if(!m){
+      m = document.createElement("div");
+      m.id = "modal";
+      document.body.appendChild(m);
+    }
+    m.innerHTML = `
+      <div class="modalBg" onclick="Game.closeModal(event)">
+        <div class="modal backupModal" onclick="event.stopPropagation()">
+          <div class="stageTop">
+            <div>
+              <h2>セーブ復元</h2>
+              <p class="tiny">バックアップ文字列を貼り付けると、現在のスロット${S.activeSlot()}へ復元します。</p>
+            </div>
+            <button onclick="Game.closeModal()">閉じる</button>
+          </div>
+          <textarea id="restoreText" class="backupTextarea" spellcheck="false" placeholder="ここにバックアップ文字列を貼り付け"></textarea>
+          <div class="actions">
+            <button class="red" onclick="Game.restoreBackupText()">現在スロットへ復元</button>
+            <button onclick="Game.closeModal()">キャンセル</button>
+          </div>
+          <div class="notice">復元すると現在のスロット${S.activeSlot()}の内容は上書きされます。心配な場合は先にバックアップを書き出してください。</div>
+        </div>
+      </div>`;
+  }
+
+  function restoreBackupText(){
+    const el = document.getElementById("restoreText");
+    const text = el?.value?.trim();
+    if(!text){toast("バックアップ文字列を貼り付けてください");return;}
+    let parsed = null;
+    try{
+      parsed = JSON.parse(text);
+    }catch(e){
+      toast("JSONとして読み込めません。貼り付け内容を確認してください");
+      return;
+    }
+    const data = parsed?.data || parsed;
+    const party = Array.isArray(data?.party) ? data.party.length : 0;
+    const box = Array.isArray(data?.box) ? data.box.length : 0;
+    const gold = Number(data?.gold) || 0;
+    const version = parsed?.gameVersion || data?.version || "不明";
+    askConfirm(
+      "バックアップを復元",
+      `現在のスロット${S.activeSlot()}を上書きします。\n復元データ：v${version} / 仲間${party + box}体 / GOLD ${gold}\n本当に復元しますか？`,
+      "復元する",
+      () => {
+        try{
+          stopMusic();
+          S.restoreCurrentSlotFromBackup(parsed);
+          if(G._clearFusionPickNoRender) G._clearFusionPickNoRender();
+          closeModal();
+          render();
+          toast("バックアップから復元しました");
+        }catch(e){
+          toast(e?.message || "復元に失敗しました");
+        }
+      },
+      "red"
+    );
+  }
+
   function toggleSetting(key){
     const current = !!settings()[key];
     S.setSetting(key,!current);
@@ -358,6 +487,6 @@
   }
 
 
-  Object.assign(G, {render, toast, delay, playSe, syncMusic, setView, saveNow, startGame, openTitle, fullHeal, startLastStage, closeModal, askConfirm, confirmYes, confirmNo, reset, createNewSlot, switchSlot, copyToSlot, deleteSlot, toggleSetting, setSpeed, devAddGold, devLevelUpAll, devUnlockStages, devUnlockDex, devGetAllItems, devUnlockArena, devShowBalance});
+  Object.assign(G, {render, toast, delay, playSe, syncMusic, setView, saveNow, startGame, openTitle, fullHeal, startLastStage, closeModal, askConfirm, confirmYes, confirmNo, reset, createNewSlot, switchSlot, copyToSlot, deleteSlot, openBackupModal, selectBackupText, copyBackupText, openRestoreModal, restoreBackupText, toggleSetting, setSpeed, devAddGold, devLevelUpAll, devUnlockStages, devUnlockDex, devGetAllItems, devUnlockArena, devShowBalance});
   window.Game = G;
 })();

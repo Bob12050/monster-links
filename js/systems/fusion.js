@@ -208,6 +208,25 @@
     const a = all.find(m=>m.uid===aid);
     const b = all.find(m=>m.uid===bid);
     if(!a || !b || a.uid===b.uid) return null;
+    if(a.locked || b.locked){
+      return {
+        id:a.id,
+        level:1,
+        recipe:false,
+        recipeKey:"",
+        group:"normal",
+        special:false,
+        locked:true,
+        reason:"保護ロック中の仲間は配合素材にできません",
+        note:"",
+        bonus:{hp:0,mp:0,atk:0,def:0,spd:0,wis:0},
+        ivs:{hp:0,mp:0,atk:0,def:0,spd:0,wis:0},
+        skillCandidates:[],
+        selectedSkills:[],
+        avgLevel:Math.floor((a.level + b.level) / 2),
+        parents:[a,b]
+      };
+    }
     const recipe = findRecipe(a,b);
     const id = recipe ? recipe.result : chooseChild(a,b);
     const lockReason = recipeLockReason(recipe,a,b,id);
@@ -234,6 +253,8 @@
   }
 
   function pickFusion(uid){
+    const target = S.owned().find(m=>m.uid===uid);
+    if(target?.locked){toast("保護ロック中の仲間は配合素材にできません");return;}
     if(fusionPick.includes(uid)) fusionPick = fusionPick.filter(x=>x!==uid);
     else if(fusionPick.length < 2) fusionPick.push(uid);
     else fusionPick = [fusionPick[1],uid];
@@ -248,6 +269,10 @@
 
   function setFusionPair(uidA,uidB){
     if(!uidA || !uidB || uidA === uidB) return;
+    const all = S.owned();
+    const a = all.find(m=>m.uid===uidA);
+    const b = all.find(m=>m.uid===uidB);
+    if(a?.locked || b?.locked){toast("保護ロック中の仲間は配合素材にできません");return;}
     fusionPick = [uidA,uidB];
     fusionSkillPick = [];
     const prev = fusionPreview(uidA,uidB);
@@ -283,6 +308,7 @@
     for(let i=0;i<all.length;i++){
       for(let j=i+1;j<all.length;j++){
         const a = all[i], b = all[j];
+        if(a.locked || b.locked) continue;
         const prev = fusionPreview(a.uid,b.uid);
         if(!prev) continue;
         const rankValue = D.RANK[S.def(prev.id).rank] || 1;
@@ -342,8 +368,8 @@
     const all = S.owned();
     const p0 = recipe.parents[0];
     const p1 = recipe.parents[1];
-    const list0 = all.filter(m=>m.id === p0);
-    const list1 = all.filter(m=>m.id === p1);
+    const list0 = all.filter(m=>m.id === p0 && !m.locked);
+    const list1 = all.filter(m=>m.id === p1 && !m.locked);
 
     if(p0 === p1){
       if(list0.length < 2) return {ok:false,label:"素材不足",cls:"",uids:[]};
@@ -394,13 +420,22 @@
     const a = all.find(m=>m.uid===fusionPick[0]);
     const b = all.find(m=>m.uid===fusionPick[1]);
     if(!a || !b || a.uid===b.uid){toast("配合できません");return;}
+    if(a.locked || b.locked){toast("保護ロック中の仲間は配合素材にできません");return;}
     if(S.owned().length <= 2){toast("仲間が2体だけの時は配合できません");return;}
 
     const prev = fusionPreview(a.uid,b.uid);
     if(prev.locked){toast(prev.reason || "特殊配合の条件を満たしていません");return;}
 
     if(typeof window.confirm === "function"){
-      const ok = window.confirm(`${a.nickname} と ${b.nickname} を配合します。\n親2体はいなくなり、子はLv1で生まれます。\nよろしいですか？`);
+      const childName = S.def(prev.id).name;
+      const ok = window.confirm(
+        `【配合確認】\n` +
+        `${a.nickname} Lv${a.level} と ${b.nickname} Lv${b.level} を配合します。\n\n` +
+        `結果：${childName} Lv1\n` +
+        `親2体はいなくなります。\n` +
+        `大事な仲間は保護ロックしてから配合してください。\n\n` +
+        `よろしいですか？`
+      );
       if(!ok) return;
     }
 
