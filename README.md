@@ -1,4 +1,4 @@
-# モンスターリンクス v7.2.8
+# モンスターリンクス v7.5
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
 
@@ -488,3 +488,68 @@ docs/FUSION_SELECTION_UI_V728.md
 ```
 
 配合レシピ内容・配合結果固定仕様・配合後Lv1仕様は変更していません。
+
+
+## v7.3 追加モンスター/配合バランス調整
+
+追加モンスター第1弾と配合ルートの進行速度を微調整しました。
+
+```text
+上位7体の配合minAvg調整
+thunderlion / forgegolem / titanplim のステータス微調整
+通常報酬・闘技場報酬倍率を少し低下
+```
+
+追加ファイル:
+
+```text
+data/balance_adjustments_v73.json
+docs/BATCH1_BALANCE_V73.md
+docs/BALANCE_TEST_CHECKLIST_V73.md
+```
+
+配合レシピの親組み合わせ・配合結果固定仕様・引き継ぎ技仕様・保護ロック仕様は変更していません。
+
+
+## v7.4 ドロップ・報酬調整
+
+追加モンスター第1弾20体にドロップ報酬を追加しました。
+
+```text
+新規アイテムは追加せず、既存アイテムを割り当て
+通常出現モンスターに基本アクセ・素材系報酬を追加
+上位配合モンスターにレアアクセ系報酬を追加
+```
+
+追加ファイル:
+
+```text
+data/drop_adjustments_v74.json
+docs/DROP_REWARD_ADJUST_V74.md
+docs/DROP_CHECKLIST_V74.md
+```
+
+モンスター能力値・配合レシピ・配合条件・スカウト率は変更していません。
+
+
+## v7.5 配合ルート表示強化
+
+配合リストで、今の手持ちから何が作れるか分かるようにしました。
+
+```text
+素材所持数表示
+素材最高Lv表示
+保護中素材数表示
+作成可能/条件未達/素材不足表示
+すぐ作れる候補表示
+```
+
+追加ファイル:
+
+```text
+data/fusion_route_display_v75.json
+docs/FUSION_ROUTE_DISPLAY_V75.md
+docs/FUSION_ROUTE_CHECKLIST_V75.md
+```
+
+配合レシピ内容・配合条件・配合結果固定仕様は変更していません。

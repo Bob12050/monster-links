@@ -79,13 +79,13 @@
     {group:"advanced",parents:["gearslime","steelbug"],result:"gearcat",note:"機械都市の高速猫型"},
     {group:"advanced",parents:["ashimp","cindrake"],result:"cinderhorn",note:"火山の中型アタッカー"},
     {group:"advanced",parents:["cavemole","orelord"],result:"cragbear",note:"岩系の高耐久モンスター"},
-    {group:"advanced",parents:["miretoad","venomwing"],result:"venomqueen",note:"毒沼系の上位配合"},
-    {group:"advanced",parents:["lumenowl","thunderdrone"],result:"thunderlion",note:"雷光の物理アタッカー"},
-    {group:"advanced",parents:["gearcat","steelbug"],result:"forgegolem",note:"機械都市の大型候補。将来2枠化予定"},
-    {group:"advanced",parents:["snowfairy","frostlevia"],result:"glacierfang",note:"氷牙系の上位アタッカー"},
-    {group:"advanced",parents:["lumenowl","astralwyrm"],result:"solarwyrm",note:"太陽光をまとう上位竜"},
-    {group:"advanced",parents:["venomqueen","eclipsewolf"],result:"nightmarestag",note:"悪夢をまとう闇の上位種"},
-    {group:"rare",parents:["kingplim","gigacore"],result:"titanplim",minAvg:34,note:"大型スライム系のレア配合。将来2枠化候補"},
+    {group:"advanced",parents:["miretoad","venomwing"],result:"venomqueen",minAvg:16,note:"毒沼系の上位配合。Bランク入門だが育成は必要"},
+    {group:"advanced",parents:["lumenowl","thunderdrone"],result:"thunderlion",minAvg:17,note:"雷光の物理アタッカー。Bランク中盤向け"},
+    {group:"advanced",parents:["gearcat","steelbug"],result:"forgegolem",minAvg:18,note:"機械都市の大型候補。将来2枠化予定"},
+    {group:"advanced",parents:["snowfairy","frostlevia"],result:"glacierfang",minAvg:24,note:"氷牙系の上位アタッカー。Aランク到達を少し遅らせる"},
+    {group:"advanced",parents:["lumenowl","astralwyrm"],result:"solarwyrm",minAvg:25,note:"太陽光をまとう上位竜。Aランク中盤向け"},
+    {group:"advanced",parents:["venomqueen","eclipsewolf"],result:"nightmarestag",minAvg:26,note:"悪夢をまとう闇の上位種。Aランク終盤向け"},
+    {group:"rare",parents:["kingplim","gigacore"],result:"titanplim",minAvg:36,note:"大型スライム系のレア配合。将来2枠化候補。Sランク到達抑制"},
   ];
 
   P.RECIPES = P.RECIPE_LIST.reduce((acc,r)=>{

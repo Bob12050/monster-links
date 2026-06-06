@@ -201,9 +201,80 @@
     const groups = ["basic","advanced","rare"];
     const discovered = S.state.dex?.discovered || {};
     const scouted = S.state.dex?.scouted || {};
+    const owned = S.owned();
 
     const safeDef = id => D.MONSTERS?.[id] || {name:id || "不明",rank:"?",type:"slime",emoji:"❔"};
     const safeMonster = (id,cls="miniFace") => D.MONSTERS?.[id] ? V.monsterInline(id,cls) : `<span class="${cls}">❔</span>`;
+    const unprotectedOwned = id => owned.filter(m=>m.id === id && !m.locked);
+    const protectedOwned = id => owned.filter(m=>m.id === id && m.locked);
+
+    function parentMaterialHtml(id,needCount=1){
+      const list = unprotectedOwned(id);
+      const locked = protectedOwned(id);
+      const have = list.length;
+      const maxLv = have ? Math.max(...list.map(m=>m.level || 1)) : 0;
+      const ok = have >= needCount;
+      return `<div class="routeMaterial ${ok ? "ok" : "ng"}">
+        <span>${ok ? "✅" : "不足"} ${have}/${needCount}</span>
+        <small>${maxLv ? `最高Lv${maxLv}` : "未所持"}${locked.length ? ` / 保護${locked.length}` : ""}</small>
+      </div>`;
+    }
+
+    function routeStatusHtml(r,setStatus){
+      if(!setStatus.ok){
+        return `<div class="routeStatus bad">素材不足</div>`;
+      }
+      if(setStatus.locked){
+        return `<div class="routeStatus warn">条件未達：${U.esc(setStatus.reason || "条件確認")}</div>`;
+      }
+      return `<div class="routeStatus good">作成可能</div>`;
+    }
+
+    function canMakeRecipe(r){
+      const setStatus = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false,locked:false};
+      return !!(setStatus.ok && !setStatus.locked);
+    }
+
+    function recipeDashboardHtml(){
+      const canMake = entries.filter(canMakeRecipe);
+      const materialEnough = entries.filter(r=>{
+        const s = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false};
+        return !!s.ok;
+      });
+      const undiscovered = entries.filter(r=>!(discovered[r.result] || scouted[r.result]));
+      const highTargets = entries.filter(r=>{
+        const rank = D.RANK?.[safeDef(r.result).rank] || 1;
+        return rank >= 5;
+      });
+
+      const card = (label,value,sub,cls="") => `<div class="routeDashCard ${cls}">
+        <b>${value}</b>
+        <span>${label}</span>
+        <small>${sub}</small>
+      </div>`;
+
+      const topMake = canMake.slice(0,6).map(r=>{
+        const rd = safeDef(r.result);
+        return `<button class="routeQuickBtn" onclick="Game.setFusionFromRecipe('${U.esc(r.recipeKey || [...r.parents].sort().join("+"))}')">
+          ${safeMonster(r.result,"miniFace")} ${U.esc(rd.name)}
+          <small>${rd.rank}</small>
+        </button>`;
+      }).join("");
+
+      return `<section class="routeDashboardV75">
+        <div class="routeDashGrid">
+          ${card("今すぐ作成可能",canMake.length,"条件達成済み","good")}
+          ${card("素材はある",materialEnough.length,"Lv/ランク条件含む","warn")}
+          ${card("未発見レシピ結果",undiscovered.length,"図鑑埋め候補","")}
+          ${card("Bランク以上",highTargets.length,"上位配合候補","")}
+        </div>
+        ${topMake ? `<div class="routeQuickArea">
+          <div class="tiny">すぐ作れる候補</div>
+          <div class="routeQuickGrid">${topMake}</div>
+        </div>` : `<div class="notice">今すぐ作れるレシピはありません。素材集めか親の育成が必要です。</div>`}
+      </section>`;
+    }
+
     const groupHtml = group => {
       const groupEntries = entries.filter(r=>r.group === group);
       if(!groupEntries.length) return "";
@@ -220,6 +291,7 @@
           const p0d = safeDef(p0);
           const p1d = safeDef(p1);
           const rd = safeDef(r.result);
+          const sameParent = p0 === p1;
           const condText = window.MonsterLinksGame.fusionRequirementText ? window.MonsterLinksGame.fusionRequirementText(r.result,r.minAvg) : (r.minAvg ? `親平均Lv${r.minAvg}以上` : "条件なし");
           const cond = `<div class="tiny rareLock">条件：${U.esc(condText)}</div>`;
           const note = r.note ? `<div class="tiny recipeNote">${U.esc(r.note)}</div>` : "";
@@ -227,12 +299,25 @@
           const status = resultKnown ? `<span class="type">発見済み</span>` : `<span class="tag">未発見</span>`;
           const setStatus = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false,label:"素材不足",cls:""};
           const setButton = `<button class="${setStatus.cls || "ghost"} recipeSetBtn" ${setStatus.ok ? "" : "disabled"} onclick="Game.setFusionFromRecipe('${U.esc(r.recipeKey || [p0,p1].sort().join("+"))}')">${U.esc(setStatus.label)}</button>`;
-          return `<div class="recipe ${r.group === "rare" ? "rareRecipe" : ""}">
-            <div>${safeMonster(p0,'miniFace')} ${U.esc(p0d.name)}</div>
-            <div class="tiny">＋</div>
-            <div>${safeMonster(p1,'miniFace')} ${U.esc(p1d.name)}</div>
+          return `<div class="recipe routeRecipeV75 ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""}">
+            <div class="routeStatusWrap">${routeStatusHtml(r,setStatus)}</div>
+            <div class="routeParents">
+              <div class="routeParentBox">
+                <div>${safeMonster(p0,'miniFace')} ${U.esc(p0d.name)}</div>
+                ${parentMaterialHtml(p0,sameParent ? 2 : 1)}
+              </div>
+              <div class="tiny routePlus">＋</div>
+              <div class="routeParentBox">
+                <div>${safeMonster(p1,'miniFace')} ${U.esc(p1d.name)}</div>
+                ${sameParent ? `<div class="routeMaterial same">同種2体必要</div>` : parentMaterialHtml(p1,1)}
+              </div>
+            </div>
             <div class="recipeArrow">↓</div>
-            <div><b>${resultKnown ? `${safeMonster(r.result,'miniFace')} ${U.esc(rd.name)}` : "？？？？"}</b> ${status}</div>
+            <div class="routeResult">
+              <b>${resultKnown ? `${safeMonster(r.result,'miniFace')} ${U.esc(rd.name)}` : "？？？？"}</b>
+              ${status}
+              <div class="tiny">${rd.rank} / ${D.TYPES?.[rd.type] || rd.type || "?"}</div>
+            </div>
             ${cond}${note}
             <div class="recipeSetArea">${setButton}</div>
           </div>`;
@@ -240,7 +325,10 @@
       </section>`;
     };
 
-    return `<div class="recipeSections">${groups.map(groupHtml).join("")}</div>`;
+    return `<div class="recipeSections">
+      ${recipeDashboardHtml()}
+      ${groups.map(groupHtml).join("")}
+    </div>`;
   }
 
   Object.assign(V, {

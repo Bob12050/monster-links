@@ -14,12 +14,12 @@
   */
   P.BALANCE = {
     // 通常探索の報酬
-    expMultiplier: 1.22,
-    goldMultiplier: 1.15,
+    expMultiplier: 1.16,
+    goldMultiplier: 1.12,
 
     // 闘技場の報酬。闘技場は周回報酬なので上げすぎ注意。
-    arenaExpMultiplier: 1.08,
-    arenaGoldMultiplier: 1.08,
+    arenaExpMultiplier: 1.04,
+    arenaGoldMultiplier: 1.05,
 
     // スカウト・ドロップ・逃走の補正
     scoutBonus: 2,

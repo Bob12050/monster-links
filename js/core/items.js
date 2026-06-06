@@ -40,5 +40,27 @@
     frostlevia:[{id:"frost_scale",rate:35},{id:"tide_pearl",rate:12}], arcautomaton:[{id:"arc_core",rate:35},{id:"ore_core",rate:12}], astralwyrm:[{id:"astral_orb",rate:35},{id:"tide_pearl",rate:15},{id:"volcano_fang",rate:15}],
     prismdragon:[{id:"prism_feather",rate:40},{id:"astral_orb",rate:20},{id:"arc_core",rate:15},{id:"frost_scale",rate:15}],
     poisonplim:[{id:"mire_orb",rate:5},{id:"mana_shell",rate:8}], toxicshroom:[{id:"mire_orb",rate:8},{id:"mage_charm",rate:12}], sludgecko:[{id:"mire_orb",rate:8},{id:"life_drop",rate:12}], venomwing:[{id:"venom_crown",rate:5},{id:"swift_feather",rate:12}], venomhydra:[{id:"venom_crown",rate:36},{id:"mire_orb",rate:14}], gearslime:[{id:"ancient_gear",rate:4},{id:"guard_stone",rate:12}], steelbug:[{id:"ancient_gear",rate:5},{id:"force_ring",rate:12}], thunderdrone:[{id:"arc_core",rate:7},{id:"swift_feather",rate:12}], corewalker:[{id:"ancient_gear",rate:9},{id:"ore_core",rate:8}], arkmachine:[{id:"ancient_gear",rate:36},{id:"arc_core",rate:16}], venomchimera:[{id:"venom_crown",rate:20},{id:"astral_orb",rate:10}], omegaframe:[{id:"ancient_gear",rate:20},{id:"prism_feather",rate:10}]    ,corallume:[{id:"abyss_pearl",rate:7},{id:"mana_shell",rate:12}], abyssfin:[{id:"abyss_pearl",rate:8},{id:"tide_pearl",rate:10}], shellgolem:[{id:"abyss_pearl",rate:6},{id:"guard_stone",rate:12}], pearlseraph:[{id:"abyss_pearl",rate:10},{id:"prism_feather",rate:4}], abysslevia:[{id:"leviathan_scale",rate:38},{id:"abyss_pearl",rate:18}], impfang:[{id:"demon_horn",rate:7},{id:"swift_feather",rate:12}], hellknight:[{id:"demon_horn",rate:9},{id:"force_ring",rate:12}], doomgazer:[{id:"demon_horn",rate:12},{id:"mage_charm",rate:12}], chaoswyrm:[{id:"demon_horn",rate:14},{id:"astral_orb",rate:8}], demonlord:[{id:"chaos_crown",rate:40},{id:"demon_horn",rate:20}]
+,
+    // v7.4 batch1 monster drops
+    budbunny:[{id:"swift_feather",rate:6},{id:"life_drop",rate:5}],
+    cavemole:[{id:"guard_stone",rate:8},{id:"ore_core",rate:3}],
+    dewplim:[{id:"mana_shell",rate:7},{id:"life_drop",rate:5}],
+    reefowl:[{id:"swift_feather",rate:7},{id:"tide_pearl",rate:3}],
+    ashimp:[{id:"force_ring",rate:7},{id:"demon_horn",rate:3}],
+    cinderhorn:[{id:"volcano_fang",rate:7},{id:"force_ring",rate:10}],
+    cragbear:[{id:"ore_core",rate:8},{id:"guard_stone",rate:12}],
+    lumenowl:[{id:"mage_charm",rate:8},{id:"arc_core",rate:4}],
+    snowfairy:[{id:"frost_scale",rate:5},{id:"mana_shell",rate:8}],
+    sparkbug:[{id:"swift_feather",rate:6},{id:"arc_core",rate:3}],
+    miretoad:[{id:"mire_orb",rate:8},{id:"mana_shell",rate:6}],
+    gearcat:[{id:"ancient_gear",rate:5},{id:"swift_feather",rate:8}],
+    abyssjelly:[{id:"abyss_pearl",rate:6},{id:"mage_charm",rate:8}],
+    venomqueen:[{id:"venom_crown",rate:10},{id:"mire_orb",rate:12}],
+    thunderlion:[{id:"arc_core",rate:10},{id:"force_ring",rate:10}],
+    forgegolem:[{id:"ancient_gear",rate:11},{id:"ore_core",rate:10}],
+    glacierfang:[{id:"frost_scale",rate:13},{id:"leviathan_scale",rate:4}],
+    solarwyrm:[{id:"prism_feather",rate:6},{id:"astral_orb",rate:10}],
+    nightmarestag:[{id:"demon_horn",rate:12},{id:"venom_crown",rate:7}],
+    titanplim:[{id:"prism_feather",rate:10},{id:"chaos_crown",rate:4},{id:"life_drop",rate:16}],
   };
 })();

@@ -1,5 +1,32 @@
 # バージョン履歴
 
+## v7.5 配合ルート表示強化
+- 素材所持数表示を追加
+- 素材最高Lv表示を追加
+- 保護中素材数表示を追加
+- 作成可能/条件未達/素材不足表示を追加
+- すぐ作れる候補表示を追加
+- data/fusion_route_display_v75.json を追加
+- docs/FUSION_ROUTE_DISPLAY_V75.md を追加
+- docs/FUSION_ROUTE_CHECKLIST_V75.md を追加
+- 配合レシピ内容・配合条件・配合結果固定仕様の変更はなし
+
+## v7.4 ドロップ・報酬調整
+- 追加モンスター第1弾20体にドロップを追加
+- data/drop_adjustments_v74.json を追加
+- docs/DROP_REWARD_ADJUST_V74.md を追加
+- docs/DROP_CHECKLIST_V74.md を追加
+- モンスター能力値・配合レシピ・配合条件・スカウト率の変更はなし
+
+## v7.3 追加モンスター/配合バランス調整
+- 上位7体の配合minAvgを調整
+- thunderlion / forgegolem / titanplim のステータスを微調整
+- 通常報酬・闘技場報酬倍率を少し低下
+- data/balance_adjustments_v73.json を追加
+- docs/BATCH1_BALANCE_V73.md を追加
+- docs/BALANCE_TEST_CHECKLIST_V73.md を追加
+- 配合レシピの親組み合わせ・配合結果固定仕様・引き継ぎ技仕様の変更はなし
+
 ## v7.2.8 配合選択UI改善
 - 選択中の親2体を配合画面上部に表示
 - 親1・親2・配合結果を分かりやすく表示

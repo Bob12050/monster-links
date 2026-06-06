@@ -1,0 +1,53 @@
+{
+  "version": "7.3",
+  "recipeMinAvgChanges": [
+    {
+      "result": "venomqueen",
+      "minAvg": 16
+    },
+    {
+      "result": "thunderlion",
+      "minAvg": 17
+    },
+    {
+      "result": "forgegolem",
+      "minAvg": 18
+    },
+    {
+      "result": "glacierfang",
+      "minAvg": 24
+    },
+    {
+      "result": "solarwyrm",
+      "minAvg": 25
+    },
+    {
+      "result": "nightmarestag",
+      "minAvg": 26
+    },
+    {
+      "result": "titanplim",
+      "minAvg": 36
+    }
+  ],
+  "statAdjustments": [
+    {
+      "id": "forgegolem",
+      "reason": "Bランク・size2候補だが、正式サイズ制前は1枠扱いのため微調整"
+    },
+    {
+      "id": "thunderlion",
+      "reason": "Bランクとして攻撃と素早さが高めだったため微調整"
+    },
+    {
+      "id": "titanplim",
+      "reason": "Sランク・size2候補だが、正式サイズ制前のため微調整"
+    }
+  ],
+  "globalBalance": {
+    "expMultiplier": 1.16,
+    "goldMultiplier": 1.12,
+    "arenaExpMultiplier": 1.04,
+    "arenaGoldMultiplier": 1.05
+  }
+}

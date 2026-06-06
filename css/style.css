@@ -3507,3 +3507,157 @@ button:hover:before{
     transform:rotate(90deg);
   }
 }
+
+
+/* v7.5 fusion route display */
+.routeDashboardV75{
+  margin:0 0 14px;
+  padding:12px;
+  border:1px solid rgba(110,231,255,.18);
+  border-radius:18px;
+  background:rgba(0,0,0,.18);
+}
+.routeDashGrid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+.routeDashCard{
+  padding:10px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+}
+.routeDashCard b{
+  display:block;
+  font-size:22px;
+}
+.routeDashCard span{
+  display:block;
+  font-weight:900;
+}
+.routeDashCard small{
+  color:var(--muted);
+}
+.routeDashCard.good{
+  border-color:rgba(100,255,170,.28);
+  background:rgba(100,255,170,.08);
+}
+.routeDashCard.warn{
+  border-color:rgba(255,218,110,.28);
+  background:rgba(255,218,110,.08);
+}
+.routeQuickArea{
+  margin-top:12px;
+}
+.routeQuickGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:8px;
+  margin-top:6px;
+}
+.routeQuickBtn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.routeQuickBtn small{
+  color:var(--muted);
+}
+.routeRecipeV75{
+  position:relative;
+}
+.routeRecipeV75.canMake{
+  border-color:rgba(100,255,170,.32)!important;
+}
+.routeRecipeV75.hasMats{
+  border-color:rgba(255,218,110,.28)!important;
+}
+.routeStatusWrap{
+  margin-bottom:8px;
+}
+.routeStatus{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
+.routeStatus.good{
+  background:rgba(100,255,170,.13);
+  border:1px solid rgba(100,255,170,.30);
+  color:#b7ffd5;
+}
+.routeStatus.warn{
+  background:rgba(255,218,110,.12);
+  border:1px solid rgba(255,218,110,.30);
+  color:#ffe4a0;
+}
+.routeStatus.bad{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:var(--muted);
+}
+.routeParents{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+}
+.routeParentBox{
+  padding:8px;
+  border-radius:14px;
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.10);
+  min-width:0;
+}
+.routeMaterial{
+  margin-top:6px;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  padding:5px 7px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.10);
+  font-size:12px;
+}
+.routeMaterial.ok{
+  background:rgba(100,255,170,.10);
+  border-color:rgba(100,255,170,.22);
+}
+.routeMaterial.ng{
+  background:rgba(255,255,255,.04);
+  color:var(--muted);
+}
+.routeMaterial.same{
+  background:rgba(110,231,255,.08);
+  border-color:rgba(110,231,255,.18);
+  color:var(--muted);
+}
+.routeMaterial small{
+  color:var(--muted);
+}
+.routePlus{
+  text-align:center;
+  font-weight:900;
+}
+.routeResult{
+  padding:8px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.10);
+}
+@media (max-width:720px){
+  .routeDashGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .routeParents{
+    grid-template-columns:1fr;
+  }
+  .routePlus{
+    transform:rotate(90deg);
+  }
+}

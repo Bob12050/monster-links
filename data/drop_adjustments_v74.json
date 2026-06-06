@@ -1,0 +1,216 @@
+{
+  "version": "7.4",
+  "purpose": "追加モンスター第1弾のドロップ・報酬調整",
+  "drops": {
+    "budbunny": [
+      {
+        "id": "swift_feather",
+        "rate": 6
+      },
+      {
+        "id": "life_drop",
+        "rate": 5
+      }
+    ],
+    "cavemole": [
+      {
+        "id": "guard_stone",
+        "rate": 8
+      },
+      {
+        "id": "ore_core",
+        "rate": 3
+      }
+    ],
+    "dewplim": [
+      {
+        "id": "mana_shell",
+        "rate": 7
+      },
+      {
+        "id": "life_drop",
+        "rate": 5
+      }
+    ],
+    "reefowl": [
+      {
+        "id": "swift_feather",
+        "rate": 7
+      },
+      {
+        "id": "tide_pearl",
+        "rate": 3
+      }
+    ],
+    "ashimp": [
+      {
+        "id": "force_ring",
+        "rate": 7
+      },
+      {
+        "id": "demon_horn",
+        "rate": 3
+      }
+    ],
+    "cinderhorn": [
+      {
+        "id": "volcano_fang",
+        "rate": 7
+      },
+      {
+        "id": "force_ring",
+        "rate": 10
+      }
+    ],
+    "cragbear": [
+      {
+        "id": "ore_core",
+        "rate": 8
+      },
+      {
+        "id": "guard_stone",
+        "rate": 12
+      }
+    ],
+    "lumenowl": [
+      {
+        "id": "mage_charm",
+        "rate": 8
+      },
+      {
+        "id": "arc_core",
+        "rate": 4
+      }
+    ],
+    "snowfairy": [
+      {
+        "id": "frost_scale",
+        "rate": 5
+      },
+      {
+        "id": "mana_shell",
+        "rate": 8
+      }
+    ],
+    "sparkbug": [
+      {
+        "id": "swift_feather",
+        "rate": 6
+      },
+      {
+        "id": "arc_core",
+        "rate": 3
+      }
+    ],
+    "miretoad": [
+      {
+        "id": "mire_orb",
+        "rate": 8
+      },
+      {
+        "id": "mana_shell",
+        "rate": 6
+      }
+    ],
+    "gearcat": [
+      {
+        "id": "ancient_gear",
+        "rate": 5
+      },
+      {
+        "id": "swift_feather",
+        "rate": 8
+      }
+    ],
+    "abyssjelly": [
+      {
+        "id": "abyss_pearl",
+        "rate": 6
+      },
+      {
+        "id": "mage_charm",
+        "rate": 8
+      }
+    ],
+    "venomqueen": [
+      {
+        "id": "venom_crown",
+        "rate": 10
+      },
+      {
+        "id": "mire_orb",
+        "rate": 12
+      }
+    ],
+    "thunderlion": [
+      {
+        "id": "arc_core",
+        "rate": 10
+      },
+      {
+        "id": "force_ring",
+        "rate": 10
+      }
+    ],
+    "forgegolem": [
+      {
+        "id": "ancient_gear",
+        "rate": 11
+      },
+      {
+        "id": "ore_core",
+        "rate": 10
+      }
+    ],
+    "glacierfang": [
+      {
+        "id": "frost_scale",
+        "rate": 13
+      },
+      {
+        "id": "leviathan_scale",
+        "rate": 4
+      }
+    ],
+    "solarwyrm": [
+      {
+        "id": "prism_feather",
+        "rate": 6
+      },
+      {
+        "id": "astral_orb",
+        "rate": 10
+      }
+    ],
+    "nightmarestag": [
+      {
+        "id": "demon_horn",
+        "rate": 12
+      },
+      {
+        "id": "venom_crown",
+        "rate": 7
+      }
+    ],
+    "titanplim": [
+      {
+        "id": "prism_feather",
+        "rate": 10
+      },
+      {
+        "id": "chaos_crown",
+        "rate": 4
+      },
+      {
+        "id": "life_drop",
+        "rate": 16
+      }
+    ]
+  },
+  "notes": [
+    "新規アイテムは追加せず、既存アクセサリー・素材系報酬を割り当て",
+    "序盤〜中盤の通常出現モンスターは基本アクセサリー中心",
+    "上位配合モンスターはレアアクセサリーを低〜中確率で設定",
+    "titanplimはSランク・size2候補のためレア寄りだが、chaos_crownは低確率"
+  ]
+}
