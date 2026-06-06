@@ -14,7 +14,6 @@
     const personality = S.personalityDef(m.personality);
     const compact = !!opt.compact;
     const lockBadge = m.locked ? `<span class="lockBadge">🔒 保護中</span>` : "";
-    const lockBtn = `<button class="${m.locked ? "red" : ""}" onclick="Game.toggleMonsterLock('${m.uid}')">${m.locked ? "保護解除" : "保護"}</button>`;
     return `
     <div class="card mon ${opt.pick ? "pick" : ""} ${m.locked ? "lockedMon" : ""} ${compact ? "monCompact" : ""}">
       ${V.monsterVisual(m.id,'face')}
@@ -43,6 +42,8 @@
   }
 
   function monsterActions(m,opt){
+    const lockBtn = `<button class="${m.locked ? "red" : ""}" onclick="Game.toggleMonsterLock('${m.uid}')">${m.locked ? "保護解除" : "保護"}</button>`;
+
     if(opt.mode === "party"){
       return `<div class="actions">
         <button onclick="Game.toBox('${m.uid}')" ${S.state.party.length<=1 ? "disabled" : ""}>牧場へ</button>
