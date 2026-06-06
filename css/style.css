@@ -3725,3 +3725,198 @@ button:hover:before{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
+
+
+/* v7.7 UI整理・見やすさ調整 */
+:root{
+  --card-gap-v77:12px;
+}
+
+/* 仲間カードの情報密度を少し整理 */
+.mon{
+  min-width:0;
+}
+.mon > div{
+  min-width:0;
+}
+.mon .name{
+  line-height:1.25;
+}
+.mon .tiny{
+  word-break:break-word;
+}
+.mon .equipLine{
+  margin-top:6px;
+}
+
+/* 牧場2列時にカードが詰まりすぎないように調整 */
+.pastureGridV761 .mon,
+.partyListV761 .mon{
+  align-items:start;
+}
+@media (min-width:900px){
+  .pastureGridV761 .mon{
+    grid-template-columns:58px minmax(0,1fr);
+    gap:10px;
+  }
+  .pastureGridV761 .face{
+    width:58px;
+    height:58px;
+    border-radius:16px;
+  }
+  .pastureGridV761 .stats{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:5px;
+  }
+  .pastureGridV761 .stat{
+    padding:4px 3px;
+    font-size:11px;
+  }
+  .pastureGridV761 .stat b{
+    font-size:13px;
+  }
+  .pastureGridV761 .actions{
+    gap:6px;
+  }
+  .pastureGridV761 .actions button{
+    min-height:40px;
+    padding:9px 8px;
+    font-size:12px;
+  }
+}
+
+/* 配合リストの状態表示を少し見やすく */
+.routeDashboardV75{
+  position:relative;
+}
+.routeDashCard b{
+  line-height:1;
+}
+.routeDashCard span{
+  margin-top:4px;
+}
+.routeRecipeV75{
+  overflow:hidden;
+}
+.routeRecipeV75 .recipeSetArea{
+  margin-top:10px;
+}
+.routeRecipeV75 .recipeSetBtn{
+  width:100%;
+}
+.routeMaterial span{
+  font-weight:900;
+}
+.routeResult b{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+/* サイズ・ランク・タイプバッジの並びを安定化 */
+.name .tag,
+.name .type,
+.name .sizeBadge,
+.name .lockBadge{
+  flex:0 0 auto;
+}
+.dexMetaLine,
+.routeResult .tiny{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  align-items:center;
+}
+
+/* 図鑑カードを少し読みやすく */
+.dexCardV31 .name{
+  justify-content:center;
+  text-align:center;
+}
+.dexCardV31 .tiny{
+  margin-top:6px;
+}
+
+/* 配合プレビューの見出しを整理 */
+.fusionResultInfo .name{
+  margin-bottom:4px;
+}
+.fusionInfoBlock{
+  overflow:hidden;
+}
+.skillPickGrid button{
+  text-align:left;
+}
+.skillPickGrid button span{
+  display:block;
+  line-height:1.35;
+}
+.skillPickGrid button small{
+  display:block;
+  margin-top:3px;
+}
+
+/* スマホでは余白を少し詰める */
+@media (max-width:520px){
+  .app{
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .card{
+    padding:12px;
+    border-radius:18px;
+  }
+  .hero{
+    padding:15px;
+    border-radius:18px;
+  }
+  .mon{
+    grid-template-columns:56px minmax(0,1fr);
+    gap:10px;
+  }
+  .face{
+    width:56px;
+    height:56px;
+    border-radius:16px;
+  }
+  .stats{
+    gap:5px;
+  }
+  .stat{
+    padding:4px 3px;
+    font-size:11px;
+  }
+  .stat b{
+    font-size:13px;
+  }
+  .actions button{
+    min-height:41px;
+    padding:9px 8px;
+    font-size:12px;
+  }
+  .routeDashGrid{
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+  .routeDashCard{
+    padding:9px;
+  }
+  .routeDashCard b{
+    font-size:20px;
+  }
+}
+
+/* PCでは主要カードに少し余白を持たせる */
+@media (min-width:980px){
+  .card{
+    margin-bottom:14px;
+  }
+  .grid,
+  .monsterManageLayoutV761,
+  .recipeGrid,
+  .recommendGrid,
+  .dexGridV31{
+    gap:14px;
+  }
+}

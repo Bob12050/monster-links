@@ -46,7 +46,7 @@
     <main>
       <section class="hero">
         <h1>仲間モンスター</h1>
-        <p>仲間の確認・装備変更・配合への入口です。パーティは最大3体まで編成できます。</p>
+        <p>仲間の確認・装備変更・配合への入口です。保護ロックやサイズ表示もここで確認できます。</p>
       </section>
 
       <section class="card fusionRouteCard">
@@ -84,7 +84,7 @@
           <div class="stageTop">
             <div>
               <h2>牧場 ${box.length}/${state.box.length}表示</h2>
-              <p class="tiny">牧場はPC・横幅の広い画面では2列表示になります。</p>
+              <p class="tiny">PC・横幅の広い画面では2列表示。保護中の仲間は配合素材になりません。</p>
             </div>
             <span class="tag">${box.length}体</span>
           </div>
