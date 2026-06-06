@@ -322,16 +322,23 @@
       // 選択済みなら外す
       fusionSkillPick = fusionSkillPick.filter(x=>x !== id);
     }else{
-      // v7.2.5:
-      // すでに2つ選ばれている時は「選べない」ではなく、
-      // 古い選択を1つ外して新しい技を入れる。
+      // v7.2.6:
+      // 2つ選択済みの時に別の技を押した場合、
+      // 片方を固定せず、いったん選択をリセットして新しい技だけ選ぶ。
+      // その後もう1つ好きな技を選べる。
       if(fusionSkillPick.length >= 2){
-        fusionSkillPick.shift();
+        fusionSkillPick = [id];
+      }else{
+        fusionSkillPick.push(id);
       }
-      fusionSkillPick.push(id);
     }
 
     sanitizeFusionSkillPick(a,b);
+    render();
+  }
+
+  function clearFusionSkills(){
+    fusionSkillPick = [];
     render();
   }
 
@@ -545,6 +552,7 @@
     doFusion,
     fusionPreview,
     toggleFusionSkill,
+    clearFusionSkills,
     recommendedFusions,
     fusionRecipeEntries,
     recipeSetStatus,

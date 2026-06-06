@@ -99,7 +99,8 @@
     const selected = new Set(prev.selectedSkills || []);
     return `<div class="fusionInfoBlock">
       <b>引き継ぎ技を選択 <small>${selected.size}/2</small></b>
-      <div class="tiny">最大2つまで選べます。2つ選択中に別の技を押すと、古い選択と入れ替わります。</div>
+      <div class="tiny">最大2つまで選べます。2つ選択中に別の技を押すと、いったん選択をリセットしてその技だけ選びます。</div>
+      <div class="actions"><button onclick="Game.clearFusionSkills()">技選択をクリア</button></div>
       <div class="skillPickGrid">
         ${list.map(s=>{
           const sk = D.SKILLS[s.id];
