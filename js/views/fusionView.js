@@ -99,6 +99,7 @@
     const selected = new Set(prev.selectedSkills || []);
     return `<div class="fusionInfoBlock">
       <b>引き継ぎ技を選択 <small>${selected.size}/2</small></b>
+      <div class="tiny">最大2つまで選べます。選び直したい時は一度タップして外してください。</div>
       <div class="skillPickGrid">
         ${list.map(s=>{
           const sk = D.SKILLS[s.id];

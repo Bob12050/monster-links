@@ -195,10 +195,18 @@
 
   function selectedSkillsFor(a,b){
     const ids = skillCandidates(a,b).map(x=>x.id);
+    return fusionSkillPick.filter(id=>ids.includes(id)).slice(0,2);
+  }
+
+  function initFusionSkillPick(a,b){
+    const ids = skillCandidates(a,b).map(x=>x.id);
+    fusionSkillPick = ids.slice(0,Math.min(2,ids.length));
+    return fusionSkillPick.slice(0,2);
+  }
+
+  function sanitizeFusionSkillPick(a,b){
+    const ids = skillCandidates(a,b).map(x=>x.id);
     fusionSkillPick = fusionSkillPick.filter(id=>ids.includes(id)).slice(0,2);
-    if(fusionSkillPick.length === 0 && ids.length){
-      fusionSkillPick = ids.slice(0,Math.min(2,ids.length));
-    }
     return fusionSkillPick.slice(0,2);
   }
 
@@ -270,8 +278,10 @@
 
     fusionSkillPick = [];
     if(fusionPick.length === 2){
-      const prev = fusionPreview(fusionPick[0],fusionPick[1]);
-      if(prev) fusionSkillPick = prev.selectedSkills;
+      const all = S.owned();
+      const a = all.find(m=>m.uid===fusionPick[0]);
+      const b = all.find(m=>m.uid===fusionPick[1]);
+      if(a && b) initFusionSkillPick(a,b);
     }
     render();
   }
@@ -285,8 +295,7 @@
     if(a?.locked || b?.locked){toast("保護ロック中の仲間は配合素材にできません");return;}
     fusionPick = [uidA,uidB];
     fusionSkillPick = [];
-    const prev = fusionPreview(uidA,uidB);
-    if(prev) fusionSkillPick = prev.selectedSkills;
+    initFusionSkillPick(a,b);
     render();
   }
 
@@ -299,8 +308,16 @@
 
   function toggleFusionSkill(id){
     if(fusionPick.length !== 2) return;
-    const prev = fusionPreview(fusionPick[0],fusionPick[1]);
-    if(!prev || !prev.skillCandidates.some(s=>s.id === id)) return;
+    const all = S.owned();
+    const a = all.find(m=>m.uid===fusionPick[0]);
+    const b = all.find(m=>m.uid===fusionPick[1]);
+    if(!a || !b) return;
+
+    const candidates = skillCandidates(a,b);
+    if(!candidates.some(s=>s.id === id)) return;
+
+    sanitizeFusionSkillPick(a,b);
+
     if(fusionSkillPick.includes(id)){
       fusionSkillPick = fusionSkillPick.filter(x=>x !== id);
     }else{
@@ -431,7 +448,7 @@
       return;
     }
 
-    if(prev) fusionSkillPick = prev.selectedSkills;
+    if(prev) initFusionSkillPick(S.owned().find(m=>m.uid===fusionPick[0]), S.owned().find(m=>m.uid===fusionPick[1]));
     S.save();
     render();
     if(prev?.locked) toast(prev.reason || "レベル条件を満たしていません");
@@ -463,6 +480,7 @@
       if(!ok) return;
     }
 
+    sanitizeFusionSkillPick(a,b);
     const candidateIds = prev.skillCandidates.map(s=>s.id);
     let selected = fusionSkillPick.filter(id=>candidateIds.includes(id)).slice(0,2);
     if(selected.length === 0) selected = candidateIds.slice(0,2);
