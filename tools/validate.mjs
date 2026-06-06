@@ -323,6 +323,56 @@ function loadGameData(scriptRefs){
     fail(`v8.2.1戦闘画面生成エラー: ${error.stack || error.message}`);
   }
 
+  try{
+    const dexLeaf = context.MonsterLinksState.makeMonster("leafling",10);
+    const dexPlim = context.MonsterLinksState.makeMonster("plim",10);
+    const dexPuff = context.MonsterLinksState.makeMonster("puffbat",10);
+    context.MonsterLinksState.state.party = [dexLeaf,dexPlim,dexPuff];
+    context.MonsterLinksState.state.box = [];
+    context.MonsterLinksState.state.dex.discovered = {leafling:true,plim:true,aquan:true};
+    context.MonsterLinksState.state.dex.scouted = {leafling:true,plim:true};
+    context.MonsterLinksState.state.battle = null;
+
+    const dexViewFile = path.join(root,"js","views","dexView.js");
+    const dexSystemFile = path.join(root,"js","systems","dex.js");
+    vm.runInContext(fs.readFileSync(dexViewFile,"utf8"),context,{filename:"js/views/dexView.js"});
+    vm.runInContext(fs.readFileSync(dexSystemFile,"utf8"),context,{filename:"js/systems/dex.js"});
+
+    const dexCard = context.MonsterLinksViews.dexCard("aquan",true,false);
+    if(!dexCard.includes("Game.openDexDetail('aquan')")) fail("発見済み図鑑カードから詳細を開けません");
+    if(!dexCard.includes("配合ルート")) fail("図鑑カードに配合ルート案内がありません");
+
+    const dexDetail = context.MonsterLinksViews.dexDetailHtml("aquan");
+    if(!dexDetail.includes("このモンスターを作る配合")) fail("図鑑詳細に作成配合ルートがありません");
+    if(!dexDetail.includes("このモンスターを素材にする配合")) fail("図鑑詳細に素材逆引きルートがありません");
+    if(!dexDetail.includes("Game.setFusionFromDex('leafling+plim')")) fail("作成可能な図鑑ルートに配合セット導線がありません");
+    if(!dexDetail.includes("dexSecretMonsterV83") || !dexDetail.includes("結果未発見")) fail("未発見結果のネタバレ防止表示がありません");
+    if(dexDetail.includes("ユキまる")) fail("未発見の配合結果名が図鑑詳細に表示されました");
+    if(dexDetail.includes("Game.setFusionFromDex('aquan+puffbat')")) fail("未発見結果の配合セットキーが図鑑詳細に出力されました");
+
+    const dexModal = {innerHTML:""};
+    context.document = {
+      getElementById(id){return id === "modal" ? dexModal : null;},
+      createElement(){return {id:"",innerHTML:""};},
+      body:{appendChild(){}},
+      querySelectorAll(){return [];}
+    };
+    context.MonsterLinksGame.closeModal = ()=>{dexModal.innerHTML = "";};
+    context.MonsterLinksGame.openDexDetail("aquan");
+    if(!dexModal.innerHTML.includes("dexDetailModalV83")) fail("図鑑詳細モーダルが開きません");
+
+    context.MonsterLinksGame.setFusionFromDex("leafling+plim");
+    if(context.MonsterLinksState.state.view !== "fusion") fail("図鑑ルートから配合画面へ移動しません");
+    if(context.MonsterLinksGame.fusionPick.length !== 2) fail("図鑑ルートから親2体が配合へセットされません");
+    const dexFusionPreview = context.MonsterLinksGame.fusionPreview(
+      context.MonsterLinksGame.fusionPick[0],
+      context.MonsterLinksGame.fusionPick[1]
+    );
+    if(dexFusionPreview?.id !== "aquan") fail("図鑑からセットした配合結果が対象モンスターと一致しません");
+  }catch(error){
+    fail(`v8.3図鑑配合ルート生成エラー: ${error.stack || error.message}`);
+  }
+
   return data;
 }
 

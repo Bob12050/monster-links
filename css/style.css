@@ -5793,3 +5793,293 @@ button:hover:before{
 @media(prefers-reduced-motion:reduce){
   .battleSpriteV821,.battleModeV821.bossMode,.battleBarRowV821.danger i{animation:none}
 }
+
+/* ===== v8.3 dex fusion routes ===== */
+.dexCardRouteV83{
+  cursor:pointer;
+  transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+}
+.dexCardRouteV83:hover,
+.dexCardRouteV83:focus-visible{
+  transform:translateY(-3px);
+  outline:none;
+  border-color:rgba(110,231,255,.48);
+  box-shadow:0 16px 32px rgba(0,0,0,.32),0 0 0 2px rgba(110,231,255,.08);
+}
+.dexCardRouteV83:active{transform:translateY(1px)}
+.dexRouteHintV83{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:2px 7px;
+  align-items:center;
+  margin-top:8px;
+  padding:7px 8px;
+  border:1px solid rgba(255,211,106,.18);
+  border-radius:11px;
+  background:rgba(255,211,106,.07);
+  text-align:left;
+}
+.dexRouteHintV83 span{color:#ffe5a0;font-size:9px;font-weight:900}
+.dexRouteHintV83 b{font-size:10px}
+.dexRouteHintV83 em{
+  grid-column:1/-1;
+  color:var(--muted);
+  font-size:8px;
+  font-style:normal;
+}
+.dexDetailModalV83{
+  width:min(900px,100%);
+  max-height:90vh;
+  padding:0;
+  overflow:auto;
+  border-color:rgba(110,231,255,.2);
+  background:linear-gradient(180deg,#23355e,#10182f);
+  box-shadow:0 28px 80px rgba(0,0,0,.58);
+}
+.dexDetailHeadV83{
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:13px 16px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  background:rgba(11,18,39,.92);
+  backdrop-filter:blur(12px);
+}
+.dexDetailHeadV83 span,
+.dexRouteSectionHeadV83 span{
+  display:block;
+  color:#9feeff;
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.16em;
+}
+.dexDetailHeadV83 h2{margin:2px 0 0;font-size:21px}
+.dexDetailHeadV83 p{margin:2px 0 0;color:var(--muted);font-size:10px}
+.dexDetailHeadV83 button{min-height:38px;padding:7px 12px}
+.dexDetailHeroV83{
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+  gap:17px;
+  align-items:center;
+  padding:17px;
+  background:
+    radial-gradient(circle at 14% 20%,rgba(110,231,255,.16),transparent 35%),
+    linear-gradient(145deg,rgba(44,60,105,.88),rgba(21,29,57,.9));
+}
+.dexDetailArtV83{
+  width:220px;
+  height:210px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:24px;
+  background:radial-gradient(circle,rgba(255,255,255,.14),rgba(0,0,0,.16) 67%);
+  font-size:90px;
+}
+.dexDetailArtV83 img{width:100%;height:100%;object-fit:contain}
+.dexDetailBadgesV83{display:flex;flex-wrap:wrap;gap:5px}
+.dexDetailHeroV83 h3{margin:7px 0 3px;font-size:25px}
+.dexDetailHeroV83 p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
+.dexDetailRecordV83{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-top:13px;
+}
+.dexDetailRecordV83 div{
+  padding:8px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:12px;
+  background:rgba(0,0,0,.15);
+}
+.dexDetailRecordV83 span{display:block;color:var(--muted);font-size:8px}
+.dexDetailRecordV83 b{display:block;margin-top:2px;font-size:11px}
+.dexRouteSectionV83{
+  margin:14px;
+  padding:13px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;
+  background:rgba(5,10,25,.22);
+}
+.dexRouteSectionHeadV83{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.dexRouteSectionHeadV83 h3{margin:2px 0 0;font-size:17px}
+.dexRouteSectionHeadV83 > small{color:var(--muted);font-size:9px}
+.dexIncomingGridV83,.dexOutgoingGridV83{display:grid;gap:9px}
+.dexIncomingGridV83{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dexRecipeCardV83,.dexUseRecipeV83{
+  display:grid;
+  gap:9px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:15px;
+  background:rgba(255,255,255,.045);
+}
+.dexRecipeCardV83.ready,.dexUseRecipeV83.ready{
+  border-color:rgba(116,240,160,.34);
+  background:linear-gradient(145deg,rgba(41,135,88,.16),rgba(255,255,255,.035));
+}
+.dexRecipeCardV83.condition,.dexUseRecipeV83.condition{
+  border-color:rgba(255,211,106,.3);
+  background:linear-gradient(145deg,rgba(139,104,38,.15),rgba(255,255,255,.035));
+}
+.dexRecipeCardV83.missing,.dexUseRecipeV83.missing{
+  border-color:rgba(255,107,122,.22);
+}
+.dexUseRecipeV83.secret{
+  border-color:rgba(181,140,255,.25);
+  background:linear-gradient(145deg,rgba(93,61,145,.16),rgba(255,255,255,.03));
+}
+.dexRecipeRouteV83{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:6px;
+  align-items:center;
+}
+.dexRecipeRouteV83 > div{min-width:0}
+.dexRouteMonsterV83{
+  min-width:0;
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr);
+  gap:7px;
+  align-items:center;
+  padding:7px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(0,0,0,.15);
+}
+.dexRouteMonsterV83 > div{min-width:0}
+.dexRouteMonsterV83 b,.dexRouteMonsterV83 small{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.dexRouteMonsterV83 b{font-size:11px}
+.dexRouteMonsterV83 small{margin-top:2px;color:var(--muted);font-size:8px}
+.dexRouteFaceV83{
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(255,255,255,.06);
+  font-size:23px;
+}
+.dexRouteFaceV83 img{width:100%;height:100%;object-fit:contain}
+.dexSecretMonsterV83{filter:saturate(.35)}
+.dexSecretMonsterV83 .dexRouteFaceV83{
+  color:#d9c9ff;
+  background:radial-gradient(circle,rgba(181,140,255,.14),rgba(0,0,0,.18));
+}
+.dexRouteSymbolV83{
+  color:#ffe5a0;
+  font-size:18px;
+  font-weight:1000;
+  text-align:center;
+}
+.dexMaterialStateV83{
+  display:block;
+  margin-top:4px;
+  padding:3px 6px;
+  border-radius:8px;
+  font-size:8px;
+  font-weight:900;
+  text-align:center;
+}
+.dexMaterialStateV83.ready{
+  border:1px solid rgba(116,240,160,.2);
+  background:rgba(116,240,160,.09);
+  color:#a8f6c3;
+}
+.dexMaterialStateV83.missing{
+  border:1px solid rgba(255,107,122,.18);
+  background:rgba(255,107,122,.08);
+  color:#ffb0bc;
+}
+.dexRecipeInfoV83{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:3px 7px;
+  align-items:center;
+}
+.dexRecipeStatusV83{
+  grid-row:1/3;
+  padding:4px 7px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:8px;
+  font-weight:1000;
+}
+.ready .dexRecipeStatusV83{background:rgba(42,150,94,.62)}
+.condition .dexRecipeStatusV83{background:rgba(172,124,38,.62)}
+.missing .dexRecipeStatusV83{background:rgba(150,54,72,.58)}
+.secret .dexRecipeStatusV83{background:rgba(108,74,166,.66)}
+.dexRecipeInfoV83 b{font-size:10px}
+.dexRecipeInfoV83 small{color:var(--muted);font-size:8px}
+.dexRecipeCardV83 > button,.dexUseRecipeV83 > button{width:100%;min-height:39px;padding:7px;font-size:10px}
+.dexOutgoingGridV83{grid-template-columns:1fr}
+.dexUseRecipeV83{
+  grid-template-columns:minmax(0,1fr) minmax(160px,.55fr) 135px;
+  align-items:center;
+}
+.dexUseRouteV83{
+  min-width:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+  gap:5px;
+  align-items:center;
+}
+.dexUseRouteV83 .dexRouteMonsterV83{grid-template-columns:38px minmax(0,1fr);padding:5px}
+.dexUseRouteV83 .dexRouteFaceV83{width:38px;height:38px;border-radius:10px;font-size:20px}
+.dexDetailActionsV83{
+  position:sticky;
+  bottom:0;
+  z-index:8;
+  margin:0;
+  padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+  border-top:1px solid rgba(255,255,255,.1);
+  background:rgba(10,16,34,.94);
+  backdrop-filter:blur(10px);
+}
+@media(max-width:720px){
+  .dexIncomingGridV83{grid-template-columns:1fr}
+  .dexUseRecipeV83{grid-template-columns:1fr}
+  .dexUseRecipeV83 > button{width:100%}
+}
+@media(max-width:520px){
+  .dexDetailModalV83{max-height:94vh;border-radius:20px 20px 14px 14px}
+  .dexDetailHeadV83{padding:10px 12px}
+  .dexDetailHeadV83 h2{font-size:17px}
+  .dexDetailHeroV83{grid-template-columns:110px minmax(0,1fr);gap:10px;padding:12px}
+  .dexDetailArtV83{width:110px;height:120px;border-radius:18px;font-size:54px}
+  .dexDetailHeroV83 h3{font-size:18px}
+  .dexDetailRecordV83{grid-template-columns:1fr 1fr;gap:5px;margin-top:8px}
+  .dexDetailRecordV83 div{padding:6px}
+  .dexRouteSectionV83{margin:9px;padding:9px}
+  .dexRouteSectionHeadV83{align-items:start;flex-direction:column;gap:2px}
+  .dexRecipeRouteV83{grid-template-columns:1fr}
+  .dexRouteSymbolV83{font-size:14px}
+  .dexRecipeRouteV83 > .dexRouteSymbolV83{height:12px;line-height:12px}
+  .dexRouteMonsterV83{grid-template-columns:42px minmax(0,1fr)}
+  .dexRouteFaceV83{width:42px;height:42px}
+  .dexUseRouteV83{grid-template-columns:1fr}
+  .dexUseRouteV83 > .dexRouteSymbolV83{height:12px;line-height:12px}
+  .dexUseRouteV83 .dexRouteMonsterV83{grid-template-columns:42px minmax(0,1fr)}
+  .dexUseRouteV83 .dexRouteFaceV83{width:42px;height:42px}
+  .dexRecipeInfoV83{grid-template-columns:1fr}
+  .dexRecipeStatusV83{grid-row:auto;justify-self:start}
+}
