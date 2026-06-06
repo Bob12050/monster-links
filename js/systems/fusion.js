@@ -319,14 +319,19 @@
     sanitizeFusionSkillPick(a,b);
 
     if(fusionSkillPick.includes(id)){
+      // 選択済みなら外す
       fusionSkillPick = fusionSkillPick.filter(x=>x !== id);
     }else{
+      // v7.2.5:
+      // すでに2つ選ばれている時は「選べない」ではなく、
+      // 古い選択を1つ外して新しい技を入れる。
       if(fusionSkillPick.length >= 2){
-        toast("引き継ぎ技は最大2つまでです");
-        return;
+        fusionSkillPick.shift();
       }
       fusionSkillPick.push(id);
     }
+
+    sanitizeFusionSkillPick(a,b);
     render();
   }
 

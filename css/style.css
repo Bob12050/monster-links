@@ -3418,3 +3418,11 @@ button:hover:before{
   font-size:12px;
   font-weight:900;
 }
+
+
+/* v7.2.5 clearer fusion skill selection */
+.skillPickGrid button.on{
+  border-color:rgba(110,231,255,.65)!important;
+  box-shadow:0 0 0 2px rgba(110,231,255,.16);
+  font-weight:900;
+}
