@@ -96,6 +96,19 @@
     return rankConditionReason(id,a,b);
   }
 
+  function stableFusionIndex(a,b,list,tag=""){
+    const key = [String(a?.id || ""),String(b?.id || "")].sort().join("+") + ":" + tag;
+    let hash = 0;
+    for(let i=0;i<key.length;i++){
+      hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
+    }
+    return Math.abs(hash) % Math.max(1,list.length);
+  }
+
+  function stablePick(a,b,list,tag=""){
+    return list[stableFusionIndex(a,b,list,tag)];
+  }
+
   function chooseChild(a,b){
     const types = [S.def(a.id).type,S.def(b.id).type].sort().join("+");
     const high = Math.max(D.RANK[S.def(a.id).rank],D.RANK[S.def(b.id).rank]);
@@ -127,13 +140,18 @@
       "machine+stone":"corewalker"
     };
     if(table[types]) return table[types];
-    if(high >= 7) return ["prismdragon","phoenixdrake","celestiseraph","voiddragon","omegaframe","venomchimera"][U.rand(0,5)];
-    if(high >= 6) return ["frostlevia","arcautomaton","astralwyrm","prismdragon","arkmachine","venomhydra"][U.rand(0,5)];
-    if(high >= 5) return ["tidalseraph","volcazard","duskwolf","frostlevia","arcautomaton","corewalker"][U.rand(0,5)];
-    if(high >= 4) return ["luminel","crystagon","tidalseraph","icetortoise","ironmantis","steelbug","thunderdrone"][U.rand(0,6)];
-    if(high === 3) return ["cindrake","gearbit","gloomoth","mossking","orelord","snowcat","voltfox","toxicshroom","gearslime"][U.rand(0,8)];
-    if(high === 2) return ["embercub","aquan","thornhog","frostpup","poisonplim"][U.rand(0,4)];
-    return ["plim","leafling","puffbat","pebblon"][U.rand(0,3)];
+
+    // v7.1.1:
+    // 通常配合の候補選択はランダムにしない。
+    // おすすめ表示・選択後プレビュー・実際の配合結果がズレないよう、
+    // 同じ親IDの組み合わせなら必ず同じ結果を返す。
+    if(high >= 7) return stablePick(a,b,["prismdragon","phoenixdrake","celestiseraph","voiddragon","omegaframe","venomchimera"],"S");
+    if(high >= 6) return stablePick(a,b,["frostlevia","arcautomaton","astralwyrm","prismdragon","arkmachine","venomhydra"],"A");
+    if(high >= 5) return stablePick(a,b,["tidalseraph","volcazard","duskwolf","frostlevia","arcautomaton","corewalker"],"B");
+    if(high >= 4) return stablePick(a,b,["luminel","crystagon","tidalseraph","icetortoise","ironmantis","steelbug","thunderdrone"],"C");
+    if(high === 3) return stablePick(a,b,["cindrake","gearbit","gloomoth","mossking","orelord","snowcat","voltfox","toxicshroom","gearslime"],"D");
+    if(high === 2) return stablePick(a,b,["embercub","aquan","thornhog","frostpup","poisonplim"],"E");
+    return stablePick(a,b,["plim","leafling","puffbat","pebblon"],"F");
   }
 
   function childLevel(a,b){
