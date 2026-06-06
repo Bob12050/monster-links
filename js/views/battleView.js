@@ -16,6 +16,10 @@
     const turnText = b.lock ? "行動中..." : "コマンドを選択";
     const modeLabel = b.isArena ? "ARENA" : b.isBoss ? "BOSS" : "WILD";
     const modeText = b.isArena ? `闘技場 ${b.arenaRound}/${b.arenaTotal}` : b.isBoss ? "ボス戦" : "通常戦";
+    const scoutAttempts = Math.max(0,Math.floor(b.scoutAttempts || 0));
+    const scoutLocked = !!b.scoutLocked || scoutAttempts >= 4;
+    const scoutText = b.isArena ? "闘技場では不可" : scoutLocked ? "警戒中 / 不可" : `成功率 ${window.MonsterLinksGame.scoutChance()}% / 警戒 ${scoutAttempts}/4`;
+    const scoutDisabled = b.lock || b.isArena || scoutLocked;
     return `
     <main>
       <section class="battle battleV23 ${b.isBoss ? "bossBattle" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
@@ -69,7 +73,7 @@
         <div class="commands commandsV23">
           <button class="primary" ${b.lock ? "disabled" : ""} onclick="Game.act('attack')">⚔️ 攻撃</button>
           <button class="gold" ${b.lock ? "disabled" : ""} onclick="Game.skillModal()">✨ とくぎ</button>
-          <button class="green" ${(b.lock || b.isArena) ? "disabled" : ""} onclick="Game.act('scout')">🤝 スカウト<br><span class="tiny">${b.isArena ? "闘技場では不可" : `成功率 ${window.MonsterLinksGame.scoutChance()}%`}</span></button>
+          <button class="green" ${scoutDisabled ? "disabled" : ""} onclick="Game.act('scout')">🤝 スカウト<br><span class="tiny">${scoutText}</span></button>
           <button ${b.lock ? "disabled" : ""} onclick="Game.act('guard')">🛡️ 防御</button>
           <button ${b.lock ? "disabled" : ""} onclick="Game.switchModal()">🔁 交代</button>
           <button class="red" ${b.lock ? "disabled" : ""} onclick="Game.escape()">${b.isArena ? "🚪 棄権" : "🏃 逃げる"}</button>

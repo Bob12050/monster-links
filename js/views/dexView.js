@@ -10,6 +10,20 @@
     return `<option value="${U.esc(value)}" ${String(current) === String(value) ? "selected" : ""}>${U.esc(label)}</option>`;
   }
 
+  function typeLabel(type){
+    return D.TYPES?.[type] || type || "不明";
+  }
+
+  function skillTextForDex(d){
+    const skills = Array.isArray(d.skills) ? d.skills : [];
+    if(!skills.length) return "なし";
+    return skills.map(([sid,lv])=>{
+      const sk = D.SKILLS?.[sid];
+      const name = sk?.name || `未定義:${sid}`;
+      return `${name}(Lv${lv})`;
+    }).join("、");
+  }
+
   function filterControls(scope,f){
     const ranks = Object.keys(D.RANK || {}).sort((a,b)=>D.RANK[a]-D.RANK[b]);
     const types = Object.keys(D.TYPES || {});
@@ -101,17 +115,17 @@
       return `<div class="dexCard dexCardV31 unknown">
         <div class="dexFace dexFaceV31">❔</div>
         <div class="name">？？？？ <span class="tag">${d.rank}</span></div>
-        <div class="dexMetaLine"><span class="type">${D.TYPES[d.type]}</span><span class="type">未発見</span></div>
+        <div class="dexMetaLine"><span class="type">${typeLabel(d.type)}</span><span class="type">未発見</span></div>
       </div>`;
     }
     return `<div class="dexCard dexCardV31 ${scouted ? "scouted" : ""}">
       <div class="dexArtFrame">${V.monsterVisual(id,'dexFace dexFaceV31')}</div>
       <div class="name">${d.name} <span class="tag">${d.rank}</span></div>
       <div class="dexMetaLine">
-        <span class="type">${D.TYPES[d.type]}</span>
+        <span class="type">${typeLabel(d.type)}</span>
         <span class="type">${scouted ? "スカウト済み" : "発見のみ"}</span>
       </div>
-      <div class="tiny">技：${d.skills.map(([sid,lv])=>`${D.SKILLS[sid].name}(Lv${lv})`).join("、") || "なし"}</div>
+      <div class="tiny">技：${skillTextForDex(d)}</div>
     </div>`;
   }
 

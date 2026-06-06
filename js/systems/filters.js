@@ -51,7 +51,7 @@
     if(f.status === "discoveredOnly" && (!discovered || scouted)) return false;
 
     const visibleName = discovered ? d.name : "????";
-    return textMatch(f.q,[visibleName,id,d.rank,D.TYPES[d.type]]);
+    return textMatch(f.q,[visibleName,id,d.rank,(D.TYPES?.[d.type] || d.type || "")]);
   }
 
   function matchOwnedMonster(m,place){
@@ -63,7 +63,7 @@
     if(f.rank !== "all" && d.rank !== f.rank) return false;
     if(f.type !== "all" && d.type !== f.type) return false;
 
-    return textMatch(f.q,[m.nickname,d.name,m.id,d.rank,D.TYPES[d.type],m.level]);
+    return textMatch(f.q,[m.nickname,d.name,m.id,d.rank,(D.TYPES?.[d.type] || d.type || ""),m.level]);
   }
 
   Object.assign(G,{

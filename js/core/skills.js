@@ -26,5 +26,8 @@
     holywave:{name:"ホーリーウェーブ",cost:13,kind:"damage",power:1.82,stat:"wis",element:"light",text:"聖なる波で攻撃する光属性の大技"},
     chaosflare:{name:"カオスフレア",cost:16,kind:"damage",power:2.05,stat:"wis",element:"dark",text:"混沌の炎を放つ闇属性の超火力技"},
     demonclaw:{name:"デモンクロウ",cost:11,kind:"damage",power:1.72,stat:"atk",element:"dark",text:"魔界の爪で切り裂く闇属性攻撃"},
+
+    // v7.0.1 fallback skill definitions
+    guard:{name:"ガード",kind:"damage",cost:0,power:.85,stat:"def",element:"stone",desc:"守りを固めながら体当たりする"},
   };
 })();

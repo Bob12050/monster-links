@@ -35,11 +35,65 @@
     return fusionRecipeEntries().find(r=>r.recipeKey === key) || null;
   }
 
-  function recipeLockReason(recipe,a,b){
-    if(!recipe) return "";
-    const avg = Math.floor((a.level + b.level) / 2);
-    if(recipe.minAvg && avg < recipe.minAvg) return `親2体の平均Lv${recipe.minAvg}以上で成立します`;
+  const FUSION_RANK_LEVEL_REQ = {
+    2:3,   // E
+    3:6,   // D
+    4:10,  // C
+    5:15,  // B
+    6:22,  // A
+    7:32   // S
+  };
+
+  function rankValueById(id){
+    const d = D.MONSTERS?.[id];
+    return D.RANK?.[d?.rank] || 1;
+  }
+
+  function rankValueByMonster(m){
+    return rankValueById(m?.id);
+  }
+
+  function requiredAvgForResult(id,recipe=null){
+    const rank = rankValueById(id);
+    const byRank = FUSION_RANK_LEVEL_REQ[rank] || 0;
+    return Math.max(Number(recipe?.minAvg) || 0, byRank);
+  }
+
+  function rankConditionReason(resultId,a,b){
+    const childRank = rankValueById(resultId);
+    const ar = rankValueByMonster(a);
+    const br = rankValueByMonster(b);
+    const high = Math.max(ar,br);
+    const low = Math.min(ar,br);
+
+    if(childRank >= 7){
+      if(high < 6) return "Sランク作成には親のどちらかがAランク以上である必要があります";
+      if(low < 5) return "Sランク作成には親2体がどちらもBランク以上である必要があります";
+    }else if(childRank >= 6){
+      if(high < 5) return "Aランク作成には親のどちらかがBランク以上である必要があります";
+    }else if(childRank >= 5){
+      if(high < 4) return "Bランク作成には親のどちらかがCランク以上である必要があります";
+    }
     return "";
+  }
+
+  function fusionRequirementText(resultId,minAvg=0){
+    const rank = rankValueById(resultId);
+    const req = Math.max(Number(minAvg) || 0, FUSION_RANK_LEVEL_REQ[rank] || 0);
+    const lines = [];
+    if(req) lines.push(`親平均Lv${req}以上`);
+    if(rank >= 7) lines.push("親のどちらかA以上・両方B以上");
+    else if(rank >= 6) lines.push("親のどちらかB以上");
+    else if(rank >= 5) lines.push("親のどちらかC以上");
+    return lines.join(" / ") || "条件なし";
+  }
+
+  function recipeLockReason(recipe,a,b,resultId=null){
+    const id = resultId || recipe?.result || chooseChild(a,b);
+    const avg = Math.floor((a.level + b.level) / 2);
+    const req = requiredAvgForResult(id,recipe);
+    if(req && avg < req) return `親2体の平均Lv${req}以上で成立します`;
+    return rankConditionReason(id,a,b);
   }
 
   function chooseChild(a,b){
@@ -83,7 +137,8 @@
   }
 
   function childLevel(a,b){
-    return U.clamp(Math.floor((a.level+b.level)/2),1,99);
+    // v7.1: 配合後は必ずLv1から育て直す
+    return 1;
   }
 
   function inheritedBonus(a,b){
@@ -136,8 +191,8 @@
     const b = all.find(m=>m.uid===bid);
     if(!a || !b || a.uid===b.uid) return null;
     const recipe = findRecipe(a,b);
-    const lockReason = recipeLockReason(recipe,a,b);
     const id = recipe ? recipe.result : chooseChild(a,b);
+    const lockReason = recipeLockReason(recipe,a,b,id);
     const level = childLevel(a,b);
     const skillList = skillCandidates(a,b);
     const selected = selectedSkillsFor(a,b);
@@ -277,7 +332,8 @@
       const sorted = list0.slice().sort((a,b)=>b.level-a.level);
       const a = sorted[0], b = sorted[1];
       const avg = Math.floor((a.level + b.level) / 2);
-      if(recipe.minAvg && avg < recipe.minAvg) return {ok:true,label:"Lv条件確認",cls:"gold",uids:[a.uid,b.uid],locked:true};
+      const reason = recipeLockReason(recipe,a,b,recipe.result);
+      if(reason) return {ok:true,label:"条件確認",cls:"gold",uids:[a.uid,b.uid],locked:true,reason};
       return {ok:true,label:"この配合をセット",cls:"gold",uids:[a.uid,b.uid],locked:false};
     }
 
@@ -288,14 +344,15 @@
       list1.forEach(b=>{
         if(a.uid === b.uid) return;
         const avg = Math.floor((a.level + b.level) / 2);
-        const locked = !!(recipe.minAvg && avg < recipe.minAvg);
+        const reason = recipeLockReason(recipe,a,b,recipe.result);
+        const locked = !!reason;
         const score = (locked ? 0 : 100000) + avg * 100 + a.level + b.level;
-        if(!best || score > best.score) best = {a,b,avg,locked,score};
+        if(!best || score > best.score) best = {a,b,avg,locked,reason,score};
       });
     });
 
     if(!best) return {ok:false,label:"素材不足",cls:"",uids:[]};
-    if(best.locked) return {ok:true,label:"Lv条件確認",cls:"gold",uids:[best.a.uid,best.b.uid],locked:true};
+    if(best.locked) return {ok:true,label:"条件確認",cls:"gold",uids:[best.a.uid,best.b.uid],locked:true,reason:best.reason};
     return {ok:true,label:"この配合をセット",cls:"gold",uids:[best.a.uid,best.b.uid],locked:false};
   }
 
@@ -324,6 +381,11 @@
     const prev = fusionPreview(a.uid,b.uid);
     if(prev.locked){toast(prev.reason || "特殊配合の条件を満たしていません");return;}
 
+    if(typeof window.confirm === "function"){
+      const ok = window.confirm(`${a.nickname} と ${b.nickname} を配合します。\n親2体はいなくなり、子はLv1で生まれます。\nよろしいですか？`);
+      if(!ok) return;
+    }
+
     const candidateIds = prev.skillCandidates.map(s=>s.id);
     let selected = fusionSkillPick.filter(id=>candidateIds.includes(id)).slice(0,2);
     if(selected.length === 0) selected = candidateIds.slice(0,2);
@@ -342,7 +404,7 @@
     S.removeMonster(a.uid);
     S.removeMonster(b.uid);
 
-    const child = S.makeMonster(prev.id,prev.level,inherited);
+    const child = S.makeMonster(prev.id,1,inherited);
     child.nickname = S.def(child.id).name + "＋";
     S.addMonster(child);
     S.recordFusion(!!prev.special);
@@ -379,6 +441,7 @@
     recommendedFusions,
     fusionRecipeEntries,
     recipeSetStatus,
+    fusionRequirementText,
     setFusionFromRecipe,
     openFusionRecipeList,
     _clearFusionPickNoRender

@@ -70,7 +70,8 @@
         </div>
         <div class="fusionResultInfo">
           <div class="name">${d.name} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span></div>
-          <div class="tiny">予想Lv ${prev.level} / ${group} / 親平均Lv ${prev.avgLevel}</div>
+          <div class="tiny">誕生Lv ${prev.level} / ${group} / 親平均Lv ${prev.avgLevel}</div>
+          <div class="fusionGuarantee">🔁 配合後の子はLv1で生まれます。親の個体値・ボーナス・一部スキルは引き継ぎます。</div>
           ${prev.recipe ? `<div class="fusionGuarantee">✅ 配合リストと同じ結果になります</div>` : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`}
           ${lock}
           ${note}
@@ -124,7 +125,7 @@
           return `<div class="recommendCard">
             <div class="tiny">${V.monsterInline(x.a.id,'miniFace')} ${x.a.nickname} ＋ ${V.monsterInline(x.b.id,'miniFace')} ${x.b.nickname}</div>
             <div class="name">→ ${V.monsterInline(x.prev.id,'miniFace')} ${d.name} <span class="tag">${d.rank}</span></div>
-            <div class="tiny">${group} / Lv${x.prev.level} ${lock}</div>
+            <div class="tiny">${group} / 誕生Lv${x.prev.level} ${lock}</div>
             <button ${x.prev.locked ? "disabled" : ""} onclick="Game.setFusionPair('${x.a.uid}','${x.b.uid}')">この2体を選ぶ</button>
           </div>`;
         }).join("")}
@@ -156,7 +157,8 @@
           const p0d = safeDef(p0);
           const p1d = safeDef(p1);
           const rd = safeDef(r.result);
-          const cond = r.minAvg ? `<div class="tiny rareLock">条件：親平均Lv${r.minAvg}以上</div>` : "";
+          const condText = window.MonsterLinksGame.fusionRequirementText ? window.MonsterLinksGame.fusionRequirementText(r.result,r.minAvg) : (r.minAvg ? `親平均Lv${r.minAvg}以上` : "条件なし");
+          const cond = `<div class="tiny rareLock">条件：${U.esc(condText)}</div>`;
           const note = r.note ? `<div class="tiny recipeNote">${U.esc(r.note)}</div>` : "";
           const resultKnown = discovered[r.result] || scouted[r.result];
           const status = resultKnown ? `<span class="type">発見済み</span>` : `<span class="tag">未発見</span>`;

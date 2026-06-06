@@ -37,6 +37,8 @@
       charm:state.scoutCharm || 0,
       isBoss:false,
       scoutBase:st.scout,
+      scoutAttempts:0,
+      scoutLocked:false,
       fx:null
     };
     state.scoutCharm = Math.max(0,(state.scoutCharm || 0) - 1);
@@ -80,6 +82,8 @@
       charm:state.scoutCharm || 0,
       isBoss:true,
       scoutBase:boss.scout,
+      scoutAttempts:0,
+      scoutLocked:false,
       fx:{kind:"bossIntro",target:"enemy",text:"BOSS",ts:Date.now()}
     };
     state.scoutCharm = Math.max(0,(state.scoutCharm || 0) - 1);
@@ -138,6 +142,15 @@
         render();
         return;
       }
+      if(b.scoutLocked || (b.scoutAttempts || 0) >= 4){
+        b.scoutLocked = true;
+        setFx("scoutFail","enemy","LOCK");
+        G.playSe("error");
+        log(`${e.nickname}は完全に警戒している。この戦闘ではもうスカウトできない！`);
+        S.save();
+        render();
+        return;
+      }
       const chance = scoutChance();
       if(U.rand(1,100) <= chance){
         const joined = S.makeMonster(e.id,e.level);
@@ -148,9 +161,17 @@
         finish("scout");
         return;
       }else{
-        setFx("scoutFail","enemy","MISS");
-        G.playSe("error");
-        log(`${e.nickname}はまだ警戒している。`);
+        b.scoutAttempts = Math.max(0,Math.floor(b.scoutAttempts || 0)) + 1;
+        if(b.scoutAttempts >= 4){
+          b.scoutLocked = true;
+          setFx("scoutFail","enemy","LOCK");
+          G.playSe("error");
+          log(`${e.nickname}は完全に警戒した。この戦闘ではもうスカウトできない！`);
+        }else{
+          setFx("scoutFail","enemy","MISS",`警戒${b.scoutAttempts}/4`);
+          G.playSe("error");
+          log(`${e.nickname}は警戒している。次回以降のスカウト率が下がった。`);
+        }
       }
     }
 
@@ -263,16 +284,20 @@
     const b = state.battle;
     if(!b) return 0;
     if(b.isArena) return 0;
+    if(b.scoutLocked || (b.scoutAttempts || 0) >= 4) return 0;
     const e = b.enemy;
     const hpRate = e.hp / S.stats(e).hp;
     const avg = state.party.reduce((a,m)=>a+m.level,0) / Math.max(1,state.party.length);
+    const rank = D.RANK[S.def(e.id).rank] || 1;
     const levelBonus = U.clamp((avg - e.level)*3,-14,20);
     const hpBonus = Math.floor((1-hpRate)*44);
-    const rankPenalty = (D.RANK[S.def(e.id).rank]-1)*7;
+    const rankPenalty = (rank-1)*9;
+    const highRankPenalty = rank >= 7 ? 16 : rank >= 6 ? 8 : rank >= 5 ? 4 : 0;
+    const attemptPenalty = Math.max(0,Math.floor(b.scoutAttempts || 0)) * 10;
     const charm = b.charm ? 12 : 0;
     const bossPenalty = b.isBoss && !state.bossCleared[b.stage.id] ? 10 : 0;
     const bonus = Number(balance().scoutBonus) || 0;
-    return U.clamp(Math.floor((b.scoutBase ?? b.stage.scout) + hpBonus + levelBonus + charm + bonus - rankPenalty - bossPenalty),3,90);
+    return U.clamp(Math.floor((b.scoutBase ?? b.stage.scout) + hpBonus + levelBonus + charm + bonus - rankPenalty - highRankPenalty - attemptPenalty - bossPenalty),3,90);
   }
 
   function battleRewards(b){

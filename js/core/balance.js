@@ -22,7 +22,7 @@
     arenaGoldMultiplier: 1.08,
 
     // スカウト・ドロップ・逃走の補正
-    scoutBonus: 6,
+    scoutBonus: 2,
     dropRateMultiplier: 1.18,
     bossDropRateBonus: 5,
     escapeBonus: 4,
