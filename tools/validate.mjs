@@ -373,6 +373,42 @@ function loadGameData(scriptRefs){
     fail(`v8.3図鑑配合ルート生成エラー: ${error.stack || error.message}`);
   }
 
+  try{
+    const filtersFile = path.join(root,"js","systems","filters.js");
+    const monsterViewFile = path.join(root,"js","views","monsterView.js");
+    vm.runInContext(fs.readFileSync(filtersFile,"utf8"),context,{filename:"js/systems/filters.js"});
+    vm.runInContext(fs.readFileSync(monsterViewFile,"utf8"),context,{filename:"js/views/monsterView.js"});
+
+    const partyA = context.MonsterLinksState.makeMonster("plim",12);
+    const partyB = context.MonsterLinksState.makeMonster("leafling",12);
+    const partyC = context.MonsterLinksState.makeMonster("puffbat",12);
+    const pastureLarge = context.MonsterLinksState.makeMonster("prismdragon",40);
+    const pastureSmall = context.MonsterLinksState.makeMonster("leafling",14);
+    context.MonsterLinksState.state.party = [partyA,partyB,partyC];
+    context.MonsterLinksState.state.box = [pastureLarge,pastureSmall];
+
+    const fullPartyHtml = context.MonsterLinksViews.monstersHtml();
+    if(!fullPartyHtml.includes("monsterCampV831")) fail("仲間画面にキャンプUIがありません");
+    if(!fullPartyHtml.includes("partyFormationGridV831")) fail("仲間画面にパーティ編成UIがありません");
+    if(!fullPartyHtml.includes("pastureGridV831")) fail("仲間画面に牧場UIがありません");
+    if(!fullPartyHtml.includes("仲間を検索・絞り込み")) fail("牧場に仲間検索がありません");
+    if(!fullPartyHtml.includes(`Game.openPartyExchange('${pastureLarge.uid}')`)){
+      fail("満員時の牧場カードに一括交換ボタンがありません");
+    }
+    if(!fullPartyHtml.includes("交換して加える")) fail("満員時の交換操作が画面上に明示されません");
+
+    context.MonsterLinksState.state.party = [partyA];
+    const openSlotHtml = context.MonsterLinksViews.monstersHtml();
+    if(!openSlotHtml.includes(`Game.toParty('${pastureSmall.uid}')`)){
+      fail("空き枠がある時の牧場カードに通常加入ボタンがありません");
+    }
+    if(!openSlotHtml.includes("パーティには最低1体必要です")){
+      fail("最後の1体を牧場へ戻せない説明がありません");
+    }
+  }catch(error){
+    fail(`v8.3.1仲間・牧場画面生成エラー: ${error.stack || error.message}`);
+  }
+
   return data;
 }
 

@@ -17,10 +17,19 @@
     return filters[scope];
   }
 
-  function setListFilter(scope,key,value){
+  function setListFilter(scope,key,value,source){
     const f = listFilter(scope);
     f[key] = String(value ?? "");
     if(G.render) G.render();
+    const selector = source?.dataset?.listFilter;
+    if(selector && typeof document !== "undefined"){
+      const next = document.querySelector?.(`[data-list-filter="${selector}"]`);
+      if(next){
+        try{next.focus({preventScroll:true});}catch(_error){next.focus();}
+        const caret = Math.min(String(next.value || "").length,Number(source.selectionStart ?? next.value?.length ?? 0));
+        if(next.setSelectionRange) next.setSelectionRange(caret,caret);
+      }
+    }
   }
 
   function clearListFilter(scope){
