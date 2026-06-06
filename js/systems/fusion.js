@@ -21,6 +21,8 @@
   let fusionPick = [];
   let fusionSkillPick = [];
   let fusionForcedRecipeKey = "";
+  let fusionPendingConfirmation = null;
+  let fusionRecipeFilters = {query:"",size:"all",status:"all"};
 
   function recipeKeyFromIds(a,b){
     return [String(a || ""),String(b || "")].sort().join("+");
@@ -61,6 +63,19 @@
     7:32   // S
   };
 
+  const FUSION_SIZE_LEVEL_REQ = {
+    2:8,
+    3:32
+  };
+
+  function fusionMonsterSize(idOrMonster){
+    return S.monsterSize ? S.monsterSize(idOrMonster) : Math.max(1,Number(S.def(typeof idOrMonster === "string" ? idOrMonster : idOrMonster?.id)?.size || 1));
+  }
+
+  function fusionParentSizeTotal(a,b){
+    return fusionMonsterSize(a) + fusionMonsterSize(b);
+  }
+
   function rankValueById(id){
     const d = D.MONSTERS?.[id];
     return D.RANK?.[d?.rank] || 1;
@@ -73,7 +88,8 @@
   function requiredAvgForResult(id,recipe=null){
     const rank = rankValueById(id);
     const byRank = FUSION_RANK_LEVEL_REQ[rank] || 0;
-    return Math.max(Number(recipe?.minAvg) || 0, byRank);
+    const bySize = FUSION_SIZE_LEVEL_REQ[fusionMonsterSize(id)] || 0;
+    return Math.max(Number(recipe?.minAvg) || 0, byRank, bySize);
   }
 
   function rankConditionReason(resultId,a,b){
@@ -96,9 +112,11 @@
 
   function fusionRequirementText(resultId,minAvg=0){
     const rank = rankValueById(resultId);
-    const req = Math.max(Number(minAvg) || 0, FUSION_RANK_LEVEL_REQ[rank] || 0);
+    const size = fusionMonsterSize(resultId);
+    const req = Math.max(Number(minAvg) || 0, FUSION_RANK_LEVEL_REQ[rank] || 0, FUSION_SIZE_LEVEL_REQ[size] || 0);
     const lines = [];
     if(req) lines.push(`親平均Lv${req}以上`);
+    if(size >= 3) lines.push(`親の合計サイズ${size}枠以上`);
     if(rank >= 7) lines.push("親のどちらかA以上・両方B以上");
     else if(rank >= 6) lines.push("親のどちらかB以上");
     else if(rank >= 5) lines.push("親のどちらかC以上");
@@ -107,6 +125,9 @@
 
   function recipeLockReason(recipe,a,b,resultId=null){
     const id = resultId || recipe?.result || chooseChild(a,b);
+    const childSize = fusionMonsterSize(id);
+    const parentSize = fusionParentSizeTotal(a,b);
+    if(parentSize < childSize) return `${childSize}枠モンスター作成には親の合計サイズ${childSize}枠以上が必要です`;
     const avg = Math.floor((a.level + b.level) / 2);
     const req = requiredAvgForResult(id,recipe);
     if(req && avg < req) return `親2体の平均Lv${req}以上で成立します`;
@@ -124,6 +145,12 @@
 
   function stablePick(a,b,list,tag=""){
     return list[stableFusionIndex(a,b,list,tag)];
+  }
+
+  function sizeAllowedResults(a,b,list){
+    const maxSize = fusionParentSizeTotal(a,b);
+    const allowed = list.filter(id=>D.MONSTERS?.[id] && fusionMonsterSize(id) <= maxSize);
+    return allowed.length ? allowed : list.filter(id=>D.MONSTERS?.[id]);
   }
 
   function chooseChild(a,b){
@@ -156,19 +183,19 @@
       "machine+slime":"gearslime",
       "machine+stone":"corewalker"
     };
-    if(table[types]) return table[types];
+    if(table[types] && fusionMonsterSize(table[types]) <= fusionParentSizeTotal(a,b)) return table[types];
 
     // v7.1.1:
     // 通常配合の候補選択はランダムにしない。
     // おすすめ表示・選択後プレビュー・実際の配合結果がズレないよう、
     // 同じ親IDの組み合わせなら必ず同じ結果を返す。
-    if(high >= 7) return stablePick(a,b,["prismdragon","phoenixdrake","celestiseraph","voiddragon","omegaframe","venomchimera"],"S");
-    if(high >= 6) return stablePick(a,b,["frostlevia","arcautomaton","astralwyrm","prismdragon","arkmachine","venomhydra"],"A");
-    if(high >= 5) return stablePick(a,b,["tidalseraph","volcazard","duskwolf","frostlevia","arcautomaton","corewalker"],"B");
-    if(high >= 4) return stablePick(a,b,["luminel","crystagon","tidalseraph","icetortoise","ironmantis","steelbug","thunderdrone"],"C");
-    if(high === 3) return stablePick(a,b,["cindrake","gearbit","gloomoth","mossking","orelord","snowcat","voltfox","toxicshroom","gearslime"],"D");
-    if(high === 2) return stablePick(a,b,["embercub","aquan","thornhog","frostpup","poisonplim"],"E");
-    return stablePick(a,b,["plim","leafling","puffbat","pebblon"],"F");
+    if(high >= 7) return stablePick(a,b,sizeAllowedResults(a,b,["prismdragon","phoenixdrake","celestiseraph","voiddragon","omegaframe","venomchimera"]),"S");
+    if(high >= 6) return stablePick(a,b,sizeAllowedResults(a,b,["frostlevia","arcautomaton","astralwyrm","prismdragon","arkmachine","venomhydra"]),"A");
+    if(high >= 5) return stablePick(a,b,sizeAllowedResults(a,b,["tidalseraph","volcazard","duskwolf","frostlevia","arcautomaton","corewalker"]),"B");
+    if(high >= 4) return stablePick(a,b,sizeAllowedResults(a,b,["luminel","crystagon","tidalseraph","icetortoise","ironmantis","steelbug","thunderdrone"]),"C");
+    if(high === 3) return stablePick(a,b,sizeAllowedResults(a,b,["cindrake","gearbit","gloomoth","mossking","orelord","snowcat","voltfox","toxicshroom","gearslime"]),"D");
+    if(high === 2) return stablePick(a,b,sizeAllowedResults(a,b,["embercub","aquan","thornhog","frostpup","poisonplim"]),"E");
+    return stablePick(a,b,sizeAllowedResults(a,b,["plim","leafling","puffbat","pebblon"]),"F");
   }
 
   function childLevel(a,b){
@@ -228,6 +255,23 @@
     return out;
   }
 
+  function fusionPartyOutcome(a,b,resultId){
+    const consumed = new Set([a.uid,b.uid]);
+    const remainingParty = S.state.party.filter(m=>!consumed.has(m.uid));
+    const before = S.partySlotInfo ? S.partySlotInfo() : {used:S.state.party.length,limit:D.MAX_PARTY};
+    const afterParents = S.partySlotInfo ? S.partySlotInfo(remainingParty) : {used:remainingParty.length,limit:D.MAX_PARTY};
+    const childSize = fusionMonsterSize(resultId);
+    const canJoin = S.canAddToParty ? S.canAddToParty({id:resultId},remainingParty) : remainingParty.length < D.MAX_PARTY;
+    return {
+      before,
+      afterParents,
+      childSize,
+      destination:canJoin ? "party" : "box",
+      afterChildUsed:canJoin ? afterParents.used + childSize : afterParents.used,
+      limit:afterParents.limit || before.limit || D.MAX_PARTY
+    };
+  }
+
   function fusionPreview(aid,bid){
     const all = S.owned();
     const a = all.find(m=>m.uid===aid);
@@ -249,6 +293,9 @@
         skillCandidates:[],
         selectedSkills:[],
         avgLevel:Math.floor((a.level + b.level) / 2),
+        childSize:fusionMonsterSize(a),
+        parentSizeTotal:fusionParentSizeTotal(a,b),
+        partyOutcome:fusionPartyOutcome(a,b,a.id),
         parents:[a,b]
       };
     }
@@ -275,6 +322,9 @@
       skillCandidates:skillList,
       selectedSkills:selected,
       avgLevel:Math.floor((a.level + b.level) / 2),
+      childSize:fusionMonsterSize(id),
+      parentSizeTotal:fusionParentSizeTotal(a,b),
+      partyOutcome:fusionPartyOutcome(a,b,id),
       parents:[a,b]
     };
   }
@@ -412,7 +462,67 @@
           </div>
         </div>
       </div>`;
+    setTimeout(()=>applyFusionRecipeFilters(),0);
     if(G.playSe) G.playSe("tap");
+  }
+
+  function applyFusionRecipeFilters(){
+    const query = String(fusionRecipeFilters.query || "").trim().toLocaleLowerCase("ja");
+    const size = fusionRecipeFilters.size;
+    const status = fusionRecipeFilters.status;
+    let visible = 0;
+
+    document.querySelectorAll(".routeRecipeV75[data-result-size]").forEach(card=>{
+      const matchesQuery = !query || String(card.dataset.search || "").toLocaleLowerCase("ja").includes(query);
+      const matchesSize = size === "all" || card.dataset.resultSize === size;
+      const matchesStatus = status === "all"
+        || (status === "ready" && card.dataset.recipeStatus === "ready")
+        || (status === "materials" && card.dataset.recipeStatus === "condition")
+        || (status === "undiscovered" && card.dataset.discovered === "false");
+      const show = matchesQuery && matchesSize && matchesStatus;
+      card.classList.toggle("hiddenByRecipeFilterV811",!show);
+      if(show) visible++;
+    });
+
+    document.querySelectorAll(".recipeSection").forEach(section=>{
+      const hasVisible = !!section.querySelector(".routeRecipeV75:not(.hiddenByRecipeFilterV811)");
+      section.classList.toggle("hiddenByRecipeFilterV811",!hasVisible);
+    });
+    document.querySelectorAll(".recipeFilterCountV811").forEach(el=>{
+      el.textContent = `${visible}件表示`;
+    });
+    document.querySelectorAll(".recipeFilterEmptyV811").forEach(el=>{
+      el.hidden = visible > 0;
+    });
+    document.querySelectorAll(".recipeSearchInputV811").forEach(input=>{
+      if(input.value !== fusionRecipeFilters.query) input.value = fusionRecipeFilters.query;
+    });
+    document.querySelectorAll(".recipeSizeFilterBtn").forEach(button=>{
+      button.classList.toggle("on",button.dataset.sizeFilter === size);
+    });
+    document.querySelectorAll(".recipeStatusFilterBtn").forEach(button=>{
+      button.classList.toggle("on",button.dataset.statusFilter === status);
+    });
+  }
+
+  function setFusionRecipeSearch(value=""){
+    fusionRecipeFilters.query = String(value || "").slice(0,60);
+    applyFusionRecipeFilters();
+  }
+
+  function filterFusionRecipeSize(size="all"){
+    fusionRecipeFilters.size = ["all","1","2","3"].includes(String(size)) ? String(size) : "all";
+    applyFusionRecipeFilters();
+  }
+
+  function filterFusionRecipeStatus(status="all"){
+    fusionRecipeFilters.status = ["all","ready","materials","undiscovered"].includes(String(status)) ? String(status) : "all";
+    applyFusionRecipeFilters();
+  }
+
+  function resetFusionRecipeFilters(){
+    fusionRecipeFilters = {query:"",size:"all",status:"all"};
+    applyFusionRecipeFilters();
   }
 
 
@@ -482,43 +592,125 @@
     else toast(`${S.def(recipe.result).name}の配合候補をセットしました`);
   }
 
-  function doFusion(){
+  function fusionExecutionContext(){
     if(fusionPick.length !== 2) return;
     const all = S.owned();
     const a = all.find(m=>m.uid===fusionPick[0]);
     const b = all.find(m=>m.uid===fusionPick[1]);
-    if(!a || !b || a.uid===b.uid){toast("配合できません");return;}
-    if(a.locked || b.locked){toast("保護ロック中の仲間は配合素材にできません");return;}
-    if(S.owned().length <= 2){toast("仲間が2体だけの時は配合できません");return;}
+    if(!a || !b || a.uid===b.uid){toast("配合できません");return null;}
+    if(a.locked || b.locked){toast("保護ロック中の仲間は配合素材にできません");return null;}
+    if(S.owned().length <= 2){toast("仲間が2体だけの時は配合できません");return null;}
 
     const prev = fusionPreview(a.uid,b.uid);
-    if(prev.locked){toast(prev.reason || "特殊配合の条件を満たしていません");return;}
+    if(prev.locked){toast(prev.reason || "特殊配合の条件を満たしていません");return null;}
 
     sanitizeFusionSkillPick(a,b);
     const candidateIds = prev.skillCandidates.map(s=>s.id);
     let selected = fusionSkillPick.filter(id=>candidateIds.includes(id)).slice(0,2);
     if(selected.length === 0) selected = candidateIds.slice(0,2);
-    const skillLine = selected.length
-      ? selected.map(id=>D.SKILLS?.[id]?.name || id).join(" / ")
-      : "なし";
-    const recipeLine = prev.recipe
-      ? (prev.forcedRecipe ? "配合リストから選択中" : "固定レシピ")
-      : "通常配合";
+    return {a,b,prev,selected};
+  }
 
-    if(typeof window.confirm === "function"){
-      const childName = S.def(prev.id).name;
-      const ok = window.confirm(
-        `【配合確認】\n` +
-        `${a.nickname} Lv${a.level} と ${b.nickname} Lv${b.level} を配合します。\n\n` +
-        `結果：${childName} Lv1\n` +
-        `種類：${recipeLine}\n` +
-        `引き継ぎ技：${skillLine}\n\n` +
-        `親2体はいなくなります。\n` +
-        `大事な仲間は保護ロックしてから配合してください。\n\n` +
-        `よろしいですか？`
-      );
-      if(!ok) return;
+  function openFusionConfirmation(context){
+    const {a,b,prev,selected} = context;
+    const V = window.MonsterLinksViews || {};
+    const child = S.def(prev.id);
+    const outcome = prev.partyOutcome;
+    const destinationLine = outcome?.destination === "party"
+      ? `パーティ加入予定（${outcome.afterChildUsed}/${outcome.limit}枠）`
+      : `牧場送り予定（パーティ残り${Math.max(0,outcome.limit-outcome.afterParents.used)}枠に対して子は${outcome.childSize}枠）`;
+    const skillLine = selected.length ? selected.map(id=>D.SKILLS?.[id]?.name || id).join(" / ") : "なし";
+    const returnedEquipment = [a,b].filter(m=>m.equip).map(m=>D.ITEMS[m.equip]?.name || m.equip);
+    const recipeLine = prev.recipe ? (prev.forcedRecipe ? "配合リストから選択" : "固定レシピ") : "通常配合";
+    const visual = (id,cls) => V.monsterVisual ? V.monsterVisual(id,cls) : `<div class="${cls}">${U.esc(S.def(id).emoji || "❔")}</div>`;
+
+    fusionPendingConfirmation = {
+      parentUids:[a.uid,b.uid],
+      resultId:prev.id,
+      selected:selected.slice(0,2)
+    };
+
+    let modal = document.getElementById("modal");
+    if(!modal){
+      modal = document.createElement("div");
+      modal.id = "modal";
+      document.body.appendChild(modal);
     }
+    modal.innerHTML = `
+      <div class="modalBg" onclick="Game.cancelFusionConfirmation(event)">
+        <div class="modal fusionConfirmModalV811" onclick="event.stopPropagation()">
+          <div class="stageTop">
+            <div>
+              <h2>配合内容の最終確認</h2>
+              <p class="tiny">親2体はいなくなります。内容を確認してから実行してください。</p>
+            </div>
+            <button onclick="Game.cancelFusionConfirmation()">閉じる</button>
+          </div>
+          <div class="fusionConfirmRouteV811">
+            <div class="fusionConfirmMonsterV811 parent">
+              ${visual(a.id,"fusionConfirmFaceV811")}
+              <b>${U.esc(a.nickname)}</b>
+              <span>${U.esc(S.def(a.id).name)} / Lv${a.level} / ${fusionMonsterSize(a)}枠</span>
+            </div>
+            <div class="fusionConfirmSymbolV811">＋</div>
+            <div class="fusionConfirmMonsterV811 parent">
+              ${visual(b.id,"fusionConfirmFaceV811")}
+              <b>${U.esc(b.nickname)}</b>
+              <span>${U.esc(S.def(b.id).name)} / Lv${b.level} / ${fusionMonsterSize(b)}枠</span>
+            </div>
+            <div class="fusionConfirmSymbolV811 arrow">→</div>
+            <div class="fusionConfirmMonsterV811 result">
+              ${visual(prev.id,"fusionConfirmFaceV811")}
+              <b>${U.esc(child.name)}＋</b>
+              <span>${child.rank} / Lv1 / ${prev.childSize}枠</span>
+            </div>
+          </div>
+          <div class="fusionConfirmFactsV811">
+            <div><span>配合種類</span><b>${U.esc(recipeLine)}</b></div>
+            <div><span>サイズ</span><b>親合計${prev.parentSizeTotal}枠 → 子${prev.childSize}枠</b></div>
+            <div><span>加入先</span><b>${U.esc(destinationLine)}</b></div>
+            <div><span>引き継ぎ技</span><b>${U.esc(skillLine)}</b></div>
+            <div><span>装備</span><b>${returnedEquipment.length ? `${U.esc(returnedEquipment.join(" / "))}を袋へ返却` : "装備なし"}</b></div>
+          </div>
+          ${prev.childSize >= 3 ? `<div class="fusionSizeWarningV81"><b>3枠大型モンスター</b><span>パーティではこの1体だけの編成になります。</span></div>` : ""}
+          <div class="fusionConfirmDangerV811">
+            <b>この操作は元に戻せません</b>
+            <span>残したい親はキャンセルして保護ロックしてください。</span>
+          </div>
+          <div class="actions fusionConfirmActionsV811">
+            <button class="gold" onclick="Game.confirmFusion()">この内容で配合する</button>
+            <button onclick="Game.cancelFusionConfirmation()">キャンセル</button>
+          </div>
+        </div>
+      </div>`;
+    if(G.playSe) G.playSe("tap");
+  }
+
+  function doFusion(){
+    const context = fusionExecutionContext();
+    if(!context) return;
+    openFusionConfirmation(context);
+  }
+
+  function confirmFusion(){
+    const pending = fusionPendingConfirmation;
+    if(!pending) return;
+    const context = fusionExecutionContext();
+    if(!context){
+      fusionPendingConfirmation = null;
+      if(G.closeModal) G.closeModal();
+      return;
+    }
+    if(context.a.uid !== pending.parentUids[0] || context.b.uid !== pending.parentUids[1] || context.prev.id !== pending.resultId){
+      fusionPendingConfirmation = null;
+      if(G.closeModal) G.closeModal();
+      toast("配合内容が変わったため、もう一度確認してください");
+      return;
+    }
+    const {a,b,prev} = context;
+    const selected = pending.selected.filter(id=>prev.skillCandidates.some(skill=>skill.id === id)).slice(0,2);
+    fusionPendingConfirmation = null;
+    if(G.closeModal) G.closeModal();
 
     const inherited = {
       bonus:prev.bonus,
@@ -547,10 +739,17 @@
     toast(`${child.nickname}が生まれました！${joinResult.destination === "party" ? " パーティに加わりました。" : " 枠不足のため牧場へ送りました。"}`);
   }
 
+  function cancelFusionConfirmation(ev){
+    if(ev && ev.target !== ev.currentTarget) return;
+    fusionPendingConfirmation = null;
+    if(G.closeModal) G.closeModal();
+  }
+
   function _clearFusionPickNoRender(){
     fusionPick = [];
     fusionSkillPick = [];
     fusionForcedRecipeKey = "";
+    fusionPendingConfirmation = null;
   }
 
   Object.defineProperty(G, "fusionPick", {
@@ -580,8 +779,16 @@
     fusionRecipeEntries,
     recipeSetStatus,
     fusionRequirementText,
+    fusionPartyOutcome,
+    applyFusionRecipeFilters,
+    setFusionRecipeSearch,
+    filterFusionRecipeSize,
+    filterFusionRecipeStatus,
+    resetFusionRecipeFilters,
     setFusionFromRecipe,
     openFusionRecipeList,
+    confirmFusion,
+    cancelFusionConfirmation,
     _clearFusionPickNoRender
   });
 

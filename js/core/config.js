@@ -6,7 +6,8 @@
   const SLOT_PREFIX = "monster_links_slot_";
   const ACTIVE_SLOT_KEY = "monster_links_active_slot";
   const SLOT_COUNT = 3;
-  const GAME_VERSION = "8.0";
+  const GAME_VERSION = "8.1.1";
+  const SAVE_SCHEMA_VERSION = 1;
   const DEV_PASSWORD = "rei-dev";
   const MAX_PARTY = 3;
   // v8.0: 実人数ではなく「合計パーティ枠」。1枠/2枠/3枠モンスターをこの範囲内で編成します。
@@ -45,5 +46,5 @@
 
   const RANK = {F:1,E:2,D:3,C:4,B:5,A:6,S:7};
 
-  Object.assign(P,{SAVE_KEY,SLOT_PREFIX,ACTIVE_SLOT_KEY,SLOT_COUNT,GAME_VERSION,DEV_PASSWORD,MAX_PARTY,PARTY_SLOT_LIMIT,TYPES,TYPE_CHART,PERSONALITIES,RANK});
+  Object.assign(P,{SAVE_KEY,SLOT_PREFIX,ACTIVE_SLOT_KEY,SLOT_COUNT,GAME_VERSION,SAVE_SCHEMA_VERSION,DEV_PASSWORD,MAX_PARTY,PARTY_SLOT_LIMIT,TYPES,TYPE_CHART,PERSONALITIES,RANK});
 })();

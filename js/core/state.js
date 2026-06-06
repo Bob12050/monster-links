@@ -158,6 +158,34 @@
     }catch(e){}
   }
 
+  const SAVE_MIGRATIONS = {
+    1(data){
+      // v1 is the baseline for saves created before schema versioning was added.
+      return data;
+    }
+  };
+
+  function migrateSaveData(data){
+    if(!data || typeof data !== "object") return data;
+    const target = Math.max(1,Math.floor(Number(D.SAVE_SCHEMA_VERSION) || 1));
+    let current = Math.max(0,Math.floor(Number(data.saveSchemaVersion) || 0));
+
+    // Preserve saves from a newer game version instead of marking them as older.
+    if(current > target) return data;
+
+    while(current < target){
+      const next = current + 1;
+      const migrate = SAVE_MIGRATIONS[next];
+      if(typeof migrate !== "function"){
+        throw new Error(`セーブデータ移行処理がありません: ${current} -> ${next}`);
+      }
+      migrate(data);
+      current = next;
+      data.saveSchemaVersion = current;
+    }
+    return data;
+  }
+
   function defaultSettings(){
     return {music:false,sound:true,speed:"normal"};
   }
@@ -263,6 +291,7 @@
     starter.nickname = "はじめのぷるミン";
     const state = {
       version:D.GAME_VERSION,
+      saveSchemaVersion:D.SAVE_SCHEMA_VERSION,
       activeSlot:activeSlot(),
       updatedAt:Date.now(),
       gold:80,
@@ -289,7 +318,11 @@
   }
 
   function normalizeState(data, clearBattle=false){
+    migrateSaveData(data);
     data.version = D.GAME_VERSION;
+    if((Number(data.saveSchemaVersion) || 0) <= D.SAVE_SCHEMA_VERSION){
+      data.saveSchemaVersion = D.SAVE_SCHEMA_VERSION;
+    }
     data.activeSlot = activeSlot();
     data.updatedAt = Number.isFinite(data.updatedAt) ? data.updatedAt : Date.now();
     data.gold = Number.isFinite(data.gold) ? data.gold : 80;
@@ -473,6 +506,7 @@
       kind:"monster-links-save-backup",
       format:1,
       gameVersion:D.GAME_VERSION,
+      saveSchemaVersion:D.SAVE_SCHEMA_VERSION,
       exportedAt:Date.now(),
       slot:activeSlot(),
       summary:slotSummary(activeSlot()),
@@ -747,6 +781,7 @@
     backupCurrentSlot,
     backupCurrentSlotString,
     restoreCurrentSlotFromBackup,
+    migrateSaveData,
     setSetting,
     owned,
     highestLv,

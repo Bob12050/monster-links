@@ -117,6 +117,13 @@
         ? `<div class="fusionGuarantee strongFusionNotice">📋 配合リストから選択中：この結果で固定されています</div>`
         : `<div class="fusionGuarantee">✅ 固定レシピ一致：この組み合わせの決まった結果です</div>`)
       : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`;
+    const outcome = prev.partyOutcome || {};
+    const destination = outcome.destination === "party"
+      ? `<div class="fusionDestinationV81 party"><b>配合後：パーティ加入予定</b><span>${outcome.afterChildUsed}/${outcome.limit}枠を使用</span></div>`
+      : `<div class="fusionDestinationV81 box"><b>配合後：牧場送り予定</b><span>空き${Math.max(0,(outcome.limit || 0)-(outcome.afterParents?.used || 0))}枠 / 子は${outcome.childSize || prev.childSize}枠</span></div>`;
+    const largeWarning = prev.childSize >= 3
+      ? `<div class="fusionSizeWarningV81"><b>3枠大型モンスター</b><span>パーティに入れる場合は、この1体だけの編成になります。</span></div>`
+      : "";
     return `
       <div class="fusionPreviewV34 ${prev.special ? "rareNotice" : ""}">
         <div class="fusionResultArt">
@@ -125,6 +132,9 @@
         <div class="fusionResultInfo">
           <div class="name">${d.name} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}</div>
           <div class="tiny">誕生Lv ${prev.level} / ${group} / 親平均Lv ${prev.avgLevel} / サイズ ${V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`}</div>
+          <div class="fusionSizeRouteV81">親サイズ合計 <b>${prev.parentSizeTotal}枠</b><span>→</span>子 <b>${prev.childSize}枠</b></div>
+          ${destination}
+          ${largeWarning}
           <div class="fusionGuarantee">🔁 配合後の子はLv1で生まれます。親の個体値・ボーナス・一部スキルは引き継ぎます。</div>
           ${recipeBadge}
           ${lock}
@@ -207,6 +217,8 @@
     const safeMonster = (id,cls="miniFace") => D.MONSTERS?.[id] ? V.monsterInline(id,cls) : `<span class="${cls}">❔</span>`;
     const unprotectedOwned = id => owned.filter(m=>m.id === id && !m.locked);
     const protectedOwned = id => owned.filter(m=>m.id === id && m.locked);
+    const resultSize = r => V.monsterSize ? V.monsterSize(r.result) : Math.max(1,Number(safeDef(r.result).size || 1));
+    setTimeout(()=>window.MonsterLinksGame.applyFusionRecipeFilters?.(),0);
 
     function parentMaterialHtml(id,needCount=1){
       const list = unprotectedOwned(id);
@@ -275,6 +287,39 @@
       </section>`;
     }
 
+    function recipeFilterHtml(){
+      const counts = {1:0,2:0,3:0};
+      entries.forEach(r=>counts[resultSize(r)] = (counts[resultSize(r)] || 0) + 1);
+      return `<section class="recipeFilterPanelV811">
+        <div class="recipeSearchRowV811">
+          <label>
+            <span>モンスター名検索</span>
+            <input class="recipeSearchInputV811" type="search" maxlength="60" placeholder="結果名・親素材名で検索" oninput="Game.setFusionRecipeSearch(this.value)">
+          </label>
+          <div class="recipeFilterCountV811">${entries.length}件表示</div>
+          <button onclick="Game.resetFusionRecipeFilters()">条件をクリア</button>
+        </div>
+        <div class="recipeFilterGroupV811">
+          <b>状態</b>
+          <div class="recipeFilterButtonsV811">
+            <button class="recipeStatusFilterBtn on" data-status-filter="all" onclick="Game.filterFusionRecipeStatus('all')">すべて</button>
+            <button class="recipeStatusFilterBtn" data-status-filter="ready" onclick="Game.filterFusionRecipeStatus('ready')">作成可能</button>
+            <button class="recipeStatusFilterBtn" data-status-filter="materials" onclick="Game.filterFusionRecipeStatus('materials')">素材あり・条件未達</button>
+            <button class="recipeStatusFilterBtn" data-status-filter="undiscovered" onclick="Game.filterFusionRecipeStatus('undiscovered')">未発見</button>
+          </div>
+        </div>
+        <div class="recipeFilterGroupV811">
+          <b>結果サイズ</b>
+          <div class="recipeFilterButtonsV811">
+            <button class="recipeSizeFilterBtn on" data-size-filter="all" onclick="Game.filterFusionRecipeSize('all')">すべて ${entries.length}</button>
+            <button class="recipeSizeFilterBtn" data-size-filter="1" onclick="Game.filterFusionRecipeSize('1')">1枠 ${counts[1] || 0}</button>
+            <button class="recipeSizeFilterBtn" data-size-filter="2" onclick="Game.filterFusionRecipeSize('2')">2枠 ${counts[2] || 0}</button>
+            <button class="recipeSizeFilterBtn" data-size-filter="3" onclick="Game.filterFusionRecipeSize('3')">3枠 ${counts[3] || 0}</button>
+          </div>
+        </div>
+      </section>`;
+    }
+
     const groupHtml = group => {
       const groupEntries = entries.filter(r=>r.group === group);
       if(!groupEntries.length) return "";
@@ -291,6 +336,8 @@
           const p0d = safeDef(p0);
           const p1d = safeDef(p1);
           const rd = safeDef(r.result);
+          const childSize = resultSize(r);
+          const parentSizeTotal = (V.monsterSize ? V.monsterSize(p0d) : Number(p0d.size || 1)) + (V.monsterSize ? V.monsterSize(p1d) : Number(p1d.size || 1));
           const sameParent = p0 === p1;
           const condText = window.MonsterLinksGame.fusionRequirementText ? window.MonsterLinksGame.fusionRequirementText(r.result,r.minAvg) : (r.minAvg ? `親平均Lv${r.minAvg}以上` : "条件なし");
           const cond = `<div class="tiny rareLock">条件：${U.esc(condText)}</div>`;
@@ -298,8 +345,10 @@
           const resultKnown = discovered[r.result] || scouted[r.result];
           const status = resultKnown ? `<span class="type">発見済み</span>` : `<span class="tag">未発見</span>`;
           const setStatus = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false,label:"素材不足",cls:""};
+          const recipeStatus = !setStatus.ok ? "missing" : setStatus.locked ? "condition" : "ready";
+          const searchText = [p0,p1,r.result,p0d.name,p1d.name,rd.name,r.note || ""].join(" ");
           const setButton = `<button class="${setStatus.cls || "ghost"} recipeSetBtn" ${setStatus.ok ? "" : "disabled"} onclick="Game.setFusionFromRecipe('${U.esc(r.recipeKey || [p0,p1].sort().join("+"))}')">${U.esc(setStatus.label)}</button>`;
-          return `<div class="recipe routeRecipeV75 ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""}">
+          return `<div class="recipe routeRecipeV75 ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
             <div class="routeStatusWrap">${routeStatusHtml(r,setStatus)}</div>
             <div class="routeParents">
               <div class="routeParentBox">
@@ -317,6 +366,7 @@
               <b>${resultKnown ? `${safeMonster(r.result,'miniFace')} ${U.esc(rd.name)}` : "？？？？"}</b>
               ${status}
               <div class="tiny">${rd.rank} / ${D.TYPES?.[rd.type] || rd.type || "?"} / ${V.sizeLabel ? V.sizeLabel(rd) : `${rd.size || 1}枠`}</div>
+              <div class="routeSizeLineV81">親合計${parentSizeTotal}枠 → 子${childSize}枠</div>
             </div>
             ${cond}${note}
             <div class="recipeSetArea">${setButton}</div>
@@ -326,7 +376,9 @@
     };
 
     return `<div class="recipeSections">
+      ${recipeFilterHtml()}
       ${recipeDashboardHtml()}
+      <div class="empty recipeFilterEmptyV811" hidden>条件に合う配合レシピがありません。</div>
       ${groups.map(groupHtml).join("")}
     </div>`;
   }
