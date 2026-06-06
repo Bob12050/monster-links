@@ -4084,3 +4084,32 @@ button:hover:before{
     display:grid;
   }
 }
+
+/* v8.0 party slot rule implementation */
+.partyRuleHintV80{
+  padding:8px 10px;
+  border-radius:12px;
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+}
+.actionHintV80{
+  display:inline-flex;
+  align-items:center;
+  min-height:30px;
+  padding:0 6px;
+  border-radius:10px;
+  background:rgba(255,110,140,.10);
+  border:1px solid rgba(255,110,140,.18);
+  color:#ffc4d0;
+}
+.fighterNameLine .sizeBadge{
+  margin-left:0;
+}
+@media (max-width:520px){
+  .partyRuleHintV80{
+    font-size:11px;
+  }
+}

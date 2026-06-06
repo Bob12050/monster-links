@@ -64,9 +64,12 @@
       </div>`;
     }
     if(opt.mode === "box"){
+      const size = S.monsterSize ? S.monsterSize(m) : 1;
+      const remain = S.partySlotsRemaining ? S.partySlotsRemaining() : Math.max(0,D.MAX_PARTY - S.state.party.length);
       const canJoinParty = S.canAddToParty ? S.canAddToParty(m) : S.state.party.length < D.MAX_PARTY;
       return `<div class="actions">
-        <button class="green" onclick="Game.toParty('${m.uid}')" ${canJoinParty ? "" : "disabled"}>パーティへ</button>
+        <button class="green" onclick="Game.toParty('${m.uid}')" ${canJoinParty ? "" : "disabled"}>パーティへ（${size}枠）</button>
+        ${canJoinParty ? "" : `<span class="tiny actionHintV80">残り${remain}枠</span>`}
         <button class="gold" onclick="Game.equipModal('${m.uid}')">装備変更</button>
         ${lockBtn}
       </div>`;

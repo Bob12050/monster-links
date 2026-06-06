@@ -6,10 +6,10 @@
   const SLOT_PREFIX = "monster_links_slot_";
   const ACTIVE_SLOT_KEY = "monster_links_active_slot";
   const SLOT_COUNT = 3;
-  const GAME_VERSION = "7.9";
+  const GAME_VERSION = "8.0";
   const DEV_PASSWORD = "rei-dev";
   const MAX_PARTY = 3;
-  // v7.9: 実人数ではなく「合計パーティ枠」。1枠/2枠/3枠モンスターをこの範囲内で編成します。
+  // v8.0: 実人数ではなく「合計パーティ枠」。1枠/2枠/3枠モンスターをこの範囲内で編成します。
   const PARTY_SLOT_LIMIT = 3;
 
   const TYPES = {

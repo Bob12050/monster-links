@@ -52,6 +52,30 @@
     return Math.max(0,partySlotLimit() - partySizeUsed(list));
   }
 
+  function partySizeCounts(list){
+    const party = Array.isArray(list) ? list : state.party;
+    const counts = {1:0,2:0,3:0};
+    party.forEach(m=>{
+      const size = monsterSize(m);
+      counts[size] = (counts[size] || 0) + 1;
+    });
+    return counts;
+  }
+
+  function partySlotInfo(list){
+    const party = Array.isArray(list) ? list : state.party;
+    const used = partySizeUsed(party);
+    const limit = partySlotLimit();
+    return {
+      used,
+      limit,
+      remaining:Math.max(0,limit - used),
+      over:Math.max(0,used - limit),
+      count:party.length,
+      sizes:partySizeCounts(party)
+    };
+  }
+
   function canAddToParty(monster,list){
     if(!monster || !D.MONSTERS?.[monster.id]) return false;
     const party = Array.isArray(list) ? list : state.party;
@@ -520,8 +544,14 @@
 
   function addMonster(m){
     recordScouted(m.id);
-    if(canAddToParty(m)) state.party.push(m);
-    else state.box.push(m);
+    const size = monsterSize(m);
+    const before = partySlotInfo();
+    if(canAddToParty(m)){
+      state.party.push(m);
+      return {destination:"party", size, before, after:partySlotInfo()};
+    }
+    state.box.push(m);
+    return {destination:"box", size, before, after:partySlotInfo(), reason:"notEnoughSlots"};
   }
 
   function removeMonster(uid){
@@ -692,6 +722,8 @@
     monsterSize,
     partySizeUsed,
     partySlotsRemaining,
+    partySizeCounts,
+    partySlotInfo,
     canAddToParty,
     partySizeText,
     inheritIvs,

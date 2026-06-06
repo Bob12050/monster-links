@@ -37,7 +37,7 @@
             <div class="fighterNameLine">
               <span class="fighterLabel">ENEMY</span>
               <b>${enemy.nickname}</b>
-              <span class="tag">${ed.rank}</span><span class="type">${D.TYPES[ed.type]}</span><span class="type">Lv ${enemy.level}</span>
+              <span class="tag">${ed.rank}</span><span class="type">${D.TYPES[ed.type]}</span>${V.sizeBadge ? V.sizeBadge(ed,"miniSize") : `<span class="type">${S.monsterSize(enemy)}枠</span>`}<span class="type">Lv ${enemy.level}</span>
             </div>
             <div class="visualWrap visualWrapV23 enemyVisual">
               <div class="groundShadow"></div>
@@ -57,7 +57,7 @@
             <div class="fighterNameLine">
               <span class="fighterLabel allyLabel">ALLY</span>
               <b>${ally.nickname}</b>
-              <span class="tag">${ad.rank}</span><span class="type">${D.TYPES[ad.type]}</span><span class="type">Lv ${ally.level}</span>
+              <span class="tag">${ad.rank}</span><span class="type">${D.TYPES[ad.type]}</span>${V.sizeBadge ? V.sizeBadge(ad,"miniSize") : `<span class="type">${S.monsterSize(ally)}枠</span>`}<span class="type">Lv ${ally.level}</span>
             </div>
             <div class="visualWrap visualWrapV23 allyVisual">
               <div class="groundShadow allyShadow"></div>

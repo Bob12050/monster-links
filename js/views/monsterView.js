@@ -26,6 +26,12 @@
         <label><span>属性</span><select onchange="Game.setListFilter('monsters','type',this.value)">
           ${opt("all","すべて",f.type)}${types.map(t=>opt(t,D.TYPES[t],f.type)).join("")}
         </select></label>
+        <label><span>サイズ</span><select onchange="Game.setListFilter('monsters','size',this.value)">
+          ${opt("all","すべて",f.size || "all")}
+          ${opt("1","1枠",f.size || "all")}
+          ${opt("2","2枠",f.size || "all")}
+          ${opt("3","3枠",f.size || "all")}
+        </select></label>
         <label><span>場所</span><select onchange="Game.setListFilter('monsters','place',this.value)">
           ${opt("all","すべて",f.place)}
           ${opt("party","パーティ",f.place)}
@@ -46,6 +52,8 @@
     const partyLimit = S.partySlotLimit ? S.partySlotLimit() : D.MAX_PARTY;
     const partyRemain = S.partySlotsRemaining ? S.partySlotsRemaining() : Math.max(0,D.MAX_PARTY - state.party.length);
     const partyPct = U.clamp(partyUsed / Math.max(1,partyLimit) * 100,0,100);
+    const slotInfo = S.partySlotInfo ? S.partySlotInfo() : {sizes:{1:state.party.length,2:0,3:0}};
+    const sizeSummary = `1枠×${slotInfo.sizes[1] || 0} / 2枠×${slotInfo.sizes[2] || 0} / 3枠×${slotInfo.sizes[3] || 0}`;
     return `
     <main>
       <section class="hero">
@@ -76,11 +84,12 @@
         <div class="partySlotTopV79">
           <div>
             <h2>パーティ枠 ${partyUsed}/${partyLimit}</h2>
-            <p class="tiny">2枠・3枠モンスターに備えた枠管理です。合計${partyLimit}枠まで編成できます。</p>
+            <p class="tiny">1枠・2枠・3枠の合計が${partyLimit}枠以内になるように編成します。現在：${sizeSummary}</p>
           </div>
           <span class="tag">残り${partyRemain}枠</span>
         </div>
         <div class="slotBarV79"><i style="width:${partyPct}%"></i></div>
+        <div class="partyRuleHintV80">例：1枠×3体 / 2枠+1枠 / 3枠×1体。枠が足りないスカウト・配合結果は自動で牧場へ送られます。</div>
       </section>
 
       <section class="monsterManageLayoutV761">

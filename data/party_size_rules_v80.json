@@ -1,0 +1,29 @@
+{
+  "version": "8.0",
+  "title": "パーティ枠制限本実装",
+  "partySlotLimit": 3,
+  "validExamples": [
+    "1枠 + 1枠 + 1枠",
+    "2枠 + 1枠",
+    "3枠"
+  ],
+  "blockedExamples": [
+    "2枠 + 2枠",
+    "3枠 + 1枠"
+  ],
+  "implemented": [
+    "party slot helpers",
+    "box to party slot check",
+    "scout destination feedback",
+    "fusion destination feedback",
+    "save normalization",
+    "size filters for monsters and dex",
+    "battle size badges"
+  ],
+  "future": [
+    "large monster specific recipes",
+    "large monster battle effects",
+    "4-monster fusion",
+    "150 monster roster expansion"
+  ]
+}

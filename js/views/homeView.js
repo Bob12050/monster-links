@@ -12,7 +12,7 @@
     <main>
       <section class="hero heroCompact">
         <h1>拠点</h1>
-        <p>v${D.GAME_VERSION}：2枠・3枠モンスターに備えて、パーティ枠の管理を追加しました。</p>
+        <p>v${D.GAME_VERSION}：2枠・3枠モンスターのパーティ枠制限を本実装しました。</p>
       </section>
 
       ${V.nextGoalPanel()}

@@ -96,7 +96,9 @@
     const quest = S.questCounts();
     const bagCount = Object.values(S.state.bag || {}).reduce((a,n)=>a+n,0);
     const arenaClears = Object.keys(S.state.arena?.cleared || {}).filter(id=>S.state.arena.cleared[id]).length;
+    const partySlots = S.partySizeText ? S.partySizeText() : String(S.state.party.length);
     return `<div class="dashGrid">
+      <button onclick="Game.setView('monsters')"><span>👥</span><b>${partySlots}</b><small>パーティ枠</small></button>
       <button onclick="Game.setView('monsters')"><span>⭐</span><b>${S.highestLv()}</b><small>最高Lv</small></button>
       <button onclick="Game.setView('dex')"><span>📘</span><b>${dex.discovered}/${dex.total}</b><small>図鑑</small></button>
       <button onclick="Game.setView('quest')"><span>✅</span><b>${quest.claimable}</b><small>受取可</small></button>

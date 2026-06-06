@@ -23,13 +23,15 @@
     if(i < 0) return;
     const target = state.box[i];
     if(!S.canAddToParty(target)){
-      toast(`パーティ枠が足りません（現在${S.partySizeText()}）`);
+      const need = S.monsterSize ? S.monsterSize(target) : 1;
+      const remain = S.partySlotsRemaining ? S.partySlotsRemaining() : 0;
+      toast(`パーティ枠が足りません（必要${need}枠 / 残り${remain}枠 / 現在${S.partySizeText()}）`);
       return;
     }
     state.party.push(state.box.splice(i,1)[0]);
     S.save();
     render();
-    toast("パーティに加えました");
+    toast(`パーティに加えました（${S.partySizeText()}）`);
   }
 
   function leader(uid){
@@ -68,11 +70,13 @@
     const inParty = S.state.party.some(x=>x.uid===uid);
     const inBox = S.state.box.some(x=>x.uid===uid);
     const lockBtn = `<button class="${m.locked ? "red" : ""}" onclick="Game.toggleMonsterLock('${m.uid}');Game.openMonsterDetail('${m.uid}','${place}')">${m.locked ? "保護解除" : "保護"}</button>`;
+    const needSlots = S.monsterSize ? S.monsterSize(m) : 1;
+    const remainSlots = S.partySlotsRemaining ? S.partySlotsRemaining() : Math.max(0,D.MAX_PARTY - S.state.party.length);
     const canJoinParty = inBox ? S.canAddToParty(m) : false;
     const moveBtn = inParty
       ? `<button onclick="Game.toBox('${m.uid}');Game.closeModal()">牧場へ</button>`
       : inBox
-        ? `<button class="green" onclick="Game.toParty('${m.uid}');Game.closeModal()" ${canJoinParty ? "" : "disabled"}>パーティへ</button>`
+        ? `<button class="green" onclick="Game.toParty('${m.uid}');Game.closeModal()" ${canJoinParty ? "" : "disabled"}>パーティへ（${needSlots}枠）</button>`
         : "";
     const leaderBtn = inParty ? `<button onclick="Game.leader('${m.uid}');Game.closeModal()">先頭にする</button>` : "";
     const ivLine = `HP${m.ivs.hp} MP${m.ivs.mp} 攻${m.ivs.atk} 守${m.ivs.def} 速${m.ivs.spd} 賢${m.ivs.wis}`;
@@ -126,8 +130,8 @@
 
         <div class="detailSectionV78 partySlotDetailV79">
           <b>パーティ枠</b>
-          <div class="tiny">この仲間：${S.monsterSize(m)}枠 / 現在のパーティ：${S.partySizeText()}</div>
-          <div class="tiny">${inBox && !canJoinParty ? "パーティに入れるには、先に牧場へ戻して枠を空けてください。" : "2枠・3枠モンスターに対応するための枠管理を有効化しています。"}</div>
+          <div class="tiny">この仲間：${needSlots}枠 / 現在のパーティ：${S.partySizeText()} / 残り${remainSlots}枠</div>
+          <div class="tiny">${inBox && !canJoinParty ? `必要${needSlots}枠に対して残り${remainSlots}枠です。先に牧場へ戻して枠を空けてください。` : "1枠・2枠・3枠の合計が上限以内になるように編成できます。"}</div>
         </div>
 
         <div class="detailSectionV78">

@@ -155,9 +155,10 @@
       if(U.rand(1,100) <= chance){
         const joined = S.makeMonster(e.id,e.level);
         joined.nickname = S.def(e.id).name;
-        S.addMonster(joined);
+        const joinedResult = S.addMonster(joined);
+        b.scoutJoinResult = joinedResult;
         G.playSe("scout");
-        log(`${e.nickname}のスカウトに成功！`);
+        log(`${e.nickname}のスカウトに成功！ ${joinedResult.destination === "party" ? "パーティに加わった！" : "パーティ枠が足りないため牧場へ送られた。"}`);
         finish("scout");
         return;
       }else{
@@ -406,6 +407,12 @@
       state.wins++;
       S.recordScout(b.isBoss);
       const lines = [];
+      if(b.scoutJoinResult){
+        const resultText = b.scoutJoinResult.destination === "party"
+          ? `仲間はパーティに加わりました（${S.partySizeText()}）。`
+          : `仲間は牧場へ送られました（必要${b.scoutJoinResult.size}枠 / スカウト前の残り${b.scoutJoinResult.before?.remaining ?? 0}枠）。`;
+        lines.push(resultText);
+      }
       let reward = {exp:0,gold:0};
       let firstBossClear = false;
       if(b.isBoss){
@@ -500,7 +507,7 @@
         <div class="list">
           ${S.state.party.map((m,i)=>`
             <button ${(!S.alive(m) || i===b.active) ? "disabled" : ""} onclick="Game.switchAlly(${i})">
-              ${S.def(m.id).emoji} ${m.nickname} Lv${m.level} HP${m.hp}/${S.stats(m).hp}
+              ${S.def(m.id).emoji} ${m.nickname} ${S.monsterSize ? S.monsterSize(m) : 1}枠 / Lv${m.level} / HP${m.hp}/${S.stats(m).hp}
             </button>`).join("")}
           <button onclick="Game.closeModal()">閉じる</button>
         </div>

@@ -30,7 +30,7 @@
     if(scope === "dex"){
       return `<section class="card filterPanel">
         <div class="filterHead">
-          <div><h2>図鑑検索</h2><p class="tiny">150匹規模に備えて、名前・ランク・属性・状態で絞り込めます。</p></div>
+          <div><h2>図鑑検索</h2><p class="tiny">150匹規模に備えて、名前・ランク・属性・サイズ・状態で絞り込めます。</p></div>
           <button onclick="Game.clearListFilter('dex')">リセット</button>
         </div>
         <div class="filterGrid">
@@ -40,6 +40,12 @@
           </select></label>
           <label><span>属性</span><select onchange="Game.setListFilter('dex','type',this.value)">
             ${opt("all","すべて",f.type)}${types.map(t=>opt(t,D.TYPES[t],f.type)).join("")}
+          </select></label>
+          <label><span>サイズ</span><select onchange="Game.setListFilter('dex','size',this.value)">
+            ${opt("all","すべて",f.size || "all")}
+            ${opt("1","1枠",f.size || "all")}
+            ${opt("2","2枠",f.size || "all")}
+            ${opt("3","3枠",f.size || "all")}
           </select></label>
           <label><span>状態</span><select onchange="Game.setListFilter('dex','status',this.value)">
             ${opt("all","すべて",f.status)}

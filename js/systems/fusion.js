@@ -536,7 +536,7 @@
 
     const child = S.makeMonster(prev.id,1,inherited);
     child.nickname = S.def(child.id).name + "＋";
-    S.addMonster(child);
+    const joinResult = S.addMonster(child);
     S.recordFusion(!!prev.special);
 
     fusionPick = [];
@@ -544,7 +544,7 @@
     fusionForcedRecipeKey = "";
     S.save();
     render();
-    toast(`${child.nickname}が生まれました！`);
+    toast(`${child.nickname}が生まれました！${joinResult.destination === "party" ? " パーティに加わりました。" : " 枠不足のため牧場へ送りました。"}`);
   }
 
   function _clearFusionPickNoRender(){

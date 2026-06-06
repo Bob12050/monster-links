@@ -6,8 +6,8 @@
   const G = window.MonsterLinksGame = window.MonsterLinksGame || {};
 
   const defaults = {
-    dex:{q:"",rank:"all",type:"all",status:"all"},
-    monsters:{q:"",rank:"all",type:"all",place:"all"}
+    dex:{q:"",rank:"all",type:"all",size:"all",status:"all"},
+    monsters:{q:"",rank:"all",type:"all",size:"all",place:"all"}
   };
 
   const filters = JSON.parse(JSON.stringify(defaults));
@@ -44,6 +44,7 @@
 
     if(f.rank !== "all" && d.rank !== f.rank) return false;
     if(f.type !== "all" && d.type !== f.type) return false;
+    if((f.size || "all") !== "all" && String(S.monsterSize ? S.monsterSize(id) : (d.size || 1)) !== String(f.size)) return false;
 
     if(f.status === "discovered" && !discovered) return false;
     if(f.status === "scouted" && !scouted) return false;
@@ -62,8 +63,9 @@
     if(f.place !== "all" && f.place !== place) return false;
     if(f.rank !== "all" && d.rank !== f.rank) return false;
     if(f.type !== "all" && d.type !== f.type) return false;
+    if((f.size || "all") !== "all" && String(S.monsterSize ? S.monsterSize(m) : (d.size || 1)) !== String(f.size)) return false;
 
-    return textMatch(f.q,[m.nickname,d.name,m.id,d.rank,(D.TYPES?.[d.type] || d.type || ""),m.level]);
+    return textMatch(f.q,[m.nickname,d.name,m.id,d.rank,(D.TYPES?.[d.type] || d.type || ""),`${S.monsterSize ? S.monsterSize(m) : (d.size || 1)}枠`,m.level]);
   }
 
   Object.assign(G,{
