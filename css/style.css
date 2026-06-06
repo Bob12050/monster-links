@@ -3426,3 +3426,17 @@ button:hover:before{
   box-shadow:0 0 0 2px rgba(110,231,255,.16);
   font-weight:900;
 }
+
+
+/* v7.2.7 fusion stability UI */
+.strongFusionNotice{
+  border-color:rgba(110,231,255,.38)!important;
+  background:rgba(110,231,255,.12)!important;
+}
+.fusionSkillStableV727 .stageTop{
+  align-items:flex-start;
+  gap:10px;
+}
+.fusionSkillStableV727 .stageTop button{
+  white-space:nowrap;
+}

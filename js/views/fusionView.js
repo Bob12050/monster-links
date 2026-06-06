@@ -63,6 +63,11 @@
     const group = D.RECIPE_GROUPS?.[prev.group]?.name || (prev.recipe ? "固定レシピ" : "通常配合");
     const lock = prev.locked ? `<div class="tiny rareLock">条件未達：${U.esc(prev.reason)}</div>` : "";
     const note = prev.note ? `<div class="tiny">${U.esc(prev.note)}</div>` : "";
+    const recipeBadge = prev.recipe
+      ? (prev.forcedRecipe
+        ? `<div class="fusionGuarantee strongFusionNotice">📋 配合リストから選択中：この結果で固定されています</div>`
+        : `<div class="fusionGuarantee">✅ 固定レシピ一致：この組み合わせの決まった結果です</div>`)
+      : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`;
     return `
       <div class="fusionPreviewV34 ${prev.special ? "rareNotice" : ""}">
         <div class="fusionResultArt">
@@ -72,7 +77,7 @@
           <div class="name">${d.name} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span></div>
           <div class="tiny">誕生Lv ${prev.level} / ${group} / 親平均Lv ${prev.avgLevel}</div>
           <div class="fusionGuarantee">🔁 配合後の子はLv1で生まれます。親の個体値・ボーナス・一部スキルは引き継ぎます。</div>
-          ${prev.recipe ? `<div class="fusionGuarantee">✅ 配合リスト/固定レシピの結果を優先します</div>` : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`}
+          ${recipeBadge}
           ${lock}
           ${note}
           ${fusionBonusHtml(prev)}
@@ -97,16 +102,23 @@
     const list = prev.skillCandidates || [];
     if(!list.length) return `<div class="fusionInfoBlock"><b>引き継ぎ技</b><div class="tiny">親が特技を覚えていないため、引き継ぎ技はありません。</div></div>`;
     const selected = new Set(prev.selectedSkills || []);
-    return `<div class="fusionInfoBlock">
-      <b>引き継ぎ技を選択 <small>${selected.size}/2</small></b>
-      <div class="tiny">最大2つまで選べます。2つ選択中に別の技を押すと、いったん選択をリセットしてその技だけ選びます。</div>
-      <div class="actions"><button onclick="Game.clearFusionSkills()">技選択をクリア</button></div>
+    const selectedNames = [...selected].map(id=>D.SKILLS?.[id]?.name || id);
+    const selectedLine = selectedNames.length ? selectedNames.join(" / ") : "未選択";
+    return `<div class="fusionInfoBlock fusionSkillStableV727">
+      <div class="stageTop">
+        <div>
+          <b>引き継ぎ技を選択 <small>${selected.size}/2</small></b>
+          <div class="tiny">現在：${U.esc(selectedLine)}</div>
+        </div>
+        <button onclick="Game.clearFusionSkills()">技選択をクリア</button>
+      </div>
+      <div class="notice">最大2つまで。2つ選択中に別の技を押すと、いったん選択をリセットしてその技だけ選びます。</div>
       <div class="skillPickGrid">
         ${list.map(s=>{
-          const sk = D.SKILLS[s.id];
+          const sk = D.SKILLS[s.id] || {name:s.id,cost:0,text:""};
           const on = selected.has(s.id);
           return `<button class="${on ? "on" : ""}" onclick="Game.toggleFusionSkill('${s.id}')">
-            <span>${on ? "✅" : "▫️"} ${sk.name}</span>
+            <span>${on ? "✅" : "▫️"} ${U.esc(sk.name)}</span>
             <small>MP${sk.cost || 0} / ${U.esc(sk.text || "")}</small>
           </button>`;
         }).join("")}

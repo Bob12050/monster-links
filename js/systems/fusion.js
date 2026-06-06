@@ -243,7 +243,8 @@
         parents:[a,b]
       };
     }
-    const recipe = forcedRecipeFor(a,b) || findRecipe(a,b);
+    const forcedRecipe = forcedRecipeFor(a,b);
+    const recipe = forcedRecipe || findRecipe(a,b);
     const id = recipe ? recipe.result : chooseChild(a,b);
     const lockReason = recipeLockReason(recipe,a,b,id);
     const level = childLevel(a,b);
@@ -253,6 +254,7 @@
       id,
       level,
       recipe:!!recipe,
+      forcedRecipe:!!forcedRecipe,
       recipeKey:recipe?.recipeKey || "",
       group:recipe?.group || "normal",
       special:recipe?.group === "rare",
@@ -479,23 +481,31 @@
     const prev = fusionPreview(a.uid,b.uid);
     if(prev.locked){toast(prev.reason || "特殊配合の条件を満たしていません");return;}
 
+    sanitizeFusionSkillPick(a,b);
+    const candidateIds = prev.skillCandidates.map(s=>s.id);
+    let selected = fusionSkillPick.filter(id=>candidateIds.includes(id)).slice(0,2);
+    if(selected.length === 0) selected = candidateIds.slice(0,2);
+    const skillLine = selected.length
+      ? selected.map(id=>D.SKILLS?.[id]?.name || id).join(" / ")
+      : "なし";
+    const recipeLine = prev.recipe
+      ? (prev.forcedRecipe ? "配合リストから選択中" : "固定レシピ")
+      : "通常配合";
+
     if(typeof window.confirm === "function"){
       const childName = S.def(prev.id).name;
       const ok = window.confirm(
         `【配合確認】\n` +
         `${a.nickname} Lv${a.level} と ${b.nickname} Lv${b.level} を配合します。\n\n` +
         `結果：${childName} Lv1\n` +
+        `種類：${recipeLine}\n` +
+        `引き継ぎ技：${skillLine}\n\n` +
         `親2体はいなくなります。\n` +
         `大事な仲間は保護ロックしてから配合してください。\n\n` +
         `よろしいですか？`
       );
       if(!ok) return;
     }
-
-    sanitizeFusionSkillPick(a,b);
-    const candidateIds = prev.skillCandidates.map(s=>s.id);
-    let selected = fusionSkillPick.filter(id=>candidateIds.includes(id)).slice(0,2);
-    if(selected.length === 0) selected = candidateIds.slice(0,2);
 
     const inherited = {
       bonus:prev.bonus,
