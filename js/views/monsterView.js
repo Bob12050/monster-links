@@ -46,7 +46,7 @@
     <main>
       <section class="hero">
         <h1>仲間モンスター</h1>
-        <p>仲間の確認・装備変更・配合への入口です。保護ロックやサイズ表示もここで確認できます。</p>
+        <p>一覧はコンパクト表示です。モンスターをタップ/クリックすると詳細・装備・移動操作を開けます。</p>
       </section>
 
       <section class="card fusionRouteCard">
@@ -73,7 +73,7 @@
           <div class="stageTop">
             <div>
               <h2>パーティ ${party.length}/${state.party.length}表示</h2>
-              <p class="tiny">現在の編成。牧場からパーティへ移動できます。</p>
+              <p class="tiny">カードをタップ/クリックで詳細を表示します。</p>
             </div>
             <span class="tag">${state.party.length}/${D.MAX_PARTY}</span>
           </div>
@@ -84,7 +84,7 @@
           <div class="stageTop">
             <div>
               <h2>牧場 ${box.length}/${state.box.length}表示</h2>
-              <p class="tiny">PC・横幅の広い画面では2列表示。保護中の仲間は配合素材になりません。</p>
+              <p class="tiny">カードをタップ/クリックで詳細を表示。PCでは2列で一覧性を高めています。</p>
             </div>
             <span class="tag">${box.length}体</span>
           </div>

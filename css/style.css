@@ -3920,3 +3920,128 @@ button:hover:before{
     gap:14px;
   }
 }
+
+
+/* v7.8 monster detail modal + compact list cards */
+.tapMonsterCardV78{
+  cursor:pointer;
+  transition:transform .12s ease, border-color .12s ease, background .12s ease;
+}
+.tapMonsterCardV78:hover{
+  border-color:rgba(110,231,255,.35);
+  background:linear-gradient(180deg,rgba(40,58,102,.96),rgba(20,29,55,.96));
+}
+.tapMonsterCardV78:active{
+  transform:translateY(2px);
+}
+.tapHintV78{
+  margin-top:4px;
+  color:#c7f7ff;
+}
+.miniStatsV78{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:4px;
+  margin:6px 0;
+}
+.miniStatsV78 span{
+  padding:4px 5px;
+  border-radius:9px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  text-align:center;
+  font-size:11px;
+  font-weight:900;
+}
+.oneLineV78{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.monsterCardV78 .bars,
+.monsterCardV78 .stats,
+.monsterCardV78 .traitLine,
+.monsterCardV78 .equipLine{
+  display:none;
+}
+.monsterDetailModalV78{
+  max-width:760px;
+}
+.monsterDetailHeadV78{
+  display:grid;
+  grid-template-columns:112px minmax(0,1fr);
+  gap:14px;
+  align-items:center;
+  margin:12px 0;
+}
+.detailFaceV78{
+  width:112px;
+  height:112px;
+  border-radius:26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:62px;
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.32),rgba(255,255,255,.06) 60%);
+  border:1px solid rgba(255,255,255,.16);
+}
+.detailMetaV78{
+  min-width:0;
+}
+.detailStatsGridV78{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:10px 0;
+}
+.detailSectionV78{
+  margin-top:10px;
+  padding:10px;
+  border-radius:15px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.10);
+}
+.detailSectionV78 b{
+  display:block;
+  margin-bottom:5px;
+}
+.detailSkillGridV78{
+  display:grid;
+  gap:7px;
+}
+.detailSkillV78{
+  padding:8px;
+  border-radius:12px;
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.08);
+}
+.detailSkillV78 b{
+  margin:0;
+}
+.detailSkillV78 span{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:2px;
+}
+.detailActionsV78{
+  position:sticky;
+  bottom:0;
+  padding-top:10px;
+  background:linear-gradient(180deg,rgba(20,29,55,0),rgba(20,29,55,.98) 35%);
+}
+@media (max-width:560px){
+  .monsterDetailHeadV78{
+    grid-template-columns:84px minmax(0,1fr);
+    gap:10px;
+  }
+  .detailFaceV78{
+    width:84px;
+    height:84px;
+    border-radius:22px;
+    font-size:48px;
+  }
+  .detailStatsGridV78{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}

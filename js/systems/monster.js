@@ -45,6 +45,97 @@
     toast(m.locked ? "保護ロックしました" : "保護ロックを解除しました");
   }
 
+  function openMonsterDetail(uid,place=""){
+    const m = S.owned().find(x=>x.uid===uid);
+    if(!m){toast("対象が見つかりません");return;}
+    const d = S.def(m.id);
+    const s = S.stats(m);
+    const equip = m.equip ? D.ITEMS[m.equip] : null;
+    const personality = S.personalityDef(m.personality);
+    const skills = S.skills(m).filter(id=>id !== "attack").map(id=>{
+      const sk = D.SKILLS[id] || {name:id,cost:0,text:""};
+      return `<div class="detailSkillV78"><b>${U.esc(sk.name)}</b><span>MP${sk.cost || 0} / ${U.esc(sk.text || "")}</span></div>`;
+    }).join("") || `<div class="empty">特技なし</div>`;
+
+    const inParty = S.state.party.some(x=>x.uid===uid);
+    const inBox = S.state.box.some(x=>x.uid===uid);
+    const lockBtn = `<button class="${m.locked ? "red" : ""}" onclick="Game.toggleMonsterLock('${m.uid}');Game.openMonsterDetail('${m.uid}','${place}')">${m.locked ? "保護解除" : "保護"}</button>`;
+    const moveBtn = inParty
+      ? `<button onclick="Game.toBox('${m.uid}');Game.closeModal()">牧場へ</button>`
+      : inBox
+        ? `<button class="green" onclick="Game.toParty('${m.uid}');Game.closeModal()" ${S.state.party.length>=D.MAX_PARTY ? "disabled" : ""}>パーティへ</button>`
+        : "";
+    const leaderBtn = inParty ? `<button onclick="Game.leader('${m.uid}');Game.closeModal()">先頭にする</button>` : "";
+    const ivLine = `HP${m.ivs.hp} MP${m.ivs.mp} 攻${m.ivs.atk} 守${m.ivs.def} 速${m.ivs.spd} 賢${m.ivs.wis}`;
+    const sizeBadge = V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`;
+
+    let modal = document.getElementById("modal");
+    if(!modal){
+      modal = document.createElement("div");
+      modal.id = "modal";
+      document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+    <div class="modalBg" onclick="Game.closeModal(event)">
+      <div class="modal monsterDetailModalV78" onclick="event.stopPropagation()">
+        <div class="stageTop">
+          <div>
+            <h2>${U.esc(m.nickname)}</h2>
+            <p class="tiny">${U.esc(d.name)} / ${d.rank} / ${D.TYPES[d.type]} / ${d.size || 1}枠</p>
+          </div>
+          <button onclick="Game.closeModal()">閉じる</button>
+        </div>
+
+        <div class="monsterDetailHeadV78">
+          ${V.monsterVisual(m.id,"detailFaceV78")}
+          <div class="detailMetaV78">
+            <div class="name">${U.esc(m.nickname)} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${sizeBadge}${m.locked ? `<span class="lockBadge">🔒 保護中</span>` : ""}</div>
+            <div class="tiny">Lv ${m.level} / EXP ${m.exp}/${S.expNext(m.level)}</div>
+            <div class="bars">
+              <div class="bar"><i style="width:${S.hpPct(m)}%"></i></div>
+              <div class="bar mp"><i style="width:${S.mpPct(m)}%"></i></div>
+              <div class="bar exp"><i style="width:${S.expPct(m)}%"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detailStatsGridV78">
+          <div class="stat">HP<b>${m.hp}/${s.hp}</b></div>
+          <div class="stat">MP<b>${m.mp}/${s.mp}</b></div>
+          <div class="stat">攻撃<b>${s.atk}</b></div>
+          <div class="stat">守備<b>${s.def}</b></div>
+          <div class="stat">速さ<b>${s.spd}</b></div>
+          <div class="stat">賢さ<b>${s.wis}</b></div>
+        </div>
+
+        <div class="detailSectionV78">
+          <b>性格・個体値</b>
+          <div class="tiny">性格：${U.esc(personality.name)} / ${U.esc(personality.desc || "")}</div>
+          <div class="tiny">個体値：${S.ivRank(m)} / 合計${S.ivTotal(m)} / ${ivLine}</div>
+        </div>
+
+        <div class="detailSectionV78">
+          <b>装備</b>
+          <div class="tiny">${equip ? `${equip.icon} ${U.esc(equip.name)} / ${S.itemStatsText(m.equip)} / ${U.esc(equip.desc || "")}` : "装備：なし"}</div>
+        </div>
+
+        <div class="detailSectionV78">
+          <b>特技</b>
+          <div class="detailSkillGridV78">${skills}</div>
+        </div>
+
+        <div class="actions detailActionsV78">
+          ${moveBtn}
+          ${leaderBtn}
+          <button class="gold" onclick="Game.equipModal('${m.uid}')">装備変更</button>
+          ${lockBtn}
+          <button onclick="Game.closeModal()">閉じる</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
   function equipModal(uid){
     const m = S.owned().find(x=>x.uid===uid);
     if(!m) return;
@@ -89,6 +180,7 @@
     toParty,
     leader,
     toggleMonsterLock,
+    openMonsterDetail,
     equipModal,
     equip,
     unequip

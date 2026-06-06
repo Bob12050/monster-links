@@ -27,32 +27,25 @@
     const s = S.stats(m);
     const skillNames = S.skills(m).filter(x=>x!=="attack").map(id=>D.SKILLS[id].name).join(" / ") || "なし";
     const equip = m.equip ? D.ITEMS[m.equip] : null;
-    const personality = S.personalityDef(m.personality);
     const compact = !!opt.compact;
+    const detailMode = opt.mode === "party" || opt.mode === "box";
     const lockBadge = m.locked ? `<span class="lockBadge">🔒 保護中</span>` : "";
+    const detailHint = detailMode ? `<div class="tiny tapHintV78">タップ/クリックで詳細</div>` : "";
+    const detailAttr = detailMode ? `role="button" tabindex="0" onclick="Game.openMonsterDetail('${m.uid}','${opt.mode || ""}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Game.openMonsterDetail('${m.uid}','${opt.mode || ""}')}"` : "";
+    const actionHtml = detailMode ? "" : (compact ? "" : V.monsterActions(m,opt));
     return `
-    <div class="card mon ${opt.pick ? "pick" : ""} ${m.locked ? "lockedMon" : ""} ${compact ? "monCompact" : ""}">
+    <div class="card mon monsterCardV78 ${detailMode ? "tapMonsterCardV78" : ""} ${opt.pick ? "pick" : ""} ${m.locked ? "lockedMon" : ""} ${compact ? "monCompact" : ""}" ${detailAttr}>
       ${V.monsterVisual(m.id,'face')}
       <div>
         <div class="name">${U.esc(m.nickname)} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${sizeBadge(d)}${lockBadge}</div>
-        <div class="tiny">Lv ${m.level} / EXP ${m.exp}/${S.expNext(m.level)} / 技：${skillNames}</div>
-        ${compact ? `<div class="traitLine oneLineTrait">性格：${personality.name} / 個体値：${S.ivRank(m)}</div>` : `<div class="traitLine">性格：${personality.name} <span>${personality.desc}</span></div>
-        <div class="traitLine">個体値：${S.ivRank(m)} <span>合計${S.ivTotal(m)} / HP${m.ivs.hp} MP${m.ivs.mp} 攻${m.ivs.atk} 守${m.ivs.def} 速${m.ivs.spd} 賢${m.ivs.wis}</span></div>`}
-        <div class="equipLine">${equip ? `${equip.icon} ${equip.name} <span>${S.itemStatsText(m.equip)}</span>` : "装備：なし"}</div>
-        <div class="bars">
-          <div class="bar"><i style="width:${S.hpPct(m)}%"></i></div>
-          <div class="bar mp"><i style="width:${S.mpPct(m)}%"></i></div>
-          <div class="bar exp"><i style="width:${S.expPct(m)}%"></i></div>
+        <div class="tiny">Lv ${m.level} / HP ${m.hp}/${s.hp} / MP ${m.mp}/${s.mp}</div>
+        <div class="miniStatsV78">
+          <span>攻 ${s.atk}</span><span>守 ${s.def}</span><span>速 ${s.spd}</span><span>賢 ${s.wis}</span>
         </div>
-        <div class="stats ${compact ? "statsCompact" : ""}">
-          <div class="stat">HP<b>${m.hp}/${s.hp}</b></div>
-          <div class="stat">MP<b>${m.mp}/${s.mp}</b></div>
-          <div class="stat">攻撃<b>${s.atk}</b></div>
-          <div class="stat">守備<b>${s.def}</b></div>
-          <div class="stat">速さ<b>${s.spd}</b></div>
-          <div class="stat">賢さ<b>${s.wis}</b></div>
-        </div>
-        ${compact ? "" : V.monsterActions(m,opt)}
+        <div class="tiny oneLineV78">技：${U.esc(skillNames)}</div>
+        <div class="tiny oneLineV78">${equip ? `装備：${equip.icon} ${U.esc(equip.name)}` : "装備：なし"}</div>
+        ${detailHint}
+        ${actionHtml}
       </div>
     </div>`;
   }
