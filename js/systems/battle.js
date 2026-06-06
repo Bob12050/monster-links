@@ -97,10 +97,10 @@
 
   function log(msg){S.state.battle.log.push(msg);}
 
-  function setFx(kind,target,text,note=""){
+  function setFx(kind,target,text,note="",source=""){
     const b = S.state.battle;
     if(!b) return;
-    b.fx = {kind,target,text:String(text || ""),note:String(note || ""),ts:Date.now()};
+    b.fx = {kind,target,text:String(text || ""),note:String(note || ""),source:String(source || ""),ts:Date.now()};
   }
 
   function active(){return S.state.party[S.state.battle.active];}
@@ -122,7 +122,7 @@
         const healRate = Number(balance().healMultiplier) || 1;
         const heal = Math.floor((18 + s[sk.stat]*sk.power + U.rand(0,8)) * healRate);
         a.hp = U.clamp(a.hp + heal,0,s.hp);
-        setFx("heal","ally",`+${heal}`);
+        setFx("heal","ally",`+${heal}`,"","ally");
         G.playSe("heal");
         log(`${a.nickname}は${sk.name}でHPを${heal}回復！`);
       }else{
@@ -131,7 +131,7 @@
     }
     if(kind === "guard"){
       b.guard = true;
-      setFx("guard","ally","GUARD");
+      setFx("guard","ally","GUARD","","ally");
       G.playSe("tap");
       log(`${a.nickname}は身を守っている！`);
     }
@@ -144,7 +144,7 @@
       }
       if(b.scoutLocked || (b.scoutAttempts || 0) >= 4){
         b.scoutLocked = true;
-        setFx("scoutFail","enemy","LOCK");
+        setFx("scoutFail","enemy","LOCK","","ally");
         G.playSe("error");
         log(`${e.nickname}は完全に警戒している。この戦闘ではもうスカウトできない！`);
         S.save();
@@ -165,18 +165,24 @@
         b.scoutAttempts = Math.max(0,Math.floor(b.scoutAttempts || 0)) + 1;
         if(b.scoutAttempts >= 4){
           b.scoutLocked = true;
-          setFx("scoutFail","enemy","LOCK");
+          setFx("scoutFail","enemy","LOCK","","ally");
           G.playSe("error");
           log(`${e.nickname}は完全に警戒した。この戦闘ではもうスカウトできない！`);
         }else{
-          setFx("scoutFail","enemy","MISS",`警戒${b.scoutAttempts}/4`);
+          setFx("scoutFail","enemy","MISS",`警戒${b.scoutAttempts}/4`,"ally");
           G.playSe("error");
           log(`${e.nickname}は警戒している。次回以降のスカウト率が下がった。`);
         }
       }
     }
 
-    if(e.hp <= 0){finish("win");return;}
+    if(e.hp <= 0){
+      b.lock = true;
+      S.save();
+      render();
+      setTimeout(()=>finish("win"),G.delay(560));
+      return;
+    }
     b.lock = true;
     S.save();
     render();
@@ -228,7 +234,9 @@
     const raw = ((a[sk.stat] || a.atk) * sk.power - t.def * .52 + attacker.level*1.35 + U.rand(-3,4)) * mult * dmgRate;
     const dmg = U.clamp(Math.floor(raw),2,999);
     target.hp = U.clamp(target.hp - dmg,0,S.stats(target).hp);
-    setFx("damage", target === S.state.battle.enemy ? "enemy" : "ally", `-${dmg}`, affinityFxNote(mult));
+    const targetSide = target === S.state.battle.enemy ? "enemy" : "ally";
+    const sourceSide = targetSide === "enemy" ? "ally" : "enemy";
+    setFx("damage",targetSide,`-${dmg}`,target.hp <= 0 ? "K.O.!" : affinityFxNote(mult),sourceSide);
     G.playSe("hit");
     log(`${attacker.nickname}の${sk.name}！${affinityLabel(mult)} ${target.nickname}に${dmg}ダメージ！`);
   }
@@ -253,10 +261,25 @@
       log(`${a.nickname}は倒れた！`);
       const next = state.party.findIndex(S.alive);
       if(next >= 0){
-        b.active = next;
-        log(`${state.party[next].nickname}が前に出た！`);
+        b.lock = true;
+        S.save();
+        render();
+        setTimeout(()=>{
+          const current = S.state.battle;
+          if(!current) return;
+          current.active = next;
+          log(`${state.party[next].nickname}が前に出た！`);
+          current.lock = false;
+          current.fx = null;
+          S.save();
+          render();
+        },G.delay(560));
+        return;
       }else{
-        finish("lose");
+        b.lock = true;
+        S.save();
+        render();
+        setTimeout(()=>finish("lose"),G.delay(620));
         return;
       }
     }
@@ -275,7 +298,9 @@
     if(S.state.battle.guard) dmg = Math.floor(dmg*(Number(balance().guardMultiplier) || .38));
     dmg = U.clamp(dmg,1,999);
     target.hp = U.clamp(target.hp - dmg,0,S.stats(target).hp);
-    setFx("damage", target === S.state.battle.enemy ? "enemy" : "ally", `-${dmg}`, affinityFxNote(mult));
+    const targetSide = target === S.state.battle.enemy ? "enemy" : "ally";
+    const sourceSide = targetSide === "enemy" ? "ally" : "enemy";
+    setFx("damage",targetSide,`-${dmg}`,target.hp <= 0 ? "K.O.!" : affinityFxNote(mult),sourceSide);
     G.playSe("hit");
     log(`${attacker.nickname}の${sk.name}！${affinityLabel(mult)} ${target.nickname}に${dmg}ダメージ！`);
   }
@@ -478,20 +503,27 @@
 
   function skillModal(){
     const a = active();
+    const enemy = S.state.battle?.enemy;
     const list = S.skills(a).filter(id=>id!=="attack");
+    const icons = {fire:"🔥",water:"💧",light:"⚡",dark:"🌑",nature:"🌿",stone:"🪨",beast:"🦷",machine:"⚙️",wing:"🪽",dragon:"🐉"};
     document.getElementById("modal").innerHTML = `
     <div class="modalBg" onclick="Game.closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()">
-        <h2>とくぎを選択</h2>
-        <div class="list">
+      <div class="modal battleModalV821" onclick="event.stopPropagation()">
+        <div class="battleModalHeadV821"><div><span>SKILL COMMAND</span><h2>とくぎを選択</h2></div><b>MP ${a.mp}/${S.stats(a).mp}</b></div>
+        <div class="skillListV821">
           ${list.length ? list.map(id=>{
             const sk = D.SKILLS[id];
-            return `<button ${a.mp < sk.cost ? "disabled" : ""} onclick="Game.useSkill('${id}')">
-              ${sk.name} MP${sk.cost}<br><span class="tiny">${sk.element ? D.TYPES[sk.element] + "属性 / " : ""}${sk.text}</span>
+            const element = sk.element || S.def(a.id).type;
+            const mult = enemy && sk.kind === "damage" ? typeMultiplier(element,enemy) : 1;
+            const affinity = sk.kind === "heal" ? "自分を回復" : mult >= 1.3 ? "弱点！" : mult >= 1.15 ? "有効" : mult < 1 ? "耐性あり" : "等倍";
+            return `<button class="skillOptionV821" ${a.mp < sk.cost ? "disabled" : ""} onclick="Game.useSkill('${id}')">
+              <span class="skillIconV821">${sk.kind === "heal" ? "💚" : (icons[element] || "✨")}</span>
+              <span><b>${U.esc(sk.name)}</b><small>${sk.element ? U.esc(D.TYPES[sk.element]) + "属性・" : ""}${U.esc(sk.text)}</small></span>
+              <em>MP ${sk.cost}<small class="${mult >= 1.15 ? "good" : mult < 1 ? "bad" : ""}">${affinity}</small></em>
             </button>`;
           }).join("") : `<div class="empty">まだ特技を覚えていません</div>`}
-          <button onclick="Game.closeModal()">閉じる</button>
         </div>
+        <button class="ghost battleModalCloseV821" onclick="Game.closeModal()">閉じる</button>
       </div>
     </div>`;
   }
@@ -502,15 +534,20 @@
     const b = S.state.battle;
     document.getElementById("modal").innerHTML = `
     <div class="modalBg" onclick="Game.closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()">
-        <h2>交代する仲間</h2>
-        <div class="list">
-          ${S.state.party.map((m,i)=>`
-            <button ${(!S.alive(m) || i===b.active) ? "disabled" : ""} onclick="Game.switchAlly(${i})">
-              ${S.def(m.id).emoji} ${m.nickname} ${S.monsterSize ? S.monsterSize(m) : 1}枠 / Lv${m.level} / HP${m.hp}/${S.stats(m).hp}
-            </button>`).join("")}
-          <button onclick="Game.closeModal()">閉じる</button>
+      <div class="modal battleModalV821" onclick="event.stopPropagation()">
+        <div class="battleModalHeadV821"><div><span>PARTY CHANGE</span><h2>交代する仲間</h2></div><b>${S.partySizeText ? S.partySizeText() : S.state.party.length}</b></div>
+        <div class="switchListV821">
+          ${S.state.party.map((m,i)=>{
+            const d = S.def(m.id);
+            const stats = S.stats(m);
+            return `<button class="${i === b.active ? "current" : ""}" ${(!S.alive(m) || i===b.active) ? "disabled" : ""} onclick="Game.switchAlly(${i})">
+              <span class="switchFaceV821">${d.image ? `<img src="${U.esc(d.image)}" alt="">` : U.esc(d.emoji)}</span>
+              <span><b>${U.esc(m.nickname)}</b><small>Lv ${m.level}・${U.esc(D.TYPES[d.type])}・${S.monsterSize ? S.monsterSize(m) : 1}枠</small><i><em style="width:${S.hpPct(m)}%"></em></i></span>
+              <strong>${i === b.active ? "戦闘中" : m.hp <= 0 ? "戦闘不能" : `HP ${m.hp}/${stats.hp}`}</strong>
+            </button>`;
+          }).join("")}
         </div>
+        <button class="ghost battleModalCloseV821" onclick="Game.closeModal()">閉じる</button>
       </div>
     </div>`;
   }

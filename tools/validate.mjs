@@ -271,6 +271,58 @@ function loadGameData(scriptRefs){
     fail(`v8.2画面生成エラー: ${error.stack || error.message}`);
   }
 
+  try{
+    Object.assign(context.MonsterLinksViews,{
+      stageStyle(){return `style="--stage-bg:url('assets/images/stages/meadow.png')"`;},
+      stageTraits(){return "<span>自然</span>";},
+      stageDanger(){return "★☆☆☆☆";},
+      itemVisual(){return "<span></span>";}
+    });
+    const battleEnemy = context.MonsterLinksState.makeMonster("leafling",5);
+    battleEnemy.nickname = "テストリーフリン";
+    context.MonsterLinksState.state.party = [
+      context.MonsterLinksState.makeMonster("plim",5),
+      context.MonsterLinksState.makeMonster("puffbat",5)
+    ];
+    context.MonsterLinksState.state.battle = {
+      stage:data.STAGES[0],
+      enemy:battleEnemy,
+      active:0,
+      log:["テストリーフリンがあらわれた！"],
+      guard:false,
+      lock:false,
+      isBoss:false,
+      scoutBase:42,
+      scoutAttempts:0,
+      scoutLocked:false,
+      fx:null
+    };
+    context.MonsterLinksGame.scoutChance = ()=>42;
+    const battleViewFile = path.join(root,"js","views","battleView.js");
+    vm.runInContext(fs.readFileSync(battleViewFile,"utf8"),context,{filename:"js/views/battleView.js"});
+    const battleHtml = context.MonsterLinksViews.battleHtml();
+    if(!battleHtml.includes("battleArenaV821")) fail("戦闘画面にv8.2.1の戦場UIがありません");
+    if(!battleHtml.includes("battlePartyRailV821")) fail("戦闘画面に控えパーティ表示がありません");
+    if(!battleHtml.includes("battleBarsV821")) fail("戦闘画面にHP・MPバーがありません");
+    for(const action of ["attack","scout","guard"]){
+      if(!battleHtml.includes(`Game.act('${action}')`)) fail(`戦闘画面に${action}コマンドがありません`);
+    }
+    for(const action of ["Game.skillModal()","Game.switchModal()","Game.escape()"]){
+      if(!battleHtml.includes(action)) fail(`戦闘画面に${action}の導線がありません`);
+    }
+
+    const battleSystemFile = path.join(root,"js","systems","battle.js");
+    vm.runInContext(fs.readFileSync(battleSystemFile,"utf8"),context,{filename:"js/systems/battle.js"});
+    const battleModal = {innerHTML:""};
+    context.document.getElementById = id=>id === "modal" ? battleModal : null;
+    context.MonsterLinksGame.skillModal();
+    if(!battleModal.innerHTML.includes("skillOptionV821")) fail("戦闘用の特技選択UIが開きません");
+    context.MonsterLinksGame.switchModal();
+    if(!battleModal.innerHTML.includes("switchListV821")) fail("戦闘用の交代UIが開きません");
+  }catch(error){
+    fail(`v8.2.1戦闘画面生成エラー: ${error.stack || error.message}`);
+  }
+
   return data;
 }
 
@@ -377,4 +429,4 @@ if(errors.length){
 
 console.log(`検証成功: JavaScript ${walk(path.join(root,"js"),".js").length}ファイル`);
 console.log(`モンスター ${Object.keys(data.MONSTERS).length}体 / ステージ ${data.STAGES.length}件 / 配合 ${data.RECIPE_LIST.length}件`);
-console.log("旧セーブ互換性、画像・データ参照を確認しました。");
+console.log("旧セーブ互換性、画像・データ参照、主要画面生成を確認しました。");

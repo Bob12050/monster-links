@@ -20,73 +20,108 @@
     const scoutLocked = !!b.scoutLocked || scoutAttempts >= 4;
     const scoutText = b.isArena ? "闘技場では不可" : scoutLocked ? "警戒中 / 不可" : `成功率 ${window.MonsterLinksGame.scoutChance()}% / 警戒 ${scoutAttempts}/4`;
     const scoutDisabled = b.lock || b.isArena || scoutLocked;
+    const latestLog = b.log[b.log.length - 1] || `${enemy.nickname}があらわれた！`;
+
     return `
-    <main>
-      <section class="battle battleV23 ${b.isBoss ? "bossBattle" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
-        <div class="battleHeader">
+    <main class="battlePageV821">
+      <section class="battle battleV821 ${b.isBoss ? "bossBattle" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
+        <div class="battleHeaderV821">
           <div>
-            <div class="battlePlace">${b.stage.icon} ${b.stage.name}</div>
-            <div class="tiny">${modeText} / ${turnText}</div>
-            <div class="battleStageTraits">${V.stageTraits(b.stage)} <span class="stageStars smallStars">${V.stageDanger(b.stage)}</span></div>
+            <span class="battleAreaLabelV821">BATTLE AREA</span>
+            <div class="battlePlaceV821">${b.stage.icon} ${U.esc(b.stage.name)}</div>
+            <div class="battleStageTraitsV821">${V.stageTraits(b.stage)} <span class="stageStars smallStars">${V.stageDanger(b.stage)}</span></div>
           </div>
-          <div class="battleMode ${b.isBoss ? "bossMode" : ""} ${b.isArena ? "arenaMode" : ""}">${modeLabel}</div>
+          <div class="battleHeaderRightV821">
+            <span>${U.esc(modeText)}</span>
+            <div class="battleModeV821 ${b.isBoss ? "bossMode" : ""} ${b.isArena ? "arenaMode" : ""}">${modeLabel}</div>
+          </div>
         </div>
 
-        <div class="battleSceneV23">
-          <div class="fighter fighterV23 enemy enemyField ${V.fxClass('enemy')}">
-            <div class="fighterNameLine">
-              <span class="fighterLabel">ENEMY</span>
-              <b>${enemy.nickname}</b>
-              <span class="tag">${ed.rank}</span><span class="type">${D.TYPES[ed.type]}</span>${V.sizeBadge ? V.sizeBadge(ed,"miniSize") : `<span class="type">${S.monsterSize(enemy)}枠</span>`}<span class="type">Lv ${enemy.level}</span>
+        <div class="battleArenaV821">
+          <div class="battleLightV821"></div>
+          <div class="battleUnitV821 enemyUnitV821 ${V.fxClass("enemy")} ${V.fxSourceClass("enemy")}">
+            <div class="battleHudV821 enemyHudV821">
+              <div class="fighterNameV821">
+                <span class="fighterLabelV821 enemyLabelV821">ENEMY</span>
+                <b>${U.esc(enemy.nickname)}</b>
+                <small>Lv ${enemy.level}・${U.esc(D.TYPES[ed.type])}・${S.monsterSize(enemy)}枠</small>
+              </div>
+              <span class="rankBadgeV821">${ed.rank}</span>
+              ${V.battleBars(enemy)}
             </div>
-            <div class="visualWrap visualWrapV23 enemyVisual">
-              <div class="groundShadow"></div>
-              ${V.monsterVisual(enemy.id,'sprite spriteBattle')}
-              ${V.fxBadge('enemy')}
+            <div class="battleActorV821 enemyActorV821">
+              <div class="battleGroundV821"></div>
+              ${V.monsterVisual(enemy.id,"battleSpriteV821 enemySpriteV821")}
+              <div class="hitBurstV821"></div>
+              ${V.fxBadge("enemy")}
               ${V.bossCutin(b)}
             </div>
-            ${V.battleBars(enemy)}
           </div>
 
-          <div class="vsRibbon">
+          <div class="battleClashV821">
             <span>VS</span>
             <small>${V.turnLabel(b)}</small>
           </div>
 
-          <div class="fighter fighterV23 allyField ${V.fxClass('ally')}">
-            <div class="fighterNameLine">
-              <span class="fighterLabel allyLabel">ALLY</span>
-              <b>${ally.nickname}</b>
-              <span class="tag">${ad.rank}</span><span class="type">${D.TYPES[ad.type]}</span>${V.sizeBadge ? V.sizeBadge(ad,"miniSize") : `<span class="type">${S.monsterSize(ally)}枠</span>`}<span class="type">Lv ${ally.level}</span>
+          <div class="battleUnitV821 allyUnitV821 ${V.fxClass("ally")} ${V.fxSourceClass("ally")}">
+            <div class="battleActorV821 allyActorV821">
+              <div class="battleGroundV821"></div>
+              ${V.monsterVisual(ally.id,"battleSpriteV821 allySpriteV821")}
+              <div class="hitBurstV821"></div>
+              ${V.fxBadge("ally")}
             </div>
-            <div class="visualWrap visualWrapV23 allyVisual">
-              <div class="groundShadow allyShadow"></div>
-              ${V.monsterVisual(ally.id,'sprite spriteBattle allySprite')}
-              ${V.fxBadge('ally')}
+            <div class="battleHudV821 allyHudV821">
+              <div class="fighterNameV821">
+                <span class="fighterLabelV821 allyLabelV821">ALLY</span>
+                <b>${U.esc(ally.nickname)}</b>
+                <small>Lv ${ally.level}・${U.esc(D.TYPES[ad.type])}・${S.monsterSize(ally)}枠</small>
+              </div>
+              <span class="rankBadgeV821">${ad.rank}</span>
+              ${V.battleBars(ally)}
             </div>
-            ${V.battleBars(ally)}
           </div>
         </div>
 
-        <div class="battleTipsV23">${V.affinityHint(ally,enemy)}</div>
-
-        <div class="commands commandsV23">
-          <button class="primary" ${b.lock ? "disabled" : ""} onclick="Game.act('attack')">⚔️ 攻撃</button>
-          <button class="gold" ${b.lock ? "disabled" : ""} onclick="Game.skillModal()">✨ とくぎ</button>
-          <button class="green" ${scoutDisabled ? "disabled" : ""} onclick="Game.act('scout')">🤝 スカウト<br><span class="tiny">${scoutText}</span></button>
-          <button ${b.lock ? "disabled" : ""} onclick="Game.act('guard')">🛡️ 防御</button>
-          <button ${b.lock ? "disabled" : ""} onclick="Game.switchModal()">🔁 交代</button>
-          <button class="red" ${b.lock ? "disabled" : ""} onclick="Game.escape()">${b.isArena ? "🚪 棄権" : "🏃 逃げる"}</button>
+        <div class="battlePartyRailV821">
+          <span class="partyRailLabelV821">PARTY</span>
+          ${S.state.party.map((monster,index)=>{
+            const stats = S.stats(monster);
+            return `<button class="${index === b.active ? "active" : ""} ${monster.hp <= 0 ? "down" : ""}" ${b.lock || index === b.active || monster.hp <= 0 ? "disabled" : ""} onclick="Game.switchAlly(${index})">
+              ${V.monsterInline(monster.id,"partyRailFaceV821")}
+              <span><b>${U.esc(monster.nickname)}</b><small>HP ${monster.hp}/${stats.hp}</small><i><em style="width:${S.hpPct(monster)}%"></em></i></span>
+            </button>`;
+          }).join("")}
         </div>
-        <details class="battleLogDetails" open>
-          <summary>バトルログ</summary>
+
+        <div class="battleMessageV821 ${b.lock ? "waiting" : ""}">
+          <span>${b.lock ? "NOW ACTION" : "COMMAND"}</span>
+          <b>${U.esc(latestLog)}</b>
+          <small>${U.esc(turnText)}・${V.affinityHint(ally,enemy)}</small>
+        </div>
+
+        <div class="battleCommandDeckV821">
+          <div class="commandHeadingV821">
+            <div><span>PLAYER COMMAND</span><b>行動を選ぶ</b></div>
+            <small>${b.lock ? "相手の行動を待っています" : `${U.esc(ally.nickname)}のターン`}</small>
+          </div>
+          <div class="commandsV821">
+            <button class="attackCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.act('attack')"><span>⚔️</span><b>攻撃</b><small>通常攻撃</small></button>
+            <button class="skillCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.skillModal()"><span>✨</span><b>とくぎ</b><small>MP ${ally.mp}/${S.stats(ally).mp}</small></button>
+            <button class="scoutCommandV821" ${scoutDisabled ? "disabled" : ""} onclick="Game.act('scout')"><span>🤝</span><b>スカウト</b><small>${scoutText}</small></button>
+            <button class="guardCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.act('guard')"><span>🛡️</span><b>防御</b><small>被害を軽減</small></button>
+            <button class="switchCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.switchModal()"><span>🔁</span><b>交代</b><small>仲間と交代</small></button>
+            <button class="escapeCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.escape()"><span>${b.isArena ? "🏳️" : "🏃"}</span><b>${b.isArena ? "棄権" : "逃げる"}</b><small>${b.isArena ? "試合を終了" : "戦闘を離脱"}</small></button>
+          </div>
+        </div>
+
+        <details class="battleLogDetails battleLogDetailsV821" open>
+          <summary>戦闘記録</summary>
           <div class="log battleLogV23">${b.log.slice(-6).map(x=>`<div>${U.esc(x)}</div>`).join("")}</div>
         </details>
       </section>
       <div id="modal"></div>
     </main>`;
   }
-
 
   function fxClass(target){
     const fx = S.state.battle?.fx;
@@ -99,12 +134,22 @@
     return "";
   }
 
+  function fxSourceClass(target){
+    const fx = S.state.battle?.fx;
+    if(!fx || fx.source !== target) return "";
+    if(fx.kind === "damage") return "attackSourceFxV821";
+    if(fx.kind === "heal") return "healSourceFxV821";
+    if(fx.kind === "guard") return "guardSourceFxV821";
+    if(fx.kind === "scoutFail") return "scoutSourceFxV821";
+    return "";
+  }
+
   function fxBadge(target){
     const fx = S.state.battle?.fx;
     if(!fx || fx.target !== target) return "";
     const cls = fx.kind === "damage" ? "damageFloat" : fx.kind === "heal" ? "healFloat" : fx.kind === "bossIntro" ? "bossBanner" : "actionFloat";
     const note = fx.note ? `<small>${U.esc(fx.note)}</small>` : "";
-    return `<div class="${cls}"><b>${U.esc(fx.text)}</b>${note}</div>`;
+    return `<div class="${cls} battleFloatV821"><b>${U.esc(fx.text)}</b>${note}</div>`;
   }
 
   function bossCutin(b){
@@ -125,17 +170,22 @@
     const atk = D.TYPE_CHART?.[aType]?.[eType] || 1;
     const def = D.TYPE_CHART?.[eType]?.[aType] || 1;
     const label = n => n >= 1.3 ? "弱点を突ける" : n >= 1.15 ? "やや有利" : n <= .75 ? "かなり不利" : n < 1 ? "やや不利" : "等倍";
-    return `相性：こちらの通常攻撃 ${label(atk)} / 敵の通常攻撃 ${label(def)}`;
+    return `相性：攻撃 ${label(atk)} / 防御 ${label(def)}`;
   }
 
   function battleBars(m){
     const s = S.stats(m);
+    const hp = S.hpPct(m);
+    const mp = S.mpPct(m);
+    const hpState = hp <= 25 ? "danger" : hp <= 50 ? "warning" : "";
     return `
-    <div class="bars">
-      <div class="tiny">HP ${m.hp}/${s.hp}</div>
-      <div class="bar"><i style="width:${S.hpPct(m)}%"></i></div>
-      <div class="tiny">MP ${m.mp}/${s.mp}</div>
-      <div class="bar mp"><i style="width:${S.mpPct(m)}%"></i></div>
+    <div class="battleBarsV821">
+      <div class="battleBarRowV821 ${hpState}">
+        <span>HP</span><div><i style="width:${hp}%"></i></div><b>${m.hp}<small> / ${s.hp}</small></b>
+      </div>
+      <div class="battleBarRowV821 mp">
+        <span>MP</span><div><i style="width:${mp}%"></i></div><b>${m.mp}<small> / ${s.mp}</small></b>
+      </div>
     </div>`;
   }
 
@@ -165,7 +215,7 @@
     const dropHtml = r.drops && r.drops.length ? r.drops.map(x=>{
       const item = D.ITEMS[x.id];
       if(!item) return "";
-      return `<div class="rewardItem rewardItemV53">${V.itemVisual(x.id,'rewardIcon')}<div><b>${U.esc(item.name)}</b><small>${S.itemStatsText(x.id)}</small></div><em>×${x.count}</em></div>`;
+      return `<div class="rewardItem rewardItemV53">${V.itemVisual(x.id,"rewardIcon")}<div><b>${U.esc(item.name)}</b><small>${S.itemStatsText(x.id)}</small></div><em>×${x.count}</em></div>`;
     }).join("") : `<div class="empty rewardEmpty">アイテム入手なし</div>`;
 
     const levelHtml = levelLines.length ? `
@@ -182,7 +232,7 @@
 
     const scoutPanel = r.type === "scout" ? `
       <div class="scoutSuccessPanel">
-        ${r.enemyId ? V.monsterVisual(r.enemyId,'rewardScoutFace') : `<div class="rewardScoutFace">${U.esc(r.enemyEmoji || "🤝")}</div>`}
+        ${r.enemyId ? V.monsterVisual(r.enemyId,"rewardScoutFace") : `<div class="rewardScoutFace">${U.esc(r.enemyEmoji || "🤝")}</div>`}
         <div>
           <b>${U.esc(r.enemyName)}が仲間になった！</b>
           <span>仲間画面でステータスや装備を確認できます。</span>
@@ -203,7 +253,7 @@
         </div>
 
         <div class="rewardEnemy rewardEnemyV53">
-          ${r.enemyId ? V.monsterInline(r.enemyId,'miniFace') : U.esc(r.enemyEmoji || "❔")}
+          ${r.enemyId ? V.monsterInline(r.enemyId,"miniFace") : U.esc(r.enemyEmoji || "❔")}
           <span>${U.esc(r.enemyName)}</span>
         </div>
 
@@ -234,10 +284,10 @@
     </main>`;
   }
 
-
   Object.assign(V, {
     battleHtml,
     fxClass,
+    fxSourceClass,
     fxBadge,
     bossCutin,
     turnLabel,
