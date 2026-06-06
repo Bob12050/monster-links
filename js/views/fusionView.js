@@ -24,8 +24,10 @@
         </div>
       </section>
 
-      <section class="card fusionMainCard">
+      <section id="fusionMainCard" class="card fusionMainCard">
+        <div id="fusionPreviewAnchor"></div>
         ${V.sectionTitle ? V.sectionTitle(`選択中：${pick.length}/2`, "親2体を選ぶと詳細プレビューが出ます") : `<h2>選択中：${pick.length}/2</h2>`}
+        ${selectedParentsPanel(pick,prev)}
         ${fusionPreviewPanel(prev)}
         <div class="actions stickyActions">
           <button class="gold" ${(ready && !(prev && prev.locked)) ? "" : "disabled"} onclick="Game.doFusion()">この2体で配合</button>
@@ -54,6 +56,53 @@
         ${all.map(m=>V.monsterCard(m,{mode:"fusion",pick:pick.includes(m.uid)})).join("") || `<div class="empty">仲間がいません</div>`}
       </section>
     </main>`;
+  }
+
+  function selectedParentsPanel(pick,prev){
+    const all = S.owned();
+    const parent = uid => all.find(m=>m.uid===uid);
+    const slot = (m,index) => {
+      if(!m){
+        return `<div class="selectedParentSlot emptyParent">
+          <div class="miniFace">?</div>
+          <div>
+            <b>親${index}</b>
+            <div class="tiny">未選択</div>
+          </div>
+        </div>`;
+      }
+      const d = S.def(m.id);
+      return `<div class="selectedParentSlot">
+        ${V.monsterInline(m.id,"miniFace")}
+        <div>
+          <b>親${index}: ${U.esc(m.nickname)}</b>
+          <div class="tiny">${U.esc(d.name)} / ${d.rank} / Lv${m.level}${m.locked ? " / 🔒保護中" : ""}</div>
+        </div>
+      </div>`;
+    };
+    const a = parent(pick[0]);
+    const b = parent(pick[1]);
+    const result = prev ? S.def(prev.id) : null;
+    return `<div class="selectedParentsPanelV728 ${pick.length === 2 ? "ready" : ""}">
+      <div class="selectedParentsTitle">
+        <b>現在選択中の親</b>
+        <span class="tag">${pick.length}/2</span>
+      </div>
+      <div class="selectedParentsGrid">
+        ${slot(a,1)}
+        <div class="selectedPlus">＋</div>
+        ${slot(b,2)}
+        <div class="selectedArrow">→</div>
+        <div class="selectedResultSlot ${result ? "" : "emptyParent"}">
+          ${result ? V.monsterInline(prev.id,"miniFace") : `<div class="miniFace">?</div>`}
+          <div>
+            <b>${result ? `結果: ${U.esc(result.name)}` : "結果"}</b>
+            <div class="tiny">${result ? `${result.rank} / Lv${prev.level}${prev.forcedRecipe ? " / リスト選択中" : ""}` : "親2体で表示"}</div>
+          </div>
+        </div>
+      </div>
+      ${pick.length === 2 ? `<div class="actions"><button onclick="document.getElementById('fusionPreviewAnchor')?.scrollIntoView({behavior:'smooth',block:'start'})">プレビューへ移動</button><button onclick="Game.clearFusion()">選択解除</button></div>` : `<div class="notice">仲間カードの「配合に選ぶ」を押すと、ここに親が表示されます。</div>`}
+    </div>`;
   }
 
   function fusionPreviewPanel(prev){

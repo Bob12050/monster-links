@@ -9,6 +9,15 @@
   function render(){G.render();}
   function toast(msg){G.toast(msg);}
 
+  function scrollFusionPreviewSoon(){
+    setTimeout(()=>{
+      const el = document.getElementById("fusionPreviewAnchor") || document.getElementById("fusionMainCard");
+      if(el && typeof el.scrollIntoView === "function"){
+        el.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+    },80);
+  }
+
   let fusionPick = [];
   let fusionSkillPick = [];
   let fusionForcedRecipeKey = "";
@@ -286,6 +295,7 @@
       if(a && b) initFusionSkillPick(a,b);
     }
     render();
+    if(fusionPick.length === 2) scrollFusionPreviewSoon();
   }
 
   function setFusionPair(uidA,uidB){
@@ -299,6 +309,7 @@
     fusionSkillPick = [];
     initFusionSkillPick(a,b);
     render();
+    scrollFusionPreviewSoon();
   }
 
   function clearFusion(){
@@ -464,7 +475,9 @@
 
     if(prev) initFusionSkillPick(S.owned().find(m=>m.uid===fusionPick[0]), S.owned().find(m=>m.uid===fusionPick[1]));
     S.save();
+    if(G.closeModal) G.closeModal();
     render();
+    scrollFusionPreviewSoon();
     if(prev?.locked) toast(prev.reason || "レベル条件を満たしていません");
     else toast(`${S.def(recipe.result).name}の配合候補をセットしました`);
   }

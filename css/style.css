@@ -3440,3 +3440,70 @@ button:hover:before{
 .fusionSkillStableV727 .stageTop button{
   white-space:nowrap;
 }
+
+
+/* v7.2.8 fusion selection UI */
+#fusionPreviewAnchor{
+  position:relative;
+  top:-10px;
+}
+.selectedParentsPanelV728{
+  margin:12px 0 14px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  background:rgba(0,0,0,.18);
+}
+.selectedParentsPanelV728.ready{
+  border-color:rgba(110,231,255,.35);
+  background:rgba(110,231,255,.07);
+}
+.selectedParentsTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.selectedParentsGrid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+}
+.selectedParentSlot,
+.selectedResultSlot{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  min-width:0;
+  padding:10px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+}
+.selectedParentSlot b,
+.selectedResultSlot b{
+  display:block;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.emptyParent{
+  opacity:.72;
+}
+.selectedPlus,
+.selectedArrow{
+  font-weight:900;
+  color:var(--muted);
+  text-align:center;
+}
+@media (max-width:720px){
+  .selectedParentsGrid{
+    grid-template-columns:1fr;
+  }
+  .selectedPlus,
+  .selectedArrow{
+    transform:rotate(90deg);
+  }
+}
