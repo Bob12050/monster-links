@@ -114,6 +114,9 @@ function loadGameData(scriptRefs){
   if(state.gold !== oldSave.gold) fail("旧セーブ移行で所持GOLDが保持されませんでした");
   if(state.party[0]?.nickname !== "互換テスト") fail("旧セーブ移行で仲間情報が保持されませんでした");
   if(!Array.isArray(state.fusionGoals) || state.fusionGoals.length !== 0) fail("旧セーブに空の配合目標が補完されませんでした");
+  if(state.settings?.speed !== "normal" || state.settings?.seVolume !== 2 || state.settings?.reducedMotion !== false){
+    fail("旧セーブにv8.4の戦闘設定が正しく補完されませんでした");
+  }
   if(state.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION) fail("旧セーブが現行の保存形式へ移行されませんでした");
   if(!localStorage.getItem("monster_links_slot_1")) fail("旧単一セーブがスロット1へ移行されませんでした");
 
@@ -298,6 +301,14 @@ function loadGameData(scriptRefs){
       scoutLocked:false,
       fx:null
     };
+    context.MonsterLinksState.setSetting("speed","ultra");
+    context.MonsterLinksState.setSetting("seVolume",3);
+    context.MonsterLinksState.setSetting("reducedMotion",true);
+    if(context.MonsterLinksState.state.settings.speed !== "ultra"
+      || context.MonsterLinksState.state.settings.seVolume !== 3
+      || !context.MonsterLinksState.state.settings.reducedMotion){
+      fail("v8.4の戦闘設定を保存できません");
+    }
     context.MonsterLinksGame.scoutChance = ()=>42;
     const battleViewFile = path.join(root,"js","views","battleView.js");
     vm.runInContext(fs.readFileSync(battleViewFile,"utf8"),context,{filename:"js/views/battleView.js"});
@@ -305,6 +316,17 @@ function loadGameData(scriptRefs){
     if(!battleHtml.includes("battleArenaV821")) fail("戦闘画面にv8.2.1の戦場UIがありません");
     if(!battleHtml.includes("battlePartyRailV821")) fail("戦闘画面に控えパーティ表示がありません");
     if(!battleHtml.includes("battleBarsV821")) fail("戦闘画面にHP・MPバーがありません");
+    if(!battleHtml.includes("battleSpeedultraV84") || !battleHtml.includes("reducedMotionV84")) fail("戦闘速度・演出軽減設定が戦闘画面へ反映されません");
+    if(!battleHtml.includes("Game.cycleBattleSpeed()")) fail("戦闘中に速度を切り替えられません");
+    if(!battleHtml.includes("Game.toggleSetting('sound')")) fail("戦闘中にSEを切り替えられません");
+    if(!battleHtml.includes("Game.toggleBattleAuto()") || !battleHtml.includes("AUTO OFF")) fail("戦闘画面に通常攻撃オートの操作がありません");
+    context.MonsterLinksState.state.battle.fx = {kind:"damage",target:"enemy",note:"WEAK!"};
+    if(!context.MonsterLinksViews.fxClass("enemy").includes("weakFxV84")) fail("弱点演出クラスが適用されません");
+    context.MonsterLinksState.state.battle.fx = {kind:"damage",target:"enemy",note:"RESIST"};
+    if(!context.MonsterLinksViews.fxClass("enemy").includes("resistFxV84")) fail("耐性演出クラスが適用されません");
+    context.MonsterLinksState.state.battle.fx = {kind:"damage",target:"enemy",note:"K.O.!"};
+    if(!context.MonsterLinksViews.fxClass("enemy").includes("koFxV84")) fail("撃破演出クラスが適用されません");
+    context.MonsterLinksState.state.battle.fx = null;
     for(const action of ["attack","scout","guard"]){
       if(!battleHtml.includes(`Game.act('${action}')`)) fail(`戦闘画面に${action}コマンドがありません`);
     }
@@ -316,10 +338,44 @@ function loadGameData(scriptRefs){
     vm.runInContext(fs.readFileSync(battleSystemFile,"utf8"),context,{filename:"js/systems/battle.js"});
     const battleModal = {innerHTML:""};
     context.document.getElementById = id=>id === "modal" ? battleModal : null;
+    context.MonsterLinksGame.delay = ms=>ms;
+    if(context.MonsterLinksGame.isBattleAuto()) fail("戦闘開始時にオート攻撃がONになっています");
+    context.MonsterLinksGame.toggleBattleAuto();
+    if(!context.MonsterLinksGame.isBattleAuto()) fail("通常攻撃オートを開始できません");
+    const autoBattleHtml = context.MonsterLinksViews.battleHtml();
+    if(!autoBattleHtml.includes("AUTO ON") || !autoBattleHtml.includes("autoV841")) fail("オート攻撃中の状態表示がありません");
     context.MonsterLinksGame.skillModal();
     if(!battleModal.innerHTML.includes("skillOptionV821")) fail("戦闘用の特技選択UIが開きません");
+    if(context.MonsterLinksGame.isBattleAuto()) fail("特技選択でオート攻撃が解除されません");
+    context.MonsterLinksGame.toggleBattleAuto();
     context.MonsterLinksGame.switchModal();
     if(!battleModal.innerHTML.includes("switchListV821")) fail("戦闘用の交代UIが開きません");
+    if(context.MonsterLinksGame.isBattleAuto()) fail("交代選択でオート攻撃が解除されません");
+
+    const activeMonster = context.MonsterLinksState.state.party[context.MonsterLinksState.state.battle.active];
+    activeMonster.hp = 1;
+    context.MonsterLinksGame.toggleBattleAuto();
+    if(context.MonsterLinksGame.isBattleAuto()) fail("HP25%以下でオート攻撃を開始できてしまいます");
+    activeMonster.hp = context.MonsterLinksState.stats(activeMonster).hp;
+    if(Object.prototype.hasOwnProperty.call(context.MonsterLinksState.state,"autoAttack")){
+      fail("オート攻撃状態がセーブデータへ保存されています");
+    }
+
+    const appSource = fs.readFileSync(path.join(root,"js","app.js"),"utf8");
+    for(const sound of ["weak","resist","allyHit","guard","ko","boss"]){
+      if(!appSource.includes(`kind === "${sound}"`)) fail(`v8.4効果音がありません: ${sound}`);
+    }
+    const battleSource = fs.readFileSync(battleSystemFile,"utf8");
+    if(!battleSource.includes("current !== battle || current.lock")) fail("古いオート攻撃タイマーを無効化する防御がありません");
+    if(!battleSource.includes("if(!fromAuto && kind !== \"attack\") stopBattleAuto()")) fail("手動コマンドでオート攻撃を解除する処理がありません");
+    const arenaSource = fs.readFileSync(path.join(root,"js","systems","arena.js"),"utf8");
+    if(!arenaSource.includes("G.resetBattleAuto?.()")) fail("闘技場の新ラウンドでオート攻撃がリセットされません");
+    const settingsViewFile = path.join(root,"js","views","settingsView.js");
+    vm.runInContext(fs.readFileSync(settingsViewFile,"utf8"),context,{filename:"js/views/settingsView.js"});
+    const settingsHtml = context.MonsterLinksViews.settingsHtml();
+    if(!settingsHtml.includes("Game.setSpeed('ultra')")) fail("設定画面に超速設定がありません");
+    if(!settingsHtml.includes("Game.setSeVolume(3)")) fail("設定画面にSE音量設定がありません");
+    if(!settingsHtml.includes("Game.toggleSetting('reducedMotion')")) fail("設定画面に演出軽減設定がありません");
   }catch(error){
     fail(`v8.2.1戦闘画面生成エラー: ${error.stack || error.message}`);
   }

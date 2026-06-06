@@ -6631,3 +6631,133 @@ button:hover:before{
   .goalMaterialV832{grid-template-columns:31px minmax(0,1fr)}
   .fusionGoalActionsV832{grid-template-columns:1fr 1fr}
 }
+
+/* v8.4: battle tempo, sound controls and reduced motion */
+.speedButtons{grid-template-columns:repeat(4,1fr)}
+.seVolumeButtonsV84{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.seVolumeButtonsV84 button{min-height:42px}
+.battleHeaderControlsV84{display:flex;align-items:center;justify-content:flex-end;gap:6px}
+.battleSpeedButtonV84{
+  min-width:66px;
+  min-height:38px;
+  display:grid;
+  place-items:center;
+  gap:0;
+  padding:4px 8px;
+  border-color:rgba(110,231,255,.24);
+  background:rgba(7,19,38,.7);
+  box-shadow:none;
+}
+.battleSpeedButtonV84 small,.battleSpeedButtonV84 b{display:block;line-height:1.05}
+.battleSpeedButtonV84 small{color:#9fb0c8;font-size:7px}
+.battleSpeedButtonV84 b{color:#b9f5ff;font-size:9px}
+.battleSoundButtonV84{
+  width:38px;
+  min-width:38px;
+  min-height:38px;
+  padding:0;
+  border-color:rgba(255,255,255,.12);
+  background:rgba(7,19,38,.7);
+  box-shadow:none;
+  font-size:15px;
+}
+.battleSoundButtonV84.on{border-color:rgba(116,240,160,.25);background:rgba(38,122,72,.34)}
+.weakFxV84 .hitBurstV821{
+  filter:hue-rotate(18deg) saturate(1.55) brightness(1.2) drop-shadow(0 0 24px rgba(255,230,100,.95));
+}
+.weakFxV84 .damageFloat{color:#ffe071;text-shadow:0 0 15px rgba(255,205,62,.6)}
+.resistFxV84 .hitBurstV821{filter:grayscale(.75) brightness(.75);opacity:.55}
+.resistFxV84 .damageFloat{color:#b8c3d5;font-size:27px}
+.koFxV84 .hitBurstV821{filter:hue-rotate(-18deg) saturate(1.6) drop-shadow(0 0 25px rgba(255,92,120,.9))}
+.koFxV84 .damageFloat{color:#ff7188;text-shadow:0 0 18px rgba(255,63,93,.65)}
+.battleSpeedfastV84 .hitFx .hitBurstV821{animation-duration:.3s}
+.battleSpeedfastV84 .hitFx .battleSpriteV821,
+.battleSpeedfastV84 .attackSourceFxV821 .battleSpriteV821{animation-duration:.3s}
+.battleSpeedfastV84 .healFx .battleSpriteV821,
+.battleSpeedfastV84 .healSourceFxV821 .battleSpriteV821,
+.battleSpeedfastV84 .guardFx .battleSpriteV821,
+.battleSpeedfastV84 .guardSourceFxV821 .battleSpriteV821{animation-duration:.36s}
+.battleSpeedultraV84 .hitFx .hitBurstV821{animation-duration:.18s}
+.battleSpeedultraV84 .hitFx .battleSpriteV821,
+.battleSpeedultraV84 .attackSourceFxV821 .battleSpriteV821{animation-duration:.18s}
+.battleSpeedultraV84 .healFx .battleSpriteV821,
+.battleSpeedultraV84 .healSourceFxV821 .battleSpriteV821,
+.battleSpeedultraV84 .guardFx .battleSpriteV821,
+.battleSpeedultraV84 .guardSourceFxV821 .battleSpriteV821,
+.battleSpeedultraV84 .scoutFx .battleSpriteV821{animation-duration:.22s}
+.battleSpeedultraV84 .battleFloatV821{animation-duration:.42s}
+.reducedMotionV84 .battleSpriteV821{animation:none}
+.reducedMotionV84 .hitFx .battleSpriteV821,
+.reducedMotionV84 .attackSourceFxV821 .battleSpriteV821,
+.reducedMotionV84 .healFx .battleSpriteV821,
+.reducedMotionV84 .healSourceFxV821 .battleSpriteV821,
+.reducedMotionV84 .guardFx .battleSpriteV821,
+.reducedMotionV84 .guardSourceFxV821 .battleSpriteV821,
+.reducedMotionV84 .scoutFx .battleSpriteV821{
+  animation:none;
+  transform:none;
+}
+.reducedMotionV84 .hitFx .battleSpriteV821{filter:brightness(1.45)}
+.reducedMotionV84 .healFx .battleSpriteV821{filter:drop-shadow(0 0 18px rgba(116,240,160,.75)) brightness(1.18)}
+.reducedMotionV84 .hitBurstV821{display:none}
+.reducedMotionV84 .battleFloatV821{animation:reducedFloatV84 .5s ease-out both}
+@keyframes reducedFloatV84{
+  0%{opacity:0;transform:translate(-50%,-45%) scale(.94)}
+  18%,75%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-58%) scale(1)}
+}
+@media(max-width:620px){
+  .battleHeaderControlsV84{gap:4px}
+  .battleSpeedButtonV84{min-width:56px;min-height:34px;padding:3px 6px}
+  .battleSoundButtonV84{width:34px;min-width:34px;min-height:34px;font-size:13px}
+}
+@media(max-width:430px){
+  .speedButtons,.seVolumeButtonsV84{grid-template-columns:repeat(2,1fr)}
+  .battleSoundButtonV84{display:none}
+}
+
+/* v8.4.1: normal attack auto battle */
+.battleAutoControlV841{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+}
+.battleAutoControlV841 > span{color:#aebbd0;font-size:8px}
+.battleAutoControlV841 > button{
+  min-width:122px;
+  min-height:43px;
+  display:grid;
+  place-items:center;
+  gap:1px;
+  padding:5px 10px;
+  border-color:rgba(255,255,255,.13);
+  background:rgba(7,15,31,.58);
+  box-shadow:none;
+}
+.battleAutoControlV841 > button b,.battleAutoControlV841 > button small{display:block}
+.battleAutoControlV841 > button b{color:#c8d4e6;font-size:9px;letter-spacing:.08em}
+.battleAutoControlV841 > button small{color:#8798b0;font-size:7px}
+.battleAutoControlV841 > button.on{
+  border-color:rgba(116,240,160,.43);
+  background:linear-gradient(180deg,rgba(42,151,88,.78),rgba(24,103,61,.82));
+  box-shadow:0 0 18px rgba(75,221,123,.14);
+}
+.battleAutoControlV841 > button.on b{color:#e5ffed}
+.battleAutoControlV841 > button.on small{color:#b9f4cc}
+.battleMessageV821.autoV841{
+  border-color:rgba(116,240,160,.3);
+  background:linear-gradient(90deg,rgba(31,118,68,.34),rgba(15,26,48,.92));
+}
+.battleMessageV821.autoV841 > span{color:#9cf0b8}
+.battleMessageV821.autoV841 > b{color:#effff4}
+@media(max-width:620px){
+  .battleAutoControlV841 > span{display:none}
+  .battleAutoControlV841 > button{min-width:105px;min-height:40px;padding:4px 7px}
+}
+@media(max-width:430px){
+  .commandHeadingV821{align-items:center}
+  .battleAutoControlV841 > button{min-width:94px}
+  .battleAutoControlV841 > button b{font-size:8px}
+  .battleAutoControlV841 > button small{font-size:6px}
+}

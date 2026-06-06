@@ -12,12 +12,12 @@
 
   function render(){window.MonsterLinksRender.render();}
 
-  function settings(){return S.state.settings || {music:false,sound:true,speed:"normal"};}
+  function settings(){return S.state.settings || {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false};}
 
   function delay(ms){
     const speed = settings().speed;
-    const mult = speed === "fast" ? 0.48 : speed === "slow" ? 1.35 : 1;
-    return Math.max(90,Math.floor(ms * mult));
+    const mult = speed === "ultra" ? 0.24 : speed === "fast" ? 0.48 : speed === "slow" ? 1.35 : 1;
+    return Math.max(speed === "ultra" ? 45 : 90,Math.floor(ms * mult));
   }
 
   function getAudio(){
@@ -29,18 +29,20 @@
     return audioCtx;
   }
 
-  function beep(freq=440,duration=.08,type="sine",gain=.035){
+  function beep(freq=440,duration=.08,type="sine",gain=.035,offset=0,useSeVolume=true){
     const ctx = getAudio();
     if(!ctx) return;
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
     osc.type = type;
     osc.frequency.value = freq;
-    g.gain.value = gain;
+    const volume = useSeVolume ? ([0,.62,1,1.42][settings().seVolume || 2] || 1) : 1;
+    const finalGain = Math.max(.001,gain * volume);
+    g.gain.value = finalGain;
     osc.connect(g);
     g.connect(ctx.destination);
-    const now = ctx.currentTime;
-    g.gain.setValueAtTime(gain,now);
+    const now = ctx.currentTime + Math.max(0,offset);
+    g.gain.setValueAtTime(finalGain,now);
     g.gain.exponentialRampToValueAtTime(.0001,now+duration);
     osc.start(now);
     osc.stop(now+duration+.02);
@@ -48,10 +50,17 @@
 
   function playSe(kind="tap"){
     if(!settings().sound) return;
-    if(kind === "win"){beep(784,.09,"triangle",.04);setTimeout(()=>beep(988,.1,"triangle",.04),90);return;}
-    if(kind === "hit"){beep(170,.07,"square",.03);return;}
-    if(kind === "heal"){beep(660,.09,"sine",.035);return;}
-    if(kind === "scout"){beep(880,.08,"triangle",.04);setTimeout(()=>beep(1320,.11,"triangle",.035),80);return;}
+    if(kind === "win"){beep(659,.08,"triangle",.036);beep(784,.09,"triangle",.039,.08);beep(1047,.14,"triangle",.042,.17);return;}
+    if(kind === "hit"){beep(165,.065,"square",.032);beep(110,.055,"sawtooth",.018,.035);return;}
+    if(kind === "allyHit"){beep(125,.09,"square",.03);beep(82,.09,"sawtooth",.02,.04);return;}
+    if(kind === "weak"){beep(210,.055,"square",.03);beep(720,.1,"triangle",.037,.045);return;}
+    if(kind === "resist"){beep(145,.07,"square",.021);beep(105,.1,"triangle",.018,.055);return;}
+    if(kind === "skill"){beep(460,.055,"sine",.022);beep(760,.085,"triangle",.028,.045);return;}
+    if(kind === "heal"){beep(523,.08,"sine",.027);beep(784,.1,"sine",.034,.07);beep(1047,.12,"triangle",.028,.15);return;}
+    if(kind === "guard"){beep(260,.08,"triangle",.027);beep(390,.11,"sine",.024,.045);return;}
+    if(kind === "ko"){beep(180,.07,"square",.032);beep(120,.12,"sawtooth",.025,.055);beep(72,.16,"triangle",.02,.14);return;}
+    if(kind === "boss"){beep(92,.16,"sawtooth",.029);beep(69,.2,"square",.022,.12);return;}
+    if(kind === "scout"){beep(880,.08,"triangle",.04);beep(1320,.11,"triangle",.035,.08);return;}
     if(kind === "error"){beep(150,.11,"sawtooth",.025);return;}
     beep(520,.045,"sine",.025);
   }
@@ -65,7 +74,7 @@
     if(!settings().music) return;
     const notes = [262,330,392,523,392,330];
     musicTimer = setInterval(()=>{
-      beep(notes[musicStep % notes.length],.07,"triangle",.012);
+      beep(notes[musicStep % notes.length],.07,"triangle",.012,0,false);
       musicStep++;
     },720);
   }
@@ -389,7 +398,28 @@
     S.setSetting("speed",speed);
     playSe("tap");
     render();
-    toast(speed === "fast" ? "演出速度：速い" : speed === "slow" ? "演出速度：ゆっくり" : "演出速度：通常");
+    const labels = {slow:"ゆっくり",normal:"通常",fast:"速い",ultra:"超速"};
+    toast(`演出速度：${labels[speed] || labels.normal}`);
+  }
+
+  function cycleBattleSpeed(){
+    const order = ["normal","fast","ultra"];
+    const current = settings().speed;
+    const index = order.indexOf(current);
+    const next = index < 0 ? "normal" : order[(index + 1) % order.length];
+    setSpeed(next);
+  }
+
+  function setSeVolume(level){
+    S.setSetting("seVolume",level);
+    playSe("weak");
+    render();
+    toast(`SE音量：${["","小","中","大"][S.state.settings.seVolume]}`);
+  }
+
+  function previewBattleSe(){
+    playSe("skill");
+    setTimeout(()=>playSe("weak"),110);
   }
 
 
@@ -487,6 +517,6 @@
   }
 
 
-  Object.assign(G, {render, toast, delay, playSe, syncMusic, setView, saveNow, startGame, openTitle, fullHeal, startLastStage, closeModal, askConfirm, confirmYes, confirmNo, reset, createNewSlot, switchSlot, copyToSlot, deleteSlot, openBackupModal, selectBackupText, copyBackupText, openRestoreModal, restoreBackupText, toggleSetting, setSpeed, devAddGold, devLevelUpAll, devUnlockStages, devUnlockDex, devGetAllItems, devUnlockArena, devShowBalance});
+  Object.assign(G, {render, toast, delay, playSe, syncMusic, setView, saveNow, startGame, openTitle, fullHeal, startLastStage, closeModal, askConfirm, confirmYes, confirmNo, reset, createNewSlot, switchSlot, copyToSlot, deleteSlot, openBackupModal, selectBackupText, copyBackupText, openRestoreModal, restoreBackupText, toggleSetting, setSpeed, cycleBattleSpeed, setSeVolume, previewBattleSe, devAddGold, devLevelUpAll, devUnlockStages, devUnlockDex, devGetAllItems, devUnlockArena, devShowBalance});
   window.Game = G;
 })();

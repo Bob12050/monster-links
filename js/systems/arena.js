@@ -47,6 +47,7 @@
   }
 
   function startArenaRound(id,roundIndex=0,extraLog=[]){
+    G.resetBattleAuto?.();
     const arena = S.arenaDef(id);
     if(!arena) return;
     const round = arena.rounds[roundIndex];
@@ -117,7 +118,7 @@
       b.lock = true;
       S.save();
       render();
-      setTimeout(()=>startArenaRound(arena.id,current+1,[`${current+1}戦目を突破！`,"HPとMPはそのまま次の試合へ進む。"]),G.delay(950));
+      setTimeout(()=>startArenaRound(arena.id,current+1,[`${current+1}戦目を突破！`,"HPとMPはそのまま次の試合へ進む。"]),G.delay(700));
       return;
     }
 

@@ -21,10 +21,13 @@
     const scoutText = b.isArena ? "闘技場では不可" : scoutLocked ? "警戒中 / 不可" : `成功率 ${window.MonsterLinksGame.scoutChance()}% / 警戒 ${scoutAttempts}/4`;
     const scoutDisabled = b.lock || b.isArena || scoutLocked;
     const latestLog = b.log[b.log.length - 1] || `${enemy.nickname}があらわれた！`;
+    const settings = S.state.settings || {speed:"normal",sound:true,reducedMotion:false};
+    const speedLabel = {slow:"ゆっくり",normal:"通常",fast:"速い",ultra:"超速"}[settings.speed] || "通常";
+    const autoOn = !!window.MonsterLinksGame.isBattleAuto?.();
 
     return `
     <main class="battlePageV821">
-      <section class="battle battleV821 ${b.isBoss ? "bossBattle" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
+      <section class="battle battleV821 battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
         <div class="battleHeaderV821">
           <div>
             <span class="battleAreaLabelV821">BATTLE AREA</span>
@@ -33,7 +36,11 @@
           </div>
           <div class="battleHeaderRightV821">
             <span>${U.esc(modeText)}</span>
-            <div class="battleModeV821 ${b.isBoss ? "bossMode" : ""} ${b.isArena ? "arenaMode" : ""}">${modeLabel}</div>
+            <div class="battleHeaderControlsV84">
+              <button class="battleSpeedButtonV84" onclick="Game.cycleBattleSpeed()"><small>速度</small><b>${U.esc(speedLabel)}</b></button>
+              <button class="battleSoundButtonV84 ${settings.sound ? "on" : ""}" onclick="Game.toggleSetting('sound')" aria-label="効果音切替">${settings.sound ? "🔊" : "🔇"}</button>
+              <div class="battleModeV821 ${b.isBoss ? "bossMode" : ""} ${b.isArena ? "arenaMode" : ""}">${modeLabel}</div>
+            </div>
           </div>
         </div>
 
@@ -93,16 +100,19 @@
           }).join("")}
         </div>
 
-        <div class="battleMessageV821 ${b.lock ? "waiting" : ""}">
-          <span>${b.lock ? "NOW ACTION" : "COMMAND"}</span>
+        <div class="battleMessageV821 ${b.lock ? "waiting" : ""} ${autoOn ? "autoV841" : ""}">
+          <span>${autoOn ? "AUTO ATTACK" : b.lock ? "NOW ACTION" : "COMMAND"}</span>
           <b>${U.esc(latestLog)}</b>
-          <small>${U.esc(turnText)}・${V.affinityHint(ally,enemy)}</small>
+          <small>${autoOn ? "通常攻撃を自動選択中・手動コマンドで解除" : U.esc(turnText)}・${V.affinityHint(ally,enemy)}</small>
         </div>
 
         <div class="battleCommandDeckV821">
           <div class="commandHeadingV821">
             <div><span>PLAYER COMMAND</span><b>行動を選ぶ</b></div>
-            <small>${b.lock ? "相手の行動を待っています" : `${U.esc(ally.nickname)}のターン`}</small>
+            <div class="battleAutoControlV841">
+              <span>${autoOn ? "通常攻撃を継続" : b.lock ? "相手の行動を待機中" : `${U.esc(ally.nickname)}のターン`}</span>
+              <button class="${autoOn ? "on" : ""}" onclick="Game.toggleBattleAuto()"><b>${autoOn ? "AUTO ON" : "AUTO OFF"}</b><small>${autoOn ? "解除する" : "通常攻撃を自動化"}</small></button>
+            </div>
           </div>
           <div class="commandsV821">
             <button class="attackCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.act('attack')"><span>⚔️</span><b>攻撃</b><small>通常攻撃</small></button>
@@ -126,7 +136,10 @@
   function fxClass(target){
     const fx = S.state.battle?.fx;
     if(!fx || fx.target !== target) return "";
-    if(fx.kind === "damage") return "hitFx";
+    if(fx.kind === "damage"){
+      const noteClass = fx.note === "WEAK!" || fx.note === "GOOD!" ? "weakFxV84" : fx.note === "RESIST" ? "resistFxV84" : fx.note === "K.O.!" ? "koFxV84" : "";
+      return `hitFx ${noteClass}`;
+    }
     if(fx.kind === "heal") return "healFx";
     if(fx.kind === "guard") return "guardFx";
     if(fx.kind === "scoutFail") return "scoutFx";

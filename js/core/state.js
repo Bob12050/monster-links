@@ -187,14 +187,16 @@
   }
 
   function defaultSettings(){
-    return {music:false,sound:true,speed:"normal"};
+    return {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false};
   }
 
   function normalizeSettings(data){
     data.settings = data.settings && typeof data.settings === "object" ? data.settings : defaultSettings();
     data.settings.music = !!data.settings.music;
     data.settings.sound = data.settings.sound !== false;
-    data.settings.speed = ["slow","normal","fast"].includes(data.settings.speed) ? data.settings.speed : "normal";
+    data.settings.speed = ["slow","normal","fast","ultra"].includes(data.settings.speed) ? data.settings.speed : "normal";
+    data.settings.seVolume = U.clamp(Math.floor(Number(data.settings.seVolume) || 2),1,3);
+    data.settings.reducedMotion = !!data.settings.reducedMotion;
   }
 
   function slotSummary(slot){
@@ -546,7 +548,9 @@
     normalizeSettings(state);
     if(key === "music") state.settings.music = !!value;
     if(key === "sound") state.settings.sound = !!value;
-    if(key === "speed" && ["slow","normal","fast"].includes(value)) state.settings.speed = value;
+    if(key === "speed" && ["slow","normal","fast","ultra"].includes(value)) state.settings.speed = value;
+    if(key === "seVolume") state.settings.seVolume = U.clamp(Math.floor(Number(value) || 2),1,3);
+    if(key === "reducedMotion") state.settings.reducedMotion = !!value;
     save();
   }
 

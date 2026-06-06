@@ -5,6 +5,8 @@
   const U = window.MonsterLinksUtils;
   const S = window.MonsterLinksState;
   const G = window.MonsterLinksGame;
+  let autoAttack = false;
+  let autoTimer = null;
 
   function render(){G.render();}
   function toast(msg){G.toast(msg);}
@@ -15,8 +17,95 @@
     return Math.max(0,Math.floor(value * (Number(b[key]) || 1)));
   }
 
+  function clearAutoTimer(){
+    if(autoTimer !== null){
+      clearTimeout(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+  function resetBattleAuto(){
+    autoAttack = false;
+    clearAutoTimer();
+  }
+
+  function stopBattleAuto(message="",showToast=false){
+    const wasActive = autoAttack;
+    resetBattleAuto();
+    if(message && S.state.battle) log(message);
+    if(wasActive && showToast){
+      S.save();
+      render();
+      toast("オート攻撃を解除しました");
+    }
+    return wasActive;
+  }
+
+  function autoSafetyReason(){
+    const b = S.state.battle;
+    if(!b) return "戦闘が終了しました";
+    const ally = active();
+    if(!ally || ally.hp <= 0) return "戦闘不能のためオート攻撃を停止";
+    if(S.hpPct(ally) <= 25) return "HPが25%以下のためオート攻撃を停止";
+    return "";
+  }
+
+  function scheduleAutoAttack(){
+    clearAutoTimer();
+    const battle = S.state.battle;
+    if(!autoAttack || !battle || battle.lock) return;
+    const reason = autoSafetyReason();
+    if(reason){
+      stopBattleAuto(reason);
+      S.save();
+      render();
+      toast(reason);
+      return;
+    }
+    autoTimer = setTimeout(()=>{
+      autoTimer = null;
+      const current = S.state.battle;
+      if(!autoAttack || !current || current !== battle || current.lock) return;
+      const safety = autoSafetyReason();
+      if(safety){
+        stopBattleAuto(safety);
+        S.save();
+        render();
+        toast(safety);
+        return;
+      }
+      act("attack",null,true);
+    },G.delay(260));
+  }
+
+  function toggleBattleAuto(){
+    const b = S.state.battle;
+    if(!b) return;
+    if(autoAttack){
+      stopBattleAuto("オート攻撃を解除した");
+      S.save();
+      render();
+      toast("オート攻撃：OFF");
+      return;
+    }
+    const reason = autoSafetyReason();
+    if(reason){
+      toast(reason);
+      return;
+    }
+    autoAttack = true;
+    log("オート攻撃を開始した");
+    S.save();
+    render();
+    toast("オート攻撃：ON");
+    scheduleAutoAttack();
+  }
+
+  function isBattleAuto(){return autoAttack;}
+
   function startBattle(id){
     const state = S.state;
+    resetBattleAuto();
     if(!state.party.some(S.alive)) G.fullHeal(false);
     const st = D.STAGES.find(x=>x.id===id) || D.STAGES[0];
     if(st.unlock > state.stageUnlocked){toast("まだ解放されていません");return;}
@@ -50,6 +139,7 @@
 
   function startBossBattle(id){
     const state = S.state;
+    resetBattleAuto();
     if(!state.party.some(S.alive)) G.fullHeal(false);
     const st = D.STAGES.find(x=>x.id===id) || D.STAGES[0];
     if(st.unlock > state.stageUnlocked){toast("まだ解放されていません");return;}
@@ -90,7 +180,7 @@
     state.view = "battle";
     S.save();
     render();
-    G.playSe("hit");
+    G.playSe("boss");
   }
 
   function bossReady(st){return (S.state.stageWins[st.id] || 0) >= st.boss.unlockWins;}
@@ -105,10 +195,11 @@
 
   function active(){return S.state.party[S.state.battle.active];}
 
-  function act(kind,skillId){
+  function act(kind,skillId,fromAuto=false){
     const state = S.state;
     const b = state.battle;
     if(!b || b.lock) return;
+    if(!fromAuto && kind !== "attack") stopBattleAuto();
     const a = active();
     const e = b.enemy;
 
@@ -126,13 +217,14 @@
         G.playSe("heal");
         log(`${a.nickname}は${sk.name}でHPを${heal}回復！`);
       }else{
+        G.playSe("skill");
         damage(a,e,sk);
       }
     }
     if(kind === "guard"){
       b.guard = true;
       setFx("guard","ally","GUARD","","ally");
-      G.playSe("tap");
+      G.playSe("guard");
       log(`${a.nickname}は身を守っている！`);
     }
     if(kind === "scout"){
@@ -177,16 +269,17 @@
     }
 
     if(e.hp <= 0){
+      stopBattleAuto();
       b.lock = true;
       S.save();
       render();
-      setTimeout(()=>finish("win"),G.delay(560));
+      setTimeout(()=>finish("win"),G.delay(460));
       return;
     }
     b.lock = true;
     S.save();
     render();
-    setTimeout(enemyTurn,G.delay(430));
+    setTimeout(enemyTurn,G.delay(320));
   }
 
   function skillElement(attacker,sk){return sk.element || S.def(attacker.id).type;}
@@ -237,8 +330,15 @@
     const targetSide = target === S.state.battle.enemy ? "enemy" : "ally";
     const sourceSide = targetSide === "enemy" ? "ally" : "enemy";
     setFx("damage",targetSide,`-${dmg}`,target.hp <= 0 ? "K.O.!" : affinityFxNote(mult),sourceSide);
-    G.playSe("hit");
+    playImpactSe(mult,target.hp <= 0,targetSide);
     log(`${attacker.nickname}の${sk.name}！${affinityLabel(mult)} ${target.nickname}に${dmg}ダメージ！`);
+  }
+
+  function playImpactSe(mult,defeated,targetSide){
+    if(defeated){G.playSe("ko");return;}
+    if(mult >= 1.15){G.playSe("weak");return;}
+    if(mult < 1){G.playSe("resist");return;}
+    G.playSe(targetSide === "ally" ? "allyHit" : "hit");
   }
 
   function enemyTurn(){
@@ -258,6 +358,7 @@
     }
     b.guard = false;
     if(a.hp <= 0){
+      stopBattleAuto();
       log(`${a.nickname}は倒れた！`);
       const next = state.party.findIndex(S.alive);
       if(next >= 0){
@@ -273,19 +374,20 @@
           current.fx = null;
           S.save();
           render();
-        },G.delay(560));
+        },G.delay(460));
         return;
       }else{
         b.lock = true;
         S.save();
         render();
-        setTimeout(()=>finish("lose"),G.delay(620));
+        setTimeout(()=>finish("lose"),G.delay(500));
         return;
       }
     }
     b.lock = false;
     S.save();
     render();
+    scheduleAutoAttack();
   }
 
   function enemyDamage(attacker,target,sk){
@@ -301,7 +403,7 @@
     const targetSide = target === S.state.battle.enemy ? "enemy" : "ally";
     const sourceSide = targetSide === "enemy" ? "ally" : "enemy";
     setFx("damage",targetSide,`-${dmg}`,target.hp <= 0 ? "K.O.!" : affinityFxNote(mult),sourceSide);
-    G.playSe("hit");
+    playImpactSe(mult,target.hp <= 0,targetSide);
     log(`${attacker.nickname}の${sk.name}！${affinityLabel(mult)} ${target.nickname}に${dmg}ダメージ！`);
   }
 
@@ -387,6 +489,7 @@
     const state = S.state;
     const b = state.battle;
     if(!b) return;
+    resetBattleAuto();
 
     if(b.isArena && result === "win" && G._arenaRoundWin){
       G._arenaRoundWin(b);
@@ -502,6 +605,7 @@
   }
 
   function skillModal(){
+    stopBattleAuto("",true);
     const a = active();
     const enemy = S.state.battle?.enemy;
     const list = S.skills(a).filter(id=>id!=="attack");
@@ -531,6 +635,7 @@
   function useSkill(id){G.closeModal();act("skill",id);}
 
   function switchModal(){
+    stopBattleAuto("",true);
     const b = S.state.battle;
     document.getElementById("modal").innerHTML = `
     <div class="modalBg" onclick="Game.closeModal(event)">
@@ -553,6 +658,7 @@
   }
 
   function switchAlly(i){
+    stopBattleAuto();
     G.closeModal();
     const b = S.state.battle;
     if(!b || !S.state.party[i] || !S.alive(S.state.party[i])) return;
@@ -561,10 +667,11 @@
     b.lock = true;
     S.save();
     render();
-    setTimeout(enemyTurn,G.delay(430));
+    setTimeout(enemyTurn,G.delay(320));
   }
 
   function escape(){
+    stopBattleAuto();
     const state = S.state;
     if(!state.battle) return;
     if(state.battle.isArena && G._arenaForfeit){
@@ -583,7 +690,7 @@
       state.battle.lock = true;
       S.save();
       render();
-      setTimeout(enemyTurn,G.delay(430));
+      setTimeout(enemyTurn,G.delay(320));
     }
   }
 
@@ -598,7 +705,10 @@
     switchAlly,
     escape,
     scoutChance,
-    rewardContinue
+    rewardContinue,
+    toggleBattleAuto,
+    isBattleAuto,
+    resetBattleAuto
   });
 
 })();

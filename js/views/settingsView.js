@@ -7,7 +7,7 @@
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
   function settingsHtml(){
-    const settings = S.state.settings || {music:false,sound:true,speed:"normal"};
+    const settings = S.state.settings || {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false};
     return `
     <main>
       <section class="hero">
@@ -26,6 +26,10 @@
               <div><b>SE</b><span>攻撃、回復、スカウトなどの効果音。</span></div>
               <button class="${settings.sound ? "green" : "ghost"}" onclick="Game.toggleSetting('sound')">${settings.sound ? "ON" : "OFF"}</button>
             </div>
+            <div class="settingRow">
+              <div><b>演出軽減</b><span>画面の揺れや移動を抑え、数値と発光を中心に表示します。</span></div>
+              <button class="${settings.reducedMotion ? "green" : "ghost"}" onclick="Game.toggleSetting('reducedMotion')">${settings.reducedMotion ? "ON" : "OFF"}</button>
+            </div>
             <div class="settingRow devSettingRow">
               <div><b>開発者モード</b><span>配合レシピ検証やテスト用ショートカットを表示します。ONにするにはパスワードが必要です。</span></div>
               <button class="${settings.devMode ? "red" : "ghost"}" onclick="Game.toggleDevMode()">${settings.devMode ? "ON" : "OFF"}</button>
@@ -36,8 +40,16 @@
             ${speedButton("slow","ゆっくり",settings.speed)}
             ${speedButton("normal","通常",settings.speed)}
             ${speedButton("fast","速い",settings.speed)}
+            ${speedButton("ultra","超速",settings.speed)}
           </div>
-          <div class="notice">「速い」にすると戦闘テンポが上がります。周回時におすすめです。</div>
+          <div class="notice">「超速」は待ち時間を約1/4にします。戦闘中にも速度を切り替えられます。</div>
+          <h2 style="margin-top:14px">SE音量</h2>
+          <div class="seVolumeButtonsV84">
+            ${volumeButton(1,"小",settings.seVolume)}
+            ${volumeButton(2,"中",settings.seVolume)}
+            ${volumeButton(3,"大",settings.seVolume)}
+            <button onclick="Game.previewBattleSe()">試聴</button>
+          </div>
           <div class="balanceMini">
             <b>v2.6 バランス補正</b>
             <span>EXP ${D.BALANCE?.expMultiplier || 1}倍 / GOLD ${D.BALANCE?.goldMultiplier || 1}倍 / 与ダメ ${D.BALANCE?.playerDamageMultiplier || 1}倍 / 被ダメ ${D.BALANCE?.enemyDamageMultiplier || 1}倍</span>
@@ -99,6 +111,10 @@
 
   function speedButton(id,label,current){
     return `<button class="${current === id ? "primary" : "ghost"}" onclick="Game.setSpeed('${id}')">${label}</button>`;
+  }
+
+  function volumeButton(id,label,current){
+    return `<button class="${Number(current) === id ? "primary" : "ghost"}" onclick="Game.setSeVolume(${id})">${label}</button>`;
   }
 
   function slotCard(info){
