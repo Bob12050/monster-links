@@ -68,8 +68,8 @@
       const remain = S.partySlotsRemaining ? S.partySlotsRemaining() : Math.max(0,D.MAX_PARTY - S.state.party.length);
       const canJoinParty = S.canAddToParty ? S.canAddToParty(m) : S.state.party.length < D.MAX_PARTY;
       return `<div class="actions">
-        <button class="green" onclick="Game.toParty('${m.uid}')" ${canJoinParty ? "" : "disabled"}>パーティへ（${size}枠）</button>
-        ${canJoinParty ? "" : `<span class="tiny actionHintV80">残り${remain}枠</span>`}
+        <button class="green" onclick="${canJoinParty ? `Game.toParty('${m.uid}')` : `Game.openPartyExchange('${m.uid}')`}">${canJoinParty ? `パーティへ（${size}枠）` : `交換してパーティへ（${size}枠）`}</button>
+        ${canJoinParty ? "" : `<span class="tiny actionHintV80">残り${remain}枠・交換可能</span>`}
         <button class="gold" onclick="Game.equipModal('${m.uid}')">装備変更</button>
         ${lockBtn}
       </div>`;

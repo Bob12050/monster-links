@@ -130,6 +130,47 @@ function loadGameData(scriptRefs){
     fail("将来版の保存形式番号を現在版へ巻き戻しました");
   }
 
+  const exchangeOneA = context.MonsterLinksState.makeMonster("plim",10);
+  const exchangeOneB = context.MonsterLinksState.makeMonster("leafling",10);
+  const exchangeOneC = context.MonsterLinksState.makeMonster("puffbat",10);
+  const exchangeThree = context.MonsterLinksState.makeMonster("prismdragon",40);
+  context.MonsterLinksState.state.party = [exchangeOneA,exchangeOneB,exchangeOneC];
+  context.MonsterLinksState.state.box = [exchangeThree];
+
+  const insufficientExchange = context.MonsterLinksState.exchangePartyFromBox(
+    exchangeThree.uid,
+    [exchangeOneA.uid,exchangeOneB.uid]
+  );
+  if(insufficientExchange.ok) fail("3枠交換が2枠分の選択で成立しました");
+  if(context.MonsterLinksState.state.party.length !== 3 || context.MonsterLinksState.state.box[0]?.uid !== exchangeThree.uid){
+    fail("成立しない交換でパーティまたは牧場が変更されました");
+  }
+
+  const fullExchange = context.MonsterLinksState.exchangePartyFromBox(
+    exchangeThree.uid,
+    [exchangeOneA.uid,exchangeOneB.uid,exchangeOneC.uid]
+  );
+  if(!fullExchange.ok || context.MonsterLinksState.state.party.length !== 1 || context.MonsterLinksState.state.party[0]?.uid !== exchangeThree.uid){
+    fail("1枠3体から3枠1体への交換に失敗しました");
+  }
+  if(![exchangeOneA.uid,exchangeOneB.uid,exchangeOneC.uid].every(uid=>context.MonsterLinksState.state.box.some(m=>m.uid===uid))){
+    fail("3枠交換で元のパーティメンバーが牧場へ戻りませんでした");
+  }
+
+  const exchangeTwo = context.MonsterLinksState.makeMonster("mossking",20);
+  const exchangeKeep = context.MonsterLinksState.makeMonster("plim",10);
+  const exchangeOutA = context.MonsterLinksState.makeMonster("leafling",10);
+  const exchangeOutB = context.MonsterLinksState.makeMonster("puffbat",10);
+  context.MonsterLinksState.state.party = [exchangeKeep,exchangeOutA,exchangeOutB];
+  context.MonsterLinksState.state.box = [exchangeTwo];
+  const twoSlotExchange = context.MonsterLinksState.exchangePartyFromBox(
+    exchangeTwo.uid,
+    [exchangeOutA.uid,exchangeOutB.uid]
+  );
+  if(!twoSlotExchange.ok || context.MonsterLinksState.partySizeUsed() !== 3 || context.MonsterLinksState.state.party.length !== 2){
+    fail("1枠2体を2枠1体へ交換する処理に失敗しました");
+  }
+
   context.MonsterLinksGame = {render(){},toast(){}};
   const fusionFile = path.join(root,"js","systems","fusion.js");
   try{
@@ -189,6 +230,22 @@ function loadGameData(scriptRefs){
     if(!modal.innerHTML.includes("配合内容の最終確認")) fail("ゲーム内配合確認モーダルが開きません");
     if(!modal.innerHTML.includes("この操作は元に戻せません")) fail("配合確認モーダルに消費警告がありません");
     if(!modal.innerHTML.includes("この内容で配合する")) fail("配合確認モーダルに実行ボタンがありません");
+
+    const monsterSystemFile = path.join(root,"js","systems","monster.js");
+    context.MonsterLinksGame.closeModal = ()=>{modal.innerHTML = "";};
+    vm.runInContext(fs.readFileSync(monsterSystemFile,"utf8"),context,{filename:"js/systems/monster.js"});
+    const exchangeTarget = context.MonsterLinksState.makeMonster("prismdragon",40);
+    const exchangeParty = [
+      context.MonsterLinksState.makeMonster("plim",10),
+      context.MonsterLinksState.makeMonster("leafling",10),
+      context.MonsterLinksState.makeMonster("puffbat",10)
+    ];
+    context.MonsterLinksState.state.party = exchangeParty;
+    context.MonsterLinksState.state.box = [exchangeTarget];
+    context.MonsterLinksGame.openPartyExchange(exchangeTarget.uid);
+    if(!modal.innerHTML.includes("パーティメンバーを交換")) fail("枠不足時に交換モーダルが開きません");
+    if(!modal.innerHTML.includes("交換後のパーティ")) fail("交換モーダルに交換後の編成が表示されません");
+    if(!modal.innerHTML.includes("選んだ仲間と交換")) fail("交換モーダルに確定ボタンがありません");
   }catch(error){
     fail(`js/views/fusionView.js: 配合画面生成エラー: ${error.stack || error.message}`);
   }

@@ -595,6 +595,36 @@
     if(i >= 0) state.box.splice(i,1);
   }
 
+  function exchangePartyFromBox(targetUid,outgoingUids=[]){
+    const targetIndex = state.box.findIndex(m=>m.uid===targetUid);
+    if(targetIndex < 0) return {ok:false,reason:"targetNotFound"};
+
+    const selected = new Set(Array.isArray(outgoingUids) ? outgoingUids : []);
+    const outgoing = state.party.filter(m=>selected.has(m.uid));
+    if(outgoing.length !== selected.size) return {ok:false,reason:"partyMemberNotFound"};
+
+    const remaining = state.party.filter(m=>!selected.has(m.uid));
+    const target = state.box[targetIndex];
+    if(!canAddToParty(target,remaining)){
+      return {
+        ok:false,
+        reason:"notEnoughSlots",
+        needed:monsterSize(target),
+        remaining:partySlotsRemaining(remaining)
+      };
+    }
+
+    state.box.splice(targetIndex,1);
+    state.party = remaining.concat(target);
+    state.box.push(...outgoing);
+    return {
+      ok:true,
+      target,
+      outgoing,
+      partyInfo:partySlotInfo()
+    };
+  }
+
   function fullHeal(){
     owned().forEach(m=>{
       const s = stats(m);
@@ -795,6 +825,7 @@
     dexCounts,
     addMonster,
     removeMonster,
+    exchangePartyFromBox,
     fullHeal,
     gainExp,
     addItem,

@@ -6,6 +6,8 @@
   const S = window.MonsterLinksState;
   const G = window.MonsterLinksGame;
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
+  let partyExchangeTargetUid = "";
+  let partyExchangePick = [];
 
   function render(){G.render();}
   function toast(msg){G.toast(msg);}
@@ -23,15 +25,163 @@
     if(i < 0) return;
     const target = state.box[i];
     if(!S.canAddToParty(target)){
-      const need = S.monsterSize ? S.monsterSize(target) : 1;
-      const remain = S.partySlotsRemaining ? S.partySlotsRemaining() : 0;
-      toast(`パーティ枠が足りません（必要${need}枠 / 残り${remain}枠 / 現在${S.partySizeText()}）`);
+      openPartyExchange(uid);
       return;
     }
     state.party.push(state.box.splice(i,1)[0]);
     S.save();
     render();
     toast(`パーティに加えました（${S.partySizeText()}）`);
+  }
+
+  function recommendedExchangePick(target){
+    const party = S.state.party;
+    const targetSize = S.monsterSize ? S.monsterSize(target) : 1;
+    const needToFree = Math.max(0,targetSize - (S.partySlotsRemaining ? S.partySlotsRemaining() : 0));
+    let best = null;
+    const total = 1 << party.length;
+
+    for(let mask=1;mask<total;mask++){
+      const list = party.filter((_,index)=>(mask & (1 << index)) !== 0);
+      const freed = S.partySizeUsed ? S.partySizeUsed(list) : list.length;
+      if(freed < needToFree) continue;
+      const candidate = {list,freed,waste:freed-needToFree};
+      if(!best
+        || candidate.waste < best.waste
+        || (candidate.waste === best.waste && candidate.list.length < best.list.length)){
+        best = candidate;
+      }
+    }
+    return best ? best.list.map(m=>m.uid) : party.map(m=>m.uid);
+  }
+
+  function exchangeSelectionInfo(target){
+    const selected = new Set(partyExchangePick);
+    const outgoing = S.state.party.filter(m=>selected.has(m.uid));
+    const remaining = S.state.party.filter(m=>!selected.has(m.uid));
+    const freed = S.partySizeUsed ? S.partySizeUsed(outgoing) : outgoing.length;
+    const afterUsed = (S.partySizeUsed ? S.partySizeUsed(remaining) : remaining.length) + (S.monsterSize ? S.monsterSize(target) : 1);
+    const limit = S.partySlotLimit ? S.partySlotLimit() : D.MAX_PARTY;
+    return {
+      outgoing,
+      remaining,
+      freed,
+      afterUsed,
+      limit,
+      valid:afterUsed <= limit
+    };
+  }
+
+  function openPartyExchange(uid,keepSelection=false){
+    const target = S.state.box.find(m=>m.uid===uid);
+    if(!target){toast("交換する仲間が見つかりません");return;}
+    if(!keepSelection || partyExchangeTargetUid !== uid){
+      partyExchangeTargetUid = uid;
+      partyExchangePick = recommendedExchangePick(target);
+    }
+
+    const info = exchangeSelectionInfo(target);
+    const targetDef = S.def(target.id);
+    const targetSize = S.monsterSize ? S.monsterSize(target) : 1;
+    const selected = new Set(partyExchangePick);
+    let modal = document.getElementById("modal");
+    if(!modal){
+      modal = document.createElement("div");
+      modal.id = "modal";
+      document.body.appendChild(modal);
+    }
+    modal.innerHTML = `
+      <div class="modalBg" onclick="Game.cancelPartyExchange(event)">
+        <div class="modal partyExchangeModalV812" onclick="event.stopPropagation()">
+          <div class="stageTop">
+            <div>
+              <h2>パーティメンバーを交換</h2>
+              <p class="tiny">牧場から入れる仲間と、牧場へ戻す仲間を一括で交換します。</p>
+            </div>
+            <button onclick="Game.cancelPartyExchange()">閉じる</button>
+          </div>
+
+          <div class="partyExchangeTargetV812">
+            ${V.monsterVisual(target.id,"partyExchangeFaceV812")}
+            <div>
+              <span class="tiny">パーティへ入れる</span>
+              <b>${U.esc(target.nickname)}</b>
+              <div class="tiny">${U.esc(targetDef.name)} / ${targetDef.rank} / Lv${target.level} / ${targetSize}枠</div>
+            </div>
+          </div>
+
+          <div class="partyExchangeSummaryV812 ${info.valid ? "valid" : "invalid"}">
+            <div><span>現在</span><b>${S.partySizeText()}</b></div>
+            <div><span>牧場へ戻す</span><b>${info.freed}枠</b></div>
+            <div><span>交換後</span><b>${info.afterUsed}/${info.limit}枠</b></div>
+          </div>
+
+          <div class="partyExchangeGuideV812">
+            ${info.valid
+              ? `${info.outgoing.length}体を牧場へ戻すと交換できます。`
+              : `枠が足りません。牧場へ戻す仲間を追加で選んでください。`}
+          </div>
+
+          <div class="partyExchangeGridV812">
+            ${S.state.party.map(m=>{
+              const d = S.def(m.id);
+              const on = selected.has(m.uid);
+              const size = S.monsterSize ? S.monsterSize(m) : 1;
+              return `<button class="partyExchangeMemberV812 ${on ? "on" : ""}" onclick="Game.togglePartyExchangeMember('${m.uid}')">
+                ${V.monsterInline(m.id,"partyExchangeMiniFaceV812")}
+                <span>
+                  <b>${on ? "✓ " : ""}${U.esc(m.nickname)}</b>
+                  <small>${U.esc(d.name)} / Lv${m.level} / ${size}枠</small>
+                </span>
+              </button>`;
+            }).join("")}
+          </div>
+
+          <div class="partyExchangeResultV812">
+            <b>交換後のパーティ</b>
+            <div>
+              ${info.remaining.map(m=>`${V.monsterInline(m.id,"miniFace")}<span>${U.esc(m.nickname)}</span>`).join("")}
+              ${V.monsterInline(target.id,"miniFace")}<span>${U.esc(target.nickname)}</span>
+            </div>
+          </div>
+
+          <div class="actions partyExchangeActionsV812">
+            <button class="green" ${info.valid ? "" : "disabled"} onclick="Game.confirmPartyExchange()">選んだ仲間と交換</button>
+            <button onclick="Game.cancelPartyExchange()">キャンセル</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function togglePartyExchangeMember(uid){
+    if(!S.state.party.some(m=>m.uid===uid)) return;
+    if(partyExchangePick.includes(uid)) partyExchangePick = partyExchangePick.filter(id=>id!==uid);
+    else partyExchangePick.push(uid);
+    openPartyExchange(partyExchangeTargetUid,true);
+  }
+
+  function confirmPartyExchange(){
+    const result = S.exchangePartyFromBox(partyExchangeTargetUid,partyExchangePick);
+    if(!result.ok){
+      toast(result.reason === "notEnoughSlots" ? "交換後もパーティ枠が足りません" : "交換内容を確認できませんでした");
+      openPartyExchange(partyExchangeTargetUid,true);
+      return;
+    }
+    const targetName = result.target.nickname;
+    const count = result.outgoing.length;
+    partyExchangeTargetUid = "";
+    partyExchangePick = [];
+    S.save();
+    if(G.closeModal) G.closeModal();
+    render();
+    toast(`${targetName}をパーティへ入れ、${count}体を牧場へ戻しました（${S.partySizeText()}）`);
+  }
+
+  function cancelPartyExchange(ev){
+    if(ev && ev.target !== ev.currentTarget) return;
+    partyExchangeTargetUid = "";
+    partyExchangePick = [];
+    if(G.closeModal) G.closeModal();
   }
 
   function leader(uid){
@@ -76,7 +226,7 @@
     const moveBtn = inParty
       ? `<button onclick="Game.toBox('${m.uid}');Game.closeModal()">牧場へ</button>`
       : inBox
-        ? `<button class="green" onclick="Game.toParty('${m.uid}');Game.closeModal()" ${canJoinParty ? "" : "disabled"}>パーティへ（${needSlots}枠）</button>`
+        ? `<button class="green" onclick="${canJoinParty ? `Game.toParty('${m.uid}');Game.closeModal()` : `Game.openPartyExchange('${m.uid}')`}">${canJoinParty ? `パーティへ（${needSlots}枠）` : `交換してパーティへ（${needSlots}枠）`}</button>`
         : "";
     const leaderBtn = inParty ? `<button onclick="Game.leader('${m.uid}');Game.closeModal()">先頭にする</button>` : "";
     const ivLine = `HP${m.ivs.hp} MP${m.ivs.mp} 攻${m.ivs.atk} 守${m.ivs.def} 速${m.ivs.spd} 賢${m.ivs.wis}`;
@@ -131,7 +281,7 @@
         <div class="detailSectionV78 partySlotDetailV79">
           <b>パーティ枠</b>
           <div class="tiny">この仲間：${needSlots}枠 / 現在のパーティ：${S.partySizeText()} / 残り${remainSlots}枠</div>
-          <div class="tiny">${inBox && !canJoinParty ? `必要${needSlots}枠に対して残り${remainSlots}枠です。先に牧場へ戻して枠を空けてください。` : "1枠・2枠・3枠の合計が上限以内になるように編成できます。"}</div>
+          <div class="tiny">${inBox && !canJoinParty ? `必要${needSlots}枠に対して残り${remainSlots}枠です。「交換してパーティへ」から戻す仲間を選べます。` : "1枠・2枠・3枠の合計が上限以内になるように編成できます。"}</div>
         </div>
 
         <div class="detailSectionV78">
@@ -197,6 +347,10 @@
   Object.assign(G, {
     toBox,
     toParty,
+    openPartyExchange,
+    togglePartyExchangeMember,
+    confirmPartyExchange,
+    cancelPartyExchange,
     leader,
     toggleMonsterLock,
     openMonsterDetail,

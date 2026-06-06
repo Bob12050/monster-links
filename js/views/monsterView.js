@@ -89,7 +89,7 @@
           <span class="tag">残り${partyRemain}枠</span>
         </div>
         <div class="slotBarV79"><i style="width:${partyPct}%"></i></div>
-        <div class="partyRuleHintV80">例：1枠×3体 / 2枠+1枠 / 3枠×1体。枠が足りないスカウト・配合結果は自動で牧場へ送られます。</div>
+        <div class="partyRuleHintV80">例：1枠×3体 / 2枠+1枠 / 3枠×1体。牧場から枠の大きい仲間を入れる時は、戻す仲間を選んで一括交換できます。</div>
       </section>
 
       <section class="monsterManageLayoutV761">
