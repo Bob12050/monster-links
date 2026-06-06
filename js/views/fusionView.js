@@ -72,7 +72,7 @@
           <div class="name">${d.name} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span></div>
           <div class="tiny">誕生Lv ${prev.level} / ${group} / 親平均Lv ${prev.avgLevel}</div>
           <div class="fusionGuarantee">🔁 配合後の子はLv1で生まれます。親の個体値・ボーナス・一部スキルは引き継ぎます。</div>
-          ${prev.recipe ? `<div class="fusionGuarantee">✅ 配合リストと同じ結果になります</div>` : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`}
+          ${prev.recipe ? `<div class="fusionGuarantee">✅ 配合リスト/固定レシピの結果を優先します</div>` : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`}
           ${lock}
           ${note}
           ${fusionBonusHtml(prev)}

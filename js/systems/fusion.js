@@ -11,6 +11,7 @@
 
   let fusionPick = [];
   let fusionSkillPick = [];
+  let fusionForcedRecipeKey = "";
 
   function recipeKeyFromIds(a,b){
     return [String(a || ""),String(b || "")].sort().join("+");
@@ -33,6 +34,13 @@
   function findRecipe(a,b){
     const key = recipeKeyFromIds(a.id,b.id);
     return fusionRecipeEntries().find(r=>r.recipeKey === key) || null;
+  }
+
+  function forcedRecipeFor(a,b){
+    if(!fusionForcedRecipeKey) return null;
+    const key = recipeKeyFromIds(a.id,b.id);
+    if(key !== fusionForcedRecipeKey) return null;
+    return fusionRecipeEntries().find(r=>r.recipeKey === fusionForcedRecipeKey) || null;
   }
 
   const FUSION_RANK_LEVEL_REQ = {
@@ -227,7 +235,7 @@
         parents:[a,b]
       };
     }
-    const recipe = findRecipe(a,b);
+    const recipe = forcedRecipeFor(a,b) || findRecipe(a,b);
     const id = recipe ? recipe.result : chooseChild(a,b);
     const lockReason = recipeLockReason(recipe,a,b,id);
     const level = childLevel(a,b);
@@ -253,6 +261,7 @@
   }
 
   function pickFusion(uid){
+    fusionForcedRecipeKey = "";
     const target = S.owned().find(m=>m.uid===uid);
     if(target?.locked){toast("保護ロック中の仲間は配合素材にできません");return;}
     if(fusionPick.includes(uid)) fusionPick = fusionPick.filter(x=>x!==uid);
@@ -268,6 +277,7 @@
   }
 
   function setFusionPair(uidA,uidB){
+    fusionForcedRecipeKey = "";
     if(!uidA || !uidB || uidA === uidB) return;
     const all = S.owned();
     const a = all.find(m=>m.uid===uidA);
@@ -283,6 +293,7 @@
   function clearFusion(){
     fusionPick = [];
     fusionSkillPick = [];
+    fusionForcedRecipeKey = "";
     render();
   }
 
@@ -405,13 +416,26 @@
     if(!recipe){toast("レシピが見つかりません");return;}
     const status = recipeSetStatus(recipe);
     if(!status.ok || status.uids.length < 2){toast("素材モンスターが足りません");return;}
+
     fusionPick = status.uids.slice(0,2);
+    fusionForcedRecipeKey = recipe.recipeKey;
     fusionSkillPick = [];
+
     const prev = fusionPreview(fusionPick[0],fusionPick[1]);
+    if(prev && prev.id !== recipe.result){
+      fusionForcedRecipeKey = "";
+      fusionPick = [];
+      fusionSkillPick = [];
+      render();
+      toast("配合リストの結果確認に失敗しました");
+      return;
+    }
+
+    if(prev) fusionSkillPick = prev.selectedSkills;
     S.save();
     render();
     if(prev?.locked) toast(prev.reason || "レベル条件を満たしていません");
-    else toast("配合候補をセットしました");
+    else toast(`${S.def(recipe.result).name}の配合候補をセットしました`);
   }
 
   function doFusion(){
@@ -464,6 +488,7 @@
 
     fusionPick = [];
     fusionSkillPick = [];
+    fusionForcedRecipeKey = "";
     S.save();
     render();
     toast(`${child.nickname}が生まれました！`);
@@ -472,6 +497,7 @@
   function _clearFusionPickNoRender(){
     fusionPick = [];
     fusionSkillPick = [];
+    fusionForcedRecipeKey = "";
   }
 
   Object.defineProperty(G, "fusionPick", {
@@ -482,6 +508,11 @@
   Object.defineProperty(G, "fusionSkillPick", {
     configurable:true,
     get(){return fusionSkillPick;}
+  });
+
+  Object.defineProperty(G, "fusionForcedRecipeKey", {
+    configurable:true,
+    get(){return fusionForcedRecipeKey;}
   });
 
   Object.assign(G, {
