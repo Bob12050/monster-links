@@ -61,11 +61,31 @@
     {group:"advanced",parents:["tidalseraph","corallume"],result:"pearlseraph",note:"深海神殿の上位サポーター"},
     {group:"advanced",parents:["duskwolf","embercub"],result:"impfang",note:"魔界門への入り口"},
     {group:"advanced",parents:["impfang","ironmantis"],result:"hellknight",note:"闇の重装アタッカー"},
-    {group:"advanced",parents:["gloomoth","luminel"],result:"doomgazer",note:"光と闇を見通す魔眼"},
+    {group:"advanced",parents:["hellknight","luminel"],result:"doomgazer",note:"闇の騎士と光属性から生まれる魔眼"},
     {group:"advanced",parents:["doomgazer","voiddragon"],result:"chaoswyrm",note:"混沌をまとった竜"},
     {group:"rare",parents:["abysslevia","pearlseraph"],result:"chaoswyrm",minAvg:34,note:"深海と聖光から生まれる混沌竜"},
     {group:"rare",parents:["chaoswyrm","demonlord"],result:"voiddragon",minAvg:38,note:"魔界門の先にある禁断配合"},
     {group:"rare",parents:["abysslevia","chaoswyrm"],result:"demonlord",minAvg:40,note:"深淵と混沌を統べる魔王配合"},
+
+
+    // v7.2 batch1 recipe additions
+    {group:"basic",parents:["plim","aquan"],result:"dewplim",note:"水滴ぷる系への入り口"},
+    {group:"basic",parents:["budbunny","leafling"],result:"reefowl",note:"自然と水辺の飛行型"},
+    {group:"basic",parents:["pebblon","thornhog"],result:"cavemole",note:"洞くつの地中けもの"},
+    {group:"basic",parents:["sparkbug","plim"],result:"ashimp",note:"低ランクの火小悪魔"},
+    {group:"advanced",parents:["sparkbug","voltfox"],result:"lumenowl",note:"雷光から賢い光鳥へ"},
+    {group:"advanced",parents:["frostpup","luminel"],result:"snowfairy",note:"雪原のサポート役"},
+    {group:"advanced",parents:["miretoad","toxicshroom"],result:"abyssjelly",note:"毒沼から深海魔法型へ"},
+    {group:"advanced",parents:["gearslime","steelbug"],result:"gearcat",note:"機械都市の高速猫型"},
+    {group:"advanced",parents:["ashimp","cindrake"],result:"cinderhorn",note:"火山の中型アタッカー"},
+    {group:"advanced",parents:["cavemole","orelord"],result:"cragbear",note:"岩系の高耐久モンスター"},
+    {group:"advanced",parents:["miretoad","venomwing"],result:"venomqueen",note:"毒沼系の上位配合"},
+    {group:"advanced",parents:["lumenowl","thunderdrone"],result:"thunderlion",note:"雷光の物理アタッカー"},
+    {group:"advanced",parents:["gearcat","steelbug"],result:"forgegolem",note:"機械都市の大型候補。将来2枠化予定"},
+    {group:"advanced",parents:["snowfairy","frostlevia"],result:"glacierfang",note:"氷牙系の上位アタッカー"},
+    {group:"advanced",parents:["lumenowl","astralwyrm"],result:"solarwyrm",note:"太陽光をまとう上位竜"},
+    {group:"advanced",parents:["venomqueen","eclipsewolf"],result:"nightmarestag",note:"悪夢をまとう闇の上位種"},
+    {group:"rare",parents:["kingplim","gigacore"],result:"titanplim",minAvg:34,note:"大型スライム系のレア配合。将来2枠化候補"},
   ];
 
   P.RECIPES = P.RECIPE_LIST.reduce((acc,r)=>{

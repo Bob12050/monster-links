@@ -1,4 +1,4 @@
-# モンスターリンクス v7.1.6
+# モンスターリンクス v7.2.1
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
 
@@ -312,3 +312,43 @@ docs/SAVE_BACKUP_RESTORE_V716.md
 ```
 
 配合仕様・スカウト仕様・モンスター能力値・ステージ出現・配合レシピは変更していません。
+
+
+## v7.2 追加モンスター第1弾：配合レシピ追加
+
+追加モンスター第1弾の配合レシピを17件追加しました。
+
+```text
+通常出現素材から中間モンスターを作る
+未配置だった上位7体を配合で作る
+配合リストからセット対応
+v7.1系の高ランク条件は維持
+```
+
+追加ファイル:
+
+```text
+data/batch1_recipes_v72.json
+docs/BATCH1_FUSION_RECIPES_V72.md
+docs/BATCH1_RECIPE_CHECKLIST_V72.md
+```
+
+モンスター能力値・ステージ出現・スカウト率・ドロップは変更していません。
+
+
+## v7.2.1 既存レシピ重複修正
+
+既存レシピにあった `gloomoth + luminel` の重複を修正しました。
+
+```text
+修正前: gloomoth + luminel → doomgazer
+修正後: hellknight + luminel → doomgazer
+```
+
+追加ファイル:
+
+```text
+docs/RECIPE_DUPLICATE_FIX_V721.md
+```
+
+追加モンスター・能力値・ステージ出現・スカウト率・ドロップは変更していません。

@@ -1,0 +1,156 @@
+[
+  {
+    "group": "basic",
+    "parents": [
+      "plim",
+      "aquan"
+    ],
+    "result": "dewplim",
+    "note": "水滴ぷる系への入り口"
+  },
+  {
+    "group": "basic",
+    "parents": [
+      "budbunny",
+      "leafling"
+    ],
+    "result": "reefowl",
+    "note": "自然と水辺の飛行型"
+  },
+  {
+    "group": "basic",
+    "parents": [
+      "pebblon",
+      "thornhog"
+    ],
+    "result": "cavemole",
+    "note": "洞くつの地中けもの"
+  },
+  {
+    "group": "basic",
+    "parents": [
+      "sparkbug",
+      "plim"
+    ],
+    "result": "ashimp",
+    "note": "低ランクの火小悪魔"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "sparkbug",
+      "voltfox"
+    ],
+    "result": "lumenowl",
+    "note": "雷光から賢い光鳥へ"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "frostpup",
+      "luminel"
+    ],
+    "result": "snowfairy",
+    "note": "雪原のサポート役"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "miretoad",
+      "toxicshroom"
+    ],
+    "result": "abyssjelly",
+    "note": "毒沼から深海魔法型へ"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "gearslime",
+      "steelbug"
+    ],
+    "result": "gearcat",
+    "note": "機械都市の高速猫型"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "ashimp",
+      "cindrake"
+    ],
+    "result": "cinderhorn",
+    "note": "火山の中型アタッカー"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "cavemole",
+      "orelord"
+    ],
+    "result": "cragbear",
+    "note": "岩系の高耐久モンスター"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "miretoad",
+      "venomwing"
+    ],
+    "result": "venomqueen",
+    "note": "毒沼系の上位配合"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "lumenowl",
+      "thunderdrone"
+    ],
+    "result": "thunderlion",
+    "note": "雷光の物理アタッカー"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "gearcat",
+      "steelbug"
+    ],
+    "result": "forgegolem",
+    "note": "機械都市の大型候補。将来2枠化予定"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "snowfairy",
+      "frostlevia"
+    ],
+    "result": "glacierfang",
+    "note": "氷牙系の上位アタッカー"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "lumenowl",
+      "astralwyrm"
+    ],
+    "result": "solarwyrm",
+    "note": "太陽光をまとう上位竜"
+  },
+  {
+    "group": "advanced",
+    "parents": [
+      "venomqueen",
+      "eclipsewolf"
+    ],
+    "result": "nightmarestag",
+    "note": "悪夢をまとう闇の上位種"
+  },
+  {
+    "group": "rare",
+    "parents": [
+      "kingplim",
+      "gigacore"
+    ],
+    "result": "titanplim",
+    "minAvg": 34,
+    "note": "大型スライム系のレア配合。将来2枠化候補"
+  }
+]
