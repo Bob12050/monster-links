@@ -20,7 +20,7 @@
         <p class="titleCatch">スカウトして、育てて、配合する。<br>ひとりでじっくり遊べるモンスター育成RPG。</p>
         <div class="titleStats">
           <div>💰<b>${state.gold}</b><small>GOLD</small></div>
-          <div>👥<b>${state.party.length}</b><small>PARTY</small></div>
+          <div>👥<b>${S.partySizeText ? S.partySizeText() : state.party.length}</b><small>PARTY</small></div>
           <div>📘<b>${dex.discovered}/${dex.total}</b><small>DEX</small></div>
           <div>✅<b>${quest.claimed}/${quest.total}</b><small>QUEST</small></div>
         </div>

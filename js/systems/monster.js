@@ -19,9 +19,17 @@
 
   function toParty(uid){
     const state = S.state;
-    if(state.party.length >= D.MAX_PARTY){toast("パーティは最大3体です");return;}
     const i = state.box.findIndex(m=>m.uid===uid);
-    if(i >= 0){state.party.push(state.box.splice(i,1)[0]);S.save();render();}
+    if(i < 0) return;
+    const target = state.box[i];
+    if(!S.canAddToParty(target)){
+      toast(`パーティ枠が足りません（現在${S.partySizeText()}）`);
+      return;
+    }
+    state.party.push(state.box.splice(i,1)[0]);
+    S.save();
+    render();
+    toast("パーティに加えました");
   }
 
   function leader(uid){
@@ -60,14 +68,15 @@
     const inParty = S.state.party.some(x=>x.uid===uid);
     const inBox = S.state.box.some(x=>x.uid===uid);
     const lockBtn = `<button class="${m.locked ? "red" : ""}" onclick="Game.toggleMonsterLock('${m.uid}');Game.openMonsterDetail('${m.uid}','${place}')">${m.locked ? "保護解除" : "保護"}</button>`;
+    const canJoinParty = inBox ? S.canAddToParty(m) : false;
     const moveBtn = inParty
       ? `<button onclick="Game.toBox('${m.uid}');Game.closeModal()">牧場へ</button>`
       : inBox
-        ? `<button class="green" onclick="Game.toParty('${m.uid}');Game.closeModal()" ${S.state.party.length>=D.MAX_PARTY ? "disabled" : ""}>パーティへ</button>`
+        ? `<button class="green" onclick="Game.toParty('${m.uid}');Game.closeModal()" ${canJoinParty ? "" : "disabled"}>パーティへ</button>`
         : "";
     const leaderBtn = inParty ? `<button onclick="Game.leader('${m.uid}');Game.closeModal()">先頭にする</button>` : "";
     const ivLine = `HP${m.ivs.hp} MP${m.ivs.mp} 攻${m.ivs.atk} 守${m.ivs.def} 速${m.ivs.spd} 賢${m.ivs.wis}`;
-    const sizeBadge = V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`;
+    const sizeBadge = V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${S.monsterSize(m)}枠</span>`;
 
     let modal = document.getElementById("modal");
     if(!modal){
@@ -82,7 +91,7 @@
         <div class="stageTop">
           <div>
             <h2>${U.esc(m.nickname)}</h2>
-            <p class="tiny">${U.esc(d.name)} / ${d.rank} / ${D.TYPES[d.type]} / ${d.size || 1}枠</p>
+            <p class="tiny">${U.esc(d.name)} / ${d.rank} / ${D.TYPES[d.type]} / ${S.monsterSize(m)}枠</p>
           </div>
           <button onclick="Game.closeModal()">閉じる</button>
         </div>
@@ -113,6 +122,12 @@
           <b>性格・個体値</b>
           <div class="tiny">性格：${U.esc(personality.name)} / ${U.esc(personality.desc || "")}</div>
           <div class="tiny">個体値：${S.ivRank(m)} / 合計${S.ivTotal(m)} / ${ivLine}</div>
+        </div>
+
+        <div class="detailSectionV78 partySlotDetailV79">
+          <b>パーティ枠</b>
+          <div class="tiny">この仲間：${S.monsterSize(m)}枠 / 現在のパーティ：${S.partySizeText()}</div>
+          <div class="tiny">${inBox && !canJoinParty ? "パーティに入れるには、先に牧場へ戻して枠を空けてください。" : "2枠・3枠モンスターに対応するための枠管理を有効化しています。"}</div>
         </div>
 
         <div class="detailSectionV78">

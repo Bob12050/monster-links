@@ -42,6 +42,10 @@
     const box = state.box.filter(m=>window.MonsterLinksGame.matchOwnedMonster ? window.MonsterLinksGame.matchOwnedMonster(m,"box") : true);
     const total = state.party.length + state.box.length;
     const shown = party.length + box.length;
+    const partyUsed = S.partySizeUsed ? S.partySizeUsed() : state.party.length;
+    const partyLimit = S.partySlotLimit ? S.partySlotLimit() : D.MAX_PARTY;
+    const partyRemain = S.partySlotsRemaining ? S.partySlotsRemaining() : Math.max(0,D.MAX_PARTY - state.party.length);
+    const partyPct = U.clamp(partyUsed / Math.max(1,partyLimit) * 100,0,100);
     return `
     <main>
       <section class="hero">
@@ -68,14 +72,25 @@
         <span class="tiny">検索・フィルター条件に一致した仲間だけを表示しています。</span>
       </section>
 
+      <section class="card partySlotCardV79">
+        <div class="partySlotTopV79">
+          <div>
+            <h2>パーティ枠 ${partyUsed}/${partyLimit}</h2>
+            <p class="tiny">2枠・3枠モンスターに備えた枠管理です。合計${partyLimit}枠まで編成できます。</p>
+          </div>
+          <span class="tag">残り${partyRemain}枠</span>
+        </div>
+        <div class="slotBarV79"><i style="width:${partyPct}%"></i></div>
+      </section>
+
       <section class="monsterManageLayoutV761">
         <div class="card partyCardV761">
           <div class="stageTop">
             <div>
               <h2>パーティ ${party.length}/${state.party.length}表示</h2>
-              <p class="tiny">カードをタップ/クリックで詳細を表示します。</p>
+              <p class="tiny">カードをタップ/クリックで詳細を表示します。現在${partyUsed}/${partyLimit}枠使用中。</p>
             </div>
-            <span class="tag">${state.party.length}/${D.MAX_PARTY}</span>
+            <span class="tag">${partyUsed}/${partyLimit}枠</span>
           </div>
           <div class="list partyListV761">${party.map(m=>V.monsterCard(m,{mode:"party"})).join("") || `<div class="empty">条件に一致するパーティメンバーはいません</div>`}</div>
         </div>

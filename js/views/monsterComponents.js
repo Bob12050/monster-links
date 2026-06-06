@@ -7,6 +7,8 @@
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
   function monsterSize(idOrDef){
+    const id = typeof idOrDef === "string" ? idOrDef : idOrDef?.id;
+    if(S.monsterSize && id) return S.monsterSize(id);
     const d = typeof idOrDef === "string" ? D.MONSTERS?.[idOrDef] : idOrDef;
     const n = Math.max(1,Number(d?.size || 1));
     return n;
@@ -62,8 +64,9 @@
       </div>`;
     }
     if(opt.mode === "box"){
+      const canJoinParty = S.canAddToParty ? S.canAddToParty(m) : S.state.party.length < D.MAX_PARTY;
       return `<div class="actions">
-        <button class="green" onclick="Game.toParty('${m.uid}')" ${S.state.party.length>=D.MAX_PARTY ? "disabled" : ""}>パーティへ</button>
+        <button class="green" onclick="Game.toParty('${m.uid}')" ${canJoinParty ? "" : "disabled"}>パーティへ</button>
         <button class="gold" onclick="Game.equipModal('${m.uid}')">装備変更</button>
         ${lockBtn}
       </div>`;

@@ -120,7 +120,7 @@
         <div>⭐<b>${info.highest}</b><small>最高Lv</small></div>
         <div>📘<b>${info.dex}</b><small>発見</small></div>
       </div>
-      <div class="tiny">仲間：パーティ${info.party}体 / 牧場${info.box}体</div>
+      <div class="tiny">仲間：パーティ${info.party}体（${info.partySlots || info.party + "体"}） / 牧場${info.box}体</div>
       <div class="tiny">解放ステージ：${info.stageUnlocked} / 任務達成：${info.quests}</div>
       <div class="tiny">更新：${formatDate(info.updatedAt)}</div>
       <div class="actions">

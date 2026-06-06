@@ -32,6 +32,64 @@
     return ivs;
   }
 
+  function partySlotLimit(){
+    return Math.max(1,Math.floor(Number(D.PARTY_SLOT_LIMIT || D.MAX_PARTY || 3)));
+  }
+
+  function monsterSize(idOrMonster){
+    const id = typeof idOrMonster === "string" ? idOrMonster : idOrMonster?.id;
+    const d = D.MONSTERS?.[id];
+    const raw = Number(d?.size || 1);
+    return U.clamp(Math.floor(Number.isFinite(raw) ? raw : 1),1,partySlotLimit());
+  }
+
+  function partySizeUsed(list){
+    const party = Array.isArray(list) ? list : state.party;
+    return party.reduce((sum,m)=>sum + monsterSize(m),0);
+  }
+
+  function partySlotsRemaining(list){
+    return Math.max(0,partySlotLimit() - partySizeUsed(list));
+  }
+
+  function canAddToParty(monster,list){
+    if(!monster || !D.MONSTERS?.[monster.id]) return false;
+    const party = Array.isArray(list) ? list : state.party;
+    return partySizeUsed(party) + monsterSize(monster) <= partySlotLimit();
+  }
+
+  function partySizeText(list){
+    return `${partySizeUsed(list)}/${partySlotLimit()}枠`;
+  }
+
+  function normalizePartySlots(data){
+    const limit = partySlotLimit();
+    const kept = [];
+    const moved = [];
+    let used = 0;
+
+    data.party.forEach(m=>{
+      const size = monsterSize(m);
+      if(used + size <= limit){
+        kept.push(m);
+        used += size;
+      }else{
+        moved.push(m);
+      }
+    });
+
+    if(kept.length === 0 && moved.length > 0){
+      const first = moved.shift();
+      kept.push(first);
+    }
+
+    data.party = kept;
+    if(moved.length){
+      data.box = moved.concat(data.box || []);
+    }
+    return moved.length;
+  }
+
   function inheritIvs(a,b){
     const ivs = {};
     ["hp","mp","atk","def","spd","wis"].forEach(k=>{
@@ -92,9 +150,11 @@
       const raw = localStorage.getItem(saveKey(slot));
       if(!raw) return {slot,empty:true};
       const data = JSON.parse(raw);
-      const party = Array.isArray(data.party) ? data.party.length : 0;
+      const partyList = Array.isArray(data.party) ? data.party.filter(m=>m && D.MONSTERS[m.id]) : [];
+      const party = partyList.length;
+      const partySlots = partySizeText(partyList);
       const box = Array.isArray(data.box) ? data.box.length : 0;
-      const monsters = [...(Array.isArray(data.party)?data.party:[]),...(Array.isArray(data.box)?data.box:[])].filter(m=>m && D.MONSTERS[m.id]);
+      const monsters = [...partyList,...(Array.isArray(data.box)?data.box:[])].filter(m=>m && D.MONSTERS[m.id]);
       const highest = monsters.reduce((a,m)=>Math.max(a,Number(m.level)||1),1);
       const dex = data.dex?.discovered ? Object.keys(data.dex.discovered).filter(id=>data.dex.discovered[id] && D.MONSTERS[id]).length : monsters.length;
       const quests = data.quests?.claimed ? Object.keys(data.quests.claimed).filter(id=>data.quests.claimed[id]).length : 0;
@@ -107,6 +167,7 @@
         wins:Number(data.wins) || 0,
         stageUnlocked:Number(data.stageUnlocked) || 1,
         party,
+        partySlots,
         box,
         highest,
         dex,
@@ -227,6 +288,7 @@
     });
     data.party.forEach(fixMonster);
     data.box.forEach(fixMonster);
+    normalizePartySlots(data);
     data.view = data.view || "home";
     if(clearBattle && data.view === "battle") data.view = "home";
     if(clearBattle) data.battle = null;
@@ -458,7 +520,7 @@
 
   function addMonster(m){
     recordScouted(m.id);
-    if(state.party.length < D.MAX_PARTY) state.party.push(m);
+    if(canAddToParty(m)) state.party.push(m);
     else state.box.push(m);
   }
 
@@ -626,6 +688,12 @@
     personalityDef,
     randomPersonality,
     randomIvs,
+    partySlotLimit,
+    monsterSize,
+    partySizeUsed,
+    partySlotsRemaining,
+    canAddToParty,
+    partySizeText,
     inheritIvs,
     ivTotal,
     ivRank,
