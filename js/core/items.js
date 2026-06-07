@@ -27,6 +27,9 @@
     leviathan_scale:{name:"海竜の鱗",icon:"🐉",image:"assets/images/items/leviathan_scale.png",kind:"accessory",price:0,desc:"アビスリヴァイアが落とす鱗。HP・守備・賢さが上がる。",stat:{hp:55,def:14,wis:10}},
     demon_horn:{name:"魔角のチャーム",icon:"🩸",image:"assets/images/items/demon_horn.png",kind:"accessory",price:0,desc:"魔界門の魔物が持つ角。攻撃と賢さが上がる。",stat:{atk:13,wis:12}},
     chaos_crown:{name:"混沌王冠",icon:"👑",image:"assets/images/items/chaos_crown.png",kind:"accessory",price:0,desc:"デモンロードが落とす王冠。全能力とHPが上がる。",stat:{hp:70,mp:32,atk:16,def:16,spd:12,wis:16}},
+    sky_shard:{name:"天空晶片",icon:"💎",image:"assets/images/items/sky_shard.svg",kind:"accessory",price:0,desc:"天空遺跡に漂う魔力の結晶。MP・素早さ・賢さが上がる。",stat:{mp:20,spd:12,wis:12}},
+    aether_wing:{name:"蒼天の羽",icon:"🪽",image:"assets/images/items/aether_wing.svg",kind:"accessory",price:0,desc:"雲海の風を宿した羽。HPとMP、素早さ、賢さが上がる。",stat:{hp:35,mp:18,spd:16,wis:10}},
+    zenith_core:{name:"天頂竜の核",icon:"☀️",image:"assets/images/items/zenith_core.svg",kind:"accessory",price:0,desc:"ゼニスドラゴンの光を凝縮した核。すべての能力を大きく高める。",stat:{hp:80,mp:36,atk:18,def:18,spd:16,wis:18}},
   };
   P.SHOP_ITEMS = ["force_ring","guard_stone","swift_feather","mage_charm","life_drop","mana_shell"];
   P.DROPS = {
@@ -62,5 +65,14 @@
     solarwyrm:[{id:"prism_feather",rate:6},{id:"astral_orb",rate:10}],
     nightmarestag:[{id:"demon_horn",rate:12},{id:"venom_crown",rate:7}],
     titanplim:[{id:"prism_feather",rate:10},{id:"chaos_crown",rate:4},{id:"life_drop",rate:16}],
+    cloudplim:[{id:"sky_shard",rate:8},{id:"mana_shell",rate:12}],
+    sunhare:[{id:"sky_shard",rate:8},{id:"swift_feather",rate:12}],
+    galegryph:[{id:"aether_wing",rate:5},{id:"swift_feather",rate:14}],
+    skywarden:[{id:"sky_shard",rate:10},{id:"ancient_gear",rate:8}],
+    stormdjinn:[{id:"aether_wing",rate:12},{id:"arc_core",rate:10}],
+    aethergolem:[{id:"sky_shard",rate:16},{id:"ore_core",rate:12}],
+    seraphalcon:[{id:"aether_wing",rate:16},{id:"prism_feather",rate:8}],
+    heavenscale:[{id:"aether_wing",rate:20},{id:"astral_orb",rate:12}],
+    zenithdragon:[{id:"zenith_core",rate:42},{id:"aether_wing",rate:22}],
   };
 })();

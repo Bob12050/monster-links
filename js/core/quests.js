@@ -42,6 +42,10 @@
     {id:"m_dex_26",group:"mission",title:"新世界の図鑑博士",desc:"図鑑で26種類のモンスターを発見する",type:"dexDiscovered",amount:26,reward:{gold:1800,exp:1200,item:"mire_orb",count:1}},
     {id:"m_boss_10",group:"mission",title:"終盤の覇者",desc:"ボスを合計10回撃破またはスカウトする",type:"bossTotal",amount:10,reward:{gold:2200,exp:1500,item:"ancient_gear",count:1}},
     {id:"m_special_fusion_3",group:"mission",title:"究極配合への道",desc:"レア特殊配合を合計3回成功させる",type:"specialFusion",amount:3,reward:{gold:2600,exp:1800,item:"venom_crown",count:1}},
+    {id:"fg_set_goal",group:"fusionGoal",title:"研究目標を決めよう",desc:"図鑑から配合目標を1体登録する",type:"fusionGoalCount",amount:1,view:"dex",action:"図鑑で登録",reward:{gold:180,exp:80}},
+    {id:"fg_collect_materials",group:"fusionGoal",title:"配合素材を揃えよう",desc:"登録中の配合目標1体について、固定配合の素材を揃える",type:"fusionGoalMaterials",amount:1,view:"fusion",action:"素材を確認",reward:{gold:350,item:"mage_charm",count:1}},
+    {id:"fg_train_material",group:"fusionGoal",title:"素材を育てよう",desc:"登録中の配合目標に使う素材をLv10以上にする",type:"fusionGoalParentLevel",amount:10,view:"monsters",action:"牧場で育成",reward:{gold:420,exp:240,item:"life_drop",count:1}},
+    {id:"fg_complete_goal",group:"fusionGoal",title:"目標の仲間を迎えよう",desc:"登録中の配合目標モンスターを1体所持する",type:"fusionGoalOwned",amount:1,view:"fusion",action:"配合所へ",reward:{gold:700,exp:420,item:"astral_orb",count:1}},
     {id:"m_arena_limit_fd",group:"mission",title:"低ランクの意地",desc:"低ランク限定杯を制覇する",type:"arenaClear",arena:"arena_fd_limit",amount:1,reward:{gold:1800,exp:900,item:"bronze_emblem",count:1}},
     {id:"m_arena_slime",group:"mission",title:"ぷるぷるマスター",desc:"ぷるぷる杯を制覇する",type:"arenaClear",arena:"arena_slime",amount:1,reward:{gold:2200,exp:1100,item:"slime_medal",count:1}},
     {id:"m_arena_element",group:"mission",title:"属性王",desc:"属性王決定戦を制覇する",type:"arenaClear",arena:"arena_element",amount:1,reward:{gold:3200,exp:1600,item:"element_badge",count:1}},
@@ -50,5 +54,8 @@
     {id:"q_demon_gate_boss",group:"main",title:"魔界門の支配者",desc:"デモンロードを倒す、またはスカウトする",type:"bossClear",stage:"demon_gate",amount:1,reward:{gold:6200,exp:3600,item:"chaos_crown",count:1}},
     {id:"m_dex_40",group:"mission",title:"深淵の図鑑博士",desc:"図鑑で40種類のモンスターを発見する",type:"dexDiscovered",amount:40,reward:{gold:3600,exp:2200,item:"abyss_pearl",count:1}},
     {id:"m_boss_12",group:"mission",title:"終末を越える者",desc:"ボスを合計12回撃破またはスカウトする",type:"bossTotal",amount:12,reward:{gold:4800,exp:3000,item:"demon_horn",count:1}},
+    {id:"q_sky_ruins_boss",group:"main",title:"天空遺跡の天頂竜",desc:"ゼニスドラゴンを倒す、またはスカウトする",type:"bossClear",stage:"sky_ruins",amount:1,reward:{gold:8500,exp:5000,item:"zenith_core",count:1}},
+    {id:"m_dex_55",group:"mission",title:"天空の図鑑博士",desc:"図鑑で55種類のモンスターを発見する",type:"dexDiscovered",amount:55,reward:{gold:5200,exp:3200,item:"sky_shard",count:1}},
+    {id:"m_boss_13",group:"mission",title:"十三の守護者を越えて",desc:"ボスを合計13回撃破またはスカウトする",type:"bossTotal",amount:13,reward:{gold:7000,exp:4200,item:"aether_wing",count:1}},
   ];
 })();

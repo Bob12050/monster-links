@@ -14,6 +14,7 @@
     const goal = V.nextGoal();
     const dex = S.dexCounts();
     const quest = S.questCounts();
+    const fusionQuestClaimable = D.QUESTS.filter(q=>q.group === "fusionGoal" && S.questClaimable(q)).length;
     const lastStage = D.STAGES.find(stage=>stage.id === state.lastStage) || D.STAGES[0];
     const arenaClears = Object.values(state.arena?.cleared || {}).filter(Boolean).length;
     const bagCount = Object.values(state.bag || {}).reduce((sum,count)=>sum + count,0);
@@ -85,7 +86,7 @@
           <button class="hubPlaceV82 hubQuestPlaceV82 ${quest.claimable ? "hasNoticeV82" : ""}" onclick="Game.setView('quest')">
             <span class="hubIconV82">📜</span>
             <span><b>任務掲示板</b><small>目標と報酬を確認</small></span>
-            <em>${quest.claimable ? `${quest.claimable} 件受取` : "確認"}</em>
+            <em>${fusionQuestClaimable ? `${fusionQuestClaimable} 件 研究報酬` : quest.claimable ? `${quest.claimable} 件受取` : "確認"}</em>
           </button>
           <button class="hubPlaceV82 hubShopPlaceV82" onclick="Game.setView('shop')">
             <span class="hubIconV82">🛍️</span>

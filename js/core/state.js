@@ -716,6 +716,36 @@
 
   function itemTotal(){return Object.values(state.records.items || {}).reduce((a,b)=>a+(Number(b)||0),0);}
 
+  function fusionGoalQuestStats(){
+    const goals = Array.isArray(state.fusionGoals) ? state.fusionGoals.filter(id=>D.MONSTERS[id]) : [];
+    const ownedList = owned();
+    const recipes = D.RECIPE_LIST || [];
+    let materialsReady = 0;
+    let parentLevel = 0;
+    let completed = 0;
+
+    goals.forEach(goalId=>{
+      if(ownedList.some(monster=>monster.id === goalId)) completed++;
+      const routes = recipes.filter(recipe=>recipe.result === goalId && Array.isArray(recipe.parents));
+      if(!routes.length) return;
+      let goalReady = false;
+      routes.forEach(recipe=>{
+        const needs = {};
+        recipe.parents.forEach(id=>needs[id] = (needs[id] || 0) + 1);
+        const materialEntries = Object.entries(needs).map(([id,need])=>{
+          const usable = ownedList.filter(monster=>monster.id === id && !monster.locked);
+          usable.forEach(monster=>parentLevel = Math.max(parentLevel,Number(monster.level) || 1));
+          return {need,have:usable.length};
+        });
+        const ready = materialEntries.every(item=>item.have >= item.need);
+        if(ready) goalReady = true;
+      });
+      if(goalReady) materialsReady++;
+    });
+
+    return {count:goals.length,materialsReady,parentLevel,completed};
+  }
+
   function questProgress(q){
     if(!q) return {current:0,target:1,done:false,pct:0};
     let current = 0;
@@ -735,6 +765,11 @@
     if(q.type === "personalityKinds") current = personalityKinds();
     if(q.type === "itemTotal") current = itemTotal();
     if(q.type === "collectItem") current = state.records.items?.[q.item] || 0;
+    const goalStats = fusionGoalQuestStats();
+    if(q.type === "fusionGoalCount") current = goalStats.count;
+    if(q.type === "fusionGoalMaterials") current = goalStats.materialsReady;
+    if(q.type === "fusionGoalParentLevel") current = goalStats.parentLevel;
+    if(q.type === "fusionGoalOwned") current = goalStats.completed;
     const target = q.amount || 1;
     return {current,target,done:current >= target,pct:U.clamp(current / target * 100,0,100)};
   }
@@ -843,6 +878,7 @@
     equipItem,
     unequipItem,
     itemStatsText,
+    fusionGoalQuestStats,
     recordScout,
     recordFusion,
     recordEquip,

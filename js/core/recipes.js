@@ -86,6 +86,18 @@
     {group:"advanced",parents:["lumenowl","astralwyrm"],result:"solarwyrm",minAvg:25,note:"太陽光をまとう上位竜。Aランク中盤向け"},
     {group:"advanced",parents:["venomqueen","eclipsewolf"],result:"nightmarestag",minAvg:26,note:"悪夢をまとう闇の上位種。Aランク終盤向け"},
     {group:"rare",parents:["kingplim","gigacore"],result:"titanplim",minAvg:36,note:"大型スライム系の2枠レア配合。Sランク到達抑制"},
+
+    // v8.5 sky ruins recipes
+    {group:"advanced",parents:["plim","solarwyrm"],result:"cloudplim",minAvg:28,note:"太陽の光を吸い込んだ雲のぷる系"},
+    {group:"advanced",parents:["budbunny","solarwyrm"],result:"sunhare",minAvg:28,note:"天空を駆ける光のラビ系"},
+    {group:"advanced",parents:["reefowl","thunderlion"],result:"galegryph",minAvg:30,note:"雷風をまとった高速の翼系"},
+    {group:"advanced",parents:["thunderdrone","solarwyrm"],result:"skywarden",minAvg:32,note:"天空遺跡を守る大型機械兵"},
+    {group:"advanced",parents:["galegryph","thunderlion"],result:"stormdjinn",minAvg:38,note:"雷雲を操る光属性の精霊"},
+    {group:"advanced",parents:["shellgolem","solarwyrm"],result:"aethergolem",minAvg:40,note:"天空晶を核に持つ大型ゴーレム"},
+    {group:"advanced",parents:["lumenowl","galegryph"],result:"seraphalcon",minAvg:40,note:"聖光をまとう翼系の上位種"},
+    {group:"rare",parents:["stormdjinn","aethergolem"],result:"heavenscale",minAvg:48,note:"天空の雷と大地の核を統べる聖竜"},
+    {group:"rare",parents:["heavenscale","celestiseraph"],result:"zenithdragon",minAvg:55,note:"天頂へ至る天空遺跡の守護竜"},
+    {group:"rare",parents:["solarwyrm","celestiseraph"],result:"zenithdragon",minAvg:58,note:"太陽と聖天の力を重ねる別系統の天頂配合"},
   ];
 
   P.RECIPES = P.RECIPE_LIST.reduce((acc,r)=>{

@@ -497,6 +497,118 @@ function loadGameData(scriptRefs){
     fail(`v8.3.1仲間・牧場画面生成エラー: ${error.stack || error.message}`);
   }
 
+  try{
+    const goalLeaf = context.MonsterLinksState.makeMonster("leafling",12);
+    const goalPlim = context.MonsterLinksState.makeMonster("plim",11);
+    const goalSpare = context.MonsterLinksState.makeMonster("puffbat",8);
+    const goalResult = context.MonsterLinksState.makeMonster("aquan",1);
+    context.MonsterLinksState.state.party = [goalLeaf,goalPlim,goalSpare];
+    context.MonsterLinksState.state.box = [goalResult];
+    context.MonsterLinksState.state.fusionGoals = ["aquan"];
+    context.MonsterLinksState.state.quests.claimed = {};
+
+    const questById = id=>data.QUESTS.find(q=>q.id===id);
+    for(const id of ["fg_set_goal","fg_collect_materials","fg_train_material","fg_complete_goal"]){
+      if(!questById(id)) fail(`配合目標連携任務がありません: ${id}`);
+      if(!context.MonsterLinksState.questProgress(questById(id)).done) fail(`配合目標連携任務の進捗判定に失敗しました: ${id}`);
+    }
+    const goalQuestStats = context.MonsterLinksState.fusionGoalQuestStats();
+    if(goalQuestStats.count !== 1 || goalQuestStats.materialsReady !== 1 || goalQuestStats.parentLevel < 10 || goalQuestStats.completed !== 1){
+      fail("配合目標連携任務の集計値が正しくありません");
+    }
+
+    const questSystemFile = path.join(root,"js","systems","quest.js");
+    const questViewFile = path.join(root,"js","views","questView.js");
+    vm.runInContext(fs.readFileSync(questSystemFile,"utf8"),context,{filename:"js/systems/quest.js"});
+    vm.runInContext(fs.readFileSync(questViewFile,"utf8"),context,{filename:"js/views/questView.js"});
+    const questHtml = context.MonsterLinksViews.questHtml();
+    if(!questHtml.includes("questBoardHeroV842")) fail("任務画面に掲示板UIがありません");
+    if(!questHtml.includes("配合研究依頼")) fail("任務画面に配合研究カテゴリがありません");
+    if(!questHtml.includes("Game.claimAllQuests()")) fail("任務画面に一括受取がありません");
+    if(!questHtml.includes("Game.openQuestTarget('fg_collect_materials')")) fail("配合研究任務に進行先への導線がありません");
+
+    let routedGoal = "";
+    context.MonsterLinksGame.openFusionGoal = id=>{routedGoal = id;};
+    context.MonsterLinksGame.openQuestTarget("fg_collect_materials");
+    if(routedGoal !== "aquan") fail("配合研究任務から最優先目標を開けません");
+
+    const claimableBefore = data.QUESTS.filter(q=>context.MonsterLinksState.questClaimable(q));
+    const goldBefore = context.MonsterLinksState.state.gold;
+    context.MonsterLinksGame.claimAllQuests();
+    if(!claimableBefore.every(q=>context.MonsterLinksState.questClaimed(q.id))) fail("一括受取で達成済み任務をすべて受け取れません");
+    if(context.MonsterLinksState.state.gold <= goldBefore) fail("一括受取で報酬が加算されません");
+    const claimedAfter = context.MonsterLinksState.questCounts().claimed;
+    context.MonsterLinksGame.claimAllQuests();
+    if(context.MonsterLinksState.questCounts().claimed !== claimedAfter) fail("一括受取で報酬を重複受取できてしまいます");
+
+    context.MonsterLinksState.state.quests.claimed = {};
+    const homeWithResearchReward = context.MonsterLinksViews.homeHtml();
+    if(!homeWithResearchReward.includes("研究報酬")) fail("拠点に配合研究報酬の通知が表示されません");
+  }catch(error){
+    fail(`v8.4.2任務・配合目標連携エラー: ${error.stack || error.message}`);
+  }
+
+  try{
+    if(Object.keys(data.MONSTERS).length !== 84) fail("v8.5のモンスター数が84体ではありません");
+    if(data.STAGES.length !== 13) fail("v8.5のステージ数が13件ではありません");
+    if(data.RECIPE_LIST.length !== 82) fail("v8.5の配合数が82件ではありません");
+    if(Object.keys(data.ITEMS).length !== 28) fail("v8.5の装備数が28件ではありません");
+    if(data.QUESTS.length !== 54) fail("v8.5の任務数が54件ではありません");
+
+    const skyMonsterIds = [
+      "cloudplim","sunhare","galegryph","skywarden","stormdjinn",
+      "aethergolem","seraphalcon","heavenscale","zenithdragon"
+    ];
+    for(const id of skyMonsterIds){
+      if(!data.MONSTERS[id]) fail(`v8.5天空遺跡モンスターがありません: ${id}`);
+    }
+    for(const id of ["sky_shard","aether_wing","zenith_core"]){
+      if(!data.ITEMS[id]) fail(`v8.5天空遺跡装備がありません: ${id}`);
+    }
+
+    const skyStage = data.STAGES.find(stage=>stage.id === "sky_ruins");
+    if(!skyStage || skyStage.unlock !== 13 || skyStage.boss?.id !== "zenithdragon"){
+      fail("天空遺跡の解放番号またはボス設定が正しくありません");
+    }
+    if(skyStage.enemies?.length !== 5 || skyStage.min !== 68 || skyStage.max !== 84){
+      fail("天空遺跡の通常出現または敵レベル帯が正しくありません");
+    }
+    if(!Object.prototype.hasOwnProperty.call(context.MonsterLinksState.state.stageWins,"sky_ruins")
+      || context.MonsterLinksState.state.bossCleared.sky_ruins !== false){
+      fail("旧セーブへ天空遺跡の進行データが補完されません");
+    }
+
+    const skyRecipes = data.RECIPE_LIST.filter(recipe=>skyMonsterIds.includes(recipe.result));
+    if(skyRecipes.length !== 10) fail("v8.5天空遺跡の配合ルートが10件ではありません");
+    const zenithParentA = context.MonsterLinksState.makeMonster("heavenscale",60);
+    const zenithParentB = context.MonsterLinksState.makeMonster("celestiseraph",60);
+    context.MonsterLinksState.state.box.push(zenithParentA,zenithParentB);
+    const zenithPreview = context.MonsterLinksGame.fusionPreview(zenithParentA.uid,zenithParentB.uid);
+    if(zenithPreview?.id !== "zenithdragon" || zenithPreview.childSize !== 3){
+      fail("ヘヴンスケイルとセレスティアルセラフから天頂竜を配合できません");
+    }
+
+    Object.assign(context.MonsterLinksViews,{
+      stageStyle(st){return `style="--stage-bg:url('${st.image}')"`;},
+      stageThumb(st){return `<img src="${st.image}" alt="">`;},
+      stageEnemyList(st){return st.enemies.join(",");},
+      stageDropList(st){return st.drops.join(",");},
+      stageDanger(){return "★★★★★";}
+    });
+    context.MonsterLinksGame.bossReady = ()=>false;
+    const stageViewFile = path.join(root,"js","views","stageView.js");
+    vm.runInContext(fs.readFileSync(stageViewFile,"utf8"),context,{filename:"js/views/stageView.js"});
+    const stageHtml = context.MonsterLinksViews.stageHtml();
+    if(!stageHtml.includes("Game.startBattle('sky_ruins')") || !stageHtml.includes("天空遺跡")){
+      fail("ステージ画面に天空遺跡カードが生成されません");
+    }
+    for(const id of ["q_sky_ruins_boss","m_dex_55","m_boss_13"]){
+      if(!data.QUESTS.some(quest=>quest.id === id)) fail(`v8.5天空遺跡任務がありません: ${id}`);
+    }
+  }catch(error){
+    fail(`v8.5天空遺跡エラー: ${error.stack || error.message}`);
+  }
+
   return data;
 }
 
@@ -524,6 +636,7 @@ function validateData(D){
   unique(stages.map(stage=>stage.id),"ステージ");
   unique(arenas.map(arena=>arena.id),"闘技場");
   unique(quests.map(quest=>quest.id),"クエスト");
+  unique(recipes.map(recipe=>[...(recipe.parents || [])].sort().join("+")),"配合親ペア");
 
   for(const [id,monster] of Object.entries(monsters)){
     checkImage(monster.image,`モンスター ${id}`);

@@ -6,24 +6,51 @@
   const S = window.MonsterLinksState;
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
+  function groupSummary(list){
+    const claimed = list.filter(q=>S.questClaimed(q.id)).length;
+    const claimable = list.filter(q=>S.questClaimable(q)).length;
+    return {total:list.length,claimed,claimable};
+  }
+
+  function questSection(title,sub,list,kind){
+    const counts = groupSummary(list);
+    return `<section class="questBoardSectionV842 ${kind}">
+      <div class="questBoardSectionHeadV842">
+        <div><span>${kind === "main" ? "STORY QUEST" : kind === "fusion" ? "FUSION RESEARCH" : "SUB MISSION"}</span><h2>${title}</h2><p>${sub}</p></div>
+        <div class="questBoardCountV842"><b>${counts.claimed}</b><small>/${counts.total}達成</small>${counts.claimable ? `<em>${counts.claimable}件受取</em>` : ""}</div>
+      </div>
+      <div class="questListV842">${list.map(V.questCard).join("")}</div>
+    </section>`;
+  }
+
   function questHtml(){
     const counts = S.questCounts();
     const main = D.QUESTS.filter(q=>q.group === "main");
-    const missions = D.QUESTS.filter(q=>q.group !== "main");
+    const fusionGoals = D.QUESTS.filter(q=>q.group === "fusionGoal");
+    const missions = D.QUESTS.filter(q=>q.group === "mission");
+    const pct = counts.total ? Math.floor(counts.claimed / counts.total * 100) : 0;
     return `
-    <main>
-      <section class="hero">
-        <h1>クエスト・ミッション</h1>
-        <p>達成済み：${counts.claimed}/${counts.total}　受取可能：${counts.claimable}件。報酬を受け取るとGOLD、EXP、アクセサリーが手に入ります。</p>
+    <main class="questBoardV842">
+      <section class="questBoardHeroV842">
+        <div>
+          <span>LINKS GUILD BOARD</span>
+          <h1>任務掲示板</h1>
+          <p>冒険、育成、配合研究の依頼を達成して報酬を受け取ろう。</p>
+        </div>
+        <div class="questBoardProgressV842">
+          <strong>${counts.claimed}<small> / ${counts.total}</small></strong>
+          <span>任務達成</span>
+          <i><b style="width:${pct}%"></b></i>
+        </div>
+        <button class="gold questClaimAllV842" ${counts.claimable ? "" : "disabled"} onclick="Game.claimAllQuests()">
+          <b>${counts.claimable ? `${counts.claimable}件を一括受取` : "受取可能なし"}</b>
+          <small>達成済み報酬をまとめて回収</small>
+        </button>
       </section>
-      <div class="card">
-        <h2>メインクエスト</h2>
-        <div class="questList">${main.map(V.questCard).join("")}</div>
-      </div>
-      <div class="card">
-        <h2>サブミッション</h2>
-        <div class="questList">${missions.map(V.questCard).join("")}</div>
-      </div>
+
+      ${questSection("配合研究依頼","登録中の配合目標と手持ち素材から進捗を自動計算します。",fusionGoals,"fusion")}
+      ${questSection("メインクエスト","地域を攻略して次の冒険へ進むための依頼です。",main,"main")}
+      ${questSection("サブミッション","収集・育成・闘技場など長期的な達成目標です。",missions,"mission")}
     </main>`;
   }
 
@@ -31,20 +58,26 @@
     const p = S.questProgress(q);
     const claimed = S.questClaimed(q.id);
     const claimable = S.questClaimable(q);
-    return `<div class="questCard ${claimed ? "claimed" : claimable ? "claimable" : ""}">
-      <div class="questHead">
+    const actionLabel = q.action || (q.stage ? "冒険へ" : q.arena ? "闘技場へ" : "進める");
+    return `<article class="questCardV842 ${claimed ? "claimed" : claimable ? "claimable" : ""}">
+      <div class="questPinV842"></div>
+      <div class="questCardTopV842">
         <div>
-          <div class="name">${claimable ? "✨ " : claimed ? "✅ " : ""}${q.title}</div>
-          <div class="tiny">${q.desc}</div>
+          <span>${q.group === "main" ? "MAIN" : q.group === "fusionGoal" ? "FUSION" : "MISSION"}</span>
+          <h3>${claimable ? "✨ " : claimed ? "✓ " : ""}${U.esc(q.title)}</h3>
+          <p>${U.esc(q.desc)}</p>
         </div>
-        <span class="tag">${claimed ? "受取済" : claimable ? "達成" : `${Math.min(p.current,p.target)}/${p.target}`}</span>
+        <strong>${claimed ? "受取済" : claimable ? "達成" : `${Math.min(p.current,p.target)}/${p.target}`}</strong>
       </div>
-      <div class="bar exp"><i style="width:${p.pct}%"></i></div>
-      <div class="questFoot">
-        <div class="tiny">報酬：${V.questRewardText(q.reward)}</div>
-        <button class="gold" ${claimable ? "" : "disabled"} onclick="Game.claimQuest('${q.id}')">報酬受取</button>
+      <div class="questProgressV842"><i style="width:${p.pct}%"></i></div>
+      <div class="questCardBottomV842">
+        <div><span>REWARD</span><b>${V.questRewardText(q.reward)}</b></div>
+        <div class="questCardActionsV842">
+          ${!claimed ? `<button onclick="Game.openQuestTarget('${q.id}')">${U.esc(actionLabel)}</button>` : ""}
+          <button class="gold" ${claimable ? "" : "disabled"} onclick="Game.claimQuest('${q.id}')">報酬受取</button>
+        </div>
       </div>
-    </div>`;
+    </article>`;
   }
 
   function questRewardText(r={}){
