@@ -6,11 +6,11 @@
 
 ```text
 全モンスター: 84
-正式PNG: 29
-仮PNG: 46
+正式PNG: 33
+仮PNG: 42
 仮SVG: 9
 欠損: 0
-正式化対象: 55
+正式化対象: 51
 ```
 
 ## ステータス
@@ -24,9 +24,9 @@ missing        参照先ファイル欠損
 
 ## 制作順
 
-### v8.6-A 既存の主役級・最上位 (4体)
+### v8.6-A 既存の主役級・最上位 (0体)
 
-ギガントコア (`gigacore`) / グレイシャーファング (`glacierfang`) / ソーラーウィルム (`solarwyrm`) / ナイトメアスタッグ (`nightmarestag`)
+
 
 ### v8.6-B 既存の終盤・ボス級 (10体)
 
@@ -80,7 +80,7 @@ missing        参照先ファイル欠損
 |formal_png|complete|kingplim|キングぷるミン|B|slime|assets/images/monsters/kingplim.png|
 |formal_png|complete|auroracat|オーロラニャ|A|light|assets/images/monsters/auroracat.png|
 |formal_png|complete|eclipsewolf|エクリプスウルフ|A|dark|assets/images/monsters/eclipsewolf.png|
-|placeholder_png|v8.6-A|gigacore|ギガントコア|A|machine|assets/images/monsters/gigacore.png|
+|formal_png|complete|gigacore|ギガントコア|A|machine|assets/images/monsters/gigacore.png|
 |formal_png|complete|phoenixdrake|フェニックスドレイク|S|fire|assets/images/monsters/phoenixdrake.png|
 |formal_png|complete|celestiseraph|セレスティアルセラフ|S|light|assets/images/monsters/celestiseraph.png|
 |formal_png|complete|voiddragon|ヴォイドドラゴン|S|dark|assets/images/monsters/voiddragon.png|
@@ -123,9 +123,9 @@ missing        参照先ファイル欠損
 |placeholder_png|v8.6-C|venomqueen|ヴェノムクイーン|B|dark|assets/images/monsters/venomqueen.png|
 |placeholder_png|v8.6-C|thunderlion|サンダーライオン|B|light|assets/images/monsters/thunderlion.png|
 |placeholder_png|v8.6-C|forgegolem|フォージゴーレム|B|machine|assets/images/monsters/forgegolem.png|
-|placeholder_png|v8.6-A|glacierfang|グレイシャーファング|A|water|assets/images/monsters/glacierfang.png|
-|placeholder_png|v8.6-A|solarwyrm|ソーラーウィルム|A|light|assets/images/monsters/solarwyrm.png|
-|placeholder_png|v8.6-A|nightmarestag|ナイトメアスタッグ|A|dark|assets/images/monsters/nightmarestag.png|
+|formal_png|complete|glacierfang|グレイシャーファング|A|water|assets/images/monsters/glacierfang.png|
+|formal_png|complete|solarwyrm|ソーラーウィルム|A|light|assets/images/monsters/solarwyrm.png|
+|formal_png|complete|nightmarestag|ナイトメアスタッグ|A|dark|assets/images/monsters/nightmarestag.png|
 |placeholder_png|v8.6-B|titanplim|タイタンぷる|S|slime|assets/images/monsters/titanplim.png|
 |placeholder_svg|v8.6-F|cloudplim|雲ぷる|C|slime|assets/images/monsters/cloudplim.svg|
 |placeholder_svg|v8.6-F|sunhare|サンラビ|C|light|assets/images/monsters/sunhare.svg|

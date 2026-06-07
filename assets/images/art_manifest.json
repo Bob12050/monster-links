@@ -400,9 +400,9 @@
     "emoji": "🧿",
     "current_image": "assets/images/monsters/gigacore.png",
     "target_png": "assets/images/monsters/gigacore.png",
-    "priority": "P1",
-    "wave": "v8.6-A",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1002,9 +1002,9 @@
     "emoji": "🧊",
     "current_image": "assets/images/monsters/glacierfang.png",
     "target_png": "assets/images/monsters/glacierfang.png",
-    "priority": "P1",
-    "wave": "v8.6-A",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1016,9 +1016,9 @@
     "emoji": "☀️",
     "current_image": "assets/images/monsters/solarwyrm.png",
     "target_png": "assets/images/monsters/solarwyrm.png",
-    "priority": "P1",
-    "wave": "v8.6-A",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1030,9 +1030,9 @@
     "emoji": "🌙",
     "current_image": "assets/images/monsters/nightmarestag.png",
     "target_png": "assets/images/monsters/nightmarestag.png",
-    "priority": "P1",
-    "wave": "v8.6-A",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {

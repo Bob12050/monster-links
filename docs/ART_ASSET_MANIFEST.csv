@@ -27,7 +27,7 @@ monster,astralwyrm,アストラルワーム,A,light,🌌,assets/images/monsters/
 monster,kingplim,キングぷるミン,B,slime,👑,assets/images/monsters/kingplim.png,assets/images/monsters/kingplim.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,auroracat,オーロラニャ,A,light,🐾,assets/images/monsters/auroracat.png,assets/images/monsters/auroracat.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,eclipsewolf,エクリプスウルフ,A,dark,🌘,assets/images/monsters/eclipsewolf.png,assets/images/monsters/eclipsewolf.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
-monster,gigacore,ギガントコア,A,machine,🧿,assets/images/monsters/gigacore.png,assets/images/monsters/gigacore.png,P1,v8.6-A,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
+monster,gigacore,ギガントコア,A,machine,🧿,assets/images/monsters/gigacore.png,assets/images/monsters/gigacore.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,phoenixdrake,フェニックスドレイク,S,fire,🔥,assets/images/monsters/phoenixdrake.png,assets/images/monsters/phoenixdrake.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,celestiseraph,セレスティアルセラフ,S,light,🪽,assets/images/monsters/celestiseraph.png,assets/images/monsters/celestiseraph.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,voiddragon,ヴォイドドラゴン,S,dark,🕳️,assets/images/monsters/voiddragon.png,assets/images/monsters/voiddragon.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
@@ -70,9 +70,9 @@ monster,abyssjelly,アビスジェリー,C,water,🪼,assets/images/monsters/aby
 monster,venomqueen,ヴェノムクイーン,B,dark,☠️,assets/images/monsters/venomqueen.png,assets/images/monsters/venomqueen.png,P3,v8.6-C,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,thunderlion,サンダーライオン,B,light,🦁,assets/images/monsters/thunderlion.png,assets/images/monsters/thunderlion.png,P3,v8.6-C,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,forgegolem,フォージゴーレム,B,machine,🏭,assets/images/monsters/forgegolem.png,assets/images/monsters/forgegolem.png,P3,v8.6-C,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
-monster,glacierfang,グレイシャーファング,A,water,🧊,assets/images/monsters/glacierfang.png,assets/images/monsters/glacierfang.png,P1,v8.6-A,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
-monster,solarwyrm,ソーラーウィルム,A,light,☀️,assets/images/monsters/solarwyrm.png,assets/images/monsters/solarwyrm.png,P1,v8.6-A,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
-monster,nightmarestag,ナイトメアスタッグ,A,dark,🌙,assets/images/monsters/nightmarestag.png,assets/images/monsters/nightmarestag.png,P1,v8.6-A,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
+monster,glacierfang,グレイシャーファング,A,water,🧊,assets/images/monsters/glacierfang.png,assets/images/monsters/glacierfang.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
+monster,solarwyrm,ソーラーウィルム,A,light,☀️,assets/images/monsters/solarwyrm.png,assets/images/monsters/solarwyrm.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
+monster,nightmarestag,ナイトメアスタッグ,A,dark,🌙,assets/images/monsters/nightmarestag.png,assets/images/monsters/nightmarestag.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,titanplim,タイタンぷる,S,slime,🫧,assets/images/monsters/titanplim.png,assets/images/monsters/titanplim.png,P2,v8.6-B,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,cloudplim,雲ぷる,C,slime,☁️,assets/images/monsters/cloudplim.svg,assets/images/monsters/cloudplim.png,P6,v8.6-F,placeholder_svg,1024x1024 / PNG / transparent / RPG deformed monster
 monster,sunhare,サンラビ,C,light,☀️,assets/images/monsters/sunhare.svg,assets/images/monsters/sunhare.png,P6,v8.6-F,placeholder_svg,1024x1024 / PNG / transparent / RPG deformed monster

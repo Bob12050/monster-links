@@ -12,16 +12,15 @@ const formalIds = new Set([
   "kingplim", "leafling", "luminel", "mossking", "orelord", "pebblon",
   "plim", "prismdragon", "puffbat", "thornhog", "tidalseraph",
   "voiddragon", "volcazard", "phoenixdrake", "celestiseraph",
-  "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf"
+  "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf",
+  "gigacore", "glacierfang", "solarwyrm", "nightmarestag"
 ]);
 
 const productionWaves = [
   {
     id: "v8.6-A",
     label: "既存の主役級・最上位",
-    ids: [
-      "gigacore", "glacierfang", "solarwyrm", "nightmarestag"
-    ]
+    ids: []
   },
   {
     id: "v8.6-B",
