@@ -259,6 +259,7 @@ function loadGameData(scriptRefs){
       const viewFile = path.join(root,"js","views",name);
       vm.runInContext(fs.readFileSync(viewFile,"utf8"),context,{filename:`js/views/${name}`});
     }
+    context.MonsterLinksState.state.view = "home";
     const titleHtml = context.MonsterLinksViews.titleHtml();
     const homeHtml = context.MonsterLinksViews.homeHtml();
     const topHtml = context.MonsterLinksViews.topHtml();
@@ -270,7 +271,12 @@ function loadGameData(scriptRefs){
       if(!homeHtml.includes(`Game.setView('${view}')`)) fail(`拠点画面から${view}へ移動できません`);
     }
     if(!topHtml.includes("assets/images/ui/logo_mark.svg")) fail("共通ヘッダーにロゴ画像がありません");
+    if(!topHtml.includes("viewContextV861") || !topHtml.includes("BASE CAMP") || !topHtml.includes("拠点")){
+      fail("共通ヘッダーに現在の画面名がありません");
+    }
     if(!tabsHtml.includes("tabsV82")) fail("下部ナビにv8.2のUIがありません");
+    if(!tabsHtml.includes('aria-current="page"')) fail("下部ナビに現在地情報がありません");
+    if(!tabsHtml.includes("拠点画面へ")) fail("下部ナビに操作ラベルがありません");
   }catch(error){
     fail(`v8.2画面生成エラー: ${error.stack || error.message}`);
   }

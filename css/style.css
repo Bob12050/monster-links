@@ -7055,3 +7055,117 @@ button:hover:before{
 @media(prefers-reduced-motion:reduce){
   .worldNodePulseV851{animation:none}.worldNodeV851.next .worldNodeIconV851{animation:none}
 }
+
+/* v8.6-A.1: shared readability and navigation audit */
+button:focus-visible,
+[role="button"]:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible{
+  outline:3px solid #ffe273;
+  outline-offset:3px;
+}
+.viewContextV861{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+  padding:6px 9px;
+  border:1px solid rgba(110,231,255,.16);
+  border-radius:10px;
+  background:rgba(10,23,45,.5);
+}
+.viewContextV861 span{
+  color:#78dff4;
+  font-size:9px;
+  font-weight:1000;
+  letter-spacing:.14em;
+}
+.viewContextV861 b{font-size:13px}
+.tabsV82 button[aria-current="page"]{
+  border-color:rgba(255,232,126,.65);
+  color:#fff7cf;
+  box-shadow:inset 0 0 0 1px rgba(255,231,115,.18),0 0 16px rgba(255,210,75,.12);
+}
+.tabsV82 button[aria-current="page"] .ico{
+  filter:drop-shadow(0 0 5px rgba(255,226,115,.55));
+}
+
+/* Important supporting text must remain readable on phones. */
+.battlePageV821 :is(
+  .battleAreaLabelV821,.battleStageTraitsV821,.fighterLabelV821,
+  .fighterNameV821 small,.battleBarRowV821 > span,.battleBarRowV821 > b small,
+  .partyRailLabelV821,.battlePartyRailV821 button b,.battlePartyRailV821 button small,
+  .battleMessageV821 > span,.battleMessageV821 > small,.commandHeadingV821 span,
+  .commandHeadingV821 small,.commandsV821 button small,.battleSpeedButtonV84 small,
+  .battleSpeedButtonV84 b,.battleAutoControlV841 > span,
+  .battleAutoControlV841 > button b,.battleAutoControlV841 > button small
+){font-size:11px}
+
+.monsterBaseV831 :is(
+  .monsterCampStatsV831 small,.monsterCampLeaderV831 small,.monsterCampLeaderV831 em,
+  .partyFormationHeadV831 p,.pastureHeadV831 p,.partySlotReadoutV831 > span,
+  .partySlotRailV831 b,.monsterCardTitleV831 small,.monsterMetaV831,
+  .monsterStatusBarV831,.monsterStatusBarV831 > em,.partyKeepNoteV831,
+  .partyExchangeGuideV831 b,.partyExchangeGuideV831 span,.pastureHeadActionsV831 span,
+  .monsterFilterDetailsV831 > summary small,.pastureStatsV831,.pastureDetailHintV831,
+  .pastureCardActionV831 button b,.pastureCardActionV831 button small
+){font-size:11px}
+.monsterBaseV831 :is(.partyCardActionsV831 button,.pastureHeadActionsV831 button){
+  min-height:42px;
+  font-size:11px;
+}
+
+.dexRankSections :is(
+  .dexRouteHintV83 span,.dexRouteHintV83 b,.dexRouteHintV83 em,
+  .dexDetailRecordV83 span,.dexRouteSectionHeadV83 > small,
+  .dexRouteMonsterV83 small,.dexMaterialStateV83,.dexRecipeInfoV83 small
+){font-size:11px}
+.dexRankSections .dexRecipeCardV83 > button,
+.dexUseRecipeV83 > button{min-height:44px;font-size:12px}
+
+.fusionMainCard :is(
+  .tiny,.fusionGuarantee,.fusionNormalNote,.fusionDestinationV81 span,
+  .fusionSizeWarningV81 span
+),
+.recipeSummary :is(.tiny,small),
+.fusionGoalsPanelV832 :is(
+  p,small,.fusionGoalTargetV832 span,.goalMaterialV832 b,
+  .goalRouteStateV832 span,.goalNoRouteV832
+){font-size:11px}
+.fusionGoalActionsV832 button{min-height:42px;font-size:11px}
+
+.questBoardV842 :is(
+  .questBoardHeroV842 p,.questBoardProgressV842 > span,.questClaimAllV842 small,
+  .questBoardSectionHeadV842 p,.questBoardCountV842 small,.questBoardCountV842 em,
+  .questCardTopV842 span,.questCardTopV842 p,.questCardTopV842 > strong,
+  .questCardBottomV842 > div:first-child span,.questCardBottomV842 > div:first-child b
+){font-size:11px}
+.questCardActionsV842 button{min-height:42px;font-size:11px}
+
+.worldAdventureV851 :is(
+  .worldMapHeadV851 p,.worldMapProgressV851 > span,.worldMapProgressV851 > small,
+  .worldNodeNumberV851,.worldNodeV851 small,.worldMapCompassV851 span,
+  .worldMapLegendV851,.worldStageTitleV851 p,.worldStageTitleV851 > strong,
+  .worldStageStatsV851 span,.worldStageInfoBlockV851 > span,
+  .worldStageInfoBlockV851 .stageTrait,.worldStageInfoBlockV851 .stageEnemyChip,
+  .worldStageInfoBlockV851 .stageDrop,.worldBossPanelV851 b small,
+  .worldBossPanelV851 p,.worldStageHintV851 > span,.worldStageHintV851 p,
+  .worldStageActionsV851 button small,.worldStageNoticeV851
+){font-size:11px}
+
+@media(max-width:520px){
+  .viewContextV861{margin-top:6px;padding:5px 8px}
+  .viewContextV861 span{font-size:8px}
+  .viewContextV861 b{font-size:12px}
+  .tabsV82 button{font-size:12px}
+  .tabsV82 .ico{font-size:20px}
+  .battlePageV821 :is(
+    .fighterNameV821 small,.battleBarRowV821 > span,.battleBarRowV821 > b small,
+    .battlePartyRailV821 button b,.battlePartyRailV821 button small,
+    .battleMessageV821 > span,.battleMessageV821 > small,.commandsV821 button small
+  ){font-size:10px}
+  .commandsV821 button{min-height:68px}
+  .worldNodeV851 small{font-size:9px}
+  .worldMapLegendV851{font-size:10px}
+}
