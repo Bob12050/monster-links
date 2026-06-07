@@ -6876,3 +6876,182 @@ button:hover:before{
   .questCardActionsV842{display:grid;grid-template-columns:1fr 1fr}
   .questCardActionsV842 button{width:100%}
 }
+
+/* v8.5.1: adventure world map */
+.worldAdventureV851{display:grid;gap:14px}
+.worldMapPanelV851{
+  overflow:hidden;
+  border:1px solid rgba(134,214,255,.2);
+  border-radius:24px;
+  background:linear-gradient(155deg,rgba(28,49,82,.98),rgba(12,22,43,.99));
+  box-shadow:0 22px 54px rgba(0,0,0,.3);
+}
+.worldMapHeadV851{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;
+  align-items:center;
+  padding:18px 20px 14px;
+}
+.worldMapHeadV851 > div:first-child > span,.worldStageTitleV851 > div > span,.worldBossPanelV851 > div > span,.worldStageHintV851 > span{
+  display:block;
+  color:#74dfff;
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.19em;
+}
+.worldMapHeadV851 h1{margin:4px 0 3px;font-size:27px}
+.worldMapHeadV851 p{margin:0;color:#aebdd1;font-size:9px}
+.worldMapProgressV851{min-width:160px;text-align:right}
+.worldMapProgressV851 b{display:block;color:#eaf8ff;font-size:23px}
+.worldMapProgressV851 b small{font-size:10px;color:#93a9c4}
+.worldMapProgressV851 > span,.worldMapProgressV851 > small{display:block;color:#91a4bc;font-size:8px}
+.worldMapProgressV851 > i{display:block;width:160px;height:6px;margin:6px 0 4px auto;overflow:hidden;border-radius:99px;background:rgba(0,0,0,.3)}
+.worldMapProgressV851 > i em{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#56b8e6,#ffe47c)}
+.worldMapViewportV851{
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(116,223,255,.35) rgba(0,0,0,.18);
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.worldMapCanvasV851{
+  position:relative;
+  width:100%;
+  min-width:780px;
+  aspect-ratio:1000/620;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 16% 17%,rgba(255,237,142,.22),transparent 13%),
+    radial-gradient(circle at 71% 38%,rgba(85,221,255,.12),transparent 25%),
+    linear-gradient(180deg,#245d91 0%,#398db0 48%,#205c83 100%);
+}
+.worldMapCanvasV851:before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 48px,rgba(255,255,255,.025) 49px 50px),
+    repeating-linear-gradient(90deg,transparent 0 48px,rgba(255,255,255,.025) 49px 50px);
+  mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent);
+}
+.worldMapLandV851{position:absolute;background:linear-gradient(145deg,#71955d,#426c55 62%,#335766);filter:drop-shadow(0 14px 12px rgba(0,0,0,.25));opacity:.94}
+.worldMapLandV851:after{content:"";position:absolute;inset:8%;border:2px solid rgba(255,238,165,.16);border-radius:inherit}
+.worldMapLandV851.landOne{left:2%;bottom:4%;width:52%;height:48%;clip-path:polygon(0 45%,15% 8%,38% 28%,55% 5%,75% 18%,100% 50%,82% 92%,55% 82%,30% 100%,8% 78%)}
+.worldMapLandV851.landTwo{right:3%;top:22%;width:48%;height:48%;clip-path:polygon(0 37%,24% 8%,52% 14%,72% 0,100% 25%,88% 61%,66% 92%,38% 76%,14% 100%,5% 67%)}
+.worldMapLandV851.landThree{left:8%;top:3%;width:43%;height:32%;clip-path:polygon(0 34%,24% 0,48% 18%,70% 3%,100% 35%,82% 82%,55% 70%,28% 100%,8% 72%)}
+.worldMapCloudV851{position:absolute;width:190px;height:45px;border-radius:99px;background:rgba(255,255,255,.13);filter:blur(7px)}
+.worldMapCloudV851.cloudOne{left:8%;top:38%;transform:rotate(-8deg)}
+.worldMapCloudV851.cloudTwo{right:10%;bottom:12%;transform:rotate(6deg)}
+.worldRouteV851{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.worldRouteShadowV851,.worldRouteLineV851{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.worldRouteShadowV851{stroke:rgba(7,22,35,.48);stroke-width:18}
+.worldRouteLineV851{stroke:#f7df92;stroke-width:7;stroke-dasharray:5 15;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.worldNodeV851{
+  position:absolute;
+  left:var(--map-x);top:var(--map-y);
+  z-index:3;
+  width:94px;
+  min-height:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  transform:translate(-50%,-50%);
+  color:#edf8ff;
+  text-shadow:0 2px 3px rgba(0,0,0,.75);
+}
+.worldNodeV851:hover,.worldNodeV851:active{transform:translate(-50%,-50%) scale(1.06);box-shadow:none}
+.worldNodeIconV851{
+  position:relative;
+  z-index:2;
+  width:44px;height:44px;
+  display:grid;place-items:center;
+  margin:auto;
+  border:3px solid rgba(235,249,255,.9);
+  border-radius:50% 50% 50% 18%;
+  background:linear-gradient(145deg,#3e91bc,#1e4f7d);
+  box-shadow:0 7px 13px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.28);
+  transform:rotate(-45deg);
+  font-size:19px;
+}
+.worldNodeIconV851 > i{display:block;font-style:normal;line-height:1;transform:rotate(45deg)}
+.worldNodeNumberV851{
+  position:absolute;z-index:4;left:22px;top:-4px;
+  min-width:18px;padding:2px 4px;border-radius:99px;
+  background:#122740;border:1px solid rgba(255,255,255,.24);
+  color:#cbeaff;font-size:7px;font-weight:1000;text-shadow:none;
+}
+.worldNodeV851 b{display:block;margin-top:6px;font-size:10px;white-space:nowrap}
+.worldNodeV851 small{display:inline-block;margin-top:2px;padding:2px 5px;border-radius:99px;background:rgba(9,23,41,.76);font-size:6px;letter-spacing:.08em}
+.worldNodeV851.cleared .worldNodeIconV851{background:linear-gradient(145deg,#cf9b35,#80601e);border-color:#fff1ad}
+.worldNodeV851.boss .worldNodeIconV851{background:linear-gradient(145deg,#d75868,#7b2339);border-color:#ffd0d5}
+.worldNodeV851.locked{filter:grayscale(.65);opacity:.62}
+.worldNodeV851.locked .worldNodeIconV851{background:linear-gradient(145deg,#657386,#303b4d)}
+.worldNodeV851.selected{z-index:6;filter:none;opacity:1}
+.worldNodeV851.selected .worldNodeIconV851{border-color:#fff5a6;box-shadow:0 0 0 5px rgba(255,230,108,.2),0 0 24px rgba(255,222,93,.62),0 8px 14px rgba(0,0,0,.4)}
+.worldNodePulseV851{display:none;position:absolute;left:50%;top:20px;width:58px;height:58px;border:2px solid rgba(255,238,132,.65);border-radius:50%;transform:translate(-50%,-50%);animation:worldPulseV851 1.8s infinite}
+.worldNodeV851.selected .worldNodePulseV851{display:block}
+.worldNodeV851.next .worldNodeIconV851{animation:worldNextV851 1.8s infinite ease-in-out}
+.worldMapCompassV851{position:absolute;right:22px;bottom:20px;width:52px;height:52px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.2);border-radius:50%;background:rgba(8,28,47,.45);color:#fff0a9}
+.worldMapCompassV851 b{font-size:26px}.worldMapCompassV851 span{position:absolute;top:-13px;font-size:8px;font-weight:1000}
+.worldMapLegendV851{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;padding:10px 14px;color:#9fb0c5;font-size:8px}
+.worldMapLegendV851 span{display:flex;align-items:center;gap:5px}
+.worldMapLegendV851 i{width:8px;height:8px;border-radius:50%;background:#4c9bc1}.worldMapLegendV851 i.boss{background:#df6270}.worldMapLegendV851 i.cleared{background:#e2b94e}.worldMapLegendV851 i.locked{background:#657386}
+.worldStageDetailV851{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(260px,.76fr) minmax(0,1.4fr);padding:0;border:1px solid rgba(255,255,255,.12);border-radius:24px;background:#111c32;box-shadow:0 20px 48px rgba(0,0,0,.28)}
+.worldStageDetailV851:before,.worldStageDetailV851:after{display:none}
+.worldStageBackdropV851{position:relative;min-height:100%;overflow:hidden;background:#18243e}
+.worldStageBackdropV851:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 45%,rgba(17,28,50,.9)),linear-gradient(0deg,rgba(8,14,28,.58),transparent 55%)}
+.worldStageImageV851{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:transparent}
+.worldStageImageV851 img{width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
+.worldStageContentV851{position:relative;z-index:2;display:grid;gap:11px;padding:18px}
+.worldStageTitleV851{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.worldStageTitleV851 h2{margin:4px 0 4px;font-size:25px}
+.worldStageTitleV851 p{margin:0;color:#b4c1d2;font-size:9px;line-height:1.55}
+.worldStageTitleV851 > strong{flex:0 0 auto;padding:6px 10px;border:1px solid rgba(109,220,255,.3);border-radius:99px;background:rgba(44,132,173,.2);color:#bfeeff;font-size:8px}
+.worldStageTitleV851 > strong.cleared{border-color:rgba(255,218,104,.34);background:rgba(174,124,26,.2);color:#ffe9a1}
+.worldStageTitleV851 > strong.boss{border-color:rgba(255,101,122,.38);background:rgba(173,47,69,.2);color:#ffd0d6}
+.worldStageTitleV851 > strong.locked{border-color:rgba(160,171,188,.2);background:rgba(89,101,119,.18);color:#aeb9c8}
+.worldStageStatsV851{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.worldStageStatsV851 > div{padding:8px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:rgba(255,255,255,.045)}
+.worldStageStatsV851 span{display:block;color:#899bb4;font-size:7px}.worldStageStatsV851 b{display:block;margin-top:2px;font-size:11px}.worldStageStatsV851 .stageStars{font-size:9px;white-space:nowrap}
+.worldStageInfoGridV851{display:grid;gap:8px}
+.worldStageInfoBlockV851{display:grid;grid-template-columns:92px minmax(0,1fr);gap:8px;align-items:start}
+.worldStageInfoBlockV851 > span{padding-top:5px;color:#91a4bc;font-size:8px;font-weight:900}
+.worldStageInfoBlockV851 .stageTraitWrap{justify-content:flex-start}
+.worldStageInfoBlockV851 .stageTrait,.worldStageInfoBlockV851 .stageEnemyChip,.worldStageInfoBlockV851 .stageDrop{font-size:8px;min-height:22px;padding:3px 6px}
+.worldStageInfoBlockV851 .miniFace,.worldStageInfoBlockV851 .miniItemIcon{width:20px;height:20px;flex-basis:20px}
+.worldBossPanelV851{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:center;overflow:hidden;padding:9px 10px 12px;border:1px solid rgba(255,100,120,.2);border-radius:13px;background:linear-gradient(145deg,rgba(143,43,62,.17),rgba(255,255,255,.035))}
+.worldBossFaceV851{width:48px;height:48px;grid-row:1/3;border-radius:11px;background:rgba(0,0,0,.18)}
+.worldBossPanelV851 b{display:block;margin-top:2px;font-size:11px}.worldBossPanelV851 b small{color:#dfb9c0;font-size:8px}.worldBossPanelV851 p{margin:2px 0 0;color:#aeb9ca;font-size:8px}
+.worldBossGaugeV851{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(0,0,0,.28)}.worldBossGaugeV851 i{display:block;height:100%;background:linear-gradient(90deg,#d84e65,#ffd06e)}
+.worldStageHintV851{display:grid;grid-template-columns:55px minmax(0,1fr);gap:8px;align-items:start;padding:8px 10px;border-radius:12px;background:rgba(255,211,106,.07);border:1px solid rgba(255,211,106,.13)}
+.worldStageHintV851 > span{padding-top:2px;color:#ffd56d}.worldStageHintV851 p{margin:0;color:#e2d8b7;font-size:8px;line-height:1.5}
+.worldStageActionsV851{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.worldStageActionsV851 button{min-height:50px}.worldStageActionsV851 button b,.worldStageActionsV851 button small{display:block}.worldStageActionsV851 button b{font-size:11px}.worldStageActionsV851 button small{margin-top:2px;font-size:7px;opacity:.78}
+.worldStageNoticeV851{padding:8px 10px;border-radius:10px;background:rgba(255,211,106,.09);color:#ffe6a4;font-size:8px;text-align:center}.worldStageNoticeV851.locked{background:rgba(153,166,185,.08);color:#b5c0ce}
+@keyframes worldPulseV851{0%{transform:translate(-50%,-50%) scale(.72);opacity:.9}100%{transform:translate(-50%,-50%) scale(1.45);opacity:0}}
+@keyframes worldNextV851{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
+@media(max-width:760px){
+  .worldMapHeadV851{grid-template-columns:minmax(0,1fr) auto;padding:14px}
+  .worldMapHeadV851 h1{font-size:21px}
+  .worldMapHeadV851 p{display:none}
+  .worldMapProgressV851{min-width:105px}.worldMapProgressV851 > i{width:105px}
+  .worldStageDetailV851{grid-template-columns:1fr}
+  .worldStageBackdropV851{min-height:210px}
+  .worldStageBackdropV851:after{background:linear-gradient(0deg,rgba(17,28,50,.95),transparent 55%)}
+}
+@media(max-width:520px){
+  .worldMapHeadV851{gap:8px;padding:12px}.worldMapHeadV851 h1{font-size:18px}.worldMapHeadV851 > div:first-child > span{font-size:6px}
+  .worldMapProgressV851{min-width:82px}.worldMapProgressV851 b{font-size:18px}.worldMapProgressV851 > i{width:82px}
+  .worldMapCanvasV851{min-width:720px}
+  .worldMapLegendV851{gap:10px;padding:8px;font-size:7px}
+  .worldStageContentV851{padding:13px}
+  .worldStageTitleV851 h2{font-size:21px}
+  .worldStageStatsV851{grid-template-columns:1fr 1fr}
+  .worldStageInfoBlockV851{grid-template-columns:1fr;gap:3px}
+  .worldStageActionsV851{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .worldNodePulseV851{animation:none}.worldNodeV851.next .worldNodeIconV851{animation:none}
+}

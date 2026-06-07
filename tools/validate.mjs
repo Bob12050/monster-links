@@ -598,15 +598,53 @@ function loadGameData(scriptRefs){
     context.MonsterLinksGame.bossReady = ()=>false;
     const stageViewFile = path.join(root,"js","views","stageView.js");
     vm.runInContext(fs.readFileSync(stageViewFile,"utf8"),context,{filename:"js/views/stageView.js"});
-    const stageHtml = context.MonsterLinksViews.stageHtml();
-    if(!stageHtml.includes("Game.startBattle('sky_ruins')") || !stageHtml.includes("天空遺跡")){
-      fail("ステージ画面に天空遺跡カードが生成されません");
+    const worldMapHtml = context.MonsterLinksViews.stageHtml();
+    if(!worldMapHtml.includes("worldMapPanelV851") || !worldMapHtml.includes("Game.selectWorldStage('sky_ruins')")){
+      fail("ステージ画面に天空遺跡のワールドマップ地点が生成されません");
+    }
+    context.MonsterLinksGame.selectWorldStage("sky_ruins");
+    const skyStageHtml = context.MonsterLinksViews.stageHtml();
+    if(!skyStageHtml.includes("Game.startBattle('sky_ruins')") || !skyStageHtml.includes("天空遺跡")){
+      fail("天空遺跡を選択して地域詳細を表示できません");
     }
     for(const id of ["q_sky_ruins_boss","m_dex_55","m_boss_13"]){
       if(!data.QUESTS.some(quest=>quest.id === id)) fail(`v8.5天空遺跡任務がありません: ${id}`);
     }
   }catch(error){
     fail(`v8.5天空遺跡エラー: ${error.stack || error.message}`);
+  }
+
+  try{
+    const mapSource = fs.readFileSync(path.join(root,"js","views","stageView.js"),"utf8");
+    const mapCss = fs.readFileSync(path.join(root,"css","style.css"),"utf8");
+    if(!mapSource.includes("MAP_POINTS") || !mapSource.includes("worldMapPanelV851")){
+      fail("v8.5.1ワールドマップ画面が実装されていません");
+    }
+    if(!mapSource.includes("worldMapViewportV851") || !mapSource.includes("scrollTo?.({left")){
+      fail("スマホで選択地点へ地図を寄せる処理がありません");
+    }
+    for(const selector of [".worldMapCanvasV851",".worldNodeV851",".worldStageDetailV851","@media(max-width:520px)"]){
+      if(!mapCss.includes(selector)) fail(`v8.5.1ワールドマップCSSがありません: ${selector}`);
+    }
+
+    context.MonsterLinksState.state.stageUnlocked = 7;
+    context.MonsterLinksGame.selectWorldStage("thunder_ruins");
+    const selectedMapHtml = context.MonsterLinksViews.stageHtml();
+    const nodeCount = (selectedMapHtml.match(/data-stage-id="/g) || []).length;
+    if(nodeCount !== data.STAGES.length) fail("ワールドマップ地点数がステージ数と一致しません");
+    if(!selectedMapHtml.includes('data-stage-id="thunder_ruins"') || !selectedMapHtml.includes("Game.startBattle('thunder_ruins')")){
+      fail("ワールドマップで選択した地域の詳細を表示できません");
+    }
+    if(!selectedMapHtml.includes('data-stage-id="sky_ruins"') || !selectedMapHtml.includes("worldNodeV851 locked")){
+      fail("未解放地域がワールドマップ上に表示されません");
+    }
+    context.MonsterLinksGame.selectWorldStage("missing_stage");
+    const ignoredMapHtml = context.MonsterLinksViews.stageHtml();
+    if(!ignoredMapHtml.includes("Game.startBattle('thunder_ruins')")){
+      fail("不正なワールドマップ地点IDで選択状態が壊れます");
+    }
+  }catch(error){
+    fail(`v8.5.1ワールドマップエラー: ${error.stack || error.message}`);
   }
 
   return data;
