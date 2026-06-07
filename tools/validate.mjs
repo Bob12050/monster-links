@@ -570,8 +570,22 @@ function loadGameData(scriptRefs){
     if(!skyStage || skyStage.unlock !== 13 || skyStage.boss?.id !== "zenithdragon"){
       fail("天空遺跡の解放番号またはボス設定が正しくありません");
     }
-    if(skyStage.enemies?.length !== 5 || skyStage.min !== 68 || skyStage.max !== 84){
+    if(skyStage.enemies?.length !== 5 || skyStage.min !== 68 || skyStage.max !== 82){
       fail("天空遺跡の通常出現または敵レベル帯が正しくありません");
+    }
+    if(skyStage.req !== 68 || skyStage.scout !== 8 || skyStage.boss?.level !== 86){
+      fail("v8.5.2天空遺跡の推奨Lv・スカウト率・ボスLvが調整値と一致しません");
+    }
+    const skyDropTargets = {
+      cloudplim:["sky_shard",10],
+      sunhare:["sky_shard",10],
+      galegryph:["aether_wing",8],
+      skywarden:["sky_shard",12],
+      stormdjinn:["aether_wing",14]
+    };
+    for(const [monsterId,[itemId,rate]] of Object.entries(skyDropTargets)){
+      const drop = data.DROPS?.[monsterId]?.find(entry=>entry.id===itemId);
+      if(drop?.rate !== rate) fail(`v8.5.2天空遺跡ドロップ率が正しくありません: ${monsterId}`);
     }
     if(!Object.prototype.hasOwnProperty.call(context.MonsterLinksState.state.stageWins,"sky_ruins")
       || context.MonsterLinksState.state.bossCleared.sky_ruins !== false){

@@ -58,3 +58,9 @@ docs/ART_ASSET_MANIFEST.md
 docs/ART_ASSET_MANIFEST.csv
 assets/images/art_manifest.json
 ```
+
+管理表はゲーム本体のモンスターデータを基準に更新します。
+
+```powershell
+node tools/art-audit.mjs --write
+```

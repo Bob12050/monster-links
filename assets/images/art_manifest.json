@@ -8,10 +8,10 @@
     "emoji": "🫧",
     "current_image": "assets/images/monsters/plim.png",
     "target_png": "assets/images/monsters/plim.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_0_trial"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -22,10 +22,10 @@
     "emoji": "🌱",
     "current_image": "assets/images/monsters/leafling.png",
     "target_png": "assets/images/monsters/leafling.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_0_trial"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -36,10 +36,10 @@
     "emoji": "🦇",
     "current_image": "assets/images/monsters/puffbat.png",
     "target_png": "assets/images/monsters/puffbat.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_1_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -50,10 +50,10 @@
     "emoji": "🪨",
     "current_image": "assets/images/monsters/pebblon.png",
     "target_png": "assets/images/monsters/pebblon.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_1_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -64,10 +64,10 @@
     "emoji": "🐻",
     "current_image": "assets/images/monsters/embercub.png",
     "target_png": "assets/images/monsters/embercub.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_1_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -78,10 +78,10 @@
     "emoji": "💧",
     "current_image": "assets/images/monsters/aquan.png",
     "target_png": "assets/images/monsters/aquan.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_1_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -92,10 +92,10 @@
     "emoji": "🦔",
     "current_image": "assets/images/monsters/thornhog.png",
     "target_png": "assets/images/monsters/thornhog.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_3_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -106,10 +106,10 @@
     "emoji": "❄️",
     "current_image": "assets/images/monsters/frostpup.png",
     "target_png": "assets/images/monsters/frostpup.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -120,10 +120,10 @@
     "emoji": "🌳",
     "current_image": "assets/images/monsters/mossking.png",
     "target_png": "assets/images/monsters/mossking.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_1_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -134,10 +134,10 @@
     "emoji": "🐉",
     "current_image": "assets/images/monsters/cindrake.png",
     "target_png": "assets/images/monsters/cindrake.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -148,10 +148,10 @@
     "emoji": "⚙️",
     "current_image": "assets/images/monsters/gearbit.png",
     "target_png": "assets/images/monsters/gearbit.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_3_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -162,10 +162,10 @@
     "emoji": "🦋",
     "current_image": "assets/images/monsters/gloomoth.png",
     "target_png": "assets/images/monsters/gloomoth.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -176,10 +176,10 @@
     "emoji": "🐱",
     "current_image": "assets/images/monsters/snowcat.png",
     "target_png": "assets/images/monsters/snowcat.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -190,10 +190,10 @@
     "emoji": "🦊",
     "current_image": "assets/images/monsters/voltfox.png",
     "target_png": "assets/images/monsters/voltfox.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -204,10 +204,10 @@
     "emoji": "🗿",
     "current_image": "assets/images/monsters/orelord.png",
     "target_png": "assets/images/monsters/orelord.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_1_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -218,10 +218,10 @@
     "emoji": "✨",
     "current_image": "assets/images/monsters/luminel.png",
     "target_png": "assets/images/monsters/luminel.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_3_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -232,10 +232,10 @@
     "emoji": "💎",
     "current_image": "assets/images/monsters/crystagon.png",
     "target_png": "assets/images/monsters/crystagon.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_3_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -246,10 +246,10 @@
     "emoji": "🐢",
     "current_image": "assets/images/monsters/icetortoise.png",
     "target_png": "assets/images/monsters/icetortoise.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -260,10 +260,10 @@
     "emoji": "🦾",
     "current_image": "assets/images/monsters/ironmantis.png",
     "target_png": "assets/images/monsters/ironmantis.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -274,10 +274,10 @@
     "emoji": "🧜",
     "current_image": "assets/images/monsters/tidalseraph.png",
     "target_png": "assets/images/monsters/tidalseraph.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_3_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -288,10 +288,10 @@
     "emoji": "🌋",
     "current_image": "assets/images/monsters/volcazard.png",
     "target_png": "assets/images/monsters/volcazard.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_3_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -302,10 +302,10 @@
     "emoji": "🐺",
     "current_image": "assets/images/monsters/duskwolf.png",
     "target_png": "assets/images/monsters/duskwolf.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -316,10 +316,10 @@
     "emoji": "🐋",
     "current_image": "assets/images/monsters/frostlevia.png",
     "target_png": "assets/images/monsters/frostlevia.png",
-    "priority": "A",
-    "wave": "v4.5-A upper art",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_5_a_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -330,10 +330,10 @@
     "emoji": "🤖",
     "current_image": "assets/images/monsters/arcautomaton.png",
     "target_png": "assets/images/monsters/arcautomaton.png",
-    "priority": "A",
-    "wave": "v4.5-A upper art",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_5_a_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -344,10 +344,10 @@
     "emoji": "🌌",
     "current_image": "assets/images/monsters/astralwyrm.png",
     "target_png": "assets/images/monsters/astralwyrm.png",
-    "priority": "A",
-    "wave": "v4.5-A upper art",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_5_a_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -358,10 +358,10 @@
     "emoji": "👑",
     "current_image": "assets/images/monsters/kingplim.png",
     "target_png": "assets/images/monsters/kingplim.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_1_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -372,10 +372,10 @@
     "emoji": "🐾",
     "current_image": "assets/images/monsters/auroracat.png",
     "target_png": "assets/images/monsters/auroracat.png",
-    "priority": "A",
-    "wave": "v4.5-A upper art",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_5_a_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -386,10 +386,10 @@
     "emoji": "🌘",
     "current_image": "assets/images/monsters/eclipsewolf.png",
     "target_png": "assets/images/monsters/eclipsewolf.png",
-    "priority": "A",
-    "wave": "v4.5-B individual PNG",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "waiting_v4_5_b_png"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -400,10 +400,10 @@
     "emoji": "🧿",
     "current_image": "assets/images/monsters/gigacore.png",
     "target_png": "assets/images/monsters/gigacore.png",
-    "priority": "A",
-    "wave": "v4.5-B individual PNG",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "waiting_v4_5_b_png"
+    "priority": "P1",
+    "wave": "v8.6-A",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -414,10 +414,10 @@
     "emoji": "🔥",
     "current_image": "assets/images/monsters/phoenixdrake.png",
     "target_png": "assets/images/monsters/phoenixdrake.png",
-    "priority": "A",
-    "wave": "v4.5-B individual PNG",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "waiting_v4_5_b_png"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -428,10 +428,10 @@
     "emoji": "🪽",
     "current_image": "assets/images/monsters/celestiseraph.png",
     "target_png": "assets/images/monsters/celestiseraph.png",
-    "priority": "A",
-    "wave": "v4.5-B individual PNG",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "waiting_v4_5_b_png"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -442,10 +442,10 @@
     "emoji": "🕳️",
     "current_image": "assets/images/monsters/voiddragon.png",
     "target_png": "assets/images/monsters/voiddragon.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_3_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -456,10 +456,10 @@
     "emoji": "🌈",
     "current_image": "assets/images/monsters/prismdragon.png",
     "target_png": "assets/images/monsters/prismdragon.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_3_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -470,10 +470,10 @@
     "emoji": "☣️",
     "current_image": "assets/images/monsters/poisonplim.png",
     "target_png": "assets/images/monsters/poisonplim.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -484,10 +484,10 @@
     "emoji": "🍄",
     "current_image": "assets/images/monsters/toxicshroom.png",
     "target_png": "assets/images/monsters/toxicshroom.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -498,10 +498,10 @@
     "emoji": "🦎",
     "current_image": "assets/images/monsters/sludgecko.png",
     "target_png": "assets/images/monsters/sludgecko.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -512,10 +512,10 @@
     "emoji": "🦇",
     "current_image": "assets/images/monsters/venomwing.png",
     "target_png": "assets/images/monsters/venomwing.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -526,10 +526,10 @@
     "emoji": "🐍",
     "current_image": "assets/images/monsters/venomhydra.png",
     "target_png": "assets/images/monsters/venomhydra.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -540,10 +540,10 @@
     "emoji": "⚙️",
     "current_image": "assets/images/monsters/gearslime.png",
     "target_png": "assets/images/monsters/gearslime.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -554,10 +554,10 @@
     "emoji": "🐞",
     "current_image": "assets/images/monsters/steelbug.png",
     "target_png": "assets/images/monsters/steelbug.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -568,10 +568,10 @@
     "emoji": "🛸",
     "current_image": "assets/images/monsters/thunderdrone.png",
     "target_png": "assets/images/monsters/thunderdrone.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -582,10 +582,10 @@
     "emoji": "🛰️",
     "current_image": "assets/images/monsters/corewalker.png",
     "target_png": "assets/images/monsters/corewalker.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -596,10 +596,10 @@
     "emoji": "🤖",
     "current_image": "assets/images/monsters/arkmachine.png",
     "target_png": "assets/images/monsters/arkmachine.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -610,10 +610,10 @@
     "emoji": "🦂",
     "current_image": "assets/images/monsters/venomchimera.png",
     "target_png": "assets/images/monsters/venomchimera.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -624,10 +624,10 @@
     "emoji": "🛡️",
     "current_image": "assets/images/monsters/omegaframe.png",
     "target_png": "assets/images/monsters/omegaframe.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -638,10 +638,10 @@
     "emoji": "🪸",
     "current_image": "assets/images/monsters/corallume.png",
     "target_png": "assets/images/monsters/corallume.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P5",
+    "wave": "v8.6-E",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -652,10 +652,10 @@
     "emoji": "🐟",
     "current_image": "assets/images/monsters/abyssfin.png",
     "target_png": "assets/images/monsters/abyssfin.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -666,10 +666,10 @@
     "emoji": "🐚",
     "current_image": "assets/images/monsters/shellgolem.png",
     "target_png": "assets/images/monsters/shellgolem.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -680,10 +680,10 @@
     "emoji": "🪽",
     "current_image": "assets/images/monsters/pearlseraph.png",
     "target_png": "assets/images/monsters/pearlseraph.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -694,10 +694,10 @@
     "emoji": "🐉",
     "current_image": "assets/images/monsters/abysslevia.png",
     "target_png": "assets/images/monsters/abysslevia.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_1_art"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -708,10 +708,10 @@
     "emoji": "😈",
     "current_image": "assets/images/monsters/impfang.png",
     "target_png": "assets/images/monsters/impfang.png",
-    "priority": "B",
-    "wave": "v4.2 第3弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -722,10 +722,10 @@
     "emoji": "🗡️",
     "current_image": "assets/images/monsters/hellknight.png",
     "target_png": "assets/images/monsters/hellknight.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -736,10 +736,10 @@
     "emoji": "👁️",
     "current_image": "assets/images/monsters/doomgazer.png",
     "target_png": "assets/images/monsters/doomgazer.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -750,10 +750,10 @@
     "emoji": "🧿",
     "current_image": "assets/images/monsters/chaoswyrm.png",
     "target_png": "assets/images/monsters/chaoswyrm.png",
-    "priority": "A",
-    "wave": "v4.1 第2弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "converted_v4_2_png"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "monster",
@@ -764,10 +764,416 @@
     "emoji": "👹",
     "current_image": "assets/images/monsters/demonlord.png",
     "target_png": "assets/images/monsters/demonlord.png",
-    "priority": "S",
-    "wave": "v4.0 第1弾",
-    "spec": "1024x1024 / PNG / transparent / RPG deformed monster",
-    "status": "done_v4_0_trial"
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "dewplim",
+    "name": "しずくぷる",
+    "rank": "F",
+    "type": "water",
+    "emoji": "💧",
+    "current_image": "assets/images/monsters/dewplim.png",
+    "target_png": "assets/images/monsters/dewplim.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "budbunny",
+    "name": "つぼみラビ",
+    "rank": "F",
+    "type": "nature",
+    "emoji": "🌷",
+    "current_image": "assets/images/monsters/budbunny.png",
+    "target_png": "assets/images/monsters/budbunny.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "cavemole",
+    "name": "ドリモール",
+    "rank": "E",
+    "type": "stone",
+    "emoji": "🦡",
+    "current_image": "assets/images/monsters/cavemole.png",
+    "target_png": "assets/images/monsters/cavemole.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "sparkbug",
+    "name": "スパークバグ",
+    "rank": "E",
+    "type": "light",
+    "emoji": "⚡",
+    "current_image": "assets/images/monsters/sparkbug.png",
+    "target_png": "assets/images/monsters/sparkbug.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "ashimp",
+    "name": "アッシュインプ",
+    "rank": "E",
+    "type": "fire",
+    "emoji": "🔥",
+    "current_image": "assets/images/monsters/ashimp.png",
+    "target_png": "assets/images/monsters/ashimp.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "reefowl",
+    "name": "リーファウル",
+    "rank": "D",
+    "type": "wing",
+    "emoji": "🪽",
+    "current_image": "assets/images/monsters/reefowl.png",
+    "target_png": "assets/images/monsters/reefowl.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "miretoad",
+    "name": "ミアトード",
+    "rank": "D",
+    "type": "water",
+    "emoji": "🐸",
+    "current_image": "assets/images/monsters/miretoad.png",
+    "target_png": "assets/images/monsters/miretoad.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "gearcat",
+    "name": "ギアキャット",
+    "rank": "D",
+    "type": "machine",
+    "emoji": "🐱",
+    "current_image": "assets/images/monsters/gearcat.png",
+    "target_png": "assets/images/monsters/gearcat.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "snowfairy",
+    "name": "スノーフェア",
+    "rank": "D",
+    "type": "water",
+    "emoji": "❄️",
+    "current_image": "assets/images/monsters/snowfairy.png",
+    "target_png": "assets/images/monsters/snowfairy.png",
+    "priority": "P4",
+    "wave": "v8.6-D",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "cinderhorn",
+    "name": "シンダーホーン",
+    "rank": "C",
+    "type": "fire",
+    "emoji": "♈",
+    "current_image": "assets/images/monsters/cinderhorn.png",
+    "target_png": "assets/images/monsters/cinderhorn.png",
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "cragbear",
+    "name": "クラッグベア",
+    "rank": "C",
+    "type": "stone",
+    "emoji": "🐻",
+    "current_image": "assets/images/monsters/cragbear.png",
+    "target_png": "assets/images/monsters/cragbear.png",
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "lumenowl",
+    "name": "ルーメンオウル",
+    "rank": "C",
+    "type": "light",
+    "emoji": "🦉",
+    "current_image": "assets/images/monsters/lumenowl.png",
+    "target_png": "assets/images/monsters/lumenowl.png",
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "abyssjelly",
+    "name": "アビスジェリー",
+    "rank": "C",
+    "type": "water",
+    "emoji": "🪼",
+    "current_image": "assets/images/monsters/abyssjelly.png",
+    "target_png": "assets/images/monsters/abyssjelly.png",
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "venomqueen",
+    "name": "ヴェノムクイーン",
+    "rank": "B",
+    "type": "dark",
+    "emoji": "☠️",
+    "current_image": "assets/images/monsters/venomqueen.png",
+    "target_png": "assets/images/monsters/venomqueen.png",
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "thunderlion",
+    "name": "サンダーライオン",
+    "rank": "B",
+    "type": "light",
+    "emoji": "🦁",
+    "current_image": "assets/images/monsters/thunderlion.png",
+    "target_png": "assets/images/monsters/thunderlion.png",
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "forgegolem",
+    "name": "フォージゴーレム",
+    "rank": "B",
+    "type": "machine",
+    "emoji": "🏭",
+    "current_image": "assets/images/monsters/forgegolem.png",
+    "target_png": "assets/images/monsters/forgegolem.png",
+    "priority": "P3",
+    "wave": "v8.6-C",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "glacierfang",
+    "name": "グレイシャーファング",
+    "rank": "A",
+    "type": "water",
+    "emoji": "🧊",
+    "current_image": "assets/images/monsters/glacierfang.png",
+    "target_png": "assets/images/monsters/glacierfang.png",
+    "priority": "P1",
+    "wave": "v8.6-A",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "solarwyrm",
+    "name": "ソーラーウィルム",
+    "rank": "A",
+    "type": "light",
+    "emoji": "☀️",
+    "current_image": "assets/images/monsters/solarwyrm.png",
+    "target_png": "assets/images/monsters/solarwyrm.png",
+    "priority": "P1",
+    "wave": "v8.6-A",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "nightmarestag",
+    "name": "ナイトメアスタッグ",
+    "rank": "A",
+    "type": "dark",
+    "emoji": "🌙",
+    "current_image": "assets/images/monsters/nightmarestag.png",
+    "target_png": "assets/images/monsters/nightmarestag.png",
+    "priority": "P1",
+    "wave": "v8.6-A",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "titanplim",
+    "name": "タイタンぷる",
+    "rank": "S",
+    "type": "slime",
+    "emoji": "🫧",
+    "current_image": "assets/images/monsters/titanplim.png",
+    "target_png": "assets/images/monsters/titanplim.png",
+    "priority": "P2",
+    "wave": "v8.6-B",
+    "status": "placeholder_png",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "cloudplim",
+    "name": "雲ぷる",
+    "rank": "C",
+    "type": "slime",
+    "emoji": "☁️",
+    "current_image": "assets/images/monsters/cloudplim.svg",
+    "target_png": "assets/images/monsters/cloudplim.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "sunhare",
+    "name": "サンラビ",
+    "rank": "C",
+    "type": "light",
+    "emoji": "☀️",
+    "current_image": "assets/images/monsters/sunhare.svg",
+    "target_png": "assets/images/monsters/sunhare.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "galegryph",
+    "name": "ゲイルグリフ",
+    "rank": "B",
+    "type": "wing",
+    "emoji": "🪽",
+    "current_image": "assets/images/monsters/galegryph.svg",
+    "target_png": "assets/images/monsters/galegryph.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "skywarden",
+    "name": "スカイウォーデン",
+    "rank": "B",
+    "type": "machine",
+    "emoji": "🛡️",
+    "current_image": "assets/images/monsters/skywarden.svg",
+    "target_png": "assets/images/monsters/skywarden.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "stormdjinn",
+    "name": "ストームジン",
+    "rank": "A",
+    "type": "light",
+    "emoji": "⚡",
+    "current_image": "assets/images/monsters/stormdjinn.svg",
+    "target_png": "assets/images/monsters/stormdjinn.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "aethergolem",
+    "name": "エーテルゴーレム",
+    "rank": "A",
+    "type": "stone",
+    "emoji": "💠",
+    "current_image": "assets/images/monsters/aethergolem.svg",
+    "target_png": "assets/images/monsters/aethergolem.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "seraphalcon",
+    "name": "セラファルコン",
+    "rank": "A",
+    "type": "wing",
+    "emoji": "🪽",
+    "current_image": "assets/images/monsters/seraphalcon.svg",
+    "target_png": "assets/images/monsters/seraphalcon.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "heavenscale",
+    "name": "ヘヴンスケイル",
+    "rank": "S",
+    "type": "dragon",
+    "emoji": "🌌",
+    "current_image": "assets/images/monsters/heavenscale.svg",
+    "target_png": "assets/images/monsters/heavenscale.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
+  },
+  {
+    "category": "monster",
+    "id": "zenithdragon",
+    "name": "ゼニスドラゴン",
+    "rank": "S",
+    "type": "dragon",
+    "emoji": "☀️",
+    "current_image": "assets/images/monsters/zenithdragon.svg",
+    "target_png": "assets/images/monsters/zenithdragon.png",
+    "priority": "P6",
+    "wave": "v8.6-F",
+    "status": "placeholder_svg",
+    "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
     "category": "stage",
