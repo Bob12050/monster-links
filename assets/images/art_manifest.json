@@ -114,7 +114,7 @@
   {
     "category": "monster",
     "id": "mossking",
-    "name": "モスキング",
+    "name": "コケヌシ",
     "rank": "D",
     "type": "nature",
     "emoji": "🌳",
@@ -534,7 +534,7 @@
   {
     "category": "monster",
     "id": "gearslime",
-    "name": "ギアスライム",
+    "name": "ギアぷるミン",
     "rank": "D",
     "type": "machine",
     "emoji": "⚙️",

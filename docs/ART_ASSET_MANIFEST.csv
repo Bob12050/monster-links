@@ -7,7 +7,7 @@ monster,embercub,ヒノコぐま,E,fire,🐻,assets/images/monsters/embercub.png
 monster,aquan,アクアン,E,water,💧,assets/images/monsters/aquan.png,assets/images/monsters/aquan.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,thornhog,トゲホッグ,E,beast,🦔,assets/images/monsters/thornhog.png,assets/images/monsters/thornhog.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,frostpup,ユキまる,E,water,❄️,assets/images/monsters/frostpup.png,assets/images/monsters/frostpup.png,P4,v8.6-D,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
-monster,mossking,モスキング,D,nature,🌳,assets/images/monsters/mossking.png,assets/images/monsters/mossking.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
+monster,mossking,コケヌシ,D,nature,🌳,assets/images/monsters/mossking.png,assets/images/monsters/mossking.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,cindrake,シンドレイク,D,dragon,🐉,assets/images/monsters/cindrake.png,assets/images/monsters/cindrake.png,P4,v8.6-D,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,gearbit,ギアビット,D,machine,⚙️,assets/images/monsters/gearbit.png,assets/images/monsters/gearbit.png,-,complete,formal_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,gloomoth,グルーモス,D,dark,🦋,assets/images/monsters/gloomoth.png,assets/images/monsters/gloomoth.png,P5,v8.6-E,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
@@ -37,7 +37,7 @@ monster,toxicshroom,ドクキノコ,D,nature,🍄,assets/images/monsters/toxicsh
 monster,sludgecko,ヘドロトカゲ,D,water,🦎,assets/images/monsters/sludgecko.png,assets/images/monsters/sludgecko.png,P5,v8.6-E,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,venomwing,ベノムバット,C,wing,🦇,assets/images/monsters/venomwing.png,assets/images/monsters/venomwing.png,P5,v8.6-E,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,venomhydra,ヴェノムハイドラ,A,dragon,🐍,assets/images/monsters/venomhydra.png,assets/images/monsters/venomhydra.png,P2,v8.6-B,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
-monster,gearslime,ギアスライム,D,machine,⚙️,assets/images/monsters/gearslime.png,assets/images/monsters/gearslime.png,P5,v8.6-E,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
+monster,gearslime,ギアぷるミン,D,machine,⚙️,assets/images/monsters/gearslime.png,assets/images/monsters/gearslime.png,P5,v8.6-E,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,steelbug,スチールバグ,C,machine,🐞,assets/images/monsters/steelbug.png,assets/images/monsters/steelbug.png,P5,v8.6-E,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,thunderdrone,サンダードローン,C,machine,🛸,assets/images/monsters/thunderdrone.png,assets/images/monsters/thunderdrone.png,P5,v8.6-E,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster
 monster,corewalker,コアウォーカー,B,stone,🛰️,assets/images/monsters/corewalker.png,assets/images/monsters/corewalker.png,P2,v8.6-B,placeholder_png,1024x1024 / PNG / transparent / RPG deformed monster

@@ -1,12 +1,20 @@
-# モンスターリンクス v8.6-A.1
+# モンスターリンクス v8.6-A.2
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
 
 ## 現在の安定版
 
 ```text
-v8.6-A.1 全画面UI可読性改善
+v8.6-A.2 既存IDモンスターアート反映
 ```
+
+## v8.6-A.2の主な変更
+
+- 既存IDの採用済みモンスターアートを実装用PNGへ差し替え
+- `gearslime` の表示名を「ギアぷるミン」へ変更
+- `mossking` の表示名を「コケヌシ」へ変更
+- 旧画像を `assets/images/monsters/legacy/v8.6-A.1-before-existing-id-art/` へ退避
+- セーブ形式、配合、能力値、モンスターIDは変更なし
 
 ## v8.6-A.1の主な変更
 
@@ -85,6 +93,9 @@ docs/FUSION_GOALS_V832.md
 docs/AUTO_BATTLE_V841.md
 docs/BATTLE_TEMPO_SOUND_V84.md
 docs/MONSTER_PASTURE_UI_V831.md
+docs/PROJECT_SPEC_CHATGPT.md
+docs/CHATGPT_HANDOFF_PROMPT.md
+docs/CHATGPT_WORKFLOW.md
 docs/VERSION_HISTORY.md
 ```
 
@@ -92,7 +103,7 @@ docs/VERSION_HISTORY.md
 
 ```text
 ワールドマップに地域別の装飾と発見イベントを追加
-既存52体と天空遺跡9体の仮アートを6波に分けて正式イラストへ更新
+採用済み10体を基準に、ぷるミンを含む残り74体のキャラクターを順次再設計
 モンスター150匹規模を目指す
 SS/SSSランクを将来追加
 4体配合を長期的に追加

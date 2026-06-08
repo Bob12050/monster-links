@@ -1,3 +1,16 @@
+v8.6-A.2 既存IDモンスターアート反映
+
+GAME_VERSIONを8.6-A.2へ更新
+
+主な変更:
+- ぷる系、自然系、水・湿地・深海系の既存IDモンスターアートを実装用PNGへ差し替え
+- `gearslime` の表示名を「ギアぷるミン」へ変更
+- `mossking` の表示名を「コケヌシ」へ変更
+- 旧画像を `assets/images/monsters/legacy/v8.6-A.1-before-existing-id-art/` へ退避
+- セーブ形式、配合、能力値、モンスターIDは変更なし
+
+---
+
 # 現在の安定版
 
 ```text
@@ -25,7 +38,8 @@ GAME_VERSIONを8.6-A.1へ更新
 ## 次の候補
 
 ```text
-v8.6-B〜F 残る未整備51体の正式イラスト更新
+採用済み10体を除く74体のキャラクターアート再設計
+序盤8体から確認用イラストを制作
 v8.6.1 ワールドマップの地域イベント追加
 ```
 
@@ -40,4 +54,7 @@ docs/QUEST_FUSION_GOALS_V842.md
 docs/FUSION_GOALS_V832.md
 docs/AUTO_BATTLE_V841.md
 docs/BATTLE_TEMPO_SOUND_V84.md
+docs/PROJECT_SPEC_CHATGPT.md
+docs/CHATGPT_HANDOFF_PROMPT.md
+docs/CHATGPT_WORKFLOW.md
 ```

@@ -42,7 +42,7 @@ missing        参照先ファイル欠損
 
 ### v8.6-E 既存の残り通常種 (11体)
 
-グルーモス (`gloomoth`) / スノーニャ (`snowcat`) / ボルトキツネ (`voltfox`) / ポイズンぷる (`poisonplim`) / ドクキノコ (`toxicshroom`) / ヘドロトカゲ (`sludgecko`) / ベノムバット (`venomwing`) / ギアスライム (`gearslime`) / スチールバグ (`steelbug`) / サンダードローン (`thunderdrone`) / コーラルルーメ (`corallume`)
+グルーモス (`gloomoth`) / スノーニャ (`snowcat`) / ボルトキツネ (`voltfox`) / ポイズンぷる (`poisonplim`) / ドクキノコ (`toxicshroom`) / ヘドロトカゲ (`sludgecko`) / ベノムバット (`venomwing`) / ギアぷるミン (`gearslime`) / スチールバグ (`steelbug`) / サンダードローン (`thunderdrone`) / コーラルルーメ (`corallume`)
 
 ### v8.6-F 天空遺跡 (9体)
 
@@ -60,7 +60,7 @@ missing        参照先ファイル欠損
 |formal_png|complete|aquan|アクアン|E|water|assets/images/monsters/aquan.png|
 |formal_png|complete|thornhog|トゲホッグ|E|beast|assets/images/monsters/thornhog.png|
 |placeholder_png|v8.6-D|frostpup|ユキまる|E|water|assets/images/monsters/frostpup.png|
-|formal_png|complete|mossking|モスキング|D|nature|assets/images/monsters/mossking.png|
+|formal_png|complete|mossking|コケヌシ|D|nature|assets/images/monsters/mossking.png|
 |placeholder_png|v8.6-D|cindrake|シンドレイク|D|dragon|assets/images/monsters/cindrake.png|
 |formal_png|complete|gearbit|ギアビット|D|machine|assets/images/monsters/gearbit.png|
 |placeholder_png|v8.6-E|gloomoth|グルーモス|D|dark|assets/images/monsters/gloomoth.png|
@@ -90,7 +90,7 @@ missing        参照先ファイル欠損
 |placeholder_png|v8.6-E|sludgecko|ヘドロトカゲ|D|water|assets/images/monsters/sludgecko.png|
 |placeholder_png|v8.6-E|venomwing|ベノムバット|C|wing|assets/images/monsters/venomwing.png|
 |placeholder_png|v8.6-B|venomhydra|ヴェノムハイドラ|A|dragon|assets/images/monsters/venomhydra.png|
-|placeholder_png|v8.6-E|gearslime|ギアスライム|D|machine|assets/images/monsters/gearslime.png|
+|placeholder_png|v8.6-E|gearslime|ギアぷるミン|D|machine|assets/images/monsters/gearslime.png|
 |placeholder_png|v8.6-E|steelbug|スチールバグ|C|machine|assets/images/monsters/steelbug.png|
 |placeholder_png|v8.6-E|thunderdrone|サンダードローン|C|machine|assets/images/monsters/thunderdrone.png|
 |placeholder_png|v8.6-B|corewalker|コアウォーカー|B|stone|assets/images/monsters/corewalker.png|
