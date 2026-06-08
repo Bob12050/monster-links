@@ -102,9 +102,18 @@
           const group = filteredIds.filter(id=>S.def(id).rank===rank);
           if(!group.length) return "";
           const got = group.filter(id=>state.dex.discovered[id]).length;
+          const scouted = group.filter(id=>state.dex.scouted[id]).length;
+          const discoveredPct = group.length ? Math.floor(got / group.length * 100) : 0;
+          const scoutedPct = group.length ? Math.floor(scouted / group.length * 100) : 0;
           return `<section class="card dexRankCard">
-            <div class="sectionTitle">
-              <div><h2>${rank}ランク</h2><p>${got}/${group.length} 発見</p></div>
+            <div class="sectionTitle dexRankTitleV865">
+              <div><h2>${rank}ランク</h2><p>${got}/${group.length} 発見・${scouted}/${group.length} スカウト</p></div>
+              <div class="dexRankProgressV865" aria-label="${rank}ランクの収集状況">
+                <span><b>発見</b><em>${got}/${group.length}</em></span>
+                <i><b style="width:${discoveredPct}%"></b></i>
+                <span><b>スカウト</b><em>${scouted}/${group.length}</em></span>
+                <i class="scouted"><b style="width:${scoutedPct}%"></b></i>
+              </div>
             </div>
             <div class="dexGrid dexGridV31">
               ${group.map(id=>V.dexCard(id,state.dex.discovered[id],state.dex.scouted[id])).join("")}
@@ -121,12 +130,16 @@
     const isGoal = !!window.MonsterLinksGame.isFusionGoal?.(id);
     if(!discovered){
       return `<div class="dexCard dexCardV31 unknown">
+        <div class="dexCardStatusV865 missing">未発見</div>
         <div class="dexFace dexFaceV31">❔</div>
         <div class="name">？？？？ <span class="tag">${d.rank}</span></div>
         <div class="dexMetaLine"><span class="type">${typeLabel(d.type)}</span>${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}<span class="type">未発見</span></div>
       </div>`;
     }
+    const statusClass = isGoal ? "goal" : scouted ? "scouted" : "found";
+    const statusLabel = isGoal ? "目標中" : scouted ? "スカウト済み" : "発見済み";
     return `<div class="dexCard dexCardV31 dexCardRouteV83 ${scouted ? "scouted" : ""} ${isGoal ? "fusionGoalV832" : ""}" role="button" tabindex="0" onclick="Game.openDexDetail('${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Game.openDexDetail('${id}')}">
+      <div class="dexCardStatusV865 ${statusClass}">${statusLabel}</div>
       <button class="dexGoalButtonV832 ${isGoal ? "on" : ""}" aria-label="${isGoal ? "配合目標から外す" : "配合目標に登録"}" onclick="event.stopPropagation();Game.toggleFusionGoal('${id}')">${isGoal ? "★" : "☆"}</button>
       <div class="dexArtFrame">${V.monsterVisual(id,'dexFace dexFaceV31')}</div>
       <div class="name">${d.name} <span class="tag">${d.rank}</span></div>

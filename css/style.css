@@ -7516,3 +7516,107 @@ select:focus-visible{
     grid-template-columns:1fr;
   }
 }
+
+/* v8.6-A.5: dex collection progress */
+.dexRankTitleV865{
+  align-items:center;
+}
+.dexRankProgressV865{
+  width:min(260px,100%);
+  display:grid;
+  grid-template-columns:1fr;
+  gap:4px;
+}
+.dexRankProgressV865 span{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  color:#b8c8dc;
+  font-size:11px;
+  font-weight:900;
+}
+.dexRankProgressV865 span b{
+  color:#e9f8ff;
+}
+.dexRankProgressV865 span em{
+  color:#ffe4a2;
+  font-style:normal;
+}
+.dexRankProgressV865 i{
+  height:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.08);
+}
+.dexRankProgressV865 i b{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#4ba4e2,#8ce8ff);
+}
+.dexRankProgressV865 i.scouted b{
+  background:linear-gradient(90deg,#42b873,#a7f0b8);
+}
+.dexCardStatusV865{
+  position:absolute;
+  z-index:3;
+  top:8px;
+  left:8px;
+  max-width:calc(100% - 52px);
+  padding:5px 8px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  background:rgba(20,31,55,.78);
+  color:#d9efff;
+  font-size:10px;
+  font-weight:1000;
+  line-height:1;
+  letter-spacing:.03em;
+  box-shadow:0 8px 14px rgba(0,0,0,.28);
+  backdrop-filter:blur(8px);
+}
+.dexCardStatusV865.found{
+  border-color:rgba(110,231,255,.32);
+  background:rgba(30,87,126,.78);
+  color:#dff9ff;
+}
+.dexCardStatusV865.scouted{
+  border-color:rgba(116,240,160,.38);
+  background:rgba(36,111,73,.78);
+  color:#dfffe9;
+}
+.dexCardStatusV865.goal{
+  border-color:rgba(255,221,109,.48);
+  background:rgba(129,86,21,.84);
+  color:#fff2b8;
+}
+.dexCardStatusV865.missing{
+  border-color:rgba(180,190,210,.18);
+  background:rgba(33,38,52,.78);
+  color:#bfc9d7;
+}
+.dexCardV31.unknown{
+  border-style:dashed;
+}
+.dexCardV31.unknown .dexFaceV31{
+  color:#c4cfdd;
+  text-shadow:0 0 18px rgba(110,231,255,.18);
+  background:
+    radial-gradient(circle at 50% 38%,rgba(255,255,255,.09),rgba(110,231,255,.04) 45%,rgba(0,0,0,.16));
+}
+@media(max-width:520px){
+  .dexRankTitleV865{
+    align-items:flex-start;
+  }
+  .dexRankProgressV865{
+    width:100%;
+  }
+  .dexCardStatusV865{
+    top:7px;
+    left:7px;
+    padding:5px 7px;
+    font-size:9px;
+  }
+}
