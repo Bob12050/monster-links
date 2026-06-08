@@ -7791,3 +7791,117 @@ select:focus-visible{
     display:none;
   }
 }
+
+/* v8.6-A.7: fusion recipe status clarity */
+.routeRecipeV75{
+  border-color:rgba(255,255,255,.12);
+  background:
+    radial-gradient(circle at 0% 0%,rgba(110,231,255,.07),transparent 34%),
+    linear-gradient(180deg,rgba(33,45,77,.92),rgba(15,23,44,.96));
+}
+.routeRecipeV75.status-ready{
+  border-color:rgba(116,240,160,.38)!important;
+  box-shadow:0 14px 30px rgba(0,0,0,.2), inset 0 0 28px rgba(116,240,160,.06);
+}
+.routeRecipeV75.status-condition{
+  border-color:rgba(255,218,110,.34)!important;
+  box-shadow:0 14px 30px rgba(0,0,0,.2), inset 0 0 24px rgba(255,218,110,.05);
+}
+.routeRecipeV75.status-missing{
+  border-color:rgba(160,174,198,.16)!important;
+}
+.routeRecipeV75.undiscoveredRecipeV867{
+  background:
+    radial-gradient(circle at 0% 0%,rgba(181,140,255,.08),transparent 34%),
+    linear-gradient(180deg,rgba(32,40,68,.92),rgba(15,23,44,.96));
+}
+.routeStatusPanelV867{
+  display:grid;
+  gap:5px;
+  padding:8px 9px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  background:rgba(0,0,0,.18);
+}
+.routeStatusPanelV867.ready{
+  border-color:rgba(116,240,160,.28);
+  background:rgba(52,128,78,.13);
+}
+.routeStatusPanelV867.condition{
+  border-color:rgba(255,218,110,.26);
+  background:rgba(139,99,29,.13);
+}
+.routeStatusPanelV867.missing{
+  border-color:rgba(180,190,210,.13);
+  background:rgba(0,0,0,.16);
+}
+.routeStatusMainV867{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.routeStatusBadgeV867,
+.routeDiscoveryBadgeV867{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:24px;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:1000;
+  line-height:1;
+  white-space:nowrap;
+}
+.routeStatusBadgeV867.ready{
+  background:rgba(116,240,160,.18);
+  border:1px solid rgba(116,240,160,.36);
+  color:#c7ffd8;
+}
+.routeStatusBadgeV867.condition{
+  background:rgba(255,218,110,.16);
+  border:1px solid rgba(255,218,110,.34);
+  color:#ffe5a6;
+}
+.routeStatusBadgeV867.missing{
+  background:rgba(160,174,198,.10);
+  border:1px solid rgba(180,190,210,.18);
+  color:#c7d0de;
+}
+.routeDiscoveryBadgeV867.known{
+  background:rgba(110,231,255,.12);
+  border:1px solid rgba(110,231,255,.22);
+  color:#d8f8ff;
+}
+.routeDiscoveryBadgeV867.secret{
+  background:rgba(181,140,255,.12);
+  border:1px solid rgba(181,140,255,.22);
+  color:#e3d5ff;
+}
+.routeStatusPanelV867 small{
+  color:#b9c5d6;
+  font-size:11px;
+  line-height:1.35;
+}
+.routeRecipeV75.status-ready .recipeSetBtn{
+  box-shadow:0 0 0 1px rgba(116,240,160,.16),0 10px 20px rgba(0,0,0,.18);
+}
+.routeRecipeV75.status-missing .recipeSetBtn:disabled{
+  opacity:.48;
+}
+.routeRecipeV75.status-condition .rareLock{
+  color:#ffe0a2;
+}
+@media(max-width:520px){
+  .routeStatusMainV867{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:5px;
+  }
+  .routeStatusBadgeV867,
+  .routeDiscoveryBadgeV867{
+    min-height:23px;
+    font-size:10px;
+  }
+}

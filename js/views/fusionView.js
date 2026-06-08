@@ -234,14 +234,38 @@
       </div>`;
     }
 
-    function routeStatusHtml(r,setStatus){
+    function missingMaterialText(r){
+      const parents = r.parents || [];
+      const p0 = parents[0] || "";
+      const p1 = parents[1] || "";
+      if(p0 === p1){
+        const have = unprotectedOwned(p0).length;
+        const need = Math.max(0,2 - have);
+        return need > 0 ? `${safeDef(p0).name}があと${need}体必要` : "同種素材を2体用意しよう";
+      }
+      const missing = [p0,p1].filter(id=>!unprotectedOwned(id).length).map(id=>safeDef(id).name);
+      return missing.length ? `${missing.join(" / ")}が不足` : "素材を確認しよう";
+    }
+
+    function routeStatusInfo(r,setStatus){
       if(!setStatus.ok){
-        return `<div class="routeStatus bad">素材不足</div>`;
+        return {key:"missing",label:"素材不足",detail:missingMaterialText(r)};
       }
       if(setStatus.locked){
-        return `<div class="routeStatus warn">条件未達：${U.esc(setStatus.reason || "条件確認")}</div>`;
+        return {key:"condition",label:"Lv条件不足",detail:setStatus.reason || "親の平均Lvやランク条件を満たしていません"};
       }
-      return `<div class="routeStatus good">作成可能</div>`;
+      return {key:"ready",label:"今作れる",detail:"素材と条件を満たしています"};
+    }
+
+    function routeStatusHtml(r,setStatus,resultKnown){
+      const info = routeStatusInfo(r,setStatus);
+      return `<div class="routeStatusPanelV867 ${info.key}">
+        <div class="routeStatusMainV867">
+          <span class="routeStatusBadgeV867 ${info.key}">${U.esc(info.label)}</span>
+          <span class="routeDiscoveryBadgeV867 ${resultKnown ? "known" : "secret"}">${resultKnown ? "発見済み" : "未発見"}</span>
+        </div>
+        <small>${U.esc(info.detail)}</small>
+      </div>`;
     }
 
     function canMakeRecipe(r){
@@ -345,13 +369,14 @@
           const cond = `<div class="tiny rareLock">条件：${U.esc(condText)}</div>`;
           const note = r.note ? `<div class="tiny recipeNote">${U.esc(r.note)}</div>` : "";
           const resultKnown = discovered[r.result] || scouted[r.result];
-          const status = resultKnown ? `<span class="type">発見済み</span>` : `<span class="tag">未発見</span>`;
           const setStatus = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false,label:"素材不足",cls:""};
+          const statusInfo = routeStatusInfo(r,setStatus);
+          const status = resultKnown ? `<span class="type">発見済み</span>` : `<span class="tag">未発見</span>`;
           const recipeStatus = !setStatus.ok ? "missing" : setStatus.locked ? "condition" : "ready";
           const searchText = [p0,p1,r.result,p0d.name,p1d.name,rd.name,r.note || ""].join(" ");
           const setButton = `<button class="${setStatus.cls || "ghost"} recipeSetBtn" ${setStatus.ok ? "" : "disabled"} onclick="Game.setFusionFromRecipe('${U.esc(r.recipeKey || [p0,p1].sort().join("+"))}')">${U.esc(setStatus.label)}</button>`;
-          return `<div class="recipe routeRecipeV75 ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
-            <div class="routeStatusWrap">${routeStatusHtml(r,setStatus)}</div>
+          return `<div class="recipe routeRecipeV75 status-${statusInfo.key} ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${!resultKnown ? "undiscoveredRecipeV867" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
+            <div class="routeStatusWrap">${routeStatusHtml(r,setStatus,resultKnown)}</div>
             <div class="routeParents">
               <div class="routeParentBox">
                 <div>${safeMonster(p0,'miniFace')} ${U.esc(p0d.name)} ${V.sizeBadge ? V.sizeBadge(p0d,"miniSize") : `<span class="sizeBadge miniSize">🧩 ${p0d.size || 1}枠</span>`}</div>
