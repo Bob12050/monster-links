@@ -292,6 +292,7 @@
 
         <div class="actions dexDetailActionsV83">
           ${isGoal ? `<button class="green" onclick="Game.closeModal();Game.openFusionGoal('${id}')">目標の進捗を見る</button>` : ""}
+          <button class="primary" onclick="Game.openDexArtViewer('${id}')">大きく鑑賞</button>
           <button class="gold" onclick="Game.closeModal();Game.setView('fusion')">配合画面を見る</button>
           <button onclick="Game.closeModal()">閉じる</button>
         </div>
