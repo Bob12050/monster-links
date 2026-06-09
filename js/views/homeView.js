@@ -75,7 +75,7 @@
           </button>
           <button class="hubPlaceV82 hubFusionPlaceV82" onclick="Game.setView('fusion')">
             <span class="hubIconV82">🔮</span>
-            <span><b>配合研究所</b><small>新しい仲間を生み出す</small></span>
+            <span><b>配合研究所</b><small>新しい仲間を作る</small></span>
             <em>${state.records?.fusions || 0} 回</em>
           </button>
           <button class="hubPlaceV82 hubArenaPlaceV82" onclick="Game.setView('arena')">

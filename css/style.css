@@ -7053,7 +7053,7 @@ button:hover:before{
   background:#122740;border:1px solid rgba(255,255,255,.24);
   color:#cbeaff;font-size:7px;font-weight:1000;text-shadow:none;
 }
-.worldNodeV851 b{display:block;margin-top:6px;font-size:10px;white-space:nowrap}
+.worldNodeV851 b{display:block;margin-top:6px;font-size:10px;white-space:nowrap;text-shadow:0 1px 3px rgba(4,9,20,.95),0 0 6px rgba(4,9,20,.85)}
 .worldNodeV851 small{display:inline-block;margin-top:2px;padding:2px 5px;border-radius:99px;background:rgba(9,23,41,.76);font-size:6px;letter-spacing:.08em}
 .worldNodeV851.cleared .worldNodeIconV851{background:linear-gradient(145deg,#cf9b35,#80601e);border-color:#fff1ad}
 .worldNodeV851.boss .worldNodeIconV851{background:linear-gradient(145deg,#d75868,#7b2339);border-color:#ffd0d5}
