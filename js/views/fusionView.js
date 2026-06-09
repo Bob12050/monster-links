@@ -364,6 +364,7 @@
                   return `<span>${safeMonster(id,"miniFace")}<small>${U.esc(gd.name)}</small><em>${index % 2 === 0 ? "親系譜" : ""}</em></span>`;
                 }).join("")}</div>
                 <small>左2体から${U.esc(p0d.name)}、右2体から${U.esc(p1d.name)}を作って最終配合します。</small>
+                <button class="fourTreeOpenBtnV1" onclick="Game.openFourFusionTree('${U.esc(r.recipeKey)}')">系譜図を開く</button>
               </div>`
             : "";
           const resultKnown = discovered[r.result] || scouted[r.result];
@@ -408,9 +409,79 @@
     </div>`;
   }
 
+  function fourFusionTreeHtml(recipe,progress){
+    const result = S.def(recipe.result);
+    const known = id=>!!S.state.dex?.discovered?.[id];
+    const dexButton = id=>known(id)
+      ? `<button class="fourTreeDexBtnV1" onclick="Game.openDexDetail('${id}')">図鑑</button>`
+      : "";
+    const monsterNode = (id,state,label,detail="")=>`<div class="fourTreeNodeV1 ${state}">
+      ${V.monsterInline(id,"fourTreeFaceV1")}
+      <div><b>${U.esc(S.def(id).name)}</b><span>${U.esc(label)}</span>${detail ? `<small>${U.esc(detail)}</small>` : ""}</div>
+      ${dexButton(id)}
+    </div>`;
+    const branchHtml = branch=>{
+      const grandparentNodes = branch.grandparents.map(item=>{
+        const state = item.ready ? "ready" : item.locked ? "condition" : "missing";
+        const label = item.ready ? "所持済み" : item.locked ? `保護中 ${item.locked}体` : "未所持";
+        return monsterNode(item.id,state,label);
+      }).join('<span class="fourTreePlusV1">＋</span>');
+      let parentState = "missing";
+      let parentLabel = "未作成";
+      let parentDetail = "";
+      if(branch.ready){
+        parentState = "ready";
+        parentLabel = "系譜適合";
+        parentDetail = `Lv${branch.best?.level || 1}`;
+      }else if(branch.compatibleLocked){
+        parentState = "condition";
+        parentLabel = "系譜適合・保護中";
+        parentDetail = `${branch.compatibleLocked}体`;
+      }else if(branch.wrongLineage){
+        parentState = "wrong";
+        parentLabel = "系譜違い";
+        parentDetail = `${branch.wrongLineage}体所持`;
+      }
+      return `<section class="fourTreeBranchV1">
+        <div class="fourTreeGrandparentsV1">${grandparentNodes}</div>
+        <div class="fourTreeConnectorV1"><span>配合</span></div>
+        ${monsterNode(branch.parentId,parentState,parentLabel,parentDetail)}
+        ${!branch.ready && branch.intermediateRecipe
+          ? `<button class="fourTreeActionV1" onclick="Game.closeModal();Game.openFourFusionStep('${recipe.recipeKey}',${branch.index})">この中間素材を作る</button>`
+          : ""}
+      </section>`;
+    };
+    const finalState = progress.ready ? "ready" : progress.stage === "condition" ? "condition" : "missing";
+    return `<div class="modalBg" onclick="Game.closeModal(event)">
+      <div class="modal fourFusionTreeModalV1" onclick="event.stopPropagation()">
+        <header class="fourFusionTreeHeadV1">
+          <div><span>FOUR-MONSTER LINEAGE</span><h2>4体配合 系譜図</h2><p>${U.esc(recipe.note || "")}</p></div>
+          <button onclick="Game.closeModal()">閉じる</button>
+        </header>
+        <div class="fourTreeLegendV1">
+          <span class="ready">所持・系譜適合</span>
+          <span class="condition">条件確認・保護中</span>
+          <span class="wrong">系譜違い</span>
+          <span class="missing">不足</span>
+        </div>
+        <div class="fourTreeCanvasV1">
+          <div class="fourTreeBranchesV1">${progress.branches.map(branchHtml).join("")}</div>
+          <div class="fourTreeMergeV1"><span>2系統を重ねる</span></div>
+          <div class="fourTreeResultV1">
+            ${monsterNode(recipe.result,finalState,progress.label,result.rank + "ランク")}
+            ${progress.status?.ok
+              ? `<button class="gold" onclick="Game.closeModal();Game.openFourFusionStep('${recipe.recipeKey}','final')">${progress.status.locked ? "最終配合を確認" : "最終配合をセット"}</button>`
+              : ""}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
   Object.assign(V, {
     fusionHtml,
-    recipeBookHtml
+    recipeBookHtml,
+    fourFusionTreeHtml
   });
 
 })();

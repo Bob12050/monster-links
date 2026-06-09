@@ -181,6 +181,24 @@
     G.toast?.(`${D.MONSTERS[branch.parentId].name}の祖父母素材が不足しています`);
   }
 
+  function openFourFusionTree(recipeKey){
+    const recipe = (G.fusionRecipeEntries?.() || []).find(item=>item.recipeKey === recipeKey && item.group === "four");
+    const progress = recipe && G.fourFusionProgress?.(recipe);
+    const html = recipe && progress && window.MonsterLinksViews?.fourFusionTreeHtml?.(recipe,progress);
+    if(!html){
+      G.toast?.("4体配合の系譜図を開けませんでした");
+      return;
+    }
+    let modal = document.getElementById("modal");
+    if(!modal){
+      modal = document.createElement("div");
+      modal.id = "modal";
+      document.body.appendChild(modal);
+    }
+    modal.innerHTML = html;
+    G.playSe?.("tap");
+  }
+
   function openFusionGoalDex(id){
     if(!D.MONSTERS[id]) return;
     S.state.view = "dex";
@@ -201,6 +219,7 @@
     prioritizeFusionGoal,
     openFusionGoal,
     openFourFusionStep,
+    openFourFusionTree,
     openFusionGoalDex
   });
 })();

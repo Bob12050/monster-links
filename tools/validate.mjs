@@ -268,6 +268,16 @@ function loadGameData(scriptRefs){
     if(!fusionHtml.includes("fourRecipeSectionV1") || !fusionHtml.includes("fourBodyRecipeV1")){
       fail("4体配合レシピに専用の全幅レイアウトが適用されません");
     }
+    if(!fusionHtml.includes("系譜図を開く") || !fusionHtml.includes("Game.openFourFusionTree")){
+      fail("4体配合レシピから系譜図を開く導線がありません");
+    }
+    const fourTreeHtml = context.MonsterLinksViews.fourFusionTreeHtml(heavenscaleRecipe,fourProgress);
+    if(!fourTreeHtml.includes("4体配合 系譜図") || !fourTreeHtml.includes("fourTreeBranchesV1") || !fourTreeHtml.includes("2系統を重ねる")){
+      fail("4体配合の系譜図モーダルを生成できません");
+    }
+    if(!fourTreeHtml.includes("この中間素材を作る") && !fourTreeHtml.includes("最終配合をセット")){
+      fail("4体配合の系譜図に配合操作がありません");
+    }
 
     const modal = {innerHTML:""};
     context.document = {
