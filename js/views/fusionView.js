@@ -364,7 +364,7 @@
                   return `<span>${safeMonster(id,"miniFace")}<small>${U.esc(gd.name)}</small><em>${index % 2 === 0 ? "親系譜" : ""}</em></span>`;
                 }).join("")}</div>
                 <small>左2体から${U.esc(p0d.name)}、右2体から${U.esc(p1d.name)}を作って最終配合します。</small>
-                <button class="fourTreeOpenBtnV1" onclick="Game.openFourFusionTree('${U.esc(r.recipeKey)}')">系譜図を開く</button>
+                <button class="fourTreeOpenBtnV1" onclick="Game.openFusionTree('${U.esc(r.recipeKey)}')">系譜図を開く</button>
               </div>`
             : "";
           const resultKnown = discovered[r.result] || scouted[r.result];
@@ -395,6 +395,7 @@
               <div class="routeSizeLineV81">親合計${parentSizeTotal}枠 → 子${childSize}枠</div>
             </div>
             ${cond}${note}
+            ${r.group !== "four" ? `<button class="fusionTreeOpenBtnV1" onclick="Game.openFusionTree('${U.esc(r.recipeKey)}')">配合図を開く</button>` : ""}
             <div class="recipeSetArea">${setButton}</div>
           </div>`;
         }).join("")}</div>
@@ -478,10 +479,69 @@
     </div>`;
   }
 
+  function twoFusionTreeHtml(recipe,status){
+    const all = S.owned();
+    const resultKnown = !!(S.state.dex?.discovered?.[recipe.result] || S.state.dex?.scouted?.[recipe.result]);
+    const sameParent = recipe.parents[0] === recipe.parents[1];
+    const known = id=>!!S.state.dex?.discovered?.[id];
+    const dexButton = id=>known(id)
+      ? `<button class="fourTreeDexBtnV1" onclick="Game.openDexDetail('${id}')">図鑑</button>`
+      : "";
+    const node = (id,state,label,detail="",secret=false)=>`<div class="fourTreeNodeV1 ${state}">
+      ${secret ? `<div class="fourTreeFaceV1 fourTreeSecretV1">？</div>` : V.monsterInline(id,"fourTreeFaceV1")}
+      <div><b>${secret ? "？？？？" : U.esc(S.def(id).name)}</b><span>${U.esc(label)}</span>${detail ? `<small>${U.esc(detail)}</small>` : ""}</div>
+      ${secret ? "" : dexButton(id)}
+    </div>`;
+    const parentNode = (id,index)=>{
+      const owned = all.filter(monster=>monster.id === id);
+      const usable = owned.filter(monster=>!monster.locked).sort((a,b)=>(b.level || 1)-(a.level || 1));
+      const requiredAtSlot = sameParent ? index + 1 : 1;
+      if(usable.length >= requiredAtSlot){
+        const monster = usable[index] || usable[0];
+        return node(id,"ready","所持済み",`Lv${monster?.level || 1}`);
+      }
+      if(owned.length >= requiredAtSlot){
+        return node(id,"condition","保護中",`${owned.length - usable.length}体`);
+      }
+      return node(id,"missing","不足",`${usable.length}/${requiredAtSlot}体`);
+    };
+    const resultState = status.ok && !status.locked ? "ready" : status.ok ? "condition" : "missing";
+    const resultLabel = status.ok && !status.locked ? "配合可能" : status.ok ? "条件未達" : "素材不足";
+    const requirement = window.MonsterLinksGame.fusionRequirementText?.(recipe.result,recipe.minAvg) || "条件なし";
+    return `<div class="modalBg" onclick="Game.closeModal(event)">
+      <div class="modal fourFusionTreeModalV1 twoFusionTreeModalV1" onclick="event.stopPropagation()">
+        <header class="fourFusionTreeHeadV1">
+          <div><span>FUSION ROUTE</span><h2>2体配合 配合図</h2><p>${U.esc(recipe.note || D.RECIPE_GROUPS?.[recipe.group]?.name || "固定配合")}</p></div>
+          <button onclick="Game.closeModal()">閉じる</button>
+        </header>
+        <div class="fourTreeLegendV1">
+          <span class="ready">所持・配合可能</span>
+          <span class="condition">条件確認・保護中</span>
+          <span class="missing">不足</span>
+        </div>
+        <div class="fourTreeCanvasV1 twoTreeCanvasV1">
+          <div class="twoTreeParentsV1">
+            ${parentNode(recipe.parents[0],0)}
+            <span class="fourTreePlusV1">＋</span>
+            ${parentNode(recipe.parents[1],sameParent ? 1 : 0)}
+          </div>
+          <div class="twoTreeConnectorV1"><span>配合</span></div>
+          <div class="fourTreeResultV1">
+            ${node(recipe.result,resultState,resultLabel,requirement,!resultKnown)}
+            ${status.ok
+              ? `<button class="gold" onclick="Game.closeModal();Game.setFusionFromRecipe('${recipe.recipeKey}')">${status.locked ? "配合条件を確認" : "この配合をセット"}</button>`
+              : ""}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
   Object.assign(V, {
     fusionHtml,
     recipeBookHtml,
-    fourFusionTreeHtml
+    fourFusionTreeHtml,
+    twoFusionTreeHtml
   });
 
 })();

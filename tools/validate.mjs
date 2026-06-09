@@ -268,8 +268,19 @@ function loadGameData(scriptRefs){
     if(!fusionHtml.includes("fourRecipeSectionV1") || !fusionHtml.includes("fourBodyRecipeV1")){
       fail("4体配合レシピに専用の全幅レイアウトが適用されません");
     }
-    if(!fusionHtml.includes("系譜図を開く") || !fusionHtml.includes("Game.openFourFusionTree")){
+    if(!fusionHtml.includes("系譜図を開く") || !fusionHtml.includes("Game.openFusionTree")){
       fail("4体配合レシピから系譜図を開く導線がありません");
+    }
+    if(!fusionHtml.includes("配合図を開く")){
+      fail("2体配合レシピから配合図を開く導線がありません");
+    }
+    const twoRecipe = context.MonsterLinksGame.fusionRecipeEntries().find(recipe=>recipe.group !== "four" && recipe.result === "aquan");
+    const twoTreeHtml = context.MonsterLinksViews.twoFusionTreeHtml(twoRecipe,context.MonsterLinksGame.recipeSetStatus(twoRecipe));
+    if(!twoTreeHtml.includes("2体配合 配合図") || !twoTreeHtml.includes("twoTreeParentsV1") || !twoTreeHtml.includes("配合")){
+      fail("2体配合の配合図モーダルを生成できません");
+    }
+    if(!twoTreeHtml.includes("リーフリン") || !twoTreeHtml.includes("ぷるミン")){
+      fail("2体配合図に親モンスター2体が表示されません");
     }
     const fourTreeHtml = context.MonsterLinksViews.fourFusionTreeHtml(heavenscaleRecipe,fourProgress);
     if(!fourTreeHtml.includes("4体配合 系譜図") || !fourTreeHtml.includes("fourTreeBranchesV1") || !fourTreeHtml.includes("2系統を重ねる")){

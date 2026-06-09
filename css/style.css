@@ -7171,6 +7171,7 @@ button:hover:before{
   word-break:normal;
 }
 .fourTreeOpenBtnV1{width:100%;margin-top:8px}
+.fusionTreeOpenBtnV1{width:100%;margin-top:8px}
 .fourGrandparentGridV1 small{margin-top:3px;font-size:7px;line-height:1.25}
 .fourGrandparentGridV1 em{font-size:6px;color:#aebbd0;font-style:normal}
 .dexFourRouteV1 span{display:block;margin-top:4px;color:#dbe5f4;font-size:9px;line-height:1.5}
@@ -7279,11 +7280,41 @@ button:hover:before{
 .fourTreeMergeV1 span{position:relative;padding:3px 8px;border-radius:99px;background:#192440}
 .fourTreeResultV1{width:min(470px,100%);margin:auto;display:grid;gap:8px}
 .fourTreeResultV1 > button{min-height:43px}
+.twoFusionTreeModalV1{width:min(820px,100%)}
+.twoTreeCanvasV1{padding-top:18px}
+.twoTreeParentsV1{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:12px;
+  align-items:center;
+}
+.twoTreeConnectorV1{
+  position:relative;
+  height:64px;
+  display:grid;
+  place-items:center;
+  color:#e3c8ff;
+  font-size:8px;
+  font-weight:900;
+}
+.twoTreeConnectorV1:before{
+  content:"";
+  position:absolute;
+  inset:0 25%;
+  border-left:1px solid rgba(202,145,255,.42);
+  border-right:1px solid rgba(202,145,255,.42);
+  border-bottom:1px solid rgba(202,145,255,.42);
+  border-radius:0 0 18px 18px;
+}
+.twoTreeConnectorV1 span{position:relative;padding:3px 8px;border-radius:99px;background:#192440}
+.fourTreeSecretV1{display:grid;place-items:center;color:#b9c5d8;font-size:24px}
 @media(max-width:700px){
   .fourTreeBranchesV1{grid-template-columns:1fr}
   .fourTreeMergeV1:before{inset:0 50%;border-right:0;border-bottom:0;border-radius:0}
   .fourTreeGrandparentsV1{grid-template-columns:1fr}
   .fourTreePlusV1{line-height:1}
+  .twoTreeParentsV1{grid-template-columns:1fr}
+  .twoTreeConnectorV1:before{inset:0 50%;border-right:0;border-bottom:0;border-radius:0}
 }
 @media(max-width:420px){
   .fourTreeNodeV1{grid-template-columns:48px minmax(0,1fr)}

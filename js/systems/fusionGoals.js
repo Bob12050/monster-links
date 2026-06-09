@@ -199,6 +199,32 @@
     G.playSe?.("tap");
   }
 
+  function openFusionTree(recipeKey){
+    const recipe = (G.fusionRecipeEntries?.() || []).find(item=>item.recipeKey === recipeKey);
+    if(!recipe){
+      G.toast?.("配合図を開けませんでした");
+      return;
+    }
+    if(recipe.group === "four"){
+      openFourFusionTree(recipeKey);
+      return;
+    }
+    const status = G.recipeSetStatus?.(recipe) || {ok:false,locked:false};
+    const html = window.MonsterLinksViews?.twoFusionTreeHtml?.(recipe,status);
+    if(!html){
+      G.toast?.("配合図を開けませんでした");
+      return;
+    }
+    let modal = document.getElementById("modal");
+    if(!modal){
+      modal = document.createElement("div");
+      modal.id = "modal";
+      document.body.appendChild(modal);
+    }
+    modal.innerHTML = html;
+    G.playSe?.("tap");
+  }
+
   function openFusionGoalDex(id){
     if(!D.MONSTERS[id]) return;
     S.state.view = "dex";
@@ -220,6 +246,7 @@
     openFusionGoal,
     openFourFusionStep,
     openFourFusionTree,
+    openFusionTree,
     openFusionGoalDex
   });
 })();
