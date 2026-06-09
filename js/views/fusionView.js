@@ -338,7 +338,7 @@
       const groupEntries = entries.filter(r=>r.group === group);
       if(!groupEntries.length) return "";
       const info = D.RECIPE_GROUPS?.[group] || {name:group,desc:""};
-      return `<section class="recipeSection ${group === "rare" ? "rareRecipeSection" : ""}">
+      return `<section class="recipeSection ${group === "rare" ? "rareRecipeSection" : ""} ${group === "four" ? "fourRecipeSectionV1" : ""}">
         <div class="stageTop recipeGroupHead">
           <div><h3>${U.esc(info.name)}</h3><p class="tiny">${U.esc(info.desc || "")}</p></div>
           <span class="tag">${groupEntries.length}件</span>
@@ -372,7 +372,7 @@
           const recipeStatus = !setStatus.ok ? "missing" : setStatus.locked ? "condition" : "ready";
           const searchText = [p0,p1,r.result,p0d.name,p1d.name,rd.name,r.note || ""].join(" ");
           const setButton = `<button class="${setStatus.cls || "ghost"} recipeSetBtn" ${setStatus.ok ? "" : "disabled"} onclick="Game.setFusionFromRecipe('${U.esc(r.recipeKey || [p0,p1].sort().join("+"))}')">${U.esc(setStatus.label)}</button>`;
-          return `<div class="recipe routeRecipeV75 ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
+          return `<div class="recipe routeRecipeV75 ${r.group === "four" ? "fourBodyRecipeV1" : ""} ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
             <div class="routeStatusWrap">${routeStatusHtml(r,setStatus)}</div>
             ${fourRoute}
             <div class="routeParents">

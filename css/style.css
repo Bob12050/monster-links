@@ -3567,6 +3567,8 @@ button:hover:before{
 }
 .routeRecipeV75{
   position:relative;
+  display:block;
+  min-width:0;
 }
 .routeRecipeV75.canMake{
   border-color:rgba(100,255,170,.32)!important;
@@ -7127,6 +7129,22 @@ button:hover:before{
   border-radius:12px;
   background:rgba(70,39,104,.2);
 }
+.fourRecipeSectionV1 .recipeGrid{grid-template-columns:1fr}
+.fourBodyRecipeV1{
+  width:100%;
+  padding:12px;
+}
+.fourBodyRecipeV1 > *{min-width:0}
+.fourBodyRecipeV1 .routeStatusWrap{display:block}
+.fourBodyRecipeV1 .fourRecipeRouteV1{width:100%}
+.fourBodyRecipeV1 .routeParents{margin-top:10px}
+.fourBodyRecipeV1 .rareLock,
+.fourBodyRecipeV1 .recipeNote{
+  display:block;
+  width:100%;
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
 .fourFusionRouteV1 > b,.fourRecipeRouteV1 > b,.dexFourRouteV1 > b{display:block;color:#ead0ff;font-size:10px}
 .fourFusionRouteV1 > div{
   display:grid;
@@ -7146,11 +7164,18 @@ button:hover:before{
   background:rgba(0,0,0,.2);
   text-align:center;
 }
+.fourBodyRecipeV1 .fourGrandparentGridV1 > span{min-height:78px}
+.fourBodyRecipeV1 .fourGrandparentGridV1 small{
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
 .fourGrandparentGridV1 small{margin-top:3px;font-size:7px;line-height:1.25}
 .fourGrandparentGridV1 em{font-size:6px;color:#aebbd0;font-style:normal}
 .dexFourRouteV1 span{display:block;margin-top:4px;color:#dbe5f4;font-size:9px;line-height:1.5}
 @media(max-width:520px){
   .fourFusionRouteV1 > div,.fourGrandparentGridV1{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fourBodyRecipeV1{padding:9px}
 }
 
 /* Four-monster fusion goal navigator */

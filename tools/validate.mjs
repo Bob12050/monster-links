@@ -265,6 +265,9 @@ function loadGameData(scriptRefs){
     if(!fusionHtml.includes("結果名・親素材名で検索")) fail("配合リストの検索対象説明がありません");
     if(!fusionHtml.includes('data-recipe-status="')) fail("配合レシピに状態フィルター情報がありません");
     if(!fusionHtml.includes("4体配合") || !fusionHtml.includes("必要な祖父母4体")) fail("配合画面に4体配合ルートが表示されません");
+    if(!fusionHtml.includes("fourRecipeSectionV1") || !fusionHtml.includes("fourBodyRecipeV1")){
+      fail("4体配合レシピに専用の全幅レイアウトが適用されません");
+    }
 
     const modal = {innerHTML:""};
     context.document = {
