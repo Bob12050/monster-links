@@ -222,6 +222,18 @@ function loadGameData(scriptRefs){
   if(wrongFourPreview?.fourBody || wrongFourPreview?.id === "heavenscale"){
     fail("系譜を持たない中間素材から4体配合が成立しました");
   }
+  const heavenscaleRecipe = context.MonsterLinksGame.fusionRecipeEntries().find(recipe=>recipe.group === "four" && recipe.result === "heavenscale");
+  const fourProgress = context.MonsterLinksGame.fourFusionProgress(heavenscaleRecipe);
+  if(fourProgress?.stage !== "ready" || !fourProgress.branches.every(branch=>branch.ready)){
+    fail("4体配合ナビが正しい中間素材2体を最終配合可能と判定しません");
+  }
+  if(fourProgress.branches.some(branch=>branch.wrongLineage !== 1)){
+    fail("4体配合ナビが系譜違いの中間素材を検出しません");
+  }
+  const fourSetStatus = context.MonsterLinksGame.recipeSetStatus(heavenscaleRecipe);
+  if(!fourSetStatus.ok || fourSetStatus.locked || !fourSetStatus.uids.includes(fourParentA.uid) || !fourSetStatus.uids.includes(fourParentB.uid)){
+    fail("4体配合の自動選択が系譜適合個体を優先しません");
+  }
 
   context.MonsterLinksViews = {
     monsterInline(id){return `<span>${id}</span>`;},
@@ -468,6 +480,44 @@ function loadGameData(scriptRefs){
     if(!goalsPanel.includes("配合目標") || !goalsPanel.includes("今すぐ配合可能")) fail("配合画面に目標進捗が表示されません");
     const goalHome = context.MonsterLinksViews.homeFusionGoalHtml();
     if(!goalHome.includes("PRIORITY FUSION GOAL") || !goalHome.includes("アクアン")) fail("拠点に最優先の配合目標が表示されません");
+
+    const boxBeforeFourGoal = context.MonsterLinksState.state.box.slice();
+    const dexBeforeFourGoal = {
+      discovered:{...context.MonsterLinksState.state.dex.discovered},
+      scouted:{...context.MonsterLinksState.state.dex.scouted}
+    };
+    context.MonsterLinksState.state.box.push(fourParentA,fourParentB,wrongLineageA,wrongLineageB);
+    context.MonsterLinksState.state.fusionGoals = ["heavenscale"];
+    const fourGoalInfo = context.MonsterLinksGame.fusionGoalInfo("heavenscale");
+    const fourGoalsPanel = context.MonsterLinksViews.fusionGoalsPanelHtml();
+    if(!fourGoalInfo?.best?.four || !fourGoalInfo.best.ready) fail("4体配合目標の進捗が取得できません");
+    if(!fourGoalsPanel.includes("4体配合ナビ") || !fourGoalsPanel.includes("系譜適合") || !fourGoalsPanel.includes("最終配合をセット")){
+      fail("配合目標画面に4体配合ナビと操作ボタンが表示されません");
+    }
+    context.MonsterLinksGame.openFourFusionStep(heavenscaleRecipe.recipeKey,"final");
+    if(context.MonsterLinksGame.fusionPick.length !== 2 || context.MonsterLinksGame.fusionForcedRecipeKey !== heavenscaleRecipe.recipeKey){
+      fail("4体配合ナビから最終配合をセットできません");
+    }
+    context.MonsterLinksGame._clearFusionPickNoRender();
+
+    context.MonsterLinksState.state.box = heavenscaleRecipe.grandparents.map(id=>context.MonsterLinksState.makeMonster(id,60));
+    const intermediateGoalInfo = context.MonsterLinksGame.fusionGoalInfo("heavenscale");
+    const intermediateGoalsPanel = context.MonsterLinksViews.fusionGoalsPanelHtml();
+    if(intermediateGoalInfo?.best?.four?.stage !== "intermediates" || !intermediateGoalsPanel.includes("この中間素材を作る")){
+      fail("祖父母が揃った4体配合目標に中間素材作成ボタンが表示されません");
+    }
+    const firstIntermediateRecipe = intermediateGoalInfo.best.four.branches[0].intermediateRecipe;
+    context.MonsterLinksGame.openFourFusionStep(heavenscaleRecipe.recipeKey,0);
+    if(context.MonsterLinksGame.fusionForcedRecipeKey !== firstIntermediateRecipe?.recipeKey){
+      fail("4体配合ナビから中間素材の配合をセットできません");
+    }
+    context.MonsterLinksGame._clearFusionPickNoRender();
+
+    context.MonsterLinksState.state.box = boxBeforeFourGoal;
+    context.MonsterLinksState.state.dex.discovered = dexBeforeFourGoal.discovered;
+    context.MonsterLinksState.state.dex.scouted = dexBeforeFourGoal.scouted;
+    context.MonsterLinksState.state.fusionGoals = ["aquan"];
+
     context.MonsterLinksGame.openFusionGoal("aquan");
     if(context.MonsterLinksState.state.view !== "fusion" || context.MonsterLinksGame.fusionPick.length !== 2){
       fail("作成可能な配合目標から親2体をセットできません");

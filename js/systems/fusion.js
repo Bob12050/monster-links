@@ -40,16 +40,19 @@
     return Array.isArray(m?.lineage) ? m.lineage.filter(id=>D.MONSTERS?.[id]).slice(0,2) : [];
   }
 
+  function fourParentLineageMatches(recipe,monster,parentIndex){
+    if(recipe?.group !== "four" || !monster || ![0,1].includes(parentIndex)) return false;
+    if(monster.id !== recipe.parents?.[parentIndex]) return false;
+    const actual = sortedIds(monsterLineage(monster));
+    const required = sortedIds(recipe.grandparents?.slice(parentIndex * 2,parentIndex * 2 + 2));
+    return actual.length === 2 && required.length === 2 && actual.every((id,index)=>id === required[index]);
+  }
+
   function fourLineageMatches(recipe,a,b){
     if(recipe?.group !== "four" || !Array.isArray(recipe.grandparents) || recipe.grandparents.length !== 4) return false;
     if(recipeKeyFromIds(a?.id,b?.id) !== recipeKeyFromIds(recipe.parents?.[0],recipe.parents?.[1])) return false;
-    const pairMatches = (monster,parentIndex) => {
-      if(monster?.id !== recipe.parents[parentIndex]) return false;
-      const actual = sortedIds(monsterLineage(monster));
-      const required = sortedIds(recipe.grandparents.slice(parentIndex * 2,parentIndex * 2 + 2));
-      return actual.length === 2 && actual.every((id,index)=>id === required[index]);
-    };
-    return (pairMatches(a,0) && pairMatches(b,1)) || (pairMatches(a,1) && pairMatches(b,0));
+    return (fourParentLineageMatches(recipe,a,0) && fourParentLineageMatches(recipe,b,1))
+      || (fourParentLineageMatches(recipe,a,1) && fourParentLineageMatches(recipe,b,0));
   }
 
   function fusionRecipeEntries(){
@@ -64,6 +67,71 @@
       out.push(Object.assign({recipeKey:key,order:index},r));
     });
     return out;
+  }
+
+  function fourFusionProgress(recipe){
+    if(recipe?.group !== "four" || !Array.isArray(recipe.grandparents) || recipe.grandparents.length !== 4){
+      return null;
+    }
+    const all = S.owned();
+    const entries = fusionRecipeEntries();
+    const branches = [0,1].map(index=>{
+      const parentId = recipe.parents[index];
+      const grandparentIds = recipe.grandparents.slice(index * 2,index * 2 + 2);
+      const intermediateOwned = all.filter(monster=>monster.id === parentId);
+      const compatible = intermediateOwned.filter(monster=>fourParentLineageMatches(recipe,monster,index));
+      const usable = compatible.filter(monster=>!monster.locked).sort((a,b)=>(b.level || 1)-(a.level || 1));
+      const compatibleLocked = compatible.filter(monster=>monster.locked);
+      const wrongLineage = intermediateOwned.filter(monster=>!fourParentLineageMatches(recipe,monster,index));
+      const grandparents = grandparentIds.map((id,slot)=>{
+        const needAtSlot = grandparentIds.slice(0,slot + 1).filter(value=>value === id).length;
+        const owned = all.filter(monster=>monster.id === id);
+        const usableOwned = owned.filter(monster=>!monster.locked);
+        return {
+          id,
+          have:usableOwned.length,
+          locked:owned.length - usableOwned.length,
+          ready:usableOwned.length >= needAtSlot
+        };
+      });
+      const intermediateRecipe = entries.find(candidate=>
+        candidate.group !== "four"
+        && candidate.result === parentId
+        && candidate.recipeKey === recipeKeyFromIds(grandparentIds[0],grandparentIds[1])
+      ) || null;
+      return {
+        index,
+        parentId,
+        grandparentIds,
+        grandparents,
+        grandparentsReady:grandparents.every(item=>item.ready),
+        compatible:compatible.length,
+        compatibleLocked:compatibleLocked.length,
+        wrongLineage:wrongLineage.length,
+        ready:usable.length > 0,
+        best:usable[0] || null,
+        intermediateRecipe
+      };
+    });
+    const status = recipeSetStatus(recipe);
+    const bothReady = branches.every(branch=>branch.ready);
+    let stage = "grandparents";
+    let label = "祖父母を集めよう";
+    if(bothReady && status.ok && !status.locked){
+      stage = "ready";
+      label = "最終配合可能";
+    }else if(bothReady || branches.every(branch=>branch.ready || branch.compatibleLocked > 0)){
+      stage = "condition";
+      label = "中間素材を育成・保護解除";
+    }else if(branches.every(branch=>branch.ready || branch.grandparentsReady)){
+      stage = "intermediates";
+      label = "中間素材を作ろう";
+    }
+    const progress = branches.reduce((sum,branch)=>{
+      if(branch.ready || branch.compatibleLocked) return sum + 3;
+      return sum + branch.grandparents.filter(item=>item.ready).length;
+    },0);
+    return {recipe,branches,status,stage,label,ready:stage === "ready",progress,required:6};
   }
 
   function findRecipe(a,b){
@@ -566,8 +634,8 @@
     const all = S.owned();
     const p0 = recipe.parents[0];
     const p1 = recipe.parents[1];
-    const list0 = all.filter(m=>m.id === p0 && !m.locked);
-    const list1 = all.filter(m=>m.id === p1 && !m.locked);
+    const list0 = all.filter(m=>m.id === p0 && !m.locked && (recipe.group !== "four" || fourParentLineageMatches(recipe,m,0)));
+    const list1 = all.filter(m=>m.id === p1 && !m.locked && (recipe.group !== "four" || fourParentLineageMatches(recipe,m,1)));
 
     if(p0 === p1){
       if(list0.length < 2) return {ok:false,label:"素材不足",cls:"",uids:[]};
@@ -813,6 +881,7 @@
     clearFusionSkills,
     recommendedFusions,
     fusionRecipeEntries,
+    fourFusionProgress,
     recipeSetStatus,
     fusionRequirementText,
     fusionPartyOutcome,
