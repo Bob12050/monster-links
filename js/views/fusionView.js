@@ -17,7 +17,7 @@
     <main>
       <section class="hero fusionHeroV34">
         <h1>モンスター配合</h1>
-        <p>仲間2体を選んで新しい仲間を生み出します。配合は「仲間」から進む育成要素です。</p>
+        <p>仲間2体を選んで新しい仲間を生み出します。指定された系譜を重ねる4体配合にも対応しています。</p>
         <div class="actions fusionBackActions">
           <button onclick="Game.setView('monsters')">仲間へ戻る</button>
           <button onclick="Game.setView('help')">遊び方</button>
@@ -74,11 +74,14 @@
         </div>`;
       }
       const d = S.def(m.id);
+      const lineage = Array.isArray(m.lineage) && m.lineage.length === 2
+        ? ` / 系譜：${m.lineage.map(id=>S.def(id)?.name || id).join("＋")}`
+        : "";
       return `<div class="selectedParentSlot">
         ${V.monsterInline(m,"miniFace")}
         <div>
           <b>親${index}: ${U.esc(m.nickname)}</b>
-          <div class="tiny">${U.esc(d.name)} / ${d.rank} / ${V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`} / Lv${m.level}${m.locked ? " / 🔒保護中" : ""}</div>
+          <div class="tiny">${U.esc(d.name)} / ${d.rank} / ${V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`} / Lv${m.level}${U.esc(lineage)}${m.locked ? " / 🔒保護中" : ""}</div>
         </div>
       </div>`;
     };
@@ -115,10 +118,18 @@
     const lock = prev.locked ? `<div class="tiny rareLock">条件未達：${U.esc(prev.reason)}</div>` : "";
     const note = prev.note ? `<div class="tiny">${U.esc(prev.note)}</div>` : "";
     const recipeBadge = prev.recipe
-      ? (prev.forcedRecipe
+      ? (prev.fourBody
+        ? `<div class="fusionGuarantee fourFusionNotice">✦ 4体配合成立：中間素材2体の祖父母系譜が一致しています</div>`
+        : prev.forcedRecipe
         ? `<div class="fusionGuarantee strongFusionNotice">📋 配合リストから選択中：この結果で固定されています</div>`
         : `<div class="fusionGuarantee">✅ 固定レシピ一致：この組み合わせの決まった結果です</div>`)
       : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`;
+    const fourRoute = prev.fourBody && prev.grandparents?.length === 4
+      ? `<div class="fourFusionRouteV1">
+          <b>4体配合の祖父母系譜</b>
+          <div>${prev.grandparents.map(id=>`${V.monsterInline(id,"miniFace")}<span>${U.esc(S.def(id).name)}</span>`).join("")}</div>
+        </div>`
+      : "";
     const outcome = prev.partyOutcome || {};
     const destination = outcome.destination === "party"
       ? `<div class="fusionDestinationV81 party"><b>配合後：パーティ加入予定</b><span>${outcome.afterChildUsed}/${outcome.limit}枠を使用</span></div>`
@@ -139,6 +150,7 @@
           ${largeWarning}
           <div class="fusionGuarantee">🔁 配合後の子はLv1で生まれます。親の個体値・ボーナス・一部スキルは引き継ぎます。</div>
           ${recipeBadge}
+          ${fourRoute}
           ${lock}
           ${note}
           ${fusionBonusHtml(prev)}
@@ -210,7 +222,7 @@
 
   function recipeBookHtml(){
     const entries = window.MonsterLinksGame.fusionRecipeEntries ? window.MonsterLinksGame.fusionRecipeEntries() : (D.RECIPE_LIST || Object.entries(D.RECIPES || {}).map(([key,result])=>({parents:key.split("+"),result,group:"basic"})));
-    const groups = ["basic","advanced","rare"];
+    const groups = ["basic","advanced","rare","four"];
     const discovered = S.state.dex?.discovered || {};
     const scouted = S.state.dex?.scouted || {};
     const owned = S.owned();
@@ -344,6 +356,16 @@
           const condText = window.MonsterLinksGame.fusionRequirementText ? window.MonsterLinksGame.fusionRequirementText(r.result,r.minAvg) : (r.minAvg ? `親平均Lv${r.minAvg}以上` : "条件なし");
           const cond = `<div class="tiny rareLock">条件：${U.esc(condText)}</div>`;
           const note = r.note ? `<div class="tiny recipeNote">${U.esc(r.note)}</div>` : "";
+          const fourRoute = r.group === "four" && r.grandparents?.length === 4
+            ? `<div class="fourRecipeRouteV1">
+                <b>必要な祖父母4体</b>
+                <div class="fourGrandparentGridV1">${r.grandparents.map((id,index)=>{
+                  const gd = safeDef(id);
+                  return `<span>${safeMonster(id,"miniFace")}<small>${U.esc(gd.name)}</small><em>${index % 2 === 0 ? "親系譜" : ""}</em></span>`;
+                }).join("")}</div>
+                <small>左2体から${U.esc(p0d.name)}、右2体から${U.esc(p1d.name)}を作って最終配合します。</small>
+              </div>`
+            : "";
           const resultKnown = discovered[r.result] || scouted[r.result];
           const status = resultKnown ? `<span class="type">発見済み</span>` : `<span class="tag">未発見</span>`;
           const setStatus = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false,label:"素材不足",cls:""};
@@ -352,6 +374,7 @@
           const setButton = `<button class="${setStatus.cls || "ghost"} recipeSetBtn" ${setStatus.ok ? "" : "disabled"} onclick="Game.setFusionFromRecipe('${U.esc(r.recipeKey || [p0,p1].sort().join("+"))}')">${U.esc(setStatus.label)}</button>`;
           return `<div class="recipe routeRecipeV75 ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
             <div class="routeStatusWrap">${routeStatusHtml(r,setStatus)}</div>
+            ${fourRoute}
             <div class="routeParents">
               <div class="routeParentBox">
                 <div>${safeMonster(p0,'miniFace')} ${U.esc(p0d.name)} ${V.sizeBadge ? V.sizeBadge(p0d,"miniSize") : `<span class="sizeBadge miniSize">🧩 ${p0d.size || 1}枠</span>`}</div>

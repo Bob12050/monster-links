@@ -5,7 +5,8 @@
   P.RECIPE_GROUPS = {
     basic:{name:"基本配合",desc:"序盤〜中盤で使いやすい固定配合。まずはここから集めると進めやすいです。"},
     advanced:{name:"上位配合",desc:"B〜Sランクを狙う上位固定配合。新エリアや闘技場攻略向けです。"},
-    rare:{name:"レア特殊配合",desc:"指定モンスター2体に加えて、親の平均Lv条件を満たすと成立する特別な配合です。"}
+    rare:{name:"レア特殊配合",desc:"指定モンスター2体に加えて、親の平均Lv条件を満たすと成立する特別な配合です。"},
+    four:{name:"4体配合",desc:"指定された祖父母4体から中間素材2体を作り、その系譜を持つ2体を配合する終盤向けルートです。"}
   };
 
   P.RECIPE_LIST = [
@@ -95,9 +96,10 @@
     {group:"advanced",parents:["galegryph","thunderlion"],result:"stormdjinn",minAvg:38,note:"雷雲を操る光属性の精霊"},
     {group:"advanced",parents:["shellgolem","solarwyrm"],result:"aethergolem",minAvg:40,note:"天空晶を核に持つ大型ゴーレム"},
     {group:"advanced",parents:["lumenowl","galegryph"],result:"seraphalcon",minAvg:40,note:"聖光をまとう翼系の上位種"},
-    {group:"rare",parents:["stormdjinn","aethergolem"],result:"heavenscale",minAvg:48,note:"天空の雷と大地の核を統べる聖竜"},
+    {group:"four",parents:["stormdjinn","aethergolem"],grandparents:["galegryph","thunderlion","shellgolem","solarwyrm"],result:"heavenscale",minAvg:48,note:"ゲイルグリフ＋サンダーライオン、シェルゴーレム＋ソーラーウィルムの系譜を重ねる4体配合"},
     {group:"rare",parents:["heavenscale","celestiseraph"],result:"zenithdragon",minAvg:55,note:"天頂へ至る天空遺跡の守護竜"},
     {group:"rare",parents:["solarwyrm","celestiseraph"],result:"zenithdragon",minAvg:58,note:"太陽と聖天の力を重ねる別系統の天頂配合"},
+    {group:"four",parents:["seraphalcon","celestiseraph"],grandparents:["lumenowl","galegryph","astralwyrm","tidalseraph"],result:"zenithdragon",minAvg:55,note:"セラファルコンとセレスティアルセラフへ至る2系譜を重ねる4体配合"},
   ];
 
   P.RECIPES = P.RECIPE_LIST.reduce((acc,r)=>{

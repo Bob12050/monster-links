@@ -27,7 +27,8 @@
 
     return `
     <main class="battlePageV821">
-      <section class="battle battleV821 battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
+      <section class="battle battleV821 battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
+        ${b.mutationIntro ? `<div class="mutationEncounterV1" aria-label="突然変異個体が出現"><span>RARE ENCOUNTER</span><b>突然変異個体 出現</b><small>色違いの珍しいモンスターです</small></div>` : ""}
         <div class="battleHeaderV821">
           <div>
             <span class="battleAreaLabelV821">BATTLE AREA</span>

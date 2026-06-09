@@ -139,6 +139,7 @@ function loadGameData(scriptRefs){
   const mutationMonster = context.MonsterLinksState.makeMonster("leafling",5,{mutation:true});
   if(normalMonster.mutation) fail("通常生成したモンスターが突然変異個体になりました");
   if(!mutationMonster.mutation) fail("突然変異フラグが個体生成時に保持されません");
+  if(!Array.isArray(normalMonster.lineage) || normalMonster.lineage.length !== 0) fail("通常生成モンスターの系譜初期値が空ではありません");
   context.MonsterLinksState.addMonster(mutationMonster);
   if(!context.MonsterLinksState.state.dex.mutated.leafling) fail("突然変異個体が図鑑へ記録されません");
 
@@ -208,6 +209,20 @@ function loadGameData(scriptRefs){
     fail("3枠固定配合ルートが正しく判定されませんでした");
   }
 
+  const fourParentA = context.MonsterLinksState.makeMonster("stormdjinn",60,{lineage:["galegryph","thunderlion"]});
+  const fourParentB = context.MonsterLinksState.makeMonster("aethergolem",60,{lineage:["shellgolem","solarwyrm"]});
+  const wrongLineageA = context.MonsterLinksState.makeMonster("stormdjinn",60);
+  const wrongLineageB = context.MonsterLinksState.makeMonster("aethergolem",60);
+  context.MonsterLinksState.state.box.push(fourParentA,fourParentB,wrongLineageA,wrongLineageB);
+  const fourPreview = context.MonsterLinksGame.fusionPreview(fourParentA.uid,fourParentB.uid);
+  if(fourPreview?.id !== "heavenscale" || !fourPreview.fourBody || fourPreview.locked){
+    fail("正しい祖父母系譜からヘヴンスケイルの4体配合が成立しません");
+  }
+  const wrongFourPreview = context.MonsterLinksGame.fusionPreview(wrongLineageA.uid,wrongLineageB.uid);
+  if(wrongFourPreview?.fourBody || wrongFourPreview?.id === "heavenscale"){
+    fail("系譜を持たない中間素材から4体配合が成立しました");
+  }
+
   context.MonsterLinksViews = {
     monsterInline(id){return `<span>${id}</span>`;},
     monsterVisual(id){return `<span>${id}</span>`;},
@@ -230,6 +245,7 @@ function loadGameData(scriptRefs){
     if(!fusionHtml.includes("recipeFilterPanelV811")) fail("配合リストに検索・フィルターが表示されません");
     if(!fusionHtml.includes("結果名・親素材名で検索")) fail("配合リストの検索対象説明がありません");
     if(!fusionHtml.includes('data-recipe-status="')) fail("配合レシピに状態フィルター情報がありません");
+    if(!fusionHtml.includes("4体配合") || !fusionHtml.includes("必要な祖父母4体")) fail("配合画面に4体配合ルートが表示されません");
 
     const modal = {innerHTML:""};
     context.document = {
@@ -376,7 +392,7 @@ function loadGameData(scriptRefs){
     }
 
     const appSource = fs.readFileSync(path.join(root,"js","app.js"),"utf8");
-    for(const sound of ["weak","resist","allyHit","guard","ko","boss"]){
+    for(const sound of ["weak","resist","allyHit","guard","ko","boss","mutation"]){
       if(!appSource.includes(`kind === "${sound}"`)) fail(`v8.4効果音がありません: ${sound}`);
     }
     const battleSource = fs.readFileSync(battleSystemFile,"utf8");
@@ -384,8 +400,19 @@ function loadGameData(scriptRefs){
     if(!battleSource.includes("if(!fromAuto && kind !== \"attack\") stopBattleAuto()")) fail("手動コマンドでオート攻撃を解除する処理がありません");
     if(!battleSource.includes("U.rand(1,100) <= 3")) fail("探索に突然変異個体の出現判定がありません");
     if(!battleSource.includes("{mutation:e.mutation}")) fail("スカウト時に突然変異個体を引き継げません");
+    if(!battleSource.includes("if(joined.mutation) joined.locked = true")) fail("突然変異個体がスカウト時に自動保護されません");
+    if(!battleSource.includes("scheduleMutationIntroEnd")) fail("突然変異遭遇演出を一度だけ終了する処理がありません");
+    const battleViewSource = fs.readFileSync(battleViewFile,"utf8");
+    if(!battleViewSource.includes("mutationEncounterV1") || !battleViewSource.includes("RARE ENCOUNTER")){
+      fail("突然変異遭遇の専用バナーがありません");
+    }
+    const mutationCss = fs.readFileSync(path.join(root,"css","style.css"),"utf8");
+    if(!mutationCss.includes(".mutationBattle") || !mutationCss.includes(".reducedMotionV84 .mutationEncounterV1")){
+      fail("突然変異遭遇演出または演出軽減対応がありません");
+    }
     const fusionSource = fs.readFileSync(path.join(root,"js","systems","fusion.js"),"utf8");
     if(fusionSource.includes("inherited.mutation")) fail("配合で突然変異が遺伝する実装になっています");
+    if(!fusionSource.includes("lineage:[a.id,b.id]")) fail("配合後の子に親2種の系譜が保存されません");
     const arenaSource = fs.readFileSync(path.join(root,"js","systems","arena.js"),"utf8");
     if(!arenaSource.includes("G.resetBattleAuto?.()")) fail("闘技場の新ラウンドでオート攻撃がリセットされません");
     const settingsViewFile = path.join(root,"js","views","settingsView.js");
@@ -569,7 +596,7 @@ function loadGameData(scriptRefs){
   try{
     if(Object.keys(data.MONSTERS).length !== 84) fail("v8.5のモンスター数が84体ではありません");
     if(data.STAGES.length !== 13) fail("v8.5のステージ数が13件ではありません");
-    if(data.RECIPE_LIST.length !== 82) fail("v8.5の配合数が82件ではありません");
+    if(data.RECIPE_LIST.length !== 83) fail("4体配合追加後の配合数が83件ではありません");
     if(Object.keys(data.ITEMS).length !== 28) fail("v8.5の装備数が28件ではありません");
     if(data.QUESTS.length !== 54) fail("v8.5の任務数が54件ではありません");
 
@@ -611,7 +638,7 @@ function loadGameData(scriptRefs){
     }
 
     const skyRecipes = data.RECIPE_LIST.filter(recipe=>skyMonsterIds.includes(recipe.result));
-    if(skyRecipes.length !== 10) fail("v8.5天空遺跡の配合ルートが10件ではありません");
+    if(skyRecipes.length !== 11) fail("4体配合追加後の天空遺跡配合ルートが11件ではありません");
     const zenithParentA = context.MonsterLinksState.makeMonster("heavenscale",60);
     const zenithParentB = context.MonsterLinksState.makeMonster("celestiseraph",60);
     context.MonsterLinksState.state.box.push(zenithParentA,zenithParentB);
@@ -738,6 +765,14 @@ function validateData(D){
       if(!monsters[parent]) fail(`配合 ${recipe.result}: 不明な親です: ${parent}`);
     }
     if(!monsters[recipe.result]) fail(`配合: 不明な結果です: ${recipe.result}`);
+    if(recipe.group === "four"){
+      if(!Array.isArray(recipe.grandparents) || recipe.grandparents.length !== 4){
+        fail(`4体配合 ${recipe.result}: 祖父母が4体定義されていません`);
+      }
+      for(const grandparent of recipe.grandparents || []){
+        if(!monsters[grandparent]) fail(`4体配合 ${recipe.result}: 不明な祖父母です: ${grandparent}`);
+      }
+    }
     const parentSize = (recipe.parents || []).reduce((sum,id)=>sum + Math.max(1,Number(monsters[id]?.size || 1)),0);
     const childSize = Math.max(1,Number(monsters[recipe.result]?.size || 1));
     if(parentSize < childSize){

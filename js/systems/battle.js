@@ -103,6 +103,16 @@
 
   function isBattleAuto(){return autoAttack;}
 
+  function scheduleMutationIntroEnd(battle){
+    if(!battle?.mutationIntro) return;
+    setTimeout(()=>{
+      if(S.state.battle !== battle || !battle.mutationIntro) return;
+      battle.mutationIntro = false;
+      S.save();
+      render();
+    },2600);
+  }
+
   function startBattle(id){
     const state = S.state;
     resetBattleAuto();
@@ -122,7 +132,7 @@
       stage:st,
       enemy,
       active:S.firstAlive(),
-      log:[`${enemy.nickname}があらわれた！`],
+      log:[enemy.mutation ? `突然変異の${enemy.nickname}があらわれた！` : `${enemy.nickname}があらわれた！`],
       guard:false,
       lock:false,
       charm:state.scoutCharm || 0,
@@ -130,13 +140,15 @@
       scoutBase:st.scout,
       scoutAttempts:0,
       scoutLocked:false,
+      mutationIntro:enemy.mutation,
       fx:null
     };
     state.scoutCharm = Math.max(0,(state.scoutCharm || 0) - 1);
     state.view = "battle";
     S.save();
     render();
-    G.playSe("tap");
+    G.playSe(enemy.mutation ? "mutation" : "tap");
+    scheduleMutationIntroEnd(state.battle);
   }
 
   function startBossBattle(id){
@@ -170,7 +182,7 @@
       stage:st,
       enemy,
       active:S.firstAlive(),
-      log:[`${enemy.nickname}が立ちはだかった！`],
+      log:[enemy.mutation ? `突然変異の${enemy.nickname}が立ちはだかった！` : `${enemy.nickname}が立ちはだかった！`],
       guard:false,
       lock:false,
       charm:state.scoutCharm || 0,
@@ -178,6 +190,7 @@
       scoutBase:boss.scout,
       scoutAttempts:0,
       scoutLocked:false,
+      mutationIntro:enemy.mutation,
       fx:{kind:"bossIntro",target:"enemy",text:"BOSS",ts:Date.now()}
     };
     state.scoutCharm = Math.max(0,(state.scoutCharm || 0) - 1);
@@ -185,6 +198,8 @@
     S.save();
     render();
     G.playSe("boss");
+    if(enemy.mutation) setTimeout(()=>G.playSe("mutation"),G.delay(180));
+    scheduleMutationIntroEnd(state.battle);
   }
 
   function bossReady(st){return (S.state.stageWins[st.id] || 0) >= st.boss.unlockWins;}
@@ -251,10 +266,11 @@
       if(U.rand(1,100) <= chance){
         const joined = S.makeMonster(e.id,e.level,{mutation:e.mutation});
         joined.nickname = S.def(e.id).name;
+        if(joined.mutation) joined.locked = true;
         const joinedResult = S.addMonster(joined);
         b.scoutJoinResult = joinedResult;
         G.playSe("scout");
-      log(`${e.nickname}のスカウトに成功！${e.mutation ? " 突然変異個体を仲間にした！" : ""} ${joinedResult.destination === "party" ? "パーティに加わった！" : "パーティ枠が足りないため牧場へ送られた。"}`);
+        log(`${e.nickname}のスカウトに成功！${e.mutation ? " 突然変異個体を保護して仲間にした！" : ""} ${joinedResult.destination === "party" ? "パーティに加わった！" : "パーティ枠が足りないため牧場へ送られた。"}`);
         finish("scout");
         return;
       }else{
@@ -547,6 +563,7 @@
           ? `仲間はパーティに加わりました（${S.partySizeText()}）。`
           : `仲間は牧場へ送られました（必要${b.scoutJoinResult.size}枠 / スカウト前の残り${b.scoutJoinResult.before?.remaining ?? 0}枠）。`;
         lines.push(resultText);
+        if(b.enemy.mutation) lines.push("突然変異個体を自動で保護しました。");
       }
       let reward = {exp:0,gold:0};
       let firstBossClear = false;

@@ -7054,6 +7054,104 @@ button:hover:before{
 .dexProgressBox.mutation .bar i{
   background:linear-gradient(90deg,#42bdd1,#9d75e8);
 }
+.mutationBattle{
+  box-shadow:inset 0 0 45px rgba(91,220,255,.18),0 0 28px rgba(125,91,224,.2);
+}
+.mutationBattle.mutationIntro{
+  animation:mutationBattleFlashV1 1.15s ease-out both;
+}
+.mutationBattle .enemyActorV821:after{
+  content:"";
+  position:absolute;
+  inset:7% 8%;
+  border:2px solid rgba(143,239,255,.62);
+  border-radius:50%;
+  box-shadow:0 0 28px rgba(98,224,255,.52),inset 0 0 24px rgba(157,103,238,.38);
+  pointer-events:none;
+  animation:mutationRingV1 1.6s ease-in-out infinite;
+}
+.mutationEncounterV1{
+  position:absolute;
+  z-index:30;
+  top:92px;
+  left:50%;
+  width:min(360px,calc(100% - 28px));
+  transform:translateX(-50%);
+  padding:10px 16px;
+  border:1px solid rgba(151,237,255,.62);
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(21,83,111,.94),rgba(83,47,133,.94));
+  color:#f1fdff;
+  text-align:center;
+  box-shadow:0 0 28px rgba(96,224,255,.36);
+  pointer-events:none;
+  animation:mutationBannerV1 2.5s ease-out both;
+}
+.mutationEncounterV1 span,.mutationEncounterV1 b,.mutationEncounterV1 small{display:block}
+.mutationEncounterV1 span{font-size:8px;font-weight:1000;letter-spacing:.18em;color:#9df3ff}
+.mutationEncounterV1 b{margin-top:3px;font-size:18px}
+.mutationEncounterV1 small{margin-top:3px;font-size:9px;color:#d8eaff}
+@keyframes mutationBattleFlashV1{
+  0%{filter:brightness(1)}
+  18%{filter:brightness(1.65) saturate(1.45)}
+  48%{filter:brightness(.92) saturate(1.2)}
+  100%{filter:none}
+}
+@keyframes mutationRingV1{
+  0%,100%{transform:scale(.94);opacity:.48}
+  50%{transform:scale(1.06);opacity:.95}
+}
+@keyframes mutationBannerV1{
+  0%{opacity:0;transform:translate(-50%,-18px) scale(.86)}
+  15%,72%{opacity:1;transform:translate(-50%,0) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-8px) scale(.98)}
+}
+.reducedMotionV84.mutationBattle.mutationIntro{animation:none}
+.reducedMotionV84 .mutationEncounterV1{animation:mutationBannerReducedV1 1.8s ease-out both}
+.reducedMotionV84.mutationBattle .enemyActorV821:after{animation:none;opacity:.7}
+@keyframes mutationBannerReducedV1{
+  0%,100%{opacity:0}
+  12%,82%{opacity:1}
+}
+
+/* Four-monster fusion */
+.fourFusionNotice{
+  border-color:rgba(210,151,255,.48);
+  background:linear-gradient(135deg,rgba(93,48,139,.42),rgba(28,105,133,.36));
+  color:#f4deff;
+}
+.fourFusionRouteV1,.fourRecipeRouteV1,.dexFourRouteV1{
+  margin-top:9px;
+  padding:9px;
+  border:1px solid rgba(197,139,255,.3);
+  border-radius:12px;
+  background:rgba(70,39,104,.2);
+}
+.fourFusionRouteV1 > b,.fourRecipeRouteV1 > b,.dexFourRouteV1 > b{display:block;color:#ead0ff;font-size:10px}
+.fourFusionRouteV1 > div{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:5px;
+  margin-top:7px;
+}
+.fourFusionRouteV1 > div > span{display:block;text-align:center;font-size:8px;color:#dce8f8}
+.fourFusionRouteV1 .miniFace{margin:0 auto 3px}
+.fourGrandparentGridV1{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:7px 0}
+.fourGrandparentGridV1 > span{
+  display:grid;
+  place-items:center;
+  min-width:0;
+  padding:6px 3px;
+  border-radius:9px;
+  background:rgba(0,0,0,.2);
+  text-align:center;
+}
+.fourGrandparentGridV1 small{margin-top:3px;font-size:7px;line-height:1.25}
+.fourGrandparentGridV1 em{font-size:6px;color:#aebbd0;font-style:normal}
+.dexFourRouteV1 span{display:block;margin-top:4px;color:#dbe5f4;font-size:9px;line-height:1.5}
+@media(max-width:520px){
+  .fourFusionRouteV1 > div,.fourGrandparentGridV1{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 .worldBossPanelV851{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:center;overflow:hidden;padding:9px 10px 12px;border:1px solid rgba(255,100,120,.2);border-radius:13px;background:linear-gradient(145deg,rgba(143,43,62,.17),rgba(255,255,255,.035))}
 .worldBossFaceV851{width:48px;height:48px;grid-row:1/3;border-radius:11px;background:rgba(0,0,0,.18)}
 .worldBossPanelV851 b{display:block;margin-top:2px;font-size:11px}.worldBossPanelV851 b small{color:#dfb9c0;font-size:8px}.worldBossPanelV851 p{margin:2px 0 0;color:#aeb9ca;font-size:8px}

@@ -192,7 +192,14 @@
     const requirement = window.MonsterLinksGame.fusionRequirementText
       ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe.minAvg)
       : recipe.minAvg ? `親平均Lv${recipe.minAvg}以上` : "条件なし";
+    const fourRoute = recipe.group === "four" && recipe.grandparents?.length === 4
+      ? `<div class="dexFourRouteV1">
+          <b>4体配合</b>
+          <span>${recipe.grandparents.map(id=>S.state.dex?.discovered?.[id] ? U.esc(S.def(id).name) : "？？？？").join(" ＋ ")}</span>
+        </div>`
+      : "";
     return `<article class="dexRecipeCardV83 ${status.key}">
+      ${fourRoute}
       <div class="dexRecipeRouteV83">
         <div>
           ${dexKnownMonster(parents[0],"dexRouteMonsterV83")}

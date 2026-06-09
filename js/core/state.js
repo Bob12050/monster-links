@@ -278,6 +278,7 @@
       personality:inherited.personality || randomPersonality(),
       ivs:inherited.ivs || randomIvs(),
       mutation:!!inherited.mutation,
+      lineage:Array.isArray(inherited.lineage) ? inherited.lineage.filter(parentId=>D.MONSTERS[parentId]).slice(0,2) : [],
       equip:null,
       locked:false,
       hp:1,
@@ -422,6 +423,7 @@
     m.equip = D.ITEMS[m.equip] ? m.equip : null;
     m.locked = !!m.locked;
     m.mutation = !!m.mutation;
+    m.lineage = Array.isArray(m.lineage) ? m.lineage.filter(parentId=>D.MONSTERS[parentId]).slice(0,2) : [];
     const s = stats(m);
     m.hp = Number.isFinite(m.hp) ? U.clamp(m.hp,0,s.hp) : s.hp;
     m.mp = Number.isFinite(m.mp) ? U.clamp(m.mp,0,s.mp) : s.mp;

@@ -28,13 +28,37 @@
     return [String(a || ""),String(b || "")].sort().join("+");
   }
 
+  function sortedIds(ids=[]){
+    return ids.map(id=>String(id || "")).sort();
+  }
+
+  function fourRecipeKey(recipe){
+    return `four:${sortedIds(recipe?.grandparents).join("+")}:${recipeKeyFromIds(recipe?.parents?.[0],recipe?.parents?.[1])}`;
+  }
+
+  function monsterLineage(m){
+    return Array.isArray(m?.lineage) ? m.lineage.filter(id=>D.MONSTERS?.[id]).slice(0,2) : [];
+  }
+
+  function fourLineageMatches(recipe,a,b){
+    if(recipe?.group !== "four" || !Array.isArray(recipe.grandparents) || recipe.grandparents.length !== 4) return false;
+    if(recipeKeyFromIds(a?.id,b?.id) !== recipeKeyFromIds(recipe.parents?.[0],recipe.parents?.[1])) return false;
+    const pairMatches = (monster,parentIndex) => {
+      if(monster?.id !== recipe.parents[parentIndex]) return false;
+      const actual = sortedIds(monsterLineage(monster));
+      const required = sortedIds(recipe.grandparents.slice(parentIndex * 2,parentIndex * 2 + 2));
+      return actual.length === 2 && actual.every((id,index)=>id === required[index]);
+    };
+    return (pairMatches(a,0) && pairMatches(b,1)) || (pairMatches(a,1) && pairMatches(b,0));
+  }
+
   function fusionRecipeEntries(){
     const raw = D.RECIPE_LIST || Object.entries(D.RECIPES || {}).map(([key,result])=>({parents:key.split("+"),result,group:"basic"}));
     const seen = new Set();
     const out = [];
     raw.forEach((r,index)=>{
       if(!r || !Array.isArray(r.parents) || r.parents.length < 2 || !r.result) return;
-      const key = recipeKeyFromIds(r.parents[0],r.parents[1]);
+      const key = r.group === "four" ? fourRecipeKey(r) : recipeKeyFromIds(r.parents[0],r.parents[1]);
       if(seen.has(key)) return;
       seen.add(key);
       out.push(Object.assign({recipeKey:key,order:index},r));
@@ -43,15 +67,19 @@
   }
 
   function findRecipe(a,b){
+    const entries = fusionRecipeEntries();
+    const four = entries.find(r=>r.group === "four" && fourLineageMatches(r,a,b));
+    if(four) return four;
     const key = recipeKeyFromIds(a.id,b.id);
-    return fusionRecipeEntries().find(r=>r.recipeKey === key) || null;
+    return entries.find(r=>r.group !== "four" && r.recipeKey === key) || null;
   }
 
   function forcedRecipeFor(a,b){
     if(!fusionForcedRecipeKey) return null;
-    const key = recipeKeyFromIds(a.id,b.id);
-    if(key !== fusionForcedRecipeKey) return null;
-    return fusionRecipeEntries().find(r=>r.recipeKey === fusionForcedRecipeKey) || null;
+    const recipe = fusionRecipeEntries().find(r=>r.recipeKey === fusionForcedRecipeKey) || null;
+    if(!recipe || recipeKeyFromIds(a.id,b.id) !== recipeKeyFromIds(recipe.parents?.[0],recipe.parents?.[1])) return null;
+    if(recipe.group === "four" && !fourLineageMatches(recipe,a,b)) return null;
+    return recipe;
   }
 
   const FUSION_RANK_LEVEL_REQ = {
@@ -125,6 +153,9 @@
 
   function recipeLockReason(recipe,a,b,resultId=null){
     const id = resultId || recipe?.result || chooseChild(a,b);
+    if(recipe?.group === "four" && !fourLineageMatches(recipe,a,b)){
+      return "指定された祖父母4体の系譜を持つ中間素材2体が必要です";
+    }
     const childSize = fusionMonsterSize(id);
     const parentSize = fusionParentSizeTotal(a,b);
     if(parentSize < childSize) return `${childSize}枠モンスター作成には親の合計サイズ${childSize}枠以上が必要です`;
@@ -285,6 +316,8 @@
         recipeKey:"",
         group:"normal",
         special:false,
+        fourBody:false,
+        grandparents:[],
         locked:true,
         reason:"保護ロック中の仲間は配合素材にできません",
         note:"",
@@ -313,7 +346,9 @@
       forcedRecipe:!!forcedRecipe,
       recipeKey:recipe?.recipeKey || "",
       group:recipe?.group || "normal",
-      special:recipe?.group === "rare",
+      special:recipe?.group === "rare" || recipe?.group === "four",
+      fourBody:recipe?.group === "four",
+      grandparents:recipe?.grandparents || [],
       locked:!!lockReason,
       reason:lockReason,
       note:recipe?.note || "",
@@ -621,7 +656,7 @@
       : `牧場送り予定（パーティ残り${Math.max(0,outcome.limit-outcome.afterParents.used)}枠に対して子は${outcome.childSize}枠）`;
     const skillLine = selected.length ? selected.map(id=>D.SKILLS?.[id]?.name || id).join(" / ") : "なし";
     const returnedEquipment = [a,b].filter(m=>m.equip).map(m=>D.ITEMS[m.equip]?.name || m.equip);
-    const recipeLine = prev.recipe ? (prev.forcedRecipe ? "配合リストから選択" : "固定レシピ") : "通常配合";
+    const recipeLine = prev.fourBody ? "4体配合" : prev.recipe ? (prev.forcedRecipe ? "配合リストから選択" : "固定レシピ") : "通常配合";
     const visual = (id,cls) => V.monsterVisual ? V.monsterVisual(id,cls) : `<div class="${cls}">${U.esc(S.def(id).emoji || "❔")}</div>`;
 
     fusionPendingConfirmation = {
@@ -716,7 +751,8 @@
       bonus:prev.bonus,
       skillPlus:selected,
       ivs:S.inheritIvs(a,b),
-      personality:Math.random() < .5 ? a.personality : b.personality
+      personality:Math.random() < .5 ? a.personality : b.personality,
+      lineage:[a.id,b.id]
     };
     if(Math.random() < .18) inherited.personality = S.randomPersonality();
 
