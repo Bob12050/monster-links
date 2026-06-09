@@ -109,10 +109,35 @@
     return `<div class="${className} stageAsset" data-fallback="${U.esc(st.icon || "🗺️")}">${imgTag(pngPreferred(st.image),st.name || "stage")}</div>`;
   }
 
+  // 自作SVGアイコン。絵文字を置き換えて「ちゃんとしたゲーム」感を出す。
+  // すべて currentColor 追従・オフライン完結（外部依存なし）。
+  const ICONS = {
+    home:`<path d="M12 3 3 10.2V21h6v-6h6v6h6V10.2z"/>`,
+    map:`<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1z"/>`,
+    monster:`<path d="M12 3c4.4 0 8 4.4 8 9.8V14a2 2 0 0 1-2 2h-1.2a1.6 1.6 0 0 1-3.1 0h-3.4a1.6 1.6 0 0 1-3.1 0H6a2 2 0 0 1-2-2v-1.2C4 7.4 7.6 3 12 3"/><circle cx="9.5" cy="11.5" r="1.25" fill="rgba(8,14,40,.85)"/><circle cx="14.5" cy="11.5" r="1.25" fill="rgba(8,14,40,.85)"/>`,
+    menu:`<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/>`,
+    coin:`<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.6" fill="none" stroke="rgba(0,0,0,.32)" stroke-width="1.6"/>`,
+    star:`<path d="m12 2 2.95 6.2 6.8.78-5.05 4.6 1.36 6.72L12 17.9l-6.02 3.4 1.36-6.72L2.29 8.98l6.8-.78z"/>`,
+    book:`<path d="M6 3h10a2 2 0 0 1 2 2v15a1 1 0 0 1-1 1H7a3 3 0 0 1-3-3V5a2 2 0 0 1 2-2"/><path d="M8 8h7M8 11h7" fill="none" stroke="rgba(0,0,0,.32)" stroke-width="1.5" stroke-linecap="round"/>`,
+    check:`<path d="m4 13 5 5L20 6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>`,
+    fusion:`<path d="M9 3h6v1.8l-1 1v3.6l4.6 8.1A2 2 0 0 1 16.9 21H7.1a2 2 0 0 1-1.7-3.5l4.6-8.1V5.8l-1-1z"/><circle cx="12" cy="15.5" r="1.1" fill="rgba(0,0,0,.3)"/>`,
+    camp:`<path d="M12 3 2 21h9l1-7 1 7h9z"/>`,
+    swords:`<path d="M4 4 14.5 14.5M9.5 15 6 18.5M20 4 9.5 14.5M14.5 15 18 18.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>`,
+    scroll:`<path d="M6 4h10a2 2 0 0 1 2 2v12a2 2 0 0 0 2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 0-2-2"/><path d="M8.5 9h6.5M8.5 12h6.5M8.5 15h4.5" fill="none" stroke="rgba(0,0,0,.32)" stroke-width="1.5" stroke-linecap="round"/>`,
+    bag:`<path d="M5 7h14l-1.2 12.9a1.2 1.2 0 0 1-1.2 1.1H7.4a1.2 1.2 0 0 1-1.2-1.1z"/><path d="M8.6 8V6.5a3.4 3.4 0 0 1 6.8 0V8" fill="none" stroke="currentColor" stroke-width="2"/>`
+  };
+
+  function icon(name,className="mlIcon"){
+    const body = ICONS[name];
+    if(!body) return "";
+    return `<svg class="${U.esc(className)}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">${body}</svg>`;
+  }
+
   Object.assign(V, {
     monsterVisual,
     monsterInline,
     itemVisual,
+    icon,
     stageStyle,
     stageThumb,
     stageDanger,
