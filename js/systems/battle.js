@@ -521,6 +521,8 @@
         gold:reward.gold,
         drops,
         lines,
+        retryStageId:b.stage.id,
+        retryBoss:!!b.isBoss,
         nextView:"stage"
       };
       state.battle = null;
@@ -561,7 +563,9 @@
         gold:reward.gold,
         drops,
         lines,
-        nextView:"monsters"
+        retryStageId:b.stage.id,
+        retryBoss:!!b.isBoss,
+        nextView:"stage"
       };
       state.battle = null;
       state.view = "reward";
@@ -586,7 +590,9 @@
         gold:-lost,
         drops:[],
         lines:[`${lost}Gを落としてキャンプへ戻った。`,"キャンプで全員回復した。"],
-        nextView:"home"
+        retryStageId:b.stage.id,
+        retryBoss:!!b.isBoss,
+        nextView:"stage"
       };
       state.battle = null;
       state.view = "reward";
@@ -597,11 +603,22 @@
   }
 
   function rewardContinue(){
-    const next = S.state.reward?.nextView || "home";
+    const reward = S.state.reward;
+    const next = reward?.nextView || "home";
+    if(next === "stage" && reward?.retryStageId){
+      G.selectWorldStage?.(reward.retryStageId);
+    }
     S.state.reward = null;
     S.state.view = next;
     S.save();
     render();
+  }
+
+  function retryExploration(){
+    const reward = S.state.reward;
+    if(!reward?.retryStageId) return;
+    if(reward.retryBoss) startBossBattle(reward.retryStageId);
+    else startBattle(reward.retryStageId);
   }
 
   function skillModal(){
@@ -706,6 +723,7 @@
     escape,
     scoutChance,
     rewardContinue,
+    retryExploration,
     toggleBattleAuto,
     isBattleAuto,
     resetBattleAuto

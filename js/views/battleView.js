@@ -289,7 +289,8 @@
         ${logHtml}
 
         <div class="actions rewardActionsV53">
-          <button class="primary" onclick="Game.rewardContinue()">続ける</button>
+          ${r.retryStageId ? `<button class="primary" onclick="Game.retryExploration()">もう一度探索する</button>` : ""}
+          <button onclick="Game.rewardContinue()">${r.nextView === "stage" ? "マップ選択へ戻る" : "続ける"}</button>
           <button onclick="Game.setView('shop')">道具袋を見る</button>
           <button onclick="Game.setView('monsters')">仲間を見る</button>
         </div>
