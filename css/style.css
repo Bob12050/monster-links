@@ -21,6 +21,9 @@
   --gold:#ffd36a;
   --green:#74f0a0;
   --red:#ff6b7a;
+  /* DQ風コマンドウィンドウの縁取り色 */
+  --frame:#cfd9ff;
+  --frame-inner:#0a1130;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
@@ -28,10 +31,11 @@ body{
   min-height:100vh;
   background:radial-gradient(circle at top,#263b76,#0b1024 55%,#050814);
   color:var(--text);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  /* 丸ゴシック系（Apple端末のヒラギノ丸ゴ等）でドラクエ風の丸み。未対応環境はsystem-uiへ。 */
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro","M PLUS Rounded 1c","Rounded Mplus 1c",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 button{
-  border:1px solid rgba(255,255,255,.14);
+  border:1px solid rgba(207,217,255,.5);
   background:linear-gradient(#314677,#1e2b50);
   color:var(--text);
   border-radius:14px;
@@ -81,10 +85,10 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
   font-size:12px;
 }
 .hero,.card{
-  background:linear-gradient(180deg,rgba(35,48,88,.96),rgba(20,29,55,.96));
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:20px;
-  box-shadow:0 16px 35px rgba(0,0,0,.35);
+  background:linear-gradient(180deg,#1c2c63,#101a3c);
+  border:2px solid var(--frame);
+  border-radius:18px;
+  box-shadow:0 0 0 3px var(--frame-inner) inset,0 14px 30px rgba(0,0,0,.42);
 }
 .hero{
   padding:18px;
@@ -154,13 +158,15 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
 .face{
   width:64px;
   height:64px;
-  border-radius:18px;
+  border-radius:15px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:36px;
-  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.32),rgba(255,255,255,.06) 60%);
-  border:1px solid rgba(255,255,255,.16);
+  /* DQ風モンスター枠：青みの奥行き＋明るいフレーム＋内側ベゼル */
+  background:radial-gradient(circle at 38% 26%,rgba(125,165,255,.32),rgba(8,14,40,.5) 72%),linear-gradient(180deg,#18244e,#0c1430);
+  border:2px solid var(--frame);
+  box-shadow:0 0 0 2px var(--frame-inner) inset,0 3px 8px rgba(0,0,0,.4);
 }
 .name{
   font-weight:900;
@@ -361,9 +367,9 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
   height:34px;
   align-items:center;
   justify-content:center;
-  border-radius:11px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  background:linear-gradient(180deg,#18244e,#0c1430);
+  border:1px solid rgba(207,217,255,.45);
   font-size:20px;
   vertical-align:middle;
 }
@@ -589,7 +595,7 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
 }
 .face.monsterAsset{
   padding:4px;
-  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.32),rgba(255,255,255,.06) 60%);
+  background:radial-gradient(circle at 38% 26%,rgba(125,165,255,.30),rgba(8,14,40,.55) 72%),linear-gradient(180deg,#18244e,#0c1430);
 }
 .sprite.monsterAsset{
   padding:6px;
@@ -610,9 +616,10 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
   height:78px;
   margin:0 auto 8px;
   padding:4px;
-  border-radius:18px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
+  border-radius:15px;
+  background:radial-gradient(circle at 38% 26%,rgba(125,165,255,.30),rgba(8,14,40,.55) 72%),linear-gradient(180deg,#18244e,#0c1430);
+  border:2px solid var(--frame);
+  box-shadow:0 0 0 2px var(--frame-inner) inset,0 3px 8px rgba(0,0,0,.4);
 }
 .assetFallback{
   font-size:inherit;
@@ -4845,7 +4852,7 @@ button:hover:before{
 }
 
 .topV82{
-  border-bottom-color:rgba(110,231,255,.16);
+  border-bottom:2px solid var(--frame);
   box-shadow:0 10px 30px rgba(0,0,0,.18);
 }
 .logoBtnV82{display:flex;align-items:center;gap:8px}
@@ -4859,7 +4866,7 @@ button:hover:before{
   left:50%;
   right:auto;
   transform:translateX(-50%);
-  border:1px solid rgba(255,255,255,.12);
+  border:2px solid var(--frame);
   border-bottom:0;
   border-radius:22px 22px 0 0;
   box-shadow:0 -12px 35px rgba(0,0,0,.28);
@@ -4871,9 +4878,9 @@ button:hover:before{
   background:transparent;
 }
 .tabsV82 button.on{
-  color:#fff;
-  border-color:rgba(110,231,255,.2);
-  background:linear-gradient(180deg,rgba(48,158,193,.5),rgba(23,79,120,.72));
+  color:#2a1d02;
+  border-color:#ffe9a8;
+  background:linear-gradient(180deg,#f0c451,#b9821f);
 }
 .tabsV82 button.on:before{
   content:"";
@@ -4883,8 +4890,8 @@ button:hover:before{
   top:0;
   height:3px;
   border-radius:999px;
-  background:var(--blue);
-  box-shadow:0 0 12px var(--blue);
+  background:#fff3c4;
+  box-shadow:0 0 12px rgba(255,221,120,.9);
 }
 
 .homeV82{display:grid;gap:12px}
@@ -7532,9 +7539,9 @@ select:focus-visible{
 }
 .viewContextV861 b{font-size:13px}
 .tabsV82 button[aria-current="page"]{
-  border-color:rgba(255,232,126,.65);
-  color:#fff7cf;
-  box-shadow:inset 0 0 0 1px rgba(255,231,115,.18),0 0 16px rgba(255,210,75,.12);
+  border-color:#ffe9a8;
+  color:#2a1d02;
+  box-shadow:inset 0 0 0 1px rgba(255,231,115,.35),0 0 16px rgba(255,210,75,.2);
 }
 .tabsV82 button[aria-current="page"] .ico{
   filter:drop-shadow(0 0 5px rgba(255,226,115,.55));
