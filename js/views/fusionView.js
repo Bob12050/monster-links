@@ -225,33 +225,17 @@
     const groups = ["basic","advanced","rare","four"];
     const discovered = S.state.dex?.discovered || {};
     const scouted = S.state.dex?.scouted || {};
-    const owned = S.owned();
-
     const safeDef = id => D.MONSTERS?.[id] || {name:id || "不明",rank:"?",type:"slime",emoji:"❔"};
     const safeMonster = (id,cls="miniFace") => D.MONSTERS?.[id] ? V.monsterInline(id,cls) : `<span class="${cls}">❔</span>`;
-    const unprotectedOwned = id => owned.filter(m=>m.id === id && !m.locked);
-    const protectedOwned = id => owned.filter(m=>m.id === id && m.locked);
     const resultSize = r => V.monsterSize ? V.monsterSize(r.result) : Math.max(1,Number(safeDef(r.result).size || 1));
     setTimeout(()=>window.MonsterLinksGame.applyFusionRecipeFilters?.(),0);
-
-    function parentMaterialHtml(id,needCount=1){
-      const list = unprotectedOwned(id);
-      const locked = protectedOwned(id);
-      const have = list.length;
-      const maxLv = have ? Math.max(...list.map(m=>m.level || 1)) : 0;
-      const ok = have >= needCount;
-      return `<div class="routeMaterial ${ok ? "ok" : "ng"}">
-        <span>${ok ? "✅" : "不足"} ${have}/${needCount}</span>
-        <small>${maxLv ? `最高Lv${maxLv}` : "未所持"}${locked.length ? ` / 保護${locked.length}` : ""}</small>
-      </div>`;
-    }
 
     function routeStatusHtml(r,setStatus){
       if(!setStatus.ok){
         return `<div class="routeStatus bad">素材不足</div>`;
       }
       if(setStatus.locked){
-        return `<div class="routeStatus warn">条件未達：${U.esc(setStatus.reason || "条件確認")}</div>`;
+        return `<div class="routeStatus warn">条件未達</div>`;
       }
       return `<div class="routeStatus good">作成可能</div>`;
     }
@@ -351,52 +335,23 @@
           const p1d = safeDef(p1);
           const rd = safeDef(r.result);
           const childSize = resultSize(r);
-          const parentSizeTotal = (V.monsterSize ? V.monsterSize(p0d) : Number(p0d.size || 1)) + (V.monsterSize ? V.monsterSize(p1d) : Number(p1d.size || 1));
-          const sameParent = p0 === p1;
-          const condText = window.MonsterLinksGame.fusionRequirementText ? window.MonsterLinksGame.fusionRequirementText(r.result,r.minAvg) : (r.minAvg ? `親平均Lv${r.minAvg}以上` : "条件なし");
-          const cond = `<div class="tiny rareLock">条件：${U.esc(condText)}</div>`;
-          const note = r.note ? `<div class="tiny recipeNote">${U.esc(r.note)}</div>` : "";
-          const fourRoute = r.group === "four" && r.grandparents?.length === 4
-            ? `<div class="fourRecipeRouteV1">
-                <b>必要な祖父母4体</b>
-                <div class="fourGrandparentGridV1">${r.grandparents.map((id,index)=>{
-                  const gd = safeDef(id);
-                  return `<span>${safeMonster(id,"miniFace")}<small>${U.esc(gd.name)}</small><em>${index % 2 === 0 ? "親系譜" : ""}</em></span>`;
-                }).join("")}</div>
-                <small>左2体から${U.esc(p0d.name)}、右2体から${U.esc(p1d.name)}を作って最終配合します。</small>
-                <button class="fourTreeOpenBtnV1" onclick="Game.openFusionTree('${U.esc(r.recipeKey)}')">系譜図を開く</button>
-              </div>`
-            : "";
           const resultKnown = discovered[r.result] || scouted[r.result];
-          const status = resultKnown ? `<span class="type">発見済み</span>` : `<span class="tag">未発見</span>`;
           const setStatus = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false,label:"素材不足",cls:""};
           const recipeStatus = !setStatus.ok ? "missing" : setStatus.locked ? "condition" : "ready";
           const searchText = [p0,p1,r.result,p0d.name,p1d.name,rd.name,r.note || ""].join(" ");
-          const setButton = `<button class="${setStatus.cls || "ghost"} recipeSetBtn" ${setStatus.ok ? "" : "disabled"} onclick="Game.setFusionFromRecipe('${U.esc(r.recipeKey || [p0,p1].sort().join("+"))}')">${U.esc(setStatus.label)}</button>`;
-          return `<div class="recipe routeRecipeV75 ${r.group === "four" ? "fourBodyRecipeV1" : ""} ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
-            <div class="routeStatusWrap">${routeStatusHtml(r,setStatus)}</div>
-            ${fourRoute}
-            <div class="routeParents">
-              <div class="routeParentBox">
-                <div>${safeMonster(p0,'miniFace')} ${U.esc(p0d.name)} ${V.sizeBadge ? V.sizeBadge(p0d,"miniSize") : `<span class="sizeBadge miniSize">🧩 ${p0d.size || 1}枠</span>`}</div>
-                ${parentMaterialHtml(p0,sameParent ? 2 : 1)}
-              </div>
-              <div class="tiny routePlus">＋</div>
-              <div class="routeParentBox">
-                <div>${safeMonster(p1,'miniFace')} ${U.esc(p1d.name)} ${V.sizeBadge ? V.sizeBadge(p1d,"miniSize") : `<span class="sizeBadge miniSize">🧩 ${p1d.size || 1}枠</span>`}</div>
-                ${sameParent ? `<div class="routeMaterial same">同種2体必要</div>` : parentMaterialHtml(p1,1)}
-              </div>
+          return `<div class="recipe routeRecipeV75 compactRecipeCardV1 ${r.group === "four" ? "fourBodyRecipeV1" : ""} ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
+            <div class="compactRecipeHeadV1">
+              ${routeStatusHtml(r,setStatus)}
+              <span class="compactRecipeTypeV1">${r.group === "four" ? "4体配合" : U.esc(D.RECIPE_GROUPS?.[r.group]?.name || "固定配合")}</span>
             </div>
-            <div class="recipeArrow">↓</div>
-            <div class="routeResult">
-              <b>${resultKnown ? `${safeMonster(r.result,'miniFace')} ${U.esc(rd.name)}` : "？？？？"}</b>
-              ${status}
-              <div class="tiny">${rd.rank} / ${D.TYPES?.[rd.type] || rd.type || "?"} / ${V.sizeLabel ? V.sizeLabel(rd) : `${rd.size || 1}枠`}</div>
-              <div class="routeSizeLineV81">親合計${parentSizeTotal}枠 → 子${childSize}枠</div>
+            <div class="compactRecipeRouteV1">
+              <div>${safeMonster(p0,"compactRecipeFaceV1")}<b>${U.esc(p0d.name)}</b></div>
+              <span>＋</span>
+              <div>${safeMonster(p1,"compactRecipeFaceV1")}<b>${U.esc(p1d.name)}</b></div>
+              <span>→</span>
+              <div class="result">${resultKnown ? safeMonster(r.result,"compactRecipeFaceV1") : `<span class="compactRecipeFaceV1 secret">？</span>`}<b>${resultKnown ? U.esc(rd.name) : "？？？？"}</b></div>
             </div>
-            ${cond}${note}
-            ${r.group !== "four" ? `<button class="fusionTreeOpenBtnV1" onclick="Game.openFusionTree('${U.esc(r.recipeKey)}')">配合図を開く</button>` : ""}
-            <div class="recipeSetArea">${setButton}</div>
+            <button class="fusionTreeOpenBtnV1" onclick="Game.openFusionTree('${U.esc(r.recipeKey)}')">${r.group === "four" ? "系譜図を開く" : "配合図を開く"}</button>
           </div>`;
         }).join("")}</div>
       </section>`;

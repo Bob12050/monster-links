@@ -264,7 +264,10 @@ function loadGameData(scriptRefs){
     if(!fusionHtml.includes("recipeFilterPanelV811")) fail("配合リストに検索・フィルターが表示されません");
     if(!fusionHtml.includes("結果名・親素材名で検索")) fail("配合リストの検索対象説明がありません");
     if(!fusionHtml.includes('data-recipe-status="')) fail("配合レシピに状態フィルター情報がありません");
-    if(!fusionHtml.includes("4体配合") || !fusionHtml.includes("必要な祖父母4体")) fail("配合画面に4体配合ルートが表示されません");
+    if(!fusionHtml.includes("4体配合") || !fusionHtml.includes("compactRecipeCardV1")) fail("配合画面に簡略化した配合カードが表示されません");
+    if(fusionHtml.includes("必要な祖父母4体") || fusionHtml.includes("同種2体必要")){
+      fail("配合一覧に配合図へ移動した詳細情報が残っています");
+    }
     if(!fusionHtml.includes("fourRecipeSectionV1") || !fusionHtml.includes("fourBodyRecipeV1")){
       fail("4体配合レシピに専用の全幅レイアウトが適用されません");
     }
