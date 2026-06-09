@@ -137,9 +137,16 @@ function loadGameData(scriptRefs){
 
   const normalMonster = context.MonsterLinksState.makeMonster("plim",5);
   const mutationMonster = context.MonsterLinksState.makeMonster("leafling",5,{mutation:true});
+  const cappedMonster = context.MonsterLinksState.makeMonster("puffbat",150);
+  const levelUpToCap = context.MonsterLinksState.makeMonster("pebblon",99);
   if(normalMonster.mutation) fail("通常生成したモンスターが突然変異個体になりました");
   if(!mutationMonster.mutation) fail("突然変異フラグが個体生成時に保持されません");
   if(!Array.isArray(normalMonster.lineage) || normalMonster.lineage.length !== 0) fail("通常生成モンスターの系譜初期値が空ではありません");
+  if(data.MAX_LEVEL !== 100 || cappedMonster.level !== 100) fail("モンスターの最大レベルが100に固定されていません");
+  context.MonsterLinksState.gainExp(levelUpToCap,context.MonsterLinksState.expNext(99) * 10);
+  if(levelUpToCap.level !== 100 || levelUpToCap.exp !== 0 || context.MonsterLinksState.expNext(100) !== 0){
+    fail("経験値獲得でLv100を超える、または最大レベル時のEXPが残ります");
+  }
   context.MonsterLinksState.addMonster(mutationMonster);
   if(!context.MonsterLinksState.state.dex.mutated.leafling) fail("突然変異個体が図鑑へ記録されません");
 
@@ -493,6 +500,9 @@ function loadGameData(scriptRefs){
     if(!fourGoalInfo?.best?.four || !fourGoalInfo.best.ready) fail("4体配合目標の進捗が取得できません");
     if(!fourGoalsPanel.includes("4体配合ナビ") || !fourGoalsPanel.includes("系譜適合") || !fourGoalsPanel.includes("最終配合をセット")){
       fail("配合目標画面に4体配合ナビと操作ボタンが表示されません");
+    }
+    if(!fourGoalsPanel.includes("fourGoalCardV1")){
+      fail("4体配合目標カードに全幅レイアウト用クラスがありません");
     }
     context.MonsterLinksGame.openFourFusionStep(heavenscaleRecipe.recipeKey,"final");
     if(context.MonsterLinksGame.fusionPick.length !== 2 || context.MonsterLinksGame.fusionForcedRecipeKey !== heavenscaleRecipe.recipeKey){

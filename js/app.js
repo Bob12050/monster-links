@@ -435,7 +435,7 @@
   function devLevelUpAll(amount=5){
     const n = U.clamp(Math.floor(Number(amount) || 1),1,50);
     S.owned().forEach(m=>{
-      m.level = Math.max(1,(Number(m.level) || 1) + n);
+      m.level = U.clamp((Number(m.level) || 1) + n,1,D.MAX_LEVEL);
       m.exp = 0;
     });
     S.fullHeal();

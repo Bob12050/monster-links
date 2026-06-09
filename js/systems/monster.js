@@ -254,7 +254,7 @@
           ${V.monsterVisual(m,"detailFaceV78")}
           <div class="detailMetaV78">
             <div class="name">${U.esc(m.nickname)} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${sizeBadge}${m.mutation ? `<span class="mutationBadge">突然変異</span>` : ""}${m.locked ? `<span class="lockBadge">🔒 保護中</span>` : ""}</div>
-            <div class="tiny">Lv ${m.level} / EXP ${m.exp}/${S.expNext(m.level)}</div>
+            <div class="tiny">Lv ${m.level} / ${m.level >= D.MAX_LEVEL ? "MAX" : `EXP ${m.exp}/${S.expNext(m.level)}`}</div>
             <div class="bars">
               <div class="bar"><i style="width:${S.hpPct(m)}%"></i></div>
               <div class="bar mp"><i style="width:${S.mpPct(m)}%"></i></div>

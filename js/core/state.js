@@ -263,10 +263,12 @@
   }
 
   function expNext(lv){
+    if(lv >= D.MAX_LEVEL) return 0;
     return Math.floor(18 + Math.pow(lv,1.55)*14);
   }
 
   function makeMonster(id,level=1,inherited={}){
+    level = U.clamp(Math.floor(Number(level) || 1),1,D.MAX_LEVEL);
     const m = {
       uid:U.uid(),
       id,
@@ -410,8 +412,8 @@
   function fixMonster(m){
     m.uid = m.uid || U.uid();
     m.nickname = m.nickname || def(m.id).name;
-    m.level = Number.isFinite(m.level) ? Math.max(1,m.level) : 1;
-    m.exp = Number.isFinite(m.exp) ? Math.max(0,m.exp) : 0;
+    m.level = Number.isFinite(m.level) ? U.clamp(Math.floor(m.level),1,D.MAX_LEVEL) : 1;
+    m.exp = m.level >= D.MAX_LEVEL ? 0 : (Number.isFinite(m.exp) ? Math.max(0,m.exp) : 0);
     m.bonus = m.bonus || {hp:0,mp:0,atk:0,def:0,spd:0,wis:0};
     ["hp","mp","atk","def","spd","wis"].forEach(k=>m.bonus[k] = Number.isFinite(m.bonus[k]) ? m.bonus[k] : 0);
     m.skillPlus = Array.isArray(m.skillPlus) ? m.skillPlus.filter(id=>D.SKILLS[id]) : [];
@@ -573,7 +575,10 @@
 
   function hpPct(m){return U.clamp(m.hp / stats(m).hp * 100,0,100);}
   function mpPct(m){return U.clamp(m.mp / stats(m).mp * 100,0,100);}
-  function expPct(m){return U.clamp(m.exp / expNext(m.level) * 100,0,100);}
+  function expPct(m){
+    if(m.level >= D.MAX_LEVEL) return 100;
+    return U.clamp(m.exp / expNext(m.level) * 100,0,100);
+  }
 
   function recordSeen(id){if(D.MONSTERS[id]) state.dex.discovered[id] = true;}
   function recordScouted(id){
@@ -657,8 +662,13 @@
 
   function gainExp(m,amount){
     const lines = [];
+    if(m.level >= D.MAX_LEVEL){
+      m.level = D.MAX_LEVEL;
+      m.exp = 0;
+      return lines;
+    }
     m.exp += amount;
-    while(m.exp >= expNext(m.level)){
+    while(m.level < D.MAX_LEVEL && m.exp >= expNext(m.level)){
       m.exp -= expNext(m.level);
       m.level++;
       const s = stats(m);
@@ -666,6 +676,7 @@
       m.mp = s.mp;
       lines.push(`${m.nickname}はLv${m.level}に上がった！`);
     }
+    if(m.level >= D.MAX_LEVEL) m.exp = 0;
     return lines;
   }
 

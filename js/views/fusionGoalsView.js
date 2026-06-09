@@ -104,7 +104,7 @@
   }
 
   function fusionGoalCardHtml(info,index){
-    return `<article class="fusionGoalCardV832 ${info.complete ? "complete" : ""}">
+    return `<article class="fusionGoalCardV832 ${info.best?.four ? "fourGoalCardV1" : ""} ${info.complete ? "complete" : ""}">
       <div class="fusionGoalTargetV832">
         ${V.monsterVisual(info.id,"fusionGoalArtV832")}
         <div>

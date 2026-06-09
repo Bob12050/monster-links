@@ -7163,6 +7163,7 @@ button:hover:before{
 }
 .fourGoalNavigatorHeadV1 b,.fourGoalCompactV1 b{color:#ead0ff;font-size:10px}
 .fourGoalNavigatorHeadV1 span,.fourGoalCompactV1 span{color:#b9a2d5;font-size:8px}
+.fusionGoalCardV832.fourGoalCardV1{grid-column:1/-1}
 .fourGoalBranchesV1{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .fourGoalBranchV1{
   display:grid;
@@ -7174,10 +7175,14 @@ button:hover:before{
   background:rgba(70,39,104,.14);
 }
 .fourGoalBranchV1.ready{border-color:rgba(116,240,160,.22);background:rgba(41,128,75,.08)}
-.fourGoalGrandparentsV1{display:flex;align-items:center;gap:3px}
+.fourGoalGrandparentsV1{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:center;
+  gap:4px;
+}
 .fourGoalGrandparentV1{
   min-width:0;
-  flex:1;
   display:grid;
   grid-template-columns:31px minmax(0,1fr);
   gap:4px;
@@ -7219,6 +7224,13 @@ button:hover:before{
 .fourGoalFinalV1 button{grid-column:1/-1}
 @media(max-width:580px){
   .fourGoalBranchesV1{grid-template-columns:1fr}
+}
+@media(max-width:800px){
+  .fusionGoalCardV832.fourGoalCardV1{display:block}
+}
+@media(max-width:380px){
+  .fourGoalGrandparentV1{grid-template-columns:26px minmax(0,1fr)}
+  .fourGoalGrandparentV1 .goalMaterialFaceSmallV832{width:26px;height:26px}
 }
 .worldBossPanelV851{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:center;overflow:hidden;padding:9px 10px 12px;border:1px solid rgba(255,100,120,.2);border-radius:13px;background:linear-gradient(145deg,rgba(143,43,62,.17),rgba(255,255,255,.035))}
 .worldBossFaceV851{width:48px;height:48px;grid-row:1/3;border-radius:11px;background:rgba(0,0,0,.18)}
