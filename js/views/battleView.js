@@ -224,8 +224,6 @@
     const levelLines = lines.filter(x=>/Lv\d+に上がった/.test(x));
     const otherLines = lines.filter(x=>!/Lv\d+に上がった/.test(x));
     const dropCount = (r.drops || []).reduce((sum,x)=>sum + (x.count || 1),0);
-    const resultLabel = r.type === "scout" ? "仲間加入" : r.type === "lose" ? "撤退" : r.isBoss ? "ボス撃破" : "勝利";
-    const nextLabel = r.nextView === "stages" ? "冒険へ戻る" : r.nextView === "monsters" ? "仲間を見る" : "拠点へ戻る";
 
     const dropHtml = r.drops && r.drops.length ? r.drops.map(x=>{
       const item = D.ITEMS[x.id];
@@ -274,17 +272,11 @@
 
         ${scoutPanel}
 
-        <div class="rewardSummaryV866">
-          <div><span>RESULT</span><b>${U.esc(resultLabel)}</b></div>
-          <div><span>REWARD</span><b>${dropCount ? `${dropCount}個入手` : r.type === "lose" ? "立て直し" : "経験値獲得"}</b></div>
-          <div><span>NEXT</span><b>${U.esc(nextLabel)}</b></div>
-        </div>
-
         <div class="rewardNums rewardNumsV53">
-          <div class="${r.exp > 0 ? "rewardGainV866" : ""}"><span>EXP</span><b>${r.exp}</b></div>
-          <div class="${r.gold > 0 ? "rewardGainV866" : r.gold < 0 ? "rewardLossV866" : ""}"><span>GOLD</span><b>${r.gold >= 0 ? "+"+r.gold : r.gold}</b></div>
-          <div class="${dropCount > 0 ? "rewardGainV866" : ""}"><span>DROP</span><b>${dropCount}</b></div>
-          <div class="${levelLines.length ? "rewardLevelUpV866" : ""}"><span>LEVEL UP</span><b>${levelLines.length}</b></div>
+          <div><span>EXP</span><b>${r.exp}</b></div>
+          <div><span>GOLD</span><b>${r.gold >= 0 ? "+"+r.gold : r.gold}</b></div>
+          <div><span>DROP</span><b>${dropCount}</b></div>
+          <div><span>LEVEL UP</span><b>${levelLines.length}</b></div>
         </div>
 
         ${levelHtml}
