@@ -83,6 +83,7 @@
           <b>親${index}: ${U.esc(m.nickname)}</b>
           <div class="tiny">${U.esc(d.name)} / ${d.rank} / ${V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`} / Lv${m.level}${U.esc(lineage)}${m.locked ? " / 🔒保護中" : ""}</div>
         </div>
+        <button class="ghost selectedParentRemoveV1" onclick="Game.removeFusionParent('${m.uid}')" aria-label="親${index}を解除" title="この親を解除">×</button>
       </div>`;
     };
     const a = parent(pick[0]);

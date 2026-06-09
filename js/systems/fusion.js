@@ -472,6 +472,14 @@
     render();
   }
 
+  function removeFusionParent(uid){
+    if(!fusionPick.includes(uid)) return;
+    fusionPick = fusionPick.filter(x=>x!==uid);
+    fusionSkillPick = [];
+    fusionForcedRecipeKey = "";
+    render();
+  }
+
   function toggleFusionSkill(id){
     if(fusionPick.length !== 2) return;
     const all = S.owned();
@@ -875,6 +883,7 @@
     pickFusion,
     setFusionPair,
     clearFusion,
+    removeFusionParent,
     doFusion,
     fusionPreview,
     toggleFusionSkill,

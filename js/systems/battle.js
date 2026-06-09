@@ -202,7 +202,7 @@
     scheduleMutationIntroEnd(state.battle);
   }
 
-  function bossReady(st){return (S.state.stageWins[st.id] || 0) >= st.boss.unlockWins;}
+  function bossReady(st){return !!st.boss && (S.state.stageWins[st.id] || 0) >= st.boss.unlockWins;}
 
   function log(msg){S.state.battle.log.push(msg);}
 
@@ -499,7 +499,7 @@
       return firstBossClear;
     }
     state.stageWins[st.id] = (state.stageWins[st.id] || 0) + 1;
-    if(!state.bossCleared[st.id] && state.stageWins[st.id] === st.boss.unlockWins){
+    if(st.boss && !state.bossCleared[st.id] && state.stageWins[st.id] === st.boss.unlockWins){
       lines.push("奥地から強い気配がする……ボスに挑戦できるようになった！");
     }
     return false;
