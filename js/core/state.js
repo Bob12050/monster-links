@@ -277,6 +277,7 @@
       skillPlus:inherited.skillPlus || [],
       personality:inherited.personality || randomPersonality(),
       ivs:inherited.ivs || randomIvs(),
+      mutation:!!inherited.mutation,
       equip:null,
       locked:false,
       hp:1,
@@ -308,7 +309,7 @@
       scoutCharm:0,
       stageWins:{},
       bossCleared:{},
-      dex:{discovered:{},scouted:{}},
+      dex:{discovered:{},scouted:{},mutated:{}},
       fusionGoals:[],
       bag:{force_ring:1},
       records:{scouts:0,fusions:0,specialFusions:0,equips:0,bossWins:0,bossScouts:0,items:{}},
@@ -365,9 +366,11 @@
     data.dex = data.dex || {};
     data.dex.discovered = data.dex.discovered || {};
     data.dex.scouted = data.dex.scouted || {};
+    data.dex.mutated = data.dex.mutated || {};
     data.party.concat(data.box).forEach(m=>{
       data.dex.discovered[m.id] = true;
       data.dex.scouted[m.id] = true;
+      if(m.mutation) data.dex.mutated[m.id] = true;
     });
     data.fusionGoals = Array.isArray(data.fusionGoals)
       ? [...new Set(data.fusionGoals.filter(id=>D.MONSTERS[id]))].slice(0,3)
@@ -418,6 +421,7 @@
     });
     m.equip = D.ITEMS[m.equip] ? m.equip : null;
     m.locked = !!m.locked;
+    m.mutation = !!m.mutation;
     const s = stats(m);
     m.hp = Number.isFinite(m.hp) ? U.clamp(m.hp,0,s.hp) : s.hp;
     m.mp = Number.isFinite(m.mp) ? U.clamp(m.mp,0,s.mp) : s.mp;
@@ -577,6 +581,13 @@
     }
   }
 
+  function recordMutation(id){
+    if(D.MONSTERS[id]){
+      state.dex.discovered[id] = true;
+      state.dex.mutated[id] = true;
+    }
+  }
+
   function dexCounts(){
     const total = Object.keys(D.MONSTERS).length;
     const discovered = Object.keys(D.MONSTERS).filter(id=>state.dex.discovered[id]).length;
@@ -586,6 +597,7 @@
 
   function addMonster(m){
     recordScouted(m.id);
+    if(m.mutation) recordMutation(m.id);
     const size = monsterSize(m);
     const before = partySlotInfo();
     if(canAddToParty(m)){
@@ -865,6 +877,7 @@
     expPct,
     recordSeen,
     recordScouted,
+    recordMutation,
     dexCounts,
     addMonster,
     removeMonster,

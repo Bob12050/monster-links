@@ -114,6 +114,7 @@ function loadGameData(scriptRefs){
   if(state.gold !== oldSave.gold) fail("旧セーブ移行で所持GOLDが保持されませんでした");
   if(state.party[0]?.nickname !== "互換テスト") fail("旧セーブ移行で仲間情報が保持されませんでした");
   if(!Array.isArray(state.fusionGoals) || state.fusionGoals.length !== 0) fail("旧セーブに空の配合目標が補完されませんでした");
+  if(!state.dex?.mutated || typeof state.dex.mutated !== "object") fail("旧セーブに突然変異図鑑記録が補完されませんでした");
   if(state.settings?.speed !== "normal" || state.settings?.seVolume !== 2 || state.settings?.reducedMotion !== false){
     fail("旧セーブにv8.4の戦闘設定が正しく補完されませんでした");
   }
@@ -133,6 +134,13 @@ function loadGameData(scriptRefs){
   if(future.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION + 1){
     fail("将来版の保存形式番号を現在版へ巻き戻しました");
   }
+
+  const normalMonster = context.MonsterLinksState.makeMonster("plim",5);
+  const mutationMonster = context.MonsterLinksState.makeMonster("leafling",5,{mutation:true});
+  if(normalMonster.mutation) fail("通常生成したモンスターが突然変異個体になりました");
+  if(!mutationMonster.mutation) fail("突然変異フラグが個体生成時に保持されません");
+  context.MonsterLinksState.addMonster(mutationMonster);
+  if(!context.MonsterLinksState.state.dex.mutated.leafling) fail("突然変異個体が図鑑へ記録されません");
 
   const exchangeOneA = context.MonsterLinksState.makeMonster("plim",10);
   const exchangeOneB = context.MonsterLinksState.makeMonster("leafling",10);
@@ -374,6 +382,10 @@ function loadGameData(scriptRefs){
     const battleSource = fs.readFileSync(battleSystemFile,"utf8");
     if(!battleSource.includes("current !== battle || current.lock")) fail("古いオート攻撃タイマーを無効化する防御がありません");
     if(!battleSource.includes("if(!fromAuto && kind !== \"attack\") stopBattleAuto()")) fail("手動コマンドでオート攻撃を解除する処理がありません");
+    if(!battleSource.includes("U.rand(1,100) <= 3")) fail("探索に突然変異個体の出現判定がありません");
+    if(!battleSource.includes("{mutation:e.mutation}")) fail("スカウト時に突然変異個体を引き継げません");
+    const fusionSource = fs.readFileSync(path.join(root,"js","systems","fusion.js"),"utf8");
+    if(fusionSource.includes("inherited.mutation")) fail("配合で突然変異が遺伝する実装になっています");
     const arenaSource = fs.readFileSync(path.join(root,"js","systems","arena.js"),"utf8");
     if(!arenaSource.includes("G.resetBattleAuto?.()")) fail("闘技場の新ラウンドでオート攻撃がリセットされません");
     const settingsViewFile = path.join(root,"js","views","settingsView.js");

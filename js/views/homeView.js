@@ -33,7 +33,7 @@
           </button>
         </div>
         <div class="homeLeaderV82">
-          ${lead ? V.monsterVisual(lead.id,"homeLeaderArtV82") : `<div class="homeLeaderArtV82">?</div>`}
+          ${lead ? V.monsterVisual(lead,"homeLeaderArtV82") : `<div class="homeLeaderArtV82">?</div>`}
           <div class="homeLeaderNameV82">
             <small>LEADER</small>
             <b>${lead ? U.esc(lead.nickname || leadDef.name) : "仲間がいません"}</b>

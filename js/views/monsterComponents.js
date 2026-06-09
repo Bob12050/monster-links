@@ -37,9 +37,9 @@
     const actionHtml = detailMode ? "" : (compact ? "" : V.monsterActions(m,opt));
     return `
     <div class="card mon monsterCardV78 ${detailMode ? "tapMonsterCardV78" : ""} ${opt.pick ? "pick" : ""} ${m.locked ? "lockedMon" : ""} ${compact ? "monCompact" : ""}" ${detailAttr}>
-      ${V.monsterVisual(m.id,'face')}
+      ${V.monsterVisual(m,'face')}
       <div>
-        <div class="name">${U.esc(m.nickname)} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${sizeBadge(d)}${lockBadge}</div>
+        <div class="name">${U.esc(m.nickname)} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${sizeBadge(d)}${m.mutation ? `<span class="mutationBadge">突然変異</span>` : ""}${lockBadge}</div>
         <div class="tiny">Lv ${m.level} / HP ${m.hp}/${s.hp} / MP ${m.mp}/${s.mp}</div>
         <div class="miniStatsV78">
           <span>攻 ${s.atk}</span><span>守 ${s.def}</span><span>速 ${s.spd}</span><span>賢 ${s.wis}</span>

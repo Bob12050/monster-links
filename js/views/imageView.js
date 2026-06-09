@@ -25,24 +25,35 @@
     return `<img src="${primary}"${fallback} alt="${altAttr}" loading="lazy" onerror="${assetErrorInline()}">`;
   }
 
-  function monsterVisual(id,className="face"){
-    const d = S.def(id);
-    const fallback = U.esc(d.emoji || "❔");
-    const alt = d.name || id;
-    if(d.image){
-      return `<div class="${className} monsterAsset" data-fallback="${fallback}">${imgTag(pngPreferred(d.image),alt)}</div>`;
-    }
-    return `<div class="${className}">${fallback}</div>`;
+  function monsterRef(idOrMonster){
+    if(typeof idOrMonster === "string") return {id:idOrMonster,mutation:false};
+    return {id:idOrMonster?.id,mutation:!!idOrMonster?.mutation};
   }
 
-  function monsterInline(id,className="miniFace"){
+  function monsterVisual(idOrMonster,className="face"){
+    const monster = monsterRef(idOrMonster);
+    const id = monster.id;
     const d = S.def(id);
     const fallback = U.esc(d.emoji || "❔");
     const alt = d.name || id;
+    const mutationClass = monster.mutation ? " mutationMonster" : "";
     if(d.image){
-      return `<span class="${className} monsterAsset miniAsset" data-fallback="${fallback}">${imgTag(pngPreferred(d.image),alt)}</span>`;
+      return `<div class="${className} monsterAsset${mutationClass}" data-fallback="${fallback}">${imgTag(pngPreferred(d.image),alt)}</div>`;
     }
-    return `<span class="${className}">${fallback}</span>`;
+    return `<div class="${className}${mutationClass}">${fallback}</div>`;
+  }
+
+  function monsterInline(idOrMonster,className="miniFace"){
+    const monster = monsterRef(idOrMonster);
+    const id = monster.id;
+    const d = S.def(id);
+    const fallback = U.esc(d.emoji || "❔");
+    const alt = d.name || id;
+    const mutationClass = monster.mutation ? " mutationMonster" : "";
+    if(d.image){
+      return `<span class="${className} monsterAsset miniAsset${mutationClass}" data-fallback="${fallback}">${imgTag(pngPreferred(d.image),alt)}</span>`;
+    }
+    return `<span class="${className}${mutationClass}">${fallback}</span>`;
   }
 
   function itemVisual(id,className="itemIcon"){

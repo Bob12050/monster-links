@@ -112,8 +112,10 @@
     if(S.highestLv() < st.req){toast("推奨Lvに届いていません");return;}
     const eid = st.enemies[U.rand(0,st.enemies.length-1)];
     const enemy = S.makeMonster(eid,U.rand(st.min,st.max));
+    enemy.mutation = U.rand(1,100) <= 3;
     enemy.nickname = S.def(eid).name;
     S.recordSeen(eid);
+    if(enemy.mutation) S.recordMutation(eid);
     state.lastStage = st.id;
     state.reward = null;
     state.battle = {
@@ -146,6 +148,7 @@
     if(!bossReady(st) && !state.bossCleared[st.id]){toast("まだボスの気配がありません");return;}
     const boss = st.boss;
     const enemy = S.makeMonster(boss.id,boss.level);
+    enemy.mutation = U.rand(1,100) <= 3;
     enemy.nickname = `ボス ${S.def(boss.id).name}`;
     const before = S.stats(enemy);
     enemy.bonus = {
@@ -160,6 +163,7 @@
     enemy.hp = es.hp;
     enemy.mp = es.mp;
     S.recordSeen(boss.id);
+    if(enemy.mutation) S.recordMutation(boss.id);
     state.lastStage = st.id;
     state.reward = null;
     state.battle = {
@@ -245,12 +249,12 @@
       }
       const chance = scoutChance();
       if(U.rand(1,100) <= chance){
-        const joined = S.makeMonster(e.id,e.level);
+        const joined = S.makeMonster(e.id,e.level,{mutation:e.mutation});
         joined.nickname = S.def(e.id).name;
         const joinedResult = S.addMonster(joined);
         b.scoutJoinResult = joinedResult;
         G.playSe("scout");
-        log(`${e.nickname}のスカウトに成功！ ${joinedResult.destination === "party" ? "パーティに加わった！" : "パーティ枠が足りないため牧場へ送られた。"}`);
+      log(`${e.nickname}のスカウトに成功！${e.mutation ? " 突然変異個体を仲間にした！" : ""} ${joinedResult.destination === "party" ? "パーティに加わった！" : "パーティ枠が足りないため牧場へ送られた。"}`);
         finish("scout");
         return;
       }else{
@@ -516,6 +520,7 @@
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyMutation:!!b.enemy.mutation,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,
@@ -558,6 +563,7 @@
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyMutation:!!b.enemy.mutation,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,
@@ -585,6 +591,7 @@
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyMutation:!!b.enemy.mutation,
         isBoss:b.isBoss,
         exp:0,
         gold:-lost,

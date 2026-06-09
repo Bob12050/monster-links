@@ -75,7 +75,7 @@
       }
       const d = S.def(m.id);
       return `<div class="selectedParentSlot">
-        ${V.monsterInline(m.id,"miniFace")}
+        ${V.monsterInline(m,"miniFace")}
         <div>
           <b>親${index}: ${U.esc(m.nickname)}</b>
           <div class="tiny">${U.esc(d.name)} / ${d.rank} / ${V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`} / Lv${m.level}${m.locked ? " / 🔒保護中" : ""}</div>
