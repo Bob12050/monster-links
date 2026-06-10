@@ -134,9 +134,9 @@
     "emoji": "🐉",
     "current_image": "assets/images/monsters/cindrake.png",
     "target_png": "assets/images/monsters/cindrake.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -162,9 +162,9 @@
     "emoji": "🦋",
     "current_image": "assets/images/monsters/gloomoth.png",
     "target_png": "assets/images/monsters/gloomoth.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -302,9 +302,9 @@
     "emoji": "🐺",
     "current_image": "assets/images/monsters/duskwolf.png",
     "target_png": "assets/images/monsters/duskwolf.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -512,9 +512,9 @@
     "emoji": "🦇",
     "current_image": "assets/images/monsters/venomwing.png",
     "target_png": "assets/images/monsters/venomwing.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -526,9 +526,9 @@
     "emoji": "🐍",
     "current_image": "assets/images/monsters/venomhydra.png",
     "target_png": "assets/images/monsters/venomhydra.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -708,9 +708,9 @@
     "emoji": "😈",
     "current_image": "assets/images/monsters/impfang.png",
     "target_png": "assets/images/monsters/impfang.png",
-    "priority": "P3",
-    "wave": "v8.6-C",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -722,9 +722,9 @@
     "emoji": "🗡️",
     "current_image": "assets/images/monsters/hellknight.png",
     "target_png": "assets/images/monsters/hellknight.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -736,9 +736,9 @@
     "emoji": "👁️",
     "current_image": "assets/images/monsters/doomgazer.png",
     "target_png": "assets/images/monsters/doomgazer.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -960,9 +960,9 @@
     "emoji": "☠️",
     "current_image": "assets/images/monsters/venomqueen.png",
     "target_png": "assets/images/monsters/venomqueen.png",
-    "priority": "P3",
-    "wave": "v8.6-C",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {

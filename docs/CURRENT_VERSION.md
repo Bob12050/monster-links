@@ -1,3 +1,16 @@
+v8.6-A.4 闇・毒系／ドラゴン系アート実装
+
+GAME_VERSIONを8.6-A.4へ更新
+
+主な変更:
+- ドラゴン系の `cindrake`, `crystagon`, `volcazard`, `venomhydra`, `prismdragon` を実装用PNGへ反映
+- 闇・毒系の `gloomoth`, `impfang`, `duskwolf`, `hellknight`, `venomqueen`, `doomgazer`, `demonlord`, `voiddragon`, `eclipsewolf`, `nightmarestag`, `venomchimera`, `venomwing` を実装用PNGへ反映
+- 規格外だった6画像の旧版を `assets/images/monsters/legacy/v8.6-A.3-before-dark-dragon-art/` へ退避
+- 採用PNGが不足している `heavenscale` と `zenithdragon` は今回の反映対象外
+- セーブ形式、配合、能力値、モンスターID、ランクは変更なし
+
+---
+
 v8.6-A.3.1 探索リザルト導線改善
 
 GAME_VERSIONを8.6-A.3.1へ更新

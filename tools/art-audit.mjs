@@ -8,10 +8,13 @@ const writeFiles = process.argv.includes("--write");
 
 const formalIds = new Set([
   "abysslevia", "aquan", "arcautomaton", "astralwyrm", "auroracat",
-  "crystagon", "demonlord", "embercub", "frostlevia", "gearbit",
+  "cindrake", "crystagon", "demonlord", "doomgazer", "duskwolf",
+  "embercub", "frostlevia", "gearbit", "gloomoth", "hellknight",
+  "impfang",
   "kingplim", "leafling", "luminel", "mossking", "orelord", "pebblon",
   "plim", "prismdragon", "puffbat", "thornhog", "tidalseraph",
-  "voiddragon", "volcazard", "phoenixdrake", "celestiseraph",
+  "venomhydra", "venomqueen", "venomwing", "voiddragon", "volcazard",
+  "phoenixdrake", "celestiseraph",
   "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf",
   "gigacore", "glacierfang", "solarwyrm", "nightmarestag"
 ]);
@@ -26,18 +29,17 @@ const productionWaves = [
     id: "v8.6-B",
     label: "既存の終盤・ボス級",
     ids: [
-      "venomhydra", "arkmachine", "doomgazer", "pearlseraph",
-      "duskwolf", "corewalker", "abyssfin", "shellgolem",
-      "hellknight", "titanplim"
+      "arkmachine", "pearlseraph", "corewalker", "abyssfin",
+      "shellgolem", "titanplim"
     ]
   },
   {
     id: "v8.6-C",
     label: "既存の中盤・上位",
     ids: [
-      "venomqueen", "thunderlion", "forgegolem", "cinderhorn",
+      "thunderlion", "forgegolem", "cinderhorn",
       "cragbear", "lumenowl", "abyssjelly", "icetortoise",
-      "ironmantis", "impfang"
+      "ironmantis"
     ]
   },
   {
@@ -45,16 +47,15 @@ const productionWaves = [
     label: "既存の序盤・追加通常種",
     ids: [
       "dewplim", "budbunny", "cavemole", "sparkbug", "ashimp",
-      "reefowl", "miretoad", "gearcat", "snowfairy", "frostpup",
-      "cindrake"
+      "reefowl", "miretoad", "gearcat", "snowfairy", "frostpup"
     ]
   },
   {
     id: "v8.6-E",
     label: "既存の残り通常種",
     ids: [
-      "gloomoth", "snowcat", "voltfox", "poisonplim", "toxicshroom",
-      "sludgecko", "venomwing", "gearslime", "steelbug",
+      "snowcat", "voltfox", "poisonplim", "toxicshroom",
+      "sludgecko", "gearslime", "steelbug",
       "thunderdrone", "corallume"
     ]
   },

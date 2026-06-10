@@ -6,11 +6,11 @@
 
 ```text
 全モンスター: 84
-正式PNG: 33
-仮PNG: 42
+正式PNG: 42
+仮PNG: 33
 仮SVG: 9
 欠損: 0
-正式化対象: 51
+正式化対象: 42
 ```
 
 ## ステータス
@@ -28,21 +28,21 @@ missing        参照先ファイル欠損
 
 
 
-### v8.6-B 既存の終盤・ボス級 (10体)
+### v8.6-B 既存の終盤・ボス級 (6体)
 
-ヴェノムハイドラ (`venomhydra`) / アークマシン (`arkmachine`) / ドゥームゲイザー (`doomgazer`) / パールセラフ (`pearlseraph`) / ヨミオオカミ (`duskwolf`) / コアウォーカー (`corewalker`) / アビスフィン (`abyssfin`) / シェルゴーレム (`shellgolem`) / ヘルナイト (`hellknight`) / タイタンぷる (`titanplim`)
+アークマシン (`arkmachine`) / パールセラフ (`pearlseraph`) / コアウォーカー (`corewalker`) / アビスフィン (`abyssfin`) / シェルゴーレム (`shellgolem`) / タイタンぷる (`titanplim`)
 
-### v8.6-C 既存の中盤・上位 (10体)
+### v8.6-C 既存の中盤・上位 (8体)
 
-ヴェノムクイーン (`venomqueen`) / サンダーライオン (`thunderlion`) / フォージゴーレム (`forgegolem`) / シンダーホーン (`cinderhorn`) / クラッグベア (`cragbear`) / ルーメンオウル (`lumenowl`) / アビスジェリー (`abyssjelly`) / アイスタートル (`icetortoise`) / アイアンマンティス (`ironmantis`) / インプファング (`impfang`)
+サンダーライオン (`thunderlion`) / フォージゴーレム (`forgegolem`) / シンダーホーン (`cinderhorn`) / クラッグベア (`cragbear`) / ルーメンオウル (`lumenowl`) / アビスジェリー (`abyssjelly`) / アイスタートル (`icetortoise`) / アイアンマンティス (`ironmantis`)
 
-### v8.6-D 既存の序盤・追加通常種 (11体)
+### v8.6-D 既存の序盤・追加通常種 (10体)
 
-しずくぷる (`dewplim`) / つぼみラビ (`budbunny`) / ドリモール (`cavemole`) / スパークバグ (`sparkbug`) / アッシュインプ (`ashimp`) / リーファウル (`reefowl`) / ミアトード (`miretoad`) / ギアキャット (`gearcat`) / スノーフェア (`snowfairy`) / ユキまる (`frostpup`) / シンドレイク (`cindrake`)
+しずくぷる (`dewplim`) / つぼみラビ (`budbunny`) / ドリモール (`cavemole`) / スパークバグ (`sparkbug`) / アッシュインプ (`ashimp`) / リーファウル (`reefowl`) / ミアトード (`miretoad`) / ギアキャット (`gearcat`) / スノーフェア (`snowfairy`) / ユキまる (`frostpup`)
 
-### v8.6-E 既存の残り通常種 (11体)
+### v8.6-E 既存の残り通常種 (9体)
 
-グルーモス (`gloomoth`) / スノーニャ (`snowcat`) / ボルトキツネ (`voltfox`) / ポイズンぷる (`poisonplim`) / ドクキノコ (`toxicshroom`) / ヘドロトカゲ (`sludgecko`) / ベノムバット (`venomwing`) / ギアぷるミン (`gearslime`) / スチールバグ (`steelbug`) / サンダードローン (`thunderdrone`) / コーラルルーメ (`corallume`)
+スノーニャ (`snowcat`) / ボルトキツネ (`voltfox`) / ポイズンぷる (`poisonplim`) / ドクキノコ (`toxicshroom`) / ヘドロトカゲ (`sludgecko`) / ギアぷるミン (`gearslime`) / スチールバグ (`steelbug`) / サンダードローン (`thunderdrone`) / コーラルルーメ (`corallume`)
 
 ### v8.6-F 天空遺跡 (9体)
 
@@ -61,9 +61,9 @@ missing        参照先ファイル欠損
 |formal_png|complete|thornhog|トゲホッグ|E|beast|assets/images/monsters/thornhog.png|
 |placeholder_png|v8.6-D|frostpup|ユキまる|E|water|assets/images/monsters/frostpup.png|
 |formal_png|complete|mossking|コケヌシ|D|nature|assets/images/monsters/mossking.png|
-|placeholder_png|v8.6-D|cindrake|シンドレイク|D|dragon|assets/images/monsters/cindrake.png|
+|formal_png|complete|cindrake|シンドレイク|D|dragon|assets/images/monsters/cindrake.png|
 |formal_png|complete|gearbit|ギアビット|D|machine|assets/images/monsters/gearbit.png|
-|placeholder_png|v8.6-E|gloomoth|グルーモス|D|dark|assets/images/monsters/gloomoth.png|
+|formal_png|complete|gloomoth|グルーモス|D|dark|assets/images/monsters/gloomoth.png|
 |placeholder_png|v8.6-E|snowcat|スノーニャ|D|wing|assets/images/monsters/snowcat.png|
 |placeholder_png|v8.6-E|voltfox|ボルトキツネ|D|light|assets/images/monsters/voltfox.png|
 |formal_png|complete|orelord|オアロード|C|stone|assets/images/monsters/orelord.png|
@@ -73,7 +73,7 @@ missing        参照先ファイル欠損
 |placeholder_png|v8.6-C|ironmantis|アイアンマンティス|C|machine|assets/images/monsters/ironmantis.png|
 |formal_png|complete|tidalseraph|タイダルセラフ|B|water|assets/images/monsters/tidalseraph.png|
 |formal_png|complete|volcazard|ヴォルカザード|B|dragon|assets/images/monsters/volcazard.png|
-|placeholder_png|v8.6-B|duskwolf|ヨミオオカミ|B|dark|assets/images/monsters/duskwolf.png|
+|formal_png|complete|duskwolf|ヨミオオカミ|B|dark|assets/images/monsters/duskwolf.png|
 |formal_png|complete|frostlevia|フロストリヴァイア|A|water|assets/images/monsters/frostlevia.png|
 |formal_png|complete|arcautomaton|アークオートマタ|A|machine|assets/images/monsters/arcautomaton.png|
 |formal_png|complete|astralwyrm|アストラルワーム|A|light|assets/images/monsters/astralwyrm.png|
@@ -88,8 +88,8 @@ missing        参照先ファイル欠損
 |placeholder_png|v8.6-E|poisonplim|ポイズンぷる|E|dark|assets/images/monsters/poisonplim.png|
 |placeholder_png|v8.6-E|toxicshroom|ドクキノコ|D|nature|assets/images/monsters/toxicshroom.png|
 |placeholder_png|v8.6-E|sludgecko|ヘドロトカゲ|D|water|assets/images/monsters/sludgecko.png|
-|placeholder_png|v8.6-E|venomwing|ベノムバット|C|wing|assets/images/monsters/venomwing.png|
-|placeholder_png|v8.6-B|venomhydra|ヴェノムハイドラ|A|dragon|assets/images/monsters/venomhydra.png|
+|formal_png|complete|venomwing|ベノムバット|C|wing|assets/images/monsters/venomwing.png|
+|formal_png|complete|venomhydra|ヴェノムハイドラ|A|dragon|assets/images/monsters/venomhydra.png|
 |placeholder_png|v8.6-E|gearslime|ギアぷるミン|D|machine|assets/images/monsters/gearslime.png|
 |placeholder_png|v8.6-E|steelbug|スチールバグ|C|machine|assets/images/monsters/steelbug.png|
 |placeholder_png|v8.6-E|thunderdrone|サンダードローン|C|machine|assets/images/monsters/thunderdrone.png|
@@ -102,9 +102,9 @@ missing        参照先ファイル欠損
 |placeholder_png|v8.6-B|shellgolem|シェルゴーレム|B|stone|assets/images/monsters/shellgolem.png|
 |placeholder_png|v8.6-B|pearlseraph|パールセラフ|A|light|assets/images/monsters/pearlseraph.png|
 |formal_png|complete|abysslevia|アビスリヴァイア|S|dragon|assets/images/monsters/abysslevia.png|
-|placeholder_png|v8.6-C|impfang|インプファング|C|dark|assets/images/monsters/impfang.png|
-|placeholder_png|v8.6-B|hellknight|ヘルナイト|B|dark|assets/images/monsters/hellknight.png|
-|placeholder_png|v8.6-B|doomgazer|ドゥームゲイザー|A|dark|assets/images/monsters/doomgazer.png|
+|formal_png|complete|impfang|インプファング|C|dark|assets/images/monsters/impfang.png|
+|formal_png|complete|hellknight|ヘルナイト|B|dark|assets/images/monsters/hellknight.png|
+|formal_png|complete|doomgazer|ドゥームゲイザー|A|dark|assets/images/monsters/doomgazer.png|
 |formal_png|complete|chaoswyrm|カオスワーム|S|dragon|assets/images/monsters/chaoswyrm.png|
 |formal_png|complete|demonlord|デモンロード|S|dark|assets/images/monsters/demonlord.png|
 |placeholder_png|v8.6-D|dewplim|しずくぷる|F|water|assets/images/monsters/dewplim.png|
@@ -120,7 +120,7 @@ missing        参照先ファイル欠損
 |placeholder_png|v8.6-C|cragbear|クラッグベア|C|stone|assets/images/monsters/cragbear.png|
 |placeholder_png|v8.6-C|lumenowl|ルーメンオウル|C|light|assets/images/monsters/lumenowl.png|
 |placeholder_png|v8.6-C|abyssjelly|アビスジェリー|C|water|assets/images/monsters/abyssjelly.png|
-|placeholder_png|v8.6-C|venomqueen|ヴェノムクイーン|B|dark|assets/images/monsters/venomqueen.png|
+|formal_png|complete|venomqueen|ヴェノムクイーン|B|dark|assets/images/monsters/venomqueen.png|
 |placeholder_png|v8.6-C|thunderlion|サンダーライオン|B|light|assets/images/monsters/thunderlion.png|
 |placeholder_png|v8.6-C|forgegolem|フォージゴーレム|B|machine|assets/images/monsters/forgegolem.png|
 |formal_png|complete|glacierfang|グレイシャーファング|A|water|assets/images/monsters/glacierfang.png|
