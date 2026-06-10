@@ -10,11 +10,11 @@ const formalIds = new Set([
   "abysslevia", "aquan", "arcautomaton", "astralwyrm", "auroracat",
   "cindrake", "crystagon", "demonlord", "doomgazer", "duskwolf",
   "embercub", "frostlevia", "gearbit", "gloomoth", "hellknight",
-  "impfang",
+  "heavenscale", "impfang",
   "kingplim", "leafling", "luminel", "mossking", "orelord", "pebblon",
   "plim", "prismdragon", "puffbat", "thornhog", "tidalseraph",
   "venomhydra", "venomqueen", "venomwing", "voiddragon", "volcazard",
-  "phoenixdrake", "celestiseraph",
+  "phoenixdrake", "celestiseraph", "zenithdragon",
   "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf",
   "gigacore", "glacierfang", "solarwyrm", "nightmarestag"
 ]);
@@ -64,7 +64,7 @@ const productionWaves = [
     label: "天空遺跡",
     ids: [
       "cloudplim", "sunhare", "galegryph", "skywarden", "stormdjinn",
-      "aethergolem", "seraphalcon", "heavenscale", "zenithdragon"
+      "aethergolem", "seraphalcon"
     ]
   }
 ];

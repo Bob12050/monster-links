@@ -1154,11 +1154,11 @@
     "rank": "S",
     "type": "dragon",
     "emoji": "🌌",
-    "current_image": "assets/images/monsters/heavenscale.svg",
+    "current_image": "assets/images/monsters/heavenscale.png",
     "target_png": "assets/images/monsters/heavenscale.png",
-    "priority": "P6",
-    "wave": "v8.6-F",
-    "status": "placeholder_svg",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1168,11 +1168,11 @@
     "rank": "S",
     "type": "dragon",
     "emoji": "☀️",
-    "current_image": "assets/images/monsters/zenithdragon.svg",
+    "current_image": "assets/images/monsters/zenithdragon.png",
     "target_png": "assets/images/monsters/zenithdragon.png",
-    "priority": "P6",
-    "wave": "v8.6-F",
-    "status": "placeholder_svg",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {

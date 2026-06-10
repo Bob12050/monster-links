@@ -6,11 +6,11 @@
 
 ```text
 全モンスター: 84
-正式PNG: 42
+正式PNG: 44
 仮PNG: 33
-仮SVG: 9
+仮SVG: 7
 欠損: 0
-正式化対象: 42
+正式化対象: 40
 ```
 
 ## ステータス
@@ -44,9 +44,9 @@ missing        参照先ファイル欠損
 
 スノーニャ (`snowcat`) / ボルトキツネ (`voltfox`) / ポイズンぷる (`poisonplim`) / ドクキノコ (`toxicshroom`) / ヘドロトカゲ (`sludgecko`) / ギアぷるミン (`gearslime`) / スチールバグ (`steelbug`) / サンダードローン (`thunderdrone`) / コーラルルーメ (`corallume`)
 
-### v8.6-F 天空遺跡 (9体)
+### v8.6-F 天空遺跡 (7体)
 
-雲ぷる (`cloudplim`) / サンラビ (`sunhare`) / ゲイルグリフ (`galegryph`) / スカイウォーデン (`skywarden`) / ストームジン (`stormdjinn`) / エーテルゴーレム (`aethergolem`) / セラファルコン (`seraphalcon`) / ヘヴンスケイル (`heavenscale`) / ゼニスドラゴン (`zenithdragon`)
+雲ぷる (`cloudplim`) / サンラビ (`sunhare`) / ゲイルグリフ (`galegryph`) / スカイウォーデン (`skywarden`) / ストームジン (`stormdjinn`) / エーテルゴーレム (`aethergolem`) / セラファルコン (`seraphalcon`)
 
 ## 全モンスター
 
@@ -134,8 +134,8 @@ missing        参照先ファイル欠損
 |placeholder_svg|v8.6-F|stormdjinn|ストームジン|A|light|assets/images/monsters/stormdjinn.svg|
 |placeholder_svg|v8.6-F|aethergolem|エーテルゴーレム|A|stone|assets/images/monsters/aethergolem.svg|
 |placeholder_svg|v8.6-F|seraphalcon|セラファルコン|A|wing|assets/images/monsters/seraphalcon.svg|
-|placeholder_svg|v8.6-F|heavenscale|ヘヴンスケイル|S|dragon|assets/images/monsters/heavenscale.svg|
-|placeholder_svg|v8.6-F|zenithdragon|ゼニスドラゴン|S|dragon|assets/images/monsters/zenithdragon.svg|
+|formal_png|complete|heavenscale|ヘヴンスケイル|S|dragon|assets/images/monsters/heavenscale.png|
+|formal_png|complete|zenithdragon|ゼニスドラゴン|S|dragon|assets/images/monsters/zenithdragon.png|
 
 ## 更新方法
 
