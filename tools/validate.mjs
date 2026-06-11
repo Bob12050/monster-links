@@ -216,6 +216,46 @@ function loadGameData(scriptRefs){
     fail("3枠固定配合ルートが正しく判定されませんでした");
   }
 
+  const recipeEntries = context.MonsterLinksGame.fusionRecipeEntries();
+  for(const recipe of recipeEntries){
+    const parentOptions = recipe.group === "four"
+      ? [
+          {lineage:recipe.grandparents.slice(0,2)},
+          {lineage:recipe.grandparents.slice(2,4)}
+        ]
+      : [{},{}];
+    const parentA = context.MonsterLinksState.makeMonster(recipe.parents[0],100,parentOptions[0]);
+    const parentB = context.MonsterLinksState.makeMonster(recipe.parents[1],100,parentOptions[1]);
+    context.MonsterLinksState.state.party = [];
+    context.MonsterLinksState.state.box = [parentA,parentB];
+    const preview = context.MonsterLinksGame.fusionPreview(parentA.uid,parentB.uid);
+    if(preview?.id !== recipe.result){
+      fail(`固定配合の結果が一致しません: ${recipe.parents.join("+")} -> ${recipe.result}`);
+    }else if(preview.locked){
+      fail(`最大育成しても成立しない固定配合があります: ${recipe.parents.join("+")} -> ${recipe.result}: ${preview.reason}`);
+    }
+  }
+
+  const kingParentA = context.MonsterLinksState.makeMonster("mossking",15);
+  const kingParentB = context.MonsterLinksState.makeMonster("plim",15);
+  context.MonsterLinksState.state.party = [];
+  context.MonsterLinksState.state.box = [kingParentA,kingParentB];
+  const kingPreview = context.MonsterLinksGame.fusionPreview(kingParentA.uid,kingParentB.uid);
+  if(kingPreview?.id !== "kingplim" || kingPreview.locked){
+    fail(`キングぷるミンが親平均Lv15で成立しません: ${kingPreview?.reason || "結果不一致"}`);
+  }
+
+  const normalLowA = context.MonsterLinksState.makeMonster("aquan",100);
+  const normalLowB = context.MonsterLinksState.makeMonster("sparkbug",100);
+  context.MonsterLinksState.state.party = [];
+  context.MonsterLinksState.state.box = [normalLowA,normalLowB];
+  const normalRankPreview = context.MonsterLinksGame.fusionPreview(normalLowA.uid,normalLowB.uid);
+  if(normalRankPreview?.id !== "tidalseraph" || !normalRankPreview.locked || !normalRankPreview.reason.includes("Cランク以上")){
+    fail("レシピ外の通常配合で汎用ランク条件が維持されていません");
+  }
+  context.MonsterLinksState.state.party = [];
+  context.MonsterLinksState.state.box = [smallA,smallB,largeA,largeB];
+
   const fourParentA = context.MonsterLinksState.makeMonster("stormdjinn",60,{lineage:["galegryph","thunderlion"]});
   const fourParentB = context.MonsterLinksState.makeMonster("aethergolem",60,{lineage:["shellgolem","solarwyrm"]});
   const wrongLineageA = context.MonsterLinksState.makeMonster("stormdjinn",60);

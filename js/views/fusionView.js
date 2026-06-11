@@ -463,7 +463,7 @@
     };
     const resultState = status.ok && !status.locked ? "ready" : status.ok ? "condition" : "missing";
     const resultLabel = status.ok && !status.locked ? "配合可能" : status.ok ? "条件未達" : "素材不足";
-    const requirement = window.MonsterLinksGame.fusionRequirementText?.(recipe.result,recipe.minAvg) || "条件なし";
+    const requirement = window.MonsterLinksGame.fusionRequirementText?.(recipe.result,recipe) || "条件なし";
     return `<div class="modalBg" onclick="Game.closeModal(event)">
       <div class="modal fourFusionTreeModalV1 twoFusionTreeModalV1" onclick="event.stopPropagation()">
         <header class="fourFusionTreeHeadV1">

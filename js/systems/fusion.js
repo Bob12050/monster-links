@@ -206,16 +206,20 @@
     return "";
   }
 
-  function fusionRequirementText(resultId,minAvg=0){
+  function fusionRequirementText(resultId,recipeOrMinAvg=0){
+    const recipe = recipeOrMinAvg && typeof recipeOrMinAvg === "object" ? recipeOrMinAvg : null;
+    const minAvg = recipe ? recipe.minAvg : recipeOrMinAvg;
     const rank = rankValueById(resultId);
     const size = fusionMonsterSize(resultId);
     const req = Math.max(Number(minAvg) || 0, FUSION_RANK_LEVEL_REQ[rank] || 0, FUSION_SIZE_LEVEL_REQ[size] || 0);
     const lines = [];
     if(req) lines.push(`親平均Lv${req}以上`);
     if(size >= 3) lines.push(`親の合計サイズ${size}枠以上`);
-    if(rank >= 7) lines.push("親のどちらかA以上・両方B以上");
-    else if(rank >= 6) lines.push("親のどちらかB以上");
-    else if(rank >= 5) lines.push("親のどちらかC以上");
+    if(!recipe){
+      if(rank >= 7) lines.push("親のどちらかA以上・両方B以上");
+      else if(rank >= 6) lines.push("親のどちらかB以上");
+      else if(rank >= 5) lines.push("親のどちらかC以上");
+    }
     return lines.join(" / ") || "条件なし";
   }
 
@@ -230,7 +234,9 @@
     const avg = Math.floor((a.level + b.level) / 2);
     const req = requiredAvgForResult(id,recipe);
     if(req && avg < req) return `親2体の平均Lv${req}以上で成立します`;
-    return rankConditionReason(id,a,b);
+    // 固定レシピは指定された親そのものが昇格条件を兼ねる。
+    // 汎用ランク条件はレシピ外の通常配合だけに適用する。
+    return recipe ? "" : rankConditionReason(id,a,b);
   }
 
   function stableFusionIndex(a,b,list,tag=""){

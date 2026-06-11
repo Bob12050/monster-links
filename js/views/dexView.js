@@ -190,7 +190,7 @@
     const sameParent = parents[0] === parents[1];
     const status = dexRecipeStatus(recipe);
     const requirement = window.MonsterLinksGame.fusionRequirementText
-      ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe.minAvg)
+      ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe)
       : recipe.minAvg ? `親平均Lv${recipe.minAvg}以上` : "条件なし";
     const fourRoute = recipe.group === "four" && recipe.grandparents?.length === 4
       ? `<div class="dexFourRouteV1">
@@ -227,7 +227,7 @@
       ? recipe.parents[0]
       : recipe.parents.find(parent=>parent !== recipe._sourceId);
     const requirement = window.MonsterLinksGame.fusionRequirementText
-      ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe.minAvg)
+      ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe)
       : "条件なし";
     return `<article class="dexUseRecipeV83 ${resultKnown ? status.key : "secret"}">
       <div class="dexUseRouteV83">

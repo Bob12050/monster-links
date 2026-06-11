@@ -71,7 +71,7 @@
     }
     const route = info.best;
     if(route.four) return fourGoalRouteHtml(info,route,compact);
-    const requirement = window.MonsterLinksGame.fusionRequirementText?.(info.id,route.recipe.minAvg) || "条件なし";
+    const requirement = window.MonsterLinksGame.fusionRequirementText?.(info.id,route.recipe) || "条件なし";
     return `<div class="goalRouteV832 ${route.key}">
       <div class="goalRouteMaterialsV832">${route.materials.map(material=>goalMaterialHtml(material,compact)).join('<span class="goalPlusV832">＋</span>')}</div>
       <div class="goalRouteStateV832">
