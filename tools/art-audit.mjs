@@ -19,7 +19,7 @@ const formalIds = new Set([
   "phoenixdrake", "celestiseraph", "corallume", "seraphalcon", "sparkbug", "stormdjinn",
   "sunhare", "thunderlion", "voltfox", "zenithdragon",
   "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf",
-  "gigacore", "glacierfang", "solarwyrm", "nightmarestag"
+  "gigacore", "glacierfang", "solarwyrm", "nightmarestag", "dewplim"
 ]);
 
 const productionWaves = [
@@ -48,7 +48,7 @@ const productionWaves = [
     id: "v8.6-D",
     label: "既存の序盤・追加通常種",
     ids: [
-      "dewplim", "budbunny",
+      "budbunny",
       "reefowl", "miretoad", "gearcat", "snowfairy", "frostpup"
     ]
   },

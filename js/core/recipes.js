@@ -70,7 +70,7 @@
 
 
     // v7.2 batch1 recipe additions
-    {group:"basic",parents:["plim","aquan"],result:"dewplim",note:"水滴ぷる系への入り口"},
+    {group:"basic",parents:["plim","aquan"],result:"dewplim",note:"泡と水晶をまとった水精霊"},
     {group:"basic",parents:["budbunny","leafling"],result:"reefowl",note:"自然と水辺の飛行型"},
     {group:"basic",parents:["pebblon","thornhog"],result:"cavemole",note:"洞くつの地中けもの"},
     {group:"basic",parents:["sparkbug","plim"],result:"ashimp",note:"低ランクの火小悪魔"},

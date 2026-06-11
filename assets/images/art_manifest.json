@@ -772,15 +772,15 @@
   {
     "category": "monster",
     "id": "dewplim",
-    "name": "しずくぷる",
+    "name": "アワマリン",
     "rank": "F",
     "type": "water",
-    "emoji": "💧",
+    "emoji": "🫧",
     "current_image": "assets/images/monsters/dewplim.png",
     "target_png": "assets/images/monsters/dewplim.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {

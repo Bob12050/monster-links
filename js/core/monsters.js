@@ -59,7 +59,7 @@
     demonlord:{name:"デモンロード",rank:"S",type:"dark",emoji:"👹",image:"assets/images/monsters/demonlord.png",size:3,base:{hp:172,mp:70,atk:62,def:50,spd:40,wis:60},grow:{hp:33,mp:13,atk:14,def:12,spd:9,wis:14},skills:[["chaosflare",1],["demonclaw",3],["drain",6],["overdrive",10]]},
 
     // v6.9 batch1 formal additions
-    dewplim:{name:"しずくぷる",rank:"F",type:"water",emoji:"💧",image:"assets/images/monsters/dewplim.png",size:1,base:{"hp":32,"mp":16,"atk":9,"def":10,"spd":11,"wis":14},grow:{"hp":7,"mp":4,"atk":2,"def":3,"spd":3,"wis":4},skills:[["splash",2],["heal",6]]},
+    dewplim:{name:"アワマリン",rank:"F",type:"water",emoji:"🫧",image:"assets/images/monsters/dewplim.png",size:1,base:{"hp":32,"mp":16,"atk":9,"def":10,"spd":11,"wis":14},grow:{"hp":7,"mp":4,"atk":2,"def":3,"spd":3,"wis":4},skills:[["splash",2],["heal",6]]},
     budbunny:{name:"つぼみラビ",rank:"F",type:"nature",emoji:"🌷",image:"assets/images/monsters/budbunny.png",size:1,base:{"hp":29,"mp":12,"atk":11,"def":9,"spd":15,"wis":10},grow:{"hp":7,"mp":3,"atk":3,"def":2,"spd":4,"wis":3},skills:[["needle",2],["heal",7]]},
     cavemole:{name:"ドリモール",rank:"E",type:"stone",emoji:"🦡",image:"assets/images/monsters/cavemole.png",size:1,base:{"hp":43,"mp":7,"atk":17,"def":18,"spd":8,"wis":6},grow:{"hp":10,"mp":1,"atk":5,"def":5,"spd":2,"wis":1},skills:[["crush",3],["bite",6]]},
     sparkbug:{name:"スパークバグ",rank:"E",type:"light",emoji:"⚡",image:"assets/images/monsters/sparkbug.png",size:1,base:{"hp":34,"mp":18,"atk":12,"def":10,"spd":17,"wis":16},grow:{"hp":8,"mp":4,"atk":3,"def":3,"spd":5,"wis":4},skills:[["spark",2],["thunder",8]]},

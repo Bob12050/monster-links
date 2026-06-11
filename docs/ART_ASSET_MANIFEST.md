@@ -6,11 +6,11 @@
 
 ```text
 全モンスター: 84
-正式PNG: 60
-仮PNG: 22
+正式PNG: 61
+仮PNG: 21
 仮SVG: 2
 欠損: 0
-正式化対象: 24
+正式化対象: 23
 ```
 
 ## ステータス
@@ -36,9 +36,9 @@ missing        参照先ファイル欠損
 
 フォージゴーレム (`forgegolem`) / アビスジェリー (`abyssjelly`) / アイスタートル (`icetortoise`) / アイアンマンティス (`ironmantis`)
 
-### v8.6-D 既存の序盤・追加通常種 (7体)
+### v8.6-D 既存の序盤・追加通常種 (6体)
 
-しずくぷる (`dewplim`) / つぼみラビ (`budbunny`) / リーファウル (`reefowl`) / ミアトード (`miretoad`) / ギアキャット (`gearcat`) / スノーフェア (`snowfairy`) / ユキまる (`frostpup`)
+つぼみラビ (`budbunny`) / リーファウル (`reefowl`) / ミアトード (`miretoad`) / ギアキャット (`gearcat`) / スノーフェア (`snowfairy`) / ユキまる (`frostpup`)
 
 ### v8.6-E 既存の残り通常種 (7体)
 
@@ -107,7 +107,7 @@ missing        参照先ファイル欠損
 |formal_png|complete|doomgazer|ドゥームゲイザー|A|dark|assets/images/monsters/doomgazer.png|
 |formal_png|complete|chaoswyrm|カオスワーム|S|dragon|assets/images/monsters/chaoswyrm.png|
 |formal_png|complete|demonlord|デモンロード|S|dark|assets/images/monsters/demonlord.png|
-|placeholder_png|v8.6-D|dewplim|しずくぷる|F|water|assets/images/monsters/dewplim.png|
+|formal_png|complete|dewplim|アワマリン|F|water|assets/images/monsters/dewplim.png|
 |placeholder_png|v8.6-D|budbunny|つぼみラビ|F|nature|assets/images/monsters/budbunny.png|
 |formal_png|complete|cavemole|ドリモール|E|stone|assets/images/monsters/cavemole.png|
 |formal_png|complete|sparkbug|スパークバグ|E|light|assets/images/monsters/sparkbug.png|
