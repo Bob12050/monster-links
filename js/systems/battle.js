@@ -247,13 +247,14 @@
     enemy.mutationTitle = enemy.mutation ? S.randomMutationTitle() : null;
     enemy.nickname = `ボス ${S.def(boss.id).name}`;
     const before = S.stats(enemy);
+    const boost = boss.boost || {hp:.45,mp:.2,atk:.12,def:.12,wis:.12};
     enemy.bonus = {
-      hp:Math.floor(before.hp*.45),
-      mp:Math.floor(before.mp*.2),
-      atk:Math.floor(before.atk*.12),
-      def:Math.floor(before.def*.12),
+      hp:Math.floor(before.hp*boost.hp),
+      mp:Math.floor(before.mp*boost.mp),
+      atk:Math.floor(before.atk*boost.atk),
+      def:Math.floor(before.def*boost.def),
       spd:0,
-      wis:Math.floor(before.wis*.12)
+      wis:Math.floor(before.wis*boost.wis)
     };
     const es = S.stats(enemy);
     enemy.hp = es.hp;
