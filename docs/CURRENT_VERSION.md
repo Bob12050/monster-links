@@ -1,3 +1,17 @@
+v8.6-A.6 追加9体アート実装
+
+GAME_VERSIONを8.6-A.6へ更新
+
+主な変更:
+- `ashimp`, `cinderhorn`, `corewalker`, `cavemole`, `cragbear`, `aethergolem`, `galegryph`, `seraphalcon`, `tidalseraph` を実装用PNGへ反映
+- 採用元画像9枚を透過1024×1024 PNGへ整形
+- `galegryph`, `aethergolem`, `seraphalcon` をSVGから正式PNGへ切り替え
+- 差し替え直前の画像を `assets/images/monsters/legacy/v8.6-A.5-before-additional-9-art/` へ退避
+- `dewplim` は提供素材に含まれないため変更なし
+- セーブ形式、配合、能力値、モンスターID、ランクは変更なし
+
+---
+
 v8.6-A.5 光・聖系アート実装
 
 GAME_VERSIONを8.6-A.5へ更新

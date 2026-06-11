@@ -7,15 +7,16 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const writeFiles = process.argv.includes("--write");
 
 const formalIds = new Set([
-  "abysslevia", "aquan", "arcautomaton", "astralwyrm", "auroracat",
-  "cindrake", "crystagon", "demonlord", "doomgazer", "duskwolf",
+  "abysslevia", "aethergolem", "aquan", "arcautomaton", "ashimp",
+  "astralwyrm", "auroracat", "cavemole", "cindrake", "cinderhorn",
+  "corewalker", "cragbear", "crystagon", "demonlord", "doomgazer", "duskwolf",
   "embercub", "frostlevia", "gearbit", "gloomoth", "hellknight",
-  "heavenscale", "impfang",
+  "galegryph", "heavenscale", "impfang",
   "kingplim", "leafling", "lumenowl", "luminel", "mossking", "orelord",
   "pearlseraph", "pebblon",
   "plim", "prismdragon", "puffbat", "thornhog", "tidalseraph",
   "venomhydra", "venomqueen", "venomwing", "voiddragon", "volcazard",
-  "phoenixdrake", "celestiseraph", "corallume", "sparkbug", "stormdjinn",
+  "phoenixdrake", "celestiseraph", "corallume", "seraphalcon", "sparkbug", "stormdjinn",
   "sunhare", "thunderlion", "voltfox", "zenithdragon",
   "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf",
   "gigacore", "glacierfang", "solarwyrm", "nightmarestag"
@@ -31,7 +32,7 @@ const productionWaves = [
     id: "v8.6-B",
     label: "既存の終盤・ボス級",
     ids: [
-      "arkmachine", "corewalker", "abyssfin",
+      "arkmachine", "abyssfin",
       "shellgolem", "titanplim"
     ]
   },
@@ -39,8 +40,7 @@ const productionWaves = [
     id: "v8.6-C",
     label: "既存の中盤・上位",
     ids: [
-      "forgegolem", "cinderhorn",
-      "cragbear", "abyssjelly", "icetortoise",
+      "forgegolem", "abyssjelly", "icetortoise",
       "ironmantis"
     ]
   },
@@ -48,7 +48,7 @@ const productionWaves = [
     id: "v8.6-D",
     label: "既存の序盤・追加通常種",
     ids: [
-      "dewplim", "budbunny", "cavemole", "ashimp",
+      "dewplim", "budbunny",
       "reefowl", "miretoad", "gearcat", "snowfairy", "frostpup"
     ]
   },
@@ -65,8 +65,7 @@ const productionWaves = [
     id: "v8.6-F",
     label: "天空遺跡",
     ids: [
-      "cloudplim", "galegryph", "skywarden",
-      "aethergolem", "seraphalcon"
+      "cloudplim", "skywarden"
     ]
   }
 ];

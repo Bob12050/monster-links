@@ -6,11 +6,11 @@
 
 ```text
 全モンスター: 84
-正式PNG: 52
-仮PNG: 27
-仮SVG: 5
+正式PNG: 60
+仮PNG: 22
+仮SVG: 2
 欠損: 0
-正式化対象: 32
+正式化対象: 24
 ```
 
 ## ステータス
@@ -28,25 +28,25 @@ missing        参照先ファイル欠損
 
 
 
-### v8.6-B 既存の終盤・ボス級 (5体)
+### v8.6-B 既存の終盤・ボス級 (4体)
 
-アークマシン (`arkmachine`) / コアウォーカー (`corewalker`) / アビスフィン (`abyssfin`) / シェルゴーレム (`shellgolem`) / タイタンぷる (`titanplim`)
+アークマシン (`arkmachine`) / アビスフィン (`abyssfin`) / シェルゴーレム (`shellgolem`) / タイタンぷる (`titanplim`)
 
-### v8.6-C 既存の中盤・上位 (6体)
+### v8.6-C 既存の中盤・上位 (4体)
 
-フォージゴーレム (`forgegolem`) / シンダーホーン (`cinderhorn`) / クラッグベア (`cragbear`) / アビスジェリー (`abyssjelly`) / アイスタートル (`icetortoise`) / アイアンマンティス (`ironmantis`)
+フォージゴーレム (`forgegolem`) / アビスジェリー (`abyssjelly`) / アイスタートル (`icetortoise`) / アイアンマンティス (`ironmantis`)
 
-### v8.6-D 既存の序盤・追加通常種 (9体)
+### v8.6-D 既存の序盤・追加通常種 (7体)
 
-しずくぷる (`dewplim`) / つぼみラビ (`budbunny`) / ドリモール (`cavemole`) / アッシュインプ (`ashimp`) / リーファウル (`reefowl`) / ミアトード (`miretoad`) / ギアキャット (`gearcat`) / スノーフェア (`snowfairy`) / ユキまる (`frostpup`)
+しずくぷる (`dewplim`) / つぼみラビ (`budbunny`) / リーファウル (`reefowl`) / ミアトード (`miretoad`) / ギアキャット (`gearcat`) / スノーフェア (`snowfairy`) / ユキまる (`frostpup`)
 
 ### v8.6-E 既存の残り通常種 (7体)
 
 スノーニャ (`snowcat`) / ポイズンぷる (`poisonplim`) / ドクキノコ (`toxicshroom`) / ヘドロトカゲ (`sludgecko`) / ギアぷるミン (`gearslime`) / スチールバグ (`steelbug`) / サンダードローン (`thunderdrone`)
 
-### v8.6-F 天空遺跡 (5体)
+### v8.6-F 天空遺跡 (2体)
 
-雲ぷる (`cloudplim`) / ゲイルグリフ (`galegryph`) / スカイウォーデン (`skywarden`) / エーテルゴーレム (`aethergolem`) / セラファルコン (`seraphalcon`)
+雲ぷる (`cloudplim`) / スカイウォーデン (`skywarden`)
 
 ## 全モンスター
 
@@ -93,7 +93,7 @@ missing        参照先ファイル欠損
 |placeholder_png|v8.6-E|gearslime|ギアぷるミン|D|machine|assets/images/monsters/gearslime.png|
 |placeholder_png|v8.6-E|steelbug|スチールバグ|C|machine|assets/images/monsters/steelbug.png|
 |placeholder_png|v8.6-E|thunderdrone|サンダードローン|C|machine|assets/images/monsters/thunderdrone.png|
-|placeholder_png|v8.6-B|corewalker|コアウォーカー|B|stone|assets/images/monsters/corewalker.png|
+|formal_png|complete|corewalker|コアウォーカー|B|stone|assets/images/monsters/corewalker.png|
 |placeholder_png|v8.6-B|arkmachine|アークマシン|A|machine|assets/images/monsters/arkmachine.png|
 |formal_png|complete|venomchimera|ヴェノムキマイラ|S|dark|assets/images/monsters/venomchimera.png|
 |formal_png|complete|omegaframe|オメガフレーム|S|machine|assets/images/monsters/omegaframe.png|
@@ -109,15 +109,15 @@ missing        参照先ファイル欠損
 |formal_png|complete|demonlord|デモンロード|S|dark|assets/images/monsters/demonlord.png|
 |placeholder_png|v8.6-D|dewplim|しずくぷる|F|water|assets/images/monsters/dewplim.png|
 |placeholder_png|v8.6-D|budbunny|つぼみラビ|F|nature|assets/images/monsters/budbunny.png|
-|placeholder_png|v8.6-D|cavemole|ドリモール|E|stone|assets/images/monsters/cavemole.png|
+|formal_png|complete|cavemole|ドリモール|E|stone|assets/images/monsters/cavemole.png|
 |formal_png|complete|sparkbug|スパークバグ|E|light|assets/images/monsters/sparkbug.png|
-|placeholder_png|v8.6-D|ashimp|アッシュインプ|E|fire|assets/images/monsters/ashimp.png|
+|formal_png|complete|ashimp|アッシュインプ|E|fire|assets/images/monsters/ashimp.png|
 |placeholder_png|v8.6-D|reefowl|リーファウル|D|wing|assets/images/monsters/reefowl.png|
 |placeholder_png|v8.6-D|miretoad|ミアトード|D|water|assets/images/monsters/miretoad.png|
 |placeholder_png|v8.6-D|gearcat|ギアキャット|D|machine|assets/images/monsters/gearcat.png|
 |placeholder_png|v8.6-D|snowfairy|スノーフェア|D|water|assets/images/monsters/snowfairy.png|
-|placeholder_png|v8.6-C|cinderhorn|シンダーホーン|C|fire|assets/images/monsters/cinderhorn.png|
-|placeholder_png|v8.6-C|cragbear|クラッグベア|C|stone|assets/images/monsters/cragbear.png|
+|formal_png|complete|cinderhorn|シンダーホーン|C|fire|assets/images/monsters/cinderhorn.png|
+|formal_png|complete|cragbear|クラッグベア|C|stone|assets/images/monsters/cragbear.png|
 |formal_png|complete|lumenowl|ルーメンオウル|C|light|assets/images/monsters/lumenowl.png|
 |placeholder_png|v8.6-C|abyssjelly|アビスジェリー|C|water|assets/images/monsters/abyssjelly.png|
 |formal_png|complete|venomqueen|ヴェノムクイーン|B|dark|assets/images/monsters/venomqueen.png|
@@ -129,11 +129,11 @@ missing        参照先ファイル欠損
 |placeholder_png|v8.6-B|titanplim|タイタンぷる|S|slime|assets/images/monsters/titanplim.png|
 |placeholder_svg|v8.6-F|cloudplim|雲ぷる|C|slime|assets/images/monsters/cloudplim.svg|
 |formal_png|complete|sunhare|サンラビ|C|light|assets/images/monsters/sunhare.png|
-|placeholder_svg|v8.6-F|galegryph|ゲイルグリフ|B|wing|assets/images/monsters/galegryph.svg|
+|formal_png|complete|galegryph|ゲイルグリフ|B|wing|assets/images/monsters/galegryph.png|
 |placeholder_svg|v8.6-F|skywarden|スカイウォーデン|B|machine|assets/images/monsters/skywarden.svg|
 |formal_png|complete|stormdjinn|ストームジン|A|light|assets/images/monsters/stormdjinn.png|
-|placeholder_svg|v8.6-F|aethergolem|エーテルゴーレム|A|stone|assets/images/monsters/aethergolem.svg|
-|placeholder_svg|v8.6-F|seraphalcon|セラファルコン|A|wing|assets/images/monsters/seraphalcon.svg|
+|formal_png|complete|aethergolem|エーテルゴーレム|A|stone|assets/images/monsters/aethergolem.png|
+|formal_png|complete|seraphalcon|セラファルコン|A|wing|assets/images/monsters/seraphalcon.png|
 |formal_png|complete|heavenscale|ヘヴンスケイル|S|dragon|assets/images/monsters/heavenscale.png|
 |formal_png|complete|zenithdragon|ゼニスドラゴン|S|dragon|assets/images/monsters/zenithdragon.png|
 

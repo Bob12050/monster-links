@@ -582,9 +582,9 @@
     "emoji": "🛰️",
     "current_image": "assets/images/monsters/corewalker.png",
     "target_png": "assets/images/monsters/corewalker.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -806,9 +806,9 @@
     "emoji": "🦡",
     "current_image": "assets/images/monsters/cavemole.png",
     "target_png": "assets/images/monsters/cavemole.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -834,9 +834,9 @@
     "emoji": "🔥",
     "current_image": "assets/images/monsters/ashimp.png",
     "target_png": "assets/images/monsters/ashimp.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -904,9 +904,9 @@
     "emoji": "♈",
     "current_image": "assets/images/monsters/cinderhorn.png",
     "target_png": "assets/images/monsters/cinderhorn.png",
-    "priority": "P3",
-    "wave": "v8.6-C",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -918,9 +918,9 @@
     "emoji": "🐻",
     "current_image": "assets/images/monsters/cragbear.png",
     "target_png": "assets/images/monsters/cragbear.png",
-    "priority": "P3",
-    "wave": "v8.6-C",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1084,11 +1084,11 @@
     "rank": "B",
     "type": "wing",
     "emoji": "🪽",
-    "current_image": "assets/images/monsters/galegryph.svg",
+    "current_image": "assets/images/monsters/galegryph.png",
     "target_png": "assets/images/monsters/galegryph.png",
-    "priority": "P6",
-    "wave": "v8.6-F",
-    "status": "placeholder_svg",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1126,11 +1126,11 @@
     "rank": "A",
     "type": "stone",
     "emoji": "💠",
-    "current_image": "assets/images/monsters/aethergolem.svg",
+    "current_image": "assets/images/monsters/aethergolem.png",
     "target_png": "assets/images/monsters/aethergolem.png",
-    "priority": "P6",
-    "wave": "v8.6-F",
-    "status": "placeholder_svg",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1140,11 +1140,11 @@
     "rank": "A",
     "type": "wing",
     "emoji": "🪽",
-    "current_image": "assets/images/monsters/seraphalcon.svg",
+    "current_image": "assets/images/monsters/seraphalcon.png",
     "target_png": "assets/images/monsters/seraphalcon.png",
-    "priority": "P6",
-    "wave": "v8.6-F",
-    "status": "placeholder_svg",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
