@@ -1,3 +1,16 @@
+v8.6-A.5 光・聖系アート実装
+
+GAME_VERSIONを8.6-A.5へ更新
+
+主な変更:
+- 光・聖系の `sparkbug`, `voltfox`, `lumenowl`, `luminel`, `sunhare`, `corallume`, `thunderlion`, `auroracat`, `astralwyrm`, `pearlseraph`, `solarwyrm`, `stormdjinn` を実装用PNGへ反映
+- 採用元画像12枚を透過1024×1024 PNGへ整形
+- `sunhare` と `stormdjinn` をSVGから正式PNGへ切り替え
+- 差し替え直前の画像を `assets/images/monsters/legacy/v8.6-A.4-before-light-art/` へ退避
+- セーブ形式、配合、能力値、モンスターID、ランクは変更なし
+
+---
+
 v8.6-A.4 闇・毒系／ドラゴン系アート実装
 
 GAME_VERSIONを8.6-A.4へ更新

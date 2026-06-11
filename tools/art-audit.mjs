@@ -11,10 +11,12 @@ const formalIds = new Set([
   "cindrake", "crystagon", "demonlord", "doomgazer", "duskwolf",
   "embercub", "frostlevia", "gearbit", "gloomoth", "hellknight",
   "heavenscale", "impfang",
-  "kingplim", "leafling", "luminel", "mossking", "orelord", "pebblon",
+  "kingplim", "leafling", "lumenowl", "luminel", "mossking", "orelord",
+  "pearlseraph", "pebblon",
   "plim", "prismdragon", "puffbat", "thornhog", "tidalseraph",
   "venomhydra", "venomqueen", "venomwing", "voiddragon", "volcazard",
-  "phoenixdrake", "celestiseraph", "zenithdragon",
+  "phoenixdrake", "celestiseraph", "corallume", "sparkbug", "stormdjinn",
+  "sunhare", "thunderlion", "voltfox", "zenithdragon",
   "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf",
   "gigacore", "glacierfang", "solarwyrm", "nightmarestag"
 ]);
@@ -29,7 +31,7 @@ const productionWaves = [
     id: "v8.6-B",
     label: "既存の終盤・ボス級",
     ids: [
-      "arkmachine", "pearlseraph", "corewalker", "abyssfin",
+      "arkmachine", "corewalker", "abyssfin",
       "shellgolem", "titanplim"
     ]
   },
@@ -37,8 +39,8 @@ const productionWaves = [
     id: "v8.6-C",
     label: "既存の中盤・上位",
     ids: [
-      "thunderlion", "forgegolem", "cinderhorn",
-      "cragbear", "lumenowl", "abyssjelly", "icetortoise",
+      "forgegolem", "cinderhorn",
+      "cragbear", "abyssjelly", "icetortoise",
       "ironmantis"
     ]
   },
@@ -46,7 +48,7 @@ const productionWaves = [
     id: "v8.6-D",
     label: "既存の序盤・追加通常種",
     ids: [
-      "dewplim", "budbunny", "cavemole", "sparkbug", "ashimp",
+      "dewplim", "budbunny", "cavemole", "ashimp",
       "reefowl", "miretoad", "gearcat", "snowfairy", "frostpup"
     ]
   },
@@ -54,16 +56,16 @@ const productionWaves = [
     id: "v8.6-E",
     label: "既存の残り通常種",
     ids: [
-      "snowcat", "voltfox", "poisonplim", "toxicshroom",
+      "snowcat", "poisonplim", "toxicshroom",
       "sludgecko", "gearslime", "steelbug",
-      "thunderdrone", "corallume"
+      "thunderdrone"
     ]
   },
   {
     id: "v8.6-F",
     label: "天空遺跡",
     ids: [
-      "cloudplim", "sunhare", "galegryph", "skywarden", "stormdjinn",
+      "cloudplim", "galegryph", "skywarden",
       "aethergolem", "seraphalcon"
     ]
   }
