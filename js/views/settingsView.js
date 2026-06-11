@@ -7,7 +7,7 @@
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
   function settingsHtml(){
-    const settings = S.state.settings || {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false};
+    const settings = S.state.settings || {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false,autoStrategy:"balanced"};
     return `
     <main>
       <section class="hero">
@@ -43,6 +43,14 @@
             ${speedButton("ultra","超速",settings.speed)}
           </div>
           <div class="notice">「超速」は待ち時間を約1/4にします。戦闘中にも速度を切り替えられます。</div>
+          <h2 style="margin-top:14px">オート戦闘の作戦</h2>
+          <div class="speedButtons autoStrategyButtonsV1">
+            ${strategyButton("balanced","バランス",settings.autoStrategy)}
+            ${strategyButton("offense","攻撃優先",settings.autoStrategy)}
+            ${strategyButton("healing","回復優先",settings.autoStrategy)}
+            ${strategyButton("conserve","MP温存",settings.autoStrategy)}
+          </div>
+          <div class="notice">戦闘中にも作戦を切り替えられます。回復技や敵との属性相性を見て行動します。</div>
           <h2 style="margin-top:14px">SE音量</h2>
           <div class="seVolumeButtonsV84">
             ${volumeButton(1,"小",settings.seVolume)}
@@ -115,6 +123,10 @@
 
   function volumeButton(id,label,current){
     return `<button class="${Number(current) === id ? "primary" : "ghost"}" onclick="Game.setSeVolume(${id})">${label}</button>`;
+  }
+
+  function strategyButton(id,label,current){
+    return `<button class="${current === id ? "primary" : "ghost"}" onclick="Game.setBattleStrategy('${id}')">${label}</button>`;
   }
 
   function slotCard(info){

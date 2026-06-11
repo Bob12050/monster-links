@@ -32,6 +32,26 @@
     return ivs;
   }
 
+  const MUTATION_TITLES = {
+    fierce:{name:"猛き",desc:"攻撃が高い突然変異個体。",mod:{atk:1.08}},
+    ironwall:{name:"堅牢なる",desc:"HPと守備が高い突然変異個体。",mod:{hp:1.05,def:1.08}},
+    swift:{name:"疾風の",desc:"素早さが高い突然変異個体。",mod:{spd:1.10}},
+    sage:{name:"叡智の",desc:"MPと賢さが高い突然変異個体。",mod:{mp:1.05,wis:1.08}}
+  };
+
+  function randomMutationTitle(){
+    const ids = Object.keys(MUTATION_TITLES);
+    return ids[U.rand(0,ids.length-1)] || "fierce";
+  }
+
+  function mutationTitleDef(id){
+    return MUTATION_TITLES[id] || MUTATION_TITLES.fierce;
+  }
+
+  function mutationTitleName(m){
+    return m?.mutation ? mutationTitleDef(m.mutationTitle).name : "";
+  }
+
   function partySlotLimit(){
     return Math.max(1,Math.floor(Number(D.PARTY_SLOT_LIMIT || D.MAX_PARTY || 3)));
   }
@@ -187,7 +207,7 @@
   }
 
   function defaultSettings(){
-    return {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false};
+    return {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false,autoStrategy:"balanced"};
   }
 
   function normalizeSettings(data){
@@ -197,6 +217,9 @@
     data.settings.speed = ["slow","normal","fast","ultra"].includes(data.settings.speed) ? data.settings.speed : "normal";
     data.settings.seVolume = U.clamp(Math.floor(Number(data.settings.seVolume) || 2),1,3);
     data.settings.reducedMotion = !!data.settings.reducedMotion;
+    data.settings.autoStrategy = ["balanced","offense","healing","conserve"].includes(data.settings.autoStrategy)
+      ? data.settings.autoStrategy
+      : "balanced";
   }
 
   function slotSummary(slot){
@@ -250,6 +273,12 @@
     Object.entries(mod).forEach(([k,v])=>{
       if(out[k] !== undefined) out[k] = Math.max(1,Math.floor(out[k] * v));
     });
+    if(m.mutation){
+      const mutationMod = mutationTitleDef(m.mutationTitle).mod || {};
+      Object.entries(mutationMod).forEach(([k,v])=>{
+        if(out[k] !== undefined) out[k] = Math.max(1,Math.floor(out[k] * v));
+      });
+    }
     return out;
   }
 
@@ -280,6 +309,7 @@
       personality:inherited.personality || randomPersonality(),
       ivs:inherited.ivs || randomIvs(),
       mutation:!!inherited.mutation,
+      mutationTitle:inherited.mutation ? (MUTATION_TITLES[inherited.mutationTitle] ? inherited.mutationTitle : randomMutationTitle()) : null,
       lineage:Array.isArray(inherited.lineage) ? inherited.lineage.filter(parentId=>D.MONSTERS[parentId]).slice(0,2) : [],
       equip:null,
       locked:false,
@@ -315,7 +345,7 @@
       dex:{discovered:{},scouted:{},mutated:{}},
       fusionGoals:[],
       bag:{force_ring:1},
-      records:{scouts:0,fusions:0,specialFusions:0,equips:0,bossWins:0,bossScouts:0,items:{}},
+      records:{scouts:0,fusions:0,specialFusions:0,equips:0,bossWins:0,bossScouts:0,items:{},completedRecipes:{}},
       quests:{claimed:{}},
       arena:{unlocked:1,cleared:{},wins:0},
       settings:defaultSettings()
@@ -390,6 +420,13 @@
       if(!D.ITEMS[id]) delete data.records.items[id];
       else data.records.items[id] = Math.max(0,Math.floor(Number(data.records.items[id]) || 0));
     });
+    data.records.completedRecipes = data.records.completedRecipes && typeof data.records.completedRecipes === "object"
+      ? data.records.completedRecipes
+      : {};
+    Object.keys(data.records.completedRecipes).forEach(key=>{
+      if(!data.records.completedRecipes[key]) delete data.records.completedRecipes[key];
+      else data.records.completedRecipes[key] = true;
+    });
     data.quests = data.quests && typeof data.quests === "object" ? data.quests : {};
     data.quests.claimed = data.quests.claimed && typeof data.quests.claimed === "object" ? data.quests.claimed : {};
     Object.keys(data.quests.claimed).forEach(id=>{
@@ -425,6 +462,9 @@
     m.equip = D.ITEMS[m.equip] ? m.equip : null;
     m.locked = !!m.locked;
     m.mutation = !!m.mutation;
+    m.mutationTitle = m.mutation
+      ? (MUTATION_TITLES[m.mutationTitle] ? m.mutationTitle : randomMutationTitle())
+      : null;
     m.lineage = Array.isArray(m.lineage) ? m.lineage.filter(parentId=>D.MONSTERS[parentId]).slice(0,2) : [];
     const s = stats(m);
     m.hp = Number.isFinite(m.hp) ? U.clamp(m.hp,0,s.hp) : s.hp;
@@ -559,6 +599,7 @@
     if(key === "speed" && ["slow","normal","fast","ultra"].includes(value)) state.settings.speed = value;
     if(key === "seVolume") state.settings.seVolume = U.clamp(Math.floor(Number(value) || 2),1,3);
     if(key === "reducedMotion") state.settings.reducedMotion = !!value;
+    if(key === "autoStrategy" && ["balanced","offense","healing","conserve"].includes(value)) state.settings.autoStrategy = value;
     save();
   }
 
@@ -732,9 +773,15 @@
     if(isBoss) state.records.bossScouts = (state.records.bossScouts || 0) + 1;
   }
 
-  function recordFusion(isSpecial=false){
+  function recordFusion(isSpecial=false,recipeKey=""){
     state.records.fusions = (state.records.fusions || 0) + 1;
     if(isSpecial) state.records.specialFusions = (state.records.specialFusions || 0) + 1;
+    if(recipeKey){
+      state.records.completedRecipes = state.records.completedRecipes && typeof state.records.completedRecipes === "object"
+        ? state.records.completedRecipes
+        : {};
+      state.records.completedRecipes[String(recipeKey)] = true;
+    }
   }
   function recordEquip(){state.records.equips = (state.records.equips || 0) + 1;}
   function recordBossWin(){state.records.bossWins = (state.records.bossWins || 0) + 1;}
@@ -850,6 +897,9 @@
     personalityDef,
     randomPersonality,
     randomIvs,
+    mutationTitleDef,
+    mutationTitleName,
+    randomMutationTitle,
     partySlotLimit,
     monsterSize,
     partySizeUsed,

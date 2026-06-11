@@ -87,7 +87,7 @@
         <div class="monsterMetaV831">
           <span>Lv ${m.level}</span>
           <span>${U.esc(D.TYPES[d.type])}</span>
-          ${m.mutation ? "<span>突然変異</span>" : ""}
+          ${m.mutation ? `<span>${U.esc(S.mutationTitleName(m))}突然変異</span>` : ""}
           ${m.locked ? "<span>🔒 保護中</span>" : ""}
         </div>
         <div class="monsterStatusBarsV831">
@@ -121,7 +121,7 @@
           </span>
           <span class="monsterMetaV831">
             <span>Lv ${m.level}</span><span>${U.esc(D.TYPES[d.type])}</span><span>${size}枠</span>
-            ${m.mutation ? "<span>突然変異</span>" : ""}
+            ${m.mutation ? `<span>${U.esc(S.mutationTitleName(m))}突然変異</span>` : ""}
             ${m.locked ? "<span>🔒</span>" : ""}
           </span>
           <span class="pastureStatsV831">HP ${m.hp}/${s.hp}　攻 ${s.atk}　守 ${s.def}　速 ${s.spd}</span>

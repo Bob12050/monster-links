@@ -231,12 +231,16 @@
     const groups = ["basic","advanced","rare","four"];
     const discovered = S.state.dex?.discovered || {};
     const scouted = S.state.dex?.scouted || {};
+    const completedRecipes = S.state.records?.completedRecipes || {};
     const safeDef = id => D.MONSTERS?.[id] || {name:id || "不明",rank:"?",type:"slime",emoji:"❔"};
     const safeMonster = (id,cls="miniFace") => D.MONSTERS?.[id] ? V.monsterInline(id,cls) : `<span class="${cls}">❔</span>`;
     const resultSize = r => V.monsterSize ? V.monsterSize(r.result) : Math.max(1,Number(safeDef(r.result).size || 1));
     setTimeout(()=>window.MonsterLinksGame.applyFusionRecipeFilters?.(),0);
 
     function routeStatusHtml(r,setStatus){
+      if(completedRecipes[r.recipeKey]){
+        return `<div class="routeStatus completed">✓ 配合済み</div>`;
+      }
       if(!setStatus.ok){
         return `<div class="routeStatus bad">素材不足</div>`;
       }
@@ -258,6 +262,8 @@
         return !!s.ok;
       });
       const undiscovered = entries.filter(r=>!(discovered[r.result] || scouted[r.result]));
+      const completed = entries.filter(r=>completedRecipes[r.recipeKey]);
+      const completedRate = entries.length ? Math.floor(completed.length * 100 / entries.length) : 0;
       const highTargets = entries.filter(r=>{
         const rank = D.RANK?.[safeDef(r.result).rank] || 1;
         return rank >= 5;
@@ -280,6 +286,7 @@
       return `<section class="routeDashboardV75">
         <div class="routeDashGrid">
           ${card("今すぐ作成可能",canMake.length,"条件達成済み","good")}
+          ${card("配合レシピ達成",`${completed.length}/${entries.length}`,`${completedRate}% 完了`,"completed")}
           ${card("素材はある",materialEnough.length,"Lv/ランク条件含む","warn")}
           ${card("未発見レシピ結果",undiscovered.length,"図鑑埋め候補","")}
           ${card("Bランク以上",highTargets.length,"上位配合候補","")}
@@ -345,7 +352,8 @@
           const setStatus = window.MonsterLinksGame.recipeSetStatus ? window.MonsterLinksGame.recipeSetStatus(r) : {ok:false,label:"素材不足",cls:""};
           const recipeStatus = !setStatus.ok ? "missing" : setStatus.locked ? "condition" : "ready";
           const searchText = [p0,p1,r.result,p0d.name,p1d.name,rd.name,r.note || ""].join(" ");
-          return `<div class="recipe routeRecipeV75 compactRecipeCardV1 ${r.group === "four" ? "fourBodyRecipeV1" : ""} ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
+          const completed = !!completedRecipes[r.recipeKey];
+          return `<div class="recipe routeRecipeV75 compactRecipeCardV1 ${r.group === "four" ? "fourBodyRecipeV1" : ""} ${setStatus.ok && !setStatus.locked ? "canMake" : setStatus.ok ? "hasMats" : ""} ${completed ? "completedRecipeV1" : ""} ${r.group === "rare" ? "rareRecipe" : ""} ${childSize >= 3 ? "giantRecipeV81" : ""}" data-result-size="${childSize}" data-recipe-status="${recipeStatus}" data-discovered="${resultKnown ? "true" : "false"}" data-search="${U.esc(searchText)}">
             <div class="compactRecipeHeadV1">
               ${routeStatusHtml(r,setStatus)}
               <span class="compactRecipeTypeV1">${r.group === "four" ? "4体配合" : U.esc(D.RECIPE_GROUPS?.[r.group]?.name || "固定配合")}</span>

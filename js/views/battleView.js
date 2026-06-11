@@ -24,11 +24,13 @@
     const settings = S.state.settings || {speed:"normal",sound:true,reducedMotion:false};
     const speedLabel = {slow:"ゆっくり",normal:"通常",fast:"速い",ultra:"超速"}[settings.speed] || "通常";
     const autoOn = !!window.MonsterLinksGame.isBattleAuto?.();
+    const strategy = window.MonsterLinksGame.strategyInfo?.() || {name:"バランス",short:"BALANCE"};
+    const mutationTitle = enemy.mutation ? S.mutationTitleName(enemy) : "";
 
     return `
     <main class="battlePageV821">
       <section class="battle battleV821 battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
-        ${b.mutationIntro ? `<div class="mutationEncounterV1" aria-label="突然変異個体が出現"><span>RARE ENCOUNTER</span><b>突然変異個体 出現</b><small>色違いの珍しいモンスターです</small></div>` : ""}
+        ${b.mutationIntro ? `<div class="mutationEncounterV1" aria-label="突然変異個体が出現"><span>RARE ENCOUNTER</span><b>${U.esc(mutationTitle)}突然変異個体 出現</b><small>色違いで能力補正を持つ珍しいモンスターです</small></div>` : ""}
         <div class="battleHeaderV821">
           <div>
             <span class="battleAreaLabelV821">BATTLE AREA</span>
@@ -51,7 +53,7 @@
             <div class="battleHudV821 enemyHudV821">
               <div class="fighterNameV821">
                 <span class="fighterLabelV821 enemyLabelV821">ENEMY</span>
-                <b>${U.esc(enemy.nickname)}${enemy.mutation ? ` <span class="mutationBadge">突然変異</span>` : ""}</b>
+                <b>${U.esc(enemy.nickname)}${enemy.mutation ? ` <span class="mutationBadge">${U.esc(mutationTitle)}突然変異</span>` : ""}</b>
                 <small>Lv ${enemy.level}・${U.esc(D.TYPES[ed.type])}・${S.monsterSize(enemy)}枠</small>
               </div>
               <span class="rankBadgeV821">${ed.rank}</span>
@@ -81,7 +83,7 @@
             <div class="battleHudV821 allyHudV821">
               <div class="fighterNameV821">
                 <span class="fighterLabelV821 allyLabelV821">ALLY</span>
-                <b>${U.esc(ally.nickname)}</b>
+                <b>${U.esc(ally.nickname)}${ally.mutation ? ` <span class="mutationBadge">${U.esc(S.mutationTitleName(ally))}突然変異</span>` : ""}</b>
                 <small>Lv ${ally.level}・${U.esc(D.TYPES[ad.type])}・${S.monsterSize(ally)}枠</small>
               </div>
               <span class="rankBadgeV821">${ad.rank}</span>
@@ -102,17 +104,17 @@
         </div>
 
         <div class="battleMessageV821 ${b.lock ? "waiting" : ""} ${autoOn ? "autoV841" : ""}">
-          <span>${autoOn ? "AUTO ATTACK" : b.lock ? "NOW ACTION" : "COMMAND"}</span>
+          <span>${autoOn ? `AUTO ${U.esc(strategy.short)}` : b.lock ? "NOW ACTION" : "COMMAND"}</span>
           <b>${U.esc(latestLog)}</b>
-          <small>${autoOn ? "通常攻撃を自動選択中・手動コマンドで解除" : U.esc(turnText)}・${V.affinityHint(ally,enemy)}</small>
+          <small>${autoOn ? `作戦「${U.esc(strategy.name)}」で行動中・手動コマンドで解除` : U.esc(turnText)}・${V.affinityHint(ally,enemy)}</small>
         </div>
 
         <div class="battleCommandDeckV821">
           <div class="commandHeadingV821">
             <div><span>PLAYER COMMAND</span><b>行動を選ぶ</b></div>
             <div class="battleAutoControlV841">
-              <span>${autoOn ? "通常攻撃を継続" : b.lock ? "相手の行動を待機中" : `${U.esc(ally.nickname)}のターン`}</span>
-              <button class="${autoOn ? "on" : ""}" onclick="Game.toggleBattleAuto()"><b>${autoOn ? "AUTO ON" : "AUTO OFF"}</b><small>${autoOn ? "解除する" : "通常攻撃を自動化"}</small></button>
+              <button class="battleStrategyButtonV1" onclick="Game.cycleBattleStrategy()"><b>${U.esc(strategy.name)}</b><small>作戦を変更</small></button>
+              <button class="${autoOn ? "on" : ""}" onclick="Game.toggleBattleAuto()"><b>${autoOn ? "AUTO ON" : "AUTO OFF"}</b><small>${autoOn ? "解除する" : "作戦行動を開始"}</small></button>
             </div>
           </div>
           <div class="commandsV821">
@@ -246,9 +248,9 @@
 
     const scoutPanel = r.type === "scout" ? `
       <div class="scoutSuccessPanel">
-        ${r.enemyId ? V.monsterVisual({id:r.enemyId,mutation:r.enemyMutation},"rewardScoutFace") : `<div class="rewardScoutFace">${U.esc(r.enemyEmoji || "🤝")}</div>`}
+        ${r.enemyId ? V.monsterVisual({id:r.enemyId,mutation:r.enemyMutation,mutationTitle:r.enemyMutationTitle},"rewardScoutFace") : `<div class="rewardScoutFace">${U.esc(r.enemyEmoji || "🤝")}</div>`}
         <div>
-          <b>${U.esc(r.enemyName)}が仲間になった！${r.enemyMutation ? ` <span class="mutationBadge">突然変異</span>` : ""}</b>
+          <b>${U.esc(r.enemyName)}が仲間になった！${r.enemyMutation ? ` <span class="mutationBadge">${U.esc(S.mutationTitleName({mutation:true,mutationTitle:r.enemyMutationTitle}))}突然変異</span>` : ""}</b>
           <span>仲間画面でステータスや装備を確認できます。</span>
         </div>
       </div>` : "";
@@ -267,7 +269,7 @@
         </div>
 
         <div class="rewardEnemy rewardEnemyV53">
-          ${r.enemyId ? V.monsterInline({id:r.enemyId,mutation:r.enemyMutation},"miniFace") : U.esc(r.enemyEmoji || "❔")}
+          ${r.enemyId ? V.monsterInline({id:r.enemyId,mutation:r.enemyMutation,mutationTitle:r.enemyMutationTitle},"miniFace") : U.esc(r.enemyEmoji || "❔")}
           <span>${U.esc(r.enemyName)}</span>
         </div>
 

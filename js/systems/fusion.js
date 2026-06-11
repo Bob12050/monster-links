@@ -781,7 +781,7 @@
     const child = S.makeMonster(prev.id,1,inherited);
     child.nickname = S.def(child.id).name + "＋";
     const joinResult = S.addMonster(child);
-    S.recordFusion(!!prev.special);
+    S.recordFusion(!!prev.special,prev.recipeKey);
 
     fusionPick = [];
     fusionSkillPick = [];

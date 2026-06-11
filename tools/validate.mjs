@@ -141,10 +141,14 @@ function loadGameData(scriptRefs){
   if(state.gold !== oldSave.gold) fail("旧セーブ移行で所持GOLDが保持されませんでした");
   if(state.party[0]?.nickname !== "互換テスト") fail("旧セーブ移行で仲間情報が保持されませんでした");
   if(!Array.isArray(state.fusionGoals) || state.fusionGoals.length !== 0) fail("旧セーブに空の配合目標が補完されませんでした");
+  if(!state.records?.completedRecipes || typeof state.records.completedRecipes !== "object"){
+    fail("旧セーブに空の配合済みレシピ履歴が補完されませんでした");
+  }
   if(!state.dex?.mutated || typeof state.dex.mutated !== "object") fail("旧セーブに突然変異図鑑記録が補完されませんでした");
   if(state.settings?.speed !== "normal" || state.settings?.seVolume !== 2 || state.settings?.reducedMotion !== false){
     fail("旧セーブにv8.4の戦闘設定が正しく補完されませんでした");
   }
+  if(state.settings?.autoStrategy !== "balanced") fail("旧セーブにオート戦闘の標準作戦が補完されませんでした");
   if(state.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION) fail("旧セーブが現行の保存形式へ移行されませんでした");
   if(!localStorage.getItem("monster_links_slot_1")) fail("旧単一セーブがスロット1へ移行されませんでした");
 
@@ -168,6 +172,18 @@ function loadGameData(scriptRefs){
   const levelUpToCap = context.MonsterLinksState.makeMonster("pebblon",99);
   if(normalMonster.mutation) fail("通常生成したモンスターが突然変異個体になりました");
   if(!mutationMonster.mutation) fail("突然変異フラグが個体生成時に保持されません");
+  if(!mutationMonster.mutationTitle || !context.MonsterLinksState.mutationTitleName(mutationMonster)){
+    fail("突然変異個体に二つ名が設定されません");
+  }
+  const baseMutationComparison = context.MonsterLinksState.makeMonster("leafling",5,{
+    personality:mutationMonster.personality,
+    ivs:mutationMonster.ivs
+  });
+  const mutationStats = context.MonsterLinksState.stats(mutationMonster);
+  const baseMutationStats = context.MonsterLinksState.stats(baseMutationComparison);
+  if(!["hp","mp","atk","def","spd","wis"].some(key=>mutationStats[key] > baseMutationStats[key])){
+    fail("突然変異の二つ名による能力補正がありません");
+  }
   if(!Array.isArray(normalMonster.lineage) || normalMonster.lineage.length !== 0) fail("通常生成モンスターの系譜初期値が空ではありません");
   if(data.MAX_LEVEL !== 100 || cappedMonster.level !== 100) fail("モンスターの最大レベルが100に固定されていません");
   context.MonsterLinksState.gainExp(levelUpToCap,context.MonsterLinksState.expNext(99) * 10);
@@ -277,6 +293,17 @@ function loadGameData(scriptRefs){
     fail(`キングぷるミンが親平均Lv15で成立しません: ${kingPreview?.reason || "結果不一致"}`);
   }
 
+  const completedRecipe = recipeEntries.find(recipe=>recipe.result === "aquan");
+  context.MonsterLinksState.recordFusion(false,completedRecipe.recipeKey);
+  if(!context.MonsterLinksState.state.records.completedRecipes[completedRecipe.recipeKey]){
+    fail("配合成功時にレシピキーが配合済み履歴へ記録されません");
+  }
+  context.MonsterLinksState.save();
+  const completedSaved = JSON.parse(localStorage.getItem("monster_links_slot_1"));
+  if(!completedSaved.records?.completedRecipes?.[completedRecipe.recipeKey]){
+    fail("配合済みレシピ履歴がセーブデータへ保存されません");
+  }
+
   context.MonsterLinksState.state.party = [];
   context.MonsterLinksState.state.box = [smallA,smallB,largeA,largeB];
 
@@ -332,6 +359,12 @@ function loadGameData(scriptRefs){
     if(!fusionHtml.includes("3枠大型モンスター")) fail("配合画面に3枠警告が表示されません");
     if(!fusionHtml.includes("配合後：")) fail("配合画面に加入先予測が表示されません");
     if(!fusionHtml.includes("recipeFilterPanelV811")) fail("配合リストに検索・フィルターが表示されません");
+    if(!fusionHtml.includes("配合レシピ達成") || !fusionHtml.includes(`1/${recipeEntries.length}`)){
+      fail("配合リストに配合済み達成数が表示されません");
+    }
+    if(!fusionHtml.includes("✓ 配合済み") || !fusionHtml.includes("completedRecipeV1")){
+      fail("成功済みレシピに配合済みマークが表示されません");
+    }
     if(!fusionHtml.includes("結果名・親素材名で検索")) fail("配合リストの検索対象説明がありません");
     if(!fusionHtml.includes('data-recipe-status="')) fail("配合レシピに状態フィルター情報がありません");
     if(!fusionHtml.includes("4体配合") || !fusionHtml.includes("compactRecipeCardV1")) fail("配合画面に簡略化した配合カードが表示されません");
@@ -501,7 +534,11 @@ function loadGameData(scriptRefs){
     const activeMonster = context.MonsterLinksState.state.party[context.MonsterLinksState.state.battle.active];
     activeMonster.hp = 1;
     context.MonsterLinksGame.toggleBattleAuto();
-    if(context.MonsterLinksGame.isBattleAuto()) fail("HP25%以下でオート攻撃を開始できてしまいます");
+    if(!context.MonsterLinksGame.isBattleAuto()) fail("低HP時に回復・防御用のオート作戦を開始できません");
+    context.MonsterLinksGame.toggleBattleAuto();
+    context.MonsterLinksGame.setBattleStrategy("healing");
+    if(context.MonsterLinksState.state.settings.autoStrategy !== "healing") fail("オート戦闘の作戦を変更・保存できません");
+    context.MonsterLinksGame.setBattleStrategy("balanced");
     activeMonster.hp = context.MonsterLinksState.stats(activeMonster).hp;
     if(Object.prototype.hasOwnProperty.call(context.MonsterLinksState.state,"autoAttack")){
       fail("オート攻撃状態がセーブデータへ保存されています");
@@ -513,9 +550,10 @@ function loadGameData(scriptRefs){
     }
     const battleSource = fs.readFileSync(battleSystemFile,"utf8");
     if(!battleSource.includes("current !== battle || current.lock")) fail("古いオート攻撃タイマーを無効化する防御がありません");
-    if(!battleSource.includes("if(!fromAuto && kind !== \"attack\") stopBattleAuto()")) fail("手動コマンドでオート攻撃を解除する処理がありません");
+    if(!battleSource.includes("if(!fromAuto) stopBattleAuto()")) fail("手動コマンドでオート作戦を解除する処理がありません");
     if(!battleSource.includes("U.rand(1,100) <= 3")) fail("探索に突然変異個体の出現判定がありません");
-    if(!battleSource.includes("{mutation:e.mutation}")) fail("スカウト時に突然変異個体を引き継げません");
+    if(!battleSource.includes("mutation:e.mutation,mutationTitle:e.mutationTitle")) fail("スカウト時に突然変異個体の二つ名を引き継げません");
+    if(!battleSource.includes("chooseAutoAction") || !battleSource.includes("bestDamageSkill")) fail("オート作戦の行動選択処理がありません");
     if(!battleSource.includes("if(joined.mutation) joined.locked = true")) fail("突然変異個体がスカウト時に自動保護されません");
     if(!battleSource.includes("scheduleMutationIntroEnd")) fail("突然変異遭遇演出を一度だけ終了する処理がありません");
     const battleViewSource = fs.readFileSync(battleViewFile,"utf8");

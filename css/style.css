@@ -3554,7 +3554,7 @@ button:hover:before{
 }
 .routeDashGrid{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   gap:8px;
 }
 .routeDashCard{
@@ -3685,6 +3685,19 @@ button:hover:before{
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.12);
   color:var(--muted);
+}
+.routeStatus.completed{
+  color:#b8ffd8;
+  border-color:rgba(74,222,128,.48);
+  background:rgba(34,197,94,.18);
+}
+.routeDashCard.completed{
+  border-color:rgba(74,222,128,.42);
+  background:linear-gradient(145deg,rgba(34,197,94,.16),rgba(15,23,42,.82));
+}
+.completedRecipeV1{
+  border-color:rgba(74,222,128,.45);
+  box-shadow:inset 0 0 0 1px rgba(74,222,128,.12);
 }
 .routeParents{
   display:grid;
@@ -6837,6 +6850,12 @@ button:hover:before{
 }
 .battleAutoControlV841 > button.on b{color:#e5ffed}
 .battleAutoControlV841 > button.on small{color:#b9f4cc}
+.battleAutoControlV841 .battleStrategyButtonV1{
+  border-color:#7567d8;
+  background:linear-gradient(180deg,#292750,#1a1d39);
+}
+.battleAutoControlV841 .battleStrategyButtonV1 b{color:#e5e1ff}
+.battleAutoControlV841 .battleStrategyButtonV1 small{color:#aaa3e8}
 .battleMessageV821.autoV841{
   border-color:rgba(116,240,160,.3);
   background:linear-gradient(90deg,rgba(31,118,68,.34),rgba(15,26,48,.92));

@@ -46,8 +46,68 @@
     if(!b) return "戦闘が終了しました";
     const ally = active();
     if(!ally || ally.hp <= 0) return "戦闘不能のためオート攻撃を停止";
-    if(S.hpPct(ally) <= 25) return "HPが25%以下のためオート攻撃を停止";
     return "";
+  }
+
+  const AUTO_STRATEGIES = {
+    balanced:{name:"バランス",short:"BALANCE"},
+    offense:{name:"攻撃優先",short:"ATTACK"},
+    healing:{name:"回復優先",short:"HEAL"},
+    conserve:{name:"MP温存",short:"SAVE MP"}
+  };
+
+  function battleStrategy(){
+    const id = S.state.settings?.autoStrategy || "balanced";
+    return AUTO_STRATEGIES[id] ? id : "balanced";
+  }
+
+  function strategyInfo(){
+    const id = battleStrategy();
+    return {id,...AUTO_STRATEGIES[id]};
+  }
+
+  function usableAutoSkills(ally,kind){
+    return S.skills(ally)
+      .filter(id=>id !== "attack" && D.SKILLS[id]?.kind === kind && ally.mp >= D.SKILLS[id].cost)
+      .map(id=>({id,skill:D.SKILLS[id]}));
+  }
+
+  function bestDamageSkill(ally,enemy,mpLimit=Infinity){
+    const stats = S.stats(ally);
+    return usableAutoSkills(ally,"damage")
+      .filter(entry=>entry.skill.cost <= mpLimit)
+      .map(entry=>{
+        const sk = entry.skill;
+        const stat = stats[sk.stat] || stats.atk;
+        const affinity = adjustedMultiplier(typeMultiplier(skillElement(ally,sk),enemy));
+        return {...entry,score:stat * sk.power * affinity};
+      })
+      .sort((a,b)=>b.score-a.score)[0] || null;
+  }
+
+  function bestHealSkill(ally){
+    return usableAutoSkills(ally,"heal")
+      .sort((a,b)=>b.skill.power-a.skill.power)[0] || null;
+  }
+
+  function chooseAutoAction(){
+    const b = S.state.battle;
+    const ally = active();
+    if(!b || !ally) return {kind:"attack"};
+    const strategy = battleStrategy();
+    const hpPct = S.hpPct(ally);
+    const heal = bestHealSkill(ally);
+    const maxMp = Math.max(1,S.stats(ally).mp);
+
+    if(strategy === "healing" && hpPct <= 72 && heal) return {kind:"skill",skillId:heal.id};
+    if(strategy === "balanced" && hpPct <= 48 && heal) return {kind:"skill",skillId:heal.id};
+    if(strategy === "conserve" && hpPct <= 30 && heal) return {kind:"skill",skillId:heal.id};
+    if(hpPct <= 22 && !heal && strategy !== "offense") return {kind:"guard"};
+
+    const mpLimit = strategy === "conserve" ? Math.max(4,Math.floor(maxMp * .12)) : Infinity;
+    const damageSkill = bestDamageSkill(ally,b.enemy,mpLimit);
+    if(damageSkill) return {kind:"skill",skillId:damageSkill.id};
+    return {kind:"attack"};
   }
 
   function scheduleAutoAttack(){
@@ -74,7 +134,8 @@
         toast(safety);
         return;
       }
-      act("attack",null,true);
+      const action = chooseAutoAction();
+      act(action.kind,action.skillId || null,true);
     },G.delay(260));
   }
 
@@ -94,7 +155,7 @@
       return;
     }
     autoAttack = true;
-    log("オート攻撃を開始した");
+    log(`オート作戦「${strategyInfo().name}」を開始した`);
     S.save();
     render();
     toast("オート攻撃：ON");
@@ -102,6 +163,22 @@
   }
 
   function isBattleAuto(){return autoAttack;}
+
+  function cycleBattleStrategy(){
+    const order = ["balanced","offense","healing","conserve"];
+    const current = battleStrategy();
+    const next = order[(order.indexOf(current) + 1) % order.length];
+    setBattleStrategy(next);
+  }
+
+  function setBattleStrategy(next){
+    if(!AUTO_STRATEGIES[next]) return;
+    S.setSetting("autoStrategy",next);
+    if(S.state.battle) log(`オート作戦を「${AUTO_STRATEGIES[next].name}」に変更した`);
+    render();
+    toast(`作戦：${AUTO_STRATEGIES[next].name}`);
+    if(autoAttack) scheduleAutoAttack();
+  }
 
   function scheduleMutationIntroEnd(battle){
     if(!battle?.mutationIntro) return;
@@ -123,6 +200,12 @@
     const eid = st.enemies[U.rand(0,st.enemies.length-1)];
     const enemy = S.makeMonster(eid,U.rand(st.min,st.max));
     enemy.mutation = U.rand(1,100) <= 3;
+    enemy.mutationTitle = enemy.mutation ? S.randomMutationTitle() : null;
+    if(enemy.mutation){
+      const mutationStats = S.stats(enemy);
+      enemy.hp = mutationStats.hp;
+      enemy.mp = mutationStats.mp;
+    }
     enemy.nickname = S.def(eid).name;
     S.recordSeen(eid);
     if(enemy.mutation) S.recordMutation(eid);
@@ -161,6 +244,7 @@
     const boss = st.boss;
     const enemy = S.makeMonster(boss.id,boss.level);
     enemy.mutation = U.rand(1,100) <= 3;
+    enemy.mutationTitle = enemy.mutation ? S.randomMutationTitle() : null;
     enemy.nickname = `ボス ${S.def(boss.id).name}`;
     const before = S.stats(enemy);
     enemy.bonus = {
@@ -218,7 +302,7 @@
     const state = S.state;
     const b = state.battle;
     if(!b || b.lock) return;
-    if(!fromAuto && kind !== "attack") stopBattleAuto();
+    if(!fromAuto) stopBattleAuto();
     const a = active();
     const e = b.enemy;
 
@@ -264,7 +348,7 @@
       }
       const chance = scoutChance();
       if(U.rand(1,100) <= chance){
-        const joined = S.makeMonster(e.id,e.level,{mutation:e.mutation});
+        const joined = S.makeMonster(e.id,e.level,{mutation:e.mutation,mutationTitle:e.mutationTitle});
         joined.nickname = S.def(e.id).name;
         if(joined.mutation) joined.locked = true;
         const joinedResult = S.addMonster(joined);
@@ -537,6 +621,7 @@
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
         enemyMutation:!!b.enemy.mutation,
+        enemyMutationTitle:b.enemy.mutationTitle || null,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,
@@ -581,6 +666,7 @@
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
         enemyMutation:!!b.enemy.mutation,
+        enemyMutationTitle:b.enemy.mutationTitle || null,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,
@@ -609,6 +695,7 @@
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
         enemyMutation:!!b.enemy.mutation,
+        enemyMutationTitle:b.enemy.mutationTitle || null,
         isBoss:b.isBoss,
         exp:0,
         gold:-lost,
@@ -750,6 +837,9 @@
     retryExploration,
     toggleBattleAuto,
     isBattleAuto,
+    strategyInfo,
+    cycleBattleStrategy,
+    setBattleStrategy,
     resetBattleAuto
   });
 
