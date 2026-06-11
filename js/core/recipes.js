@@ -63,9 +63,9 @@
     {group:"advanced",parents:["duskwolf","embercub"],result:"impfang",note:"魔界門への入り口"},
     {group:"advanced",parents:["impfang","ironmantis"],result:"hellknight",note:"闇の重装アタッカー"},
     {group:"advanced",parents:["hellknight","luminel"],result:"doomgazer",note:"闇の騎士と光属性から生まれる魔眼"},
-    {group:"advanced",parents:["doomgazer","voiddragon"],result:"chaoswyrm",note:"混沌をまとった竜"},
+    {group:"advanced",parents:["doomgazer","venomhydra"],result:"chaoswyrm",note:"呪眼と毒竜から生まれる混沌竜"},
     {group:"rare",parents:["abysslevia","pearlseraph"],result:"chaoswyrm",minAvg:34,note:"深海と聖光から生まれる混沌竜"},
-    {group:"rare",parents:["chaoswyrm","demonlord"],result:"voiddragon",minAvg:38,note:"魔界門の先にある禁断配合"},
+    {group:"rare",parents:["chaoswyrm","eclipsewolf"],result:"voiddragon",minAvg:38,note:"混沌と月蝕を重ねる虚無の禁断配合"},
     {group:"rare",parents:["abysslevia","chaoswyrm"],result:"demonlord",minAvg:40,note:"深淵と混沌を統べる魔王配合"},
 
 

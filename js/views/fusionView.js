@@ -17,7 +17,7 @@
     <main>
       <section class="hero fusionHeroV34">
         <h1>モンスター配合</h1>
-        <p>仲間2体を選んで新しい仲間を生み出します。指定された系譜を重ねる4体配合にも対応しています。</p>
+        <p>配合リストに登録された親2体から新しい仲間を生み出します。指定された系譜を重ねる4体配合にも対応しています。</p>
         <div class="actions fusionBackActions">
           <button onclick="Game.setView('monsters')">仲間へ戻る</button>
           <button onclick="Game.setView('help')">遊び方</button>
@@ -32,7 +32,7 @@
         ${selectedParentsPanel(pick,prev)}
         ${fusionPreviewPanel(prev)}
         <div class="actions stickyActions">
-          <button class="gold" ${(ready && !(prev && prev.locked)) ? "" : "disabled"} onclick="Game.doFusion()">この2体で配合</button>
+          <button class="gold" ${(ready && prev?.available && !prev.locked) ? "" : "disabled"} onclick="Game.doFusion()">この2体で配合</button>
           <button onclick="Game.clearFusion()">選択解除</button>
         </div>
       </section>
@@ -88,7 +88,7 @@
     };
     const a = parent(pick[0]);
     const b = parent(pick[1]);
-    const result = prev ? S.def(prev.id) : null;
+    const result = prev?.available ? S.def(prev.id) : null;
     return `<div class="selectedParentsPanelV728 ${pick.length === 2 ? "ready" : ""}">
       <div class="selectedParentsTitle">
         <b>現在選択中の親</b>
@@ -102,8 +102,8 @@
         <div class="selectedResultSlot ${result ? "" : "emptyParent"}">
           ${result ? V.monsterInline(prev.id,"miniFace") : `<div class="miniFace">?</div>`}
           <div>
-            <b>${result ? `結果: ${U.esc(result.name)}` : "結果"}</b>
-            <div class="tiny">${result ? `${result.rank} / ${V.sizeLabel ? V.sizeLabel(result) : `${result.size || 1}枠`} / Lv${prev.level}${prev.forcedRecipe ? " / リスト選択中" : ""}` : "親2体で表示"}</div>
+            <b>${result ? `結果: ${U.esc(result.name)}` : prev ? "配合不可" : "結果"}</b>
+            <div class="tiny">${result ? `${result.rank} / ${V.sizeLabel ? V.sizeLabel(result) : `${result.size || 1}枠`} / Lv${prev.level}${prev.forcedRecipe ? " / リスト選択中" : ""}` : prev ? U.esc(prev.reason) : "親2体で表示"}</div>
           </div>
         </div>
       </div>
@@ -113,18 +113,23 @@
 
   function fusionPreviewPanel(prev){
     if(!prev) return `<div class="notice">親を2体選ぶと、結果・能力ボーナス・引き継ぎ技が表示されます。</div>`;
+    if(!prev.available){
+      return `<div class="notice fusionUnavailableV1">
+        <b>この組み合わせでは配合できません</b>
+        <span>${U.esc(prev.reason)}</span>
+        <small>${U.esc(prev.note || "配合リストで固定レシピを確認してください")}</small>
+      </div>`;
+    }
 
     const d = S.def(prev.id);
-    const group = D.RECIPE_GROUPS?.[prev.group]?.name || (prev.recipe ? "固定レシピ" : "通常配合");
+    const group = D.RECIPE_GROUPS?.[prev.group]?.name || "固定レシピ";
     const lock = prev.locked ? `<div class="tiny rareLock">条件未達：${U.esc(prev.reason)}</div>` : "";
     const note = prev.note ? `<div class="tiny">${U.esc(prev.note)}</div>` : "";
-    const recipeBadge = prev.recipe
-      ? (prev.fourBody
+    const recipeBadge = prev.fourBody
         ? `<div class="fusionGuarantee fourFusionNotice">✦ 4体配合成立：中間素材2体の祖父母系譜が一致しています</div>`
         : prev.forcedRecipe
         ? `<div class="fusionGuarantee strongFusionNotice">📋 配合リストから選択中：この結果で固定されています</div>`
-        : `<div class="fusionGuarantee">✅ 固定レシピ一致：この組み合わせの決まった結果です</div>`)
-      : `<div class="fusionNormalNote">通常配合：リスト外の組み合わせです</div>`;
+        : `<div class="fusionGuarantee">✅ 固定レシピ一致：この組み合わせの決まった結果です</div>`;
     const fourRoute = prev.fourBody && prev.grandparents?.length === 4
       ? `<div class="fourFusionRouteV1">
           <b>4体配合の祖父母系譜</b>
@@ -208,7 +213,7 @@
       <div class="recommendGrid">
         ${list.map(x=>{
           const d = S.def(x.prev.id);
-          const group = D.RECIPE_GROUPS?.[x.prev.group]?.name || (x.prev.recipe ? "固定配合" : "通常配合");
+          const group = D.RECIPE_GROUPS?.[x.prev.group]?.name || "固定配合";
           const lock = x.prev.locked ? `<span class="rareLock">条件未達</span>` : `<span class="type">配合可</span>`;
           return `<div class="recommendCard">
             <div class="tiny">${V.monsterInline(x.a.id,'miniFace')} ${x.a.nickname} ＋ ${V.monsterInline(x.b.id,'miniFace')} ${x.b.nickname}</div>

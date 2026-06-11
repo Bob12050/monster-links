@@ -177,10 +177,6 @@
     return D.RANK?.[d?.rank] || 1;
   }
 
-  function rankValueByMonster(m){
-    return rankValueById(m?.id);
-  }
-
   function requiredAvgForResult(id,recipe=null){
     const rank = rankValueById(id);
     const byRank = FUSION_RANK_LEVEL_REQ[rank] || 0;
@@ -188,43 +184,20 @@
     return Math.max(Number(recipe?.minAvg) || 0, byRank, bySize);
   }
 
-  function rankConditionReason(resultId,a,b){
-    const childRank = rankValueById(resultId);
-    const ar = rankValueByMonster(a);
-    const br = rankValueByMonster(b);
-    const high = Math.max(ar,br);
-    const low = Math.min(ar,br);
-
-    if(childRank >= 7){
-      if(high < 6) return "Sランク作成には親のどちらかがAランク以上である必要があります";
-      if(low < 5) return "Sランク作成には親2体がどちらもBランク以上である必要があります";
-    }else if(childRank >= 6){
-      if(high < 5) return "Aランク作成には親のどちらかがBランク以上である必要があります";
-    }else if(childRank >= 5){
-      if(high < 4) return "Bランク作成には親のどちらかがCランク以上である必要があります";
-    }
-    return "";
-  }
-
-  function fusionRequirementText(resultId,recipeOrMinAvg=0){
-    const recipe = recipeOrMinAvg && typeof recipeOrMinAvg === "object" ? recipeOrMinAvg : null;
-    const minAvg = recipe ? recipe.minAvg : recipeOrMinAvg;
+  function fusionRequirementText(resultId,recipe={}){
+    const minAvg = recipe?.minAvg;
     const rank = rankValueById(resultId);
     const size = fusionMonsterSize(resultId);
     const req = Math.max(Number(minAvg) || 0, FUSION_RANK_LEVEL_REQ[rank] || 0, FUSION_SIZE_LEVEL_REQ[size] || 0);
     const lines = [];
     if(req) lines.push(`親平均Lv${req}以上`);
     if(size >= 3) lines.push(`親の合計サイズ${size}枠以上`);
-    if(!recipe){
-      if(rank >= 7) lines.push("親のどちらかA以上・両方B以上");
-      else if(rank >= 6) lines.push("親のどちらかB以上");
-      else if(rank >= 5) lines.push("親のどちらかC以上");
-    }
     return lines.join(" / ") || "条件なし";
   }
 
   function recipeLockReason(recipe,a,b,resultId=null){
-    const id = resultId || recipe?.result || chooseChild(a,b);
+    const id = resultId || recipe?.result;
+    if(!id) return "固定配合レシピがありません";
     if(recipe?.group === "four" && !fourLineageMatches(recipe,a,b)){
       return "指定された祖父母4体の系譜を持つ中間素材2体が必要です";
     }
@@ -234,73 +207,7 @@
     const avg = Math.floor((a.level + b.level) / 2);
     const req = requiredAvgForResult(id,recipe);
     if(req && avg < req) return `親2体の平均Lv${req}以上で成立します`;
-    // 固定レシピは指定された親そのものが昇格条件を兼ねる。
-    // 汎用ランク条件はレシピ外の通常配合だけに適用する。
-    return recipe ? "" : rankConditionReason(id,a,b);
-  }
-
-  function stableFusionIndex(a,b,list,tag=""){
-    const key = [String(a?.id || ""),String(b?.id || "")].sort().join("+") + ":" + tag;
-    let hash = 0;
-    for(let i=0;i<key.length;i++){
-      hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
-    }
-    return Math.abs(hash) % Math.max(1,list.length);
-  }
-
-  function stablePick(a,b,list,tag=""){
-    return list[stableFusionIndex(a,b,list,tag)];
-  }
-
-  function sizeAllowedResults(a,b,list){
-    const maxSize = fusionParentSizeTotal(a,b);
-    const allowed = list.filter(id=>D.MONSTERS?.[id] && fusionMonsterSize(id) <= maxSize);
-    return allowed.length ? allowed : list.filter(id=>D.MONSTERS?.[id]);
-  }
-
-  function chooseChild(a,b){
-    const types = [S.def(a.id).type,S.def(b.id).type].sort().join("+");
-    const high = Math.max(D.RANK[S.def(a.id).rank],D.RANK[S.def(b.id).rank]);
-    const table = {
-      "beast+fire":"embercub",
-      "dark+water":"gloomoth",
-      "dragon+machine":"crystagon",
-      "fire+stone":"cindrake",
-      "light+water":"tidalseraph",
-      "nature+wing":"thornhog",
-      "slime+stone":"gearbit",
-      "nature+slime":"mossking",
-      "stone+stone":"orelord",
-      "slime+water":"frostpup",
-      "water+wing":"snowcat",
-      "stone+water":"icetortoise",
-      "light+machine":"voltfox",
-      "beast+machine":"ironmantis",
-      "beast+dark":"duskwolf",
-      "machine+machine":"arcautomaton",
-      "dragon+light":"prismdragon",
-      "slime+nature":"kingplim",
-      "light+wing":"auroracat",
-      "dark+light":"eclipsewolf",
-      "dark+slime":"poisonplim",
-      "dark+nature":"toxicshroom",
-      "dark+wing":"venomwing",
-      "machine+slime":"gearslime",
-      "machine+stone":"corewalker"
-    };
-    if(table[types] && fusionMonsterSize(table[types]) <= fusionParentSizeTotal(a,b)) return table[types];
-
-    // v7.1.1:
-    // 通常配合の候補選択はランダムにしない。
-    // おすすめ表示・選択後プレビュー・実際の配合結果がズレないよう、
-    // 同じ親IDの組み合わせなら必ず同じ結果を返す。
-    if(high >= 7) return stablePick(a,b,sizeAllowedResults(a,b,["prismdragon","phoenixdrake","celestiseraph","voiddragon","omegaframe","venomchimera"]),"S");
-    if(high >= 6) return stablePick(a,b,sizeAllowedResults(a,b,["frostlevia","arcautomaton","astralwyrm","prismdragon","arkmachine","venomhydra"]),"A");
-    if(high >= 5) return stablePick(a,b,sizeAllowedResults(a,b,["tidalseraph","volcazard","duskwolf","frostlevia","arcautomaton","corewalker"]),"B");
-    if(high >= 4) return stablePick(a,b,sizeAllowedResults(a,b,["luminel","crystagon","tidalseraph","icetortoise","ironmantis","steelbug","thunderdrone"]),"C");
-    if(high === 3) return stablePick(a,b,sizeAllowedResults(a,b,["cindrake","gearbit","gloomoth","mossking","orelord","snowcat","voltfox","toxicshroom","gearslime"]),"D");
-    if(high === 2) return stablePick(a,b,sizeAllowedResults(a,b,["embercub","aquan","thornhog","frostpup","poisonplim"]),"E");
-    return stablePick(a,b,sizeAllowedResults(a,b,["plim","leafling","puffbat","pebblon"]),"F");
+    return "";
   }
 
   function childLevel(a,b){
@@ -408,7 +315,32 @@
     }
     const forcedRecipe = forcedRecipeFor(a,b);
     const recipe = forcedRecipe || findRecipe(a,b);
-    const id = recipe ? recipe.result : chooseChild(a,b);
+    if(!recipe){
+      return {
+        id:null,
+        level:1,
+        recipe:false,
+        recipeKey:"",
+        group:"none",
+        special:false,
+        fourBody:false,
+        grandparents:[],
+        available:false,
+        locked:true,
+        reason:"この組み合わせの固定配合レシピはありません",
+        note:"配合リストから作りたいモンスターのレシピを確認してください",
+        bonus:{hp:0,mp:0,atk:0,def:0,spd:0,wis:0},
+        ivs:{hp:0,mp:0,atk:0,def:0,spd:0,wis:0},
+        skillCandidates:[],
+        selectedSkills:[],
+        avgLevel:Math.floor((a.level + b.level) / 2),
+        childSize:0,
+        parentSizeTotal:fusionParentSizeTotal(a,b),
+        partyOutcome:null,
+        parents:[a,b]
+      };
+    }
+    const id = recipe.result;
     const lockReason = recipeLockReason(recipe,a,b,id);
     const level = childLevel(a,b);
     const skillList = skillCandidates(a,b);
@@ -416,6 +348,7 @@
     return {
       id,
       level,
+      available:true,
       recipe:!!recipe,
       forcedRecipe:!!forcedRecipe,
       recipeKey:recipe?.recipeKey || "",
@@ -530,7 +463,7 @@
         const a = all[i], b = all[j];
         if(a.locked || b.locked) continue;
         const prev = fusionPreview(a.uid,b.uid);
-        if(!prev) continue;
+        if(!prev?.available) continue;
         const rankValue = D.RANK[S.def(prev.id).rank] || 1;
         const score = rankValue * 100 + prev.level + (prev.recipe ? 30 : 0) + (prev.special ? 70 : 0) - (prev.locked ? 120 : 0);
         out.push({a,b,prev,score});
@@ -719,6 +652,7 @@
     if(S.owned().length <= 2){toast("仲間が2体だけの時は配合できません");return null;}
 
     const prev = fusionPreview(a.uid,b.uid);
+    if(!prev?.available){toast(prev?.reason || "固定配合レシピがありません");return null;}
     if(prev.locked){toast(prev.reason || "特殊配合の条件を満たしていません");return null;}
 
     sanitizeFusionSkillPick(a,b);
@@ -738,7 +672,7 @@
       : `牧場送り予定（パーティ残り${Math.max(0,outcome.limit-outcome.afterParents.used)}枠に対して子は${outcome.childSize}枠）`;
     const skillLine = selected.length ? selected.map(id=>D.SKILLS?.[id]?.name || id).join(" / ") : "なし";
     const returnedEquipment = [a,b].filter(m=>m.equip).map(m=>D.ITEMS[m.equip]?.name || m.equip);
-    const recipeLine = prev.fourBody ? "4体配合" : prev.recipe ? (prev.forcedRecipe ? "配合リストから選択" : "固定レシピ") : "通常配合";
+    const recipeLine = prev.fourBody ? "4体配合" : prev.forcedRecipe ? "配合リストから選択" : "固定レシピ";
     const visual = (id,cls) => V.monsterVisual ? V.monsterVisual(id,cls) : `<div class="${cls}">${U.esc(S.def(id).emoji || "❔")}</div>`;
 
     fusionPendingConfirmation = {

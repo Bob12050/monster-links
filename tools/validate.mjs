@@ -111,6 +111,33 @@ function loadGameData(scriptRefs){
     fail("ゲームデータまたはセーブ状態を初期化できませんでした");
     return null;
   }
+
+  const recipeGraph = new Map();
+  for(const recipe of data.RECIPE_LIST || []){
+    for(const parent of recipe.parents || []){
+      if(!recipeGraph.has(parent)) recipeGraph.set(parent,[]);
+      recipeGraph.get(parent).push(recipe.result);
+    }
+  }
+  const recipeVisiting = new Set();
+  const recipeVisited = new Set();
+  const recipePath = [];
+  function visitRecipeNode(id){
+    if(recipeVisiting.has(id)){
+      const start = recipePath.indexOf(id);
+      fail(`配合レシピが循環しています: ${recipePath.slice(start).concat(id).join(" -> ")}`);
+      return;
+    }
+    if(recipeVisited.has(id)) return;
+    recipeVisiting.add(id);
+    recipePath.push(id);
+    for(const result of recipeGraph.get(id) || []) visitRecipeNode(result);
+    recipePath.pop();
+    recipeVisiting.delete(id);
+    recipeVisited.add(id);
+  }
+  for(const id of Object.keys(data.MONSTERS || {})) visitRecipeNode(id);
+
   if(state.gold !== oldSave.gold) fail("旧セーブ移行で所持GOLDが保持されませんでした");
   if(state.party[0]?.nickname !== "互換テスト") fail("旧セーブ移行で仲間情報が保持されませんでした");
   if(!Array.isArray(state.fusionGoals) || state.fusionGoals.length !== 0) fail("旧セーブに空の配合目標が補完されませんでした");
@@ -204,8 +231,13 @@ function loadGameData(scriptRefs){
   const smallB = context.MonsterLinksState.makeMonster("luminel",40);
   context.MonsterLinksState.state.box.push(smallA,smallB);
   const smallPreview = context.MonsterLinksGame.fusionPreview(smallA.uid,smallB.uid);
-  if(!smallPreview || smallPreview.childSize > smallPreview.parentSizeTotal){
-    fail("通常配合で親の合計サイズを超える子が選ばれました");
+  if(!smallPreview || smallPreview.available || !smallPreview.locked || !smallPreview.reason.includes("固定配合レシピはありません")){
+    fail("未登録の親ペアが完全固定配合制で配合不可になっていません");
+  }
+  context.MonsterLinksState.state.party = [];
+  context.MonsterLinksState.state.box = [smallA,smallB];
+  if(context.MonsterLinksGame.recommendedFusions(5).length !== 0){
+    fail("未登録の親ペアがおすすめ配合へ表示されました");
   }
 
   const largeA = context.MonsterLinksState.makeMonster("astralwyrm",40);
@@ -245,14 +277,6 @@ function loadGameData(scriptRefs){
     fail(`キングぷるミンが親平均Lv15で成立しません: ${kingPreview?.reason || "結果不一致"}`);
   }
 
-  const normalLowA = context.MonsterLinksState.makeMonster("aquan",100);
-  const normalLowB = context.MonsterLinksState.makeMonster("sparkbug",100);
-  context.MonsterLinksState.state.party = [];
-  context.MonsterLinksState.state.box = [normalLowA,normalLowB];
-  const normalRankPreview = context.MonsterLinksGame.fusionPreview(normalLowA.uid,normalLowB.uid);
-  if(normalRankPreview?.id !== "tidalseraph" || !normalRankPreview.locked || !normalRankPreview.reason.includes("Cランク以上")){
-    fail("レシピ外の通常配合で汎用ランク条件が維持されていません");
-  }
   context.MonsterLinksState.state.party = [];
   context.MonsterLinksState.state.box = [smallA,smallB,largeA,largeB];
 
@@ -299,6 +323,12 @@ function loadGameData(scriptRefs){
     vm.runInContext(fs.readFileSync(viewFile,"utf8"),context,{filename:"js/views/fusionView.js"});
     context.MonsterLinksGame.setFusionPair(largeA.uid,largeB.uid);
     const fusionHtml = context.MonsterLinksViews.fusionHtml();
+    if(!fusionHtml.includes("配合リストに登録された親2体")){
+      fail("配合画面に完全固定レシピ制の説明がありません");
+    }
+    if(fusionHtml.includes("通常配合：リスト外")){
+      fail("配合画面に廃止した通常配合の案内が残っています");
+    }
     if(!fusionHtml.includes("3枠大型モンスター")) fail("配合画面に3枠警告が表示されません");
     if(!fusionHtml.includes("配合後：")) fail("配合画面に加入先予測が表示されません");
     if(!fusionHtml.includes("recipeFilterPanelV811")) fail("配合リストに検索・フィルターが表示されません");

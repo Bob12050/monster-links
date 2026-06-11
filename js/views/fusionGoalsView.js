@@ -67,7 +67,7 @@
 
   function goalRouteHtml(info,compact=false){
     if(!info.best){
-      return `<div class="goalNoRouteV832">固定配合ルートはありません。スカウトや通常配合で探しましょう。</div>`;
+      return `<div class="goalNoRouteV832">固定配合ルートはありません。探索やスカウトで仲間にしましょう。</div>`;
     }
     const route = info.best;
     if(route.four) return fourGoalRouteHtml(info,route,compact);
