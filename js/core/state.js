@@ -335,6 +335,7 @@
       wins:0,
       playerRank:1,
       playerExp:0,
+      playerRankRewards:{claimed:{}},
       party:[starter],
       box:[],
       view:"home",
@@ -370,6 +371,15 @@
     // v8.6-A.19: 冒険者ランク。旧セーブにフィールドが無くても自然に補完（破壊的変更なし）。
     data.playerRank = Number.isFinite(data.playerRank) ? U.clamp(Math.floor(data.playerRank),1,D.PLAYER_MAX_RANK || 30) : 1;
     data.playerExp = Number.isFinite(data.playerExp) ? Math.max(0,Math.floor(data.playerExp)) : 0;
+    data.playerRankRewards = data.playerRankRewards && typeof data.playerRankRewards === "object" ? data.playerRankRewards : {};
+    data.playerRankRewards.claimed = data.playerRankRewards.claimed && typeof data.playerRankRewards.claimed === "object"
+      ? data.playerRankRewards.claimed
+      : {};
+    Object.keys(data.playerRankRewards.claimed).forEach(rank=>{
+      const rewardExists = (D.PLAYER_RANK_REWARDS || []).some(reward=>String(reward.rank) === String(rank));
+      if(!rewardExists || !data.playerRankRewards.claimed[rank]) delete data.playerRankRewards.claimed[rank];
+      else data.playerRankRewards.claimed[rank] = true;
+    });
     data.party = Array.isArray(data.party) ? data.party.filter(m=>m && D.MONSTERS[m.id]) : [];
     data.box = Array.isArray(data.box) ? data.box.filter(m=>m && D.MONSTERS[m.id]) : [];
     if(data.party.length === 0 && data.box.length === 0){
@@ -761,6 +771,45 @@
     return Object.assign({gained,fromRank,toRank:state.playerRank,ranksGained},playerRankInfo());
   }
 
+  function playerRankRewardInfo(){
+    const rewards = D.PLAYER_RANK_REWARDS || [];
+    const claimed = state.playerRankRewards?.claimed || {};
+    const reached = rewards.filter(reward=>reward.rank <= state.playerRank);
+    const claimable = reached.filter(reward=>!claimed[reward.rank]);
+    return {
+      total:rewards.length,
+      reached:reached.length,
+      claimed:reached.length - claimable.length,
+      claimable:claimable.length,
+      next:rewards.find(reward=>reward.rank > state.playerRank) || null
+    };
+  }
+
+  function playerRankRewardClaimed(rank){
+    return !!state.playerRankRewards?.claimed?.[rank];
+  }
+
+  function playerRankRewardClaimable(rank){
+    return rank <= state.playerRank &&
+      !playerRankRewardClaimed(rank) &&
+      (D.PLAYER_RANK_REWARDS || []).some(reward=>reward.rank === rank);
+  }
+
+  function grantPlayerRankReward(rank){
+    const reward = (D.PLAYER_RANK_REWARDS || []).find(entry=>entry.rank === Number(rank));
+    if(!reward || !playerRankRewardClaimable(reward.rank)) return null;
+    const lines = [];
+    if(reward.gold){
+      state.gold += reward.gold;
+      lines.push(`${reward.gold}G`);
+    }
+    if(reward.item && addItem(reward.item,reward.count || 1)){
+      lines.push(`${D.ITEMS[reward.item].name} ×${reward.count || 1}`);
+    }
+    state.playerRankRewards.claimed[reward.rank] = true;
+    return {reward,lines};
+  }
+
   function addItem(id,count=1){
     if(!D.ITEMS[id] || count <= 0) return false;
     state.bag[id] = (state.bag[id] || 0) + count;
@@ -989,6 +1038,10 @@
     gainExp,
     playerRankInfo,
     gainPlayerExp,
+    playerRankRewardInfo,
+    playerRankRewardClaimed,
+    playerRankRewardClaimable,
+    grantPlayerRankReward,
     addItem,
     removeItem,
     itemCount,

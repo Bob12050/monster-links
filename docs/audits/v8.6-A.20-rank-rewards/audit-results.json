@@ -1,0 +1,40 @@
+{
+  "errors": [],
+  "before": {
+    "rows": 29,
+    "claimable": 4,
+    "bodyOverflow": "hidden",
+    "modalOverflow": "auto",
+    "modalScrollHeight": 2146,
+    "modalClientHeight": 557
+  },
+  "afterOne": {
+    "gold": 230,
+    "forceRing": 2,
+    "claimable": 3,
+    "claimed3": true
+  },
+  "afterAll": {
+    "gold": 830,
+    "claimable": 0,
+    "claimed": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ]
+  },
+  "afterReload": {
+    "version": "8.6-A.20",
+    "rank": 5,
+    "claimable": 0,
+    "claimed": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "buttonClaimable": false
+  },
+  "ok": true
+}

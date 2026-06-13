@@ -6,7 +6,7 @@
   const SLOT_PREFIX = "monster_links_slot_";
   const ACTIVE_SLOT_KEY = "monster_links_active_slot";
   const SLOT_COUNT = 3;
-  const GAME_VERSION = "8.6-A.19";
+  const GAME_VERSION = "8.6-A.20";
   const SAVE_SCHEMA_VERSION = 1;
   const DEV_PASSWORD = "rei-dev";
   const MAX_PARTY = 3;
@@ -47,11 +47,43 @@
 
   const RANK = {F:1,E:2,D:3,C:4,B:5,A:6,S:7};
 
-  // v8.6-A.19: プレイヤー（冒険者）ランク用のEXPテーブル。
+  // v8.6-A.20: プレイヤー（冒険者）ランク用のEXPテーブル。
   // モンスターの育成とは別枠。Rank1開始、序盤は軽く・中盤以降は重く（need(i)=20i²+60i+100）。
   // PLAYER_RANK_EXP[r-1] = Rank r から r+1 へ上がるのに必要なEXP。Rank30で上限。
   const PLAYER_MAX_RANK = 30;
   const PLAYER_RANK_EXP = Array.from({length:PLAYER_MAX_RANK - 1},(_,i)=>20*i*i + 60*i + 100);
+  // v8.6-A.20: 到達ランク報酬。既存の進行や解放条件には使用しない。
+  const PLAYER_RANK_REWARDS = [
+    {rank:2,gold:100},
+    {rank:3,gold:150,item:"force_ring",count:1},
+    {rank:4,gold:200},
+    {rank:5,gold:300,item:"life_drop",count:1},
+    {rank:6,gold:350},
+    {rank:7,gold:450,item:"swift_feather",count:1},
+    {rank:8,gold:550},
+    {rank:9,gold:650,item:"mana_shell",count:1},
+    {rank:10,gold:800},
+    {rank:11,gold:950,item:"mage_charm",count:1},
+    {rank:12,gold:1100},
+    {rank:13,gold:1250,item:"guard_stone",count:1},
+    {rank:14,gold:1400},
+    {rank:15,gold:1600,item:"force_ring",count:2},
+    {rank:16,gold:1800},
+    {rank:17,gold:2000,item:"life_drop",count:2},
+    {rank:18,gold:2200},
+    {rank:19,gold:2400,item:"swift_feather",count:2},
+    {rank:20,gold:2700},
+    {rank:21,gold:3000,item:"mana_shell",count:2},
+    {rank:22,gold:3300},
+    {rank:23,gold:3600,item:"mage_charm",count:2},
+    {rank:24,gold:4000},
+    {rank:25,gold:4500,item:"guard_stone",count:2},
+    {rank:26,gold:5000},
+    {rank:27,gold:5600,item:"force_ring",count:3},
+    {rank:28,gold:6200,item:"life_drop",count:3},
+    {rank:29,gold:7000,item:"swift_feather",count:3},
+    {rank:30,gold:8000,item:"mana_shell",count:3}
+  ];
 
-  Object.assign(P,{SAVE_KEY,SLOT_PREFIX,ACTIVE_SLOT_KEY,SLOT_COUNT,GAME_VERSION,SAVE_SCHEMA_VERSION,DEV_PASSWORD,MAX_PARTY,MAX_LEVEL,PARTY_SLOT_LIMIT,TYPES,TYPE_CHART,PERSONALITIES,RANK,PLAYER_MAX_RANK,PLAYER_RANK_EXP});
+  Object.assign(P,{SAVE_KEY,SLOT_PREFIX,ACTIVE_SLOT_KEY,SLOT_COUNT,GAME_VERSION,SAVE_SCHEMA_VERSION,DEV_PASSWORD,MAX_PARTY,MAX_LEVEL,PARTY_SLOT_LIMIT,TYPES,TYPE_CHART,PERSONALITIES,RANK,PLAYER_MAX_RANK,PLAYER_RANK_EXP,PLAYER_RANK_REWARDS});
 })();

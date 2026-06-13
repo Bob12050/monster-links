@@ -31,6 +31,7 @@
     const recipeDone = Object.keys(state.records?.completedRecipes || {}).filter(k=>state.records.completedRecipes[k]).length;
     const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
     const pr = S.playerRankInfo ? S.playerRankInfo() : null;
+    const rankRewards = S.playerRankRewardInfo ? S.playerRankRewardInfo() : null;
 
     return `
     <main class="homeV82 homeV817">
@@ -81,6 +82,10 @@
           <div class="homeRankBarV819" role="progressbar" aria-valuenow="${Math.round(pr.pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${U.clamp(pr.pct,0,100)}%"></i></div>
           <span class="homeRankPctV819">${pr.isMax ? "MAX" : `${pr.exp} / ${pr.need}`}</span>
         </div>
+        <button class="homeRankRewardButtonV820 ${rankRewards?.claimable ? "claimable" : ""}" onclick="Game.openPlayerRankRewards()">
+          <span>ランク報酬</span>
+          <b>${rankRewards?.claimable ? `${rankRewards.claimable}件 受取可能` : "報酬一覧"}</b>
+        </button>
       </section>` : ""}
 
       ${V.homeFusionGoalHtml ? V.homeFusionGoalHtml() : ""}

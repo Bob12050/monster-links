@@ -8438,6 +8438,89 @@ body.mlReducedMotionV817 .rewardItemV818{
   background:linear-gradient(180deg,rgba(255,214,120,.12),rgba(255,255,255,.03));
   border:1px solid rgba(255,200,90,.28);
 }
+
+.homeRankRewardButtonV820{
+  min-width:132px;
+  align-self:stretch;
+  display:grid;
+  place-content:center;
+  gap:3px;
+  border-color:rgba(255,255,255,.18);
+  background:rgba(7,12,30,.58);
+}
+.homeRankRewardButtonV820 span{font-size:11px;color:var(--muted)}
+.homeRankRewardButtonV820 b{font-size:12px}
+.homeRankRewardButtonV820.claimable{
+  border-color:rgba(255,205,77,.75);
+  background:linear-gradient(180deg,rgba(164,105,15,.92),rgba(111,70,12,.95));
+  box-shadow:0 0 18px rgba(255,190,45,.2);
+}
+.homeRankRewardButtonV820.claimable span{color:#fff0bd}
+
+.playerRankRewardModalV820{
+  width:min(560px,calc(100vw - 20px));
+  max-height:min(760px,calc(100dvh - 28px));
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.playerRankRewardHeadV820{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.playerRankRewardHeadV820 span{font-size:10px;letter-spacing:.14em;color:#86def5}
+.playerRankRewardHeadV820 h2{margin:3px 0 4px}
+.playerRankRewardHeadV820 p{margin:0;color:var(--muted);font-size:12px}
+.playerRankRewardAllV820{margin-top:12px;flex:0 0 auto}
+.playerRankRewardListV820{
+  flex:1 1 auto;
+  min-height:0;
+  display:grid;
+  align-content:start;
+  gap:8px;
+  margin-top:12px;
+  padding:0 3px 8px 0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+.playerRankRewardRowV820{
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) 88px;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  background:rgba(13,22,47,.85);
+}
+.playerRankRewardRowV820.claimable{
+  border-color:rgba(255,201,69,.62);
+  background:linear-gradient(135deg,rgba(70,49,15,.9),rgba(20,28,52,.92));
+}
+.playerRankRewardRowV820.claimed{opacity:.62}
+.playerRankRewardRowV820.locked{opacity:.48}
+.playerRankRewardRankV820{
+  display:grid;
+  place-items:center;
+  min-height:48px;
+  border-radius:11px;
+  background:rgba(255,255,255,.07);
+}
+.playerRankRewardRankV820 small{font-size:8px;letter-spacing:.12em;color:var(--muted)}
+.playerRankRewardRankV820 b{font-size:21px;color:#ffe098}
+.playerRankRewardContentV820{display:grid;gap:4px;min-width:0}
+.playerRankRewardContentV820 span{font-weight:800;font-size:13px}
+.playerRankRewardContentV820 small{color:var(--muted);font-size:10px}
+.playerRankRewardRowV820 button{min-height:40px;padding:8px;font-size:11px}
+
+@media(max-width:480px){
+  .homeRankCardV819{grid-template-columns:minmax(0,1fr)}
+  .homeRankRewardButtonV820{min-width:0;min-height:48px}
+  .playerRankRewardRowV820{grid-template-columns:48px minmax(0,1fr) 78px;gap:7px;padding:8px}
+}
 .homeRankMainV819{display:flex;flex-direction:column;gap:1px}
 .homeRankLabelV819{font-size:10px;letter-spacing:.16em;color:var(--muted)}
 .homeRankValueV819{font-size:17px;color:#fff4dc}

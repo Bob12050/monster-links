@@ -154,10 +154,38 @@ function loadGameData(scriptRefs){
   if(state.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION) fail("旧セーブが現行の保存形式へ移行されませんでした");
   if(!localStorage.getItem("monster_links_slot_1")) fail("旧単一セーブがスロット1へ移行されませんでした");
 
+  if(state.playerRank !== 1 || state.playerExp !== 0) fail("旧セーブに冒険者Rank初期値が補完されませんでした");
+  if(!state.playerRankRewards?.claimed || typeof state.playerRankRewards.claimed !== "object"){
+    fail("旧セーブにランク報酬の受取記録が補完されませんでした");
+  }
+  if(!Array.isArray(data.PLAYER_RANK_REWARDS) || data.PLAYER_RANK_REWARDS.length !== data.PLAYER_MAX_RANK - 1){
+    fail("冒険者ランク報酬がRank 2から上限まで定義されていません");
+  }
+  if(data.PLAYER_RANK_REWARDS.some((reward,index)=>reward.rank !== index + 2)){
+    fail("冒険者ランク報酬のRank定義が連続していません");
+  }
+
   context.MonsterLinksState.save();
   const saved = JSON.parse(localStorage.getItem("monster_links_slot_1"));
   if(saved.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION) fail("保存後のデータに保存形式番号がありません");
   if(saved.gold !== oldSave.gold) fail("移行後の再保存で所持GOLDが変化しました");
+
+  context.MonsterLinksState.state.playerRank = 5;
+  const rankRewardGoldBefore = context.MonsterLinksState.state.gold;
+  const rankRewardItemBefore = context.MonsterLinksState.itemCount("force_ring");
+  const rankReward = context.MonsterLinksState.grantPlayerRankReward(3);
+  if(!rankReward || context.MonsterLinksState.state.gold !== rankRewardGoldBefore + 150){
+    fail("到達済み冒険者ランク報酬のゴールドを受け取れません");
+  }
+  if(context.MonsterLinksState.itemCount("force_ring") !== rankRewardItemBefore + 1){
+    fail("到達済み冒険者ランク報酬のアイテムを受け取れません");
+  }
+  if(context.MonsterLinksState.grantPlayerRankReward(3) !== null){
+    fail("冒険者ランク報酬を重複して受け取れます");
+  }
+  if(context.MonsterLinksState.playerRankRewardInfo().claimable !== 3){
+    fail("既存セーブの到達ランク報酬が遡及受取可能になっていません");
+  }
 
   const backup = context.MonsterLinksState.backupCurrentSlot();
   if(backup.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION) fail("バックアップに保存形式番号がありません");
