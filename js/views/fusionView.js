@@ -14,7 +14,7 @@
     const ready = pick.length === 2;
     const prev = ready ? window.MonsterLinksGame.fusionPreview(pick[0],pick[1]) : null;
     return `
-    <main>
+    <main class="fusionFlowV824">
       <section class="hero fusionHeroV34">
         <h1>モンスター配合</h1>
         <p>配合リストに登録された親2体から新しい仲間を生み出します。指定された系譜を重ねる4体配合にも対応しています。</p>
@@ -24,7 +24,16 @@
         </div>
       </section>
 
-      ${V.fusionGoalsPanelHtml ? V.fusionGoalsPanelHtml() : ""}
+      <div class="fusionStepsV824" aria-label="配合の流れ">
+        <span class="${pick.length < 2 ? "active" : "done"}"><b>1</b>親を選ぶ</span>
+        <span class="${pick.length === 2 ? "active" : ""}"><b>2</b>結果確認</span>
+        <span class="${ready && prev?.available && !prev.locked ? "active" : ""}"><b>3</b>配合実行</span>
+      </div>
+
+      <details class="fusionOptionalV824 fusionGoalsFoldV824">
+        <summary><span><b>配合目標</b><small>登録した目標と素材の進捗</small></span><em>確認する</em></summary>
+        ${V.fusionGoalsPanelHtml ? V.fusionGoalsPanelHtml() : ""}
+      </details>
 
       <section id="fusionMainCard" class="card fusionMainCard">
         <div id="fusionPreviewAnchor"></div>
@@ -37,7 +46,10 @@
         </div>
       </section>
 
-      ${recommendedFusionHtml()}
+      <details class="fusionOptionalV824">
+        <summary><span><b>おすすめ配合</b><small>今の手持ちから作れる候補</small></span><em>候補を見る</em></summary>
+        ${recommendedFusionHtml()}
+      </details>
 
       <section class="card recipeSummary">
         <details class="recipeDetails">
@@ -54,9 +66,15 @@
         </details>
       </section>
 
-      <section class="grid two">
-        ${all.map(m=>V.monsterCard(m,{mode:"fusion",pick:pick.includes(m.uid)})).join("") || `<div class="empty">仲間がいません</div>`}
-      </section>
+      <details class="fusionParentListV824" ${ready ? "" : "open"}>
+        <summary>
+          <span><b>親モンスターを選ぶ</b><small>${ready ? "2体選択済み。変更する場合に開いてください" : `あと${2 - pick.length}体選んでください`}</small></span>
+          <em>${all.length}体</em>
+        </summary>
+        <section class="grid two fusionMonsterGridV824">
+          ${all.map(m=>V.monsterCard(m,{mode:"fusion",pick:pick.includes(m.uid)})).join("") || `<div class="empty">仲間がいません</div>`}
+        </section>
+      </details>
     </main>`;
   }
 

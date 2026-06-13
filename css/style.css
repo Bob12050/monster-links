@@ -9696,3 +9696,402 @@ body.mlReducedMotionV817 .prBarV819 i{
     grid-column:1/-1;
   }
 }
+
+/* =========================================================
+   v8.6-A.24 Monster, fusion and menu information cleanup
+   ========================================================= */
+.monsterDetailModalV824{
+  width:min(680px,calc(100vw - 18px));
+  max-height:calc(100dvh - 24px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.monsterDetailModalV824 > .stageTop{
+  flex:0 0 auto;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(85,192,245,.22);
+}
+.monsterDetailModalV824 .monsterDetailHeadV78{
+  flex:0 0 auto;
+  margin:10px 0 8px;
+}
+.monsterDetailModalV824 .detailFaceV78{
+  border:1px solid rgba(240,198,92,.58);
+  background:
+    radial-gradient(circle at 40% 24%,rgba(98,220,255,.24),transparent 42%),
+    #07172f;
+  box-shadow:0 0 18px rgba(50,199,255,.13);
+}
+.monsterDetailTabsV824{
+  flex:0 0 auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:4px;
+  padding:4px;
+  border:1px solid rgba(90,192,244,.24);
+  border-radius:11px;
+  background:#030d20;
+}
+.monsterDetailTabsV824 button{
+  min-height:42px;
+  padding:6px;
+  border:1px solid transparent;
+  border-radius:8px;
+  color:#9fb3c9;
+  background:transparent;
+  box-shadow:none;
+}
+.monsterDetailTabsV824 button.active{
+  border-color:#62dcff;
+  color:#fff;
+  background:linear-gradient(180deg,#128bc5,#075088);
+  box-shadow:0 0 12px rgba(49,197,249,.2);
+}
+.monsterDetailPanelV824{
+  flex:1 1 auto;
+  min-height:0;
+  margin-top:8px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+.monsterDetailPanelV824[hidden]{display:none !important}
+.detailQuickStatsV824{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+}
+.detailQuickStatsV824 > div{
+  min-width:0;
+  padding:9px 5px;
+  border:1px solid rgba(91,194,246,.25);
+  border-radius:9px;
+  text-align:center;
+  background:linear-gradient(180deg,rgba(18,51,90,.94),rgba(5,19,42,.96));
+}
+.detailQuickStatsV824 span{
+  display:block;
+  color:#69dfff;
+  font-size:8px;
+  font-weight:900;
+}
+.detailQuickStatsV824 b{
+  display:block;
+  margin-top:2px;
+  color:#fff1b9;
+  font-size:14px;
+}
+.monsterDetailModalV824 .detailSectionV78{
+  border-color:rgba(90,192,244,.24);
+  border-radius:10px;
+  background:rgba(4,17,38,.62);
+}
+.detailEquipCurrentV824{
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:7px 0 10px;
+  padding:9px;
+  border:1px solid rgba(240,198,92,.34);
+  border-radius:10px;
+  background:#07172f;
+}
+.detailEquipIconV824{
+  width:52px;
+  height:52px;
+  flex:0 0 auto;
+}
+.detailEquipCurrentV824 > span:not(.detailEquipEmptyV824){
+  display:grid;
+  gap:3px;
+}
+.detailEquipCurrentV824 small{
+  color:#a8bad0;
+  font-size:10px;
+}
+.detailEquipEmptyV824{
+  width:100%;
+  color:#91a5bc;
+  text-align:center;
+}
+.detailEquipV824 > button{width:100%}
+.monsterDetailModalV824 .detailActionsV78{
+  flex:0 0 auto;
+  margin-top:8px;
+  padding:8px 0 0;
+  border-top:1px solid rgba(240,198,92,.28);
+  background:#07172f;
+}
+
+.fusionFlowV824 .fusionHeroV34{
+  margin-bottom:8px !important;
+}
+.fusionStepsV824{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:5px;
+  margin-bottom:10px;
+}
+.fusionStepsV824 span{
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:6px;
+  border:1px solid rgba(91,190,242,.22);
+  border-radius:9px;
+  color:#8297af;
+  background:#06142c;
+  font-size:10px;
+  font-weight:900;
+}
+.fusionStepsV824 b{
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#8ca0b7;
+  background:#0e294d;
+}
+.fusionStepsV824 span.active{
+  border-color:#65ddff;
+  color:#fff;
+  background:linear-gradient(180deg,#0e689f,#073a6b);
+  box-shadow:0 0 13px rgba(48,199,250,.16);
+}
+.fusionStepsV824 span.active b{
+  color:#071329;
+  background:#72e5ff;
+}
+.fusionStepsV824 span.done{
+  border-color:rgba(112,234,186,.45);
+  color:#b8f5dc;
+}
+.fusionStepsV824 span.done b{
+  color:#05291e;
+  background:#70eaba;
+}
+.fusionOptionalV824,
+.fusionParentListV824,
+.menuManagementV824{
+  overflow:hidden;
+  border:1px solid rgba(91,192,244,.28);
+  border-radius:11px;
+  background:linear-gradient(180deg,rgba(13,38,72,.96),rgba(5,17,39,.98));
+  box-shadow:0 6px 16px rgba(0,0,0,.2);
+}
+.fusionOptionalV824 > summary,
+.fusionParentListV824 > summary,
+.menuManagementV824 > summary{
+  min-height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  cursor:pointer;
+  list-style:none;
+}
+.fusionOptionalV824 > summary::-webkit-details-marker,
+.fusionParentListV824 > summary::-webkit-details-marker,
+.menuManagementV824 > summary::-webkit-details-marker{display:none}
+.fusionOptionalV824 summary span,
+.fusionParentListV824 summary span,
+.menuManagementV824 summary span{
+  display:grid;
+  gap:2px;
+  min-width:0;
+}
+.fusionOptionalV824 summary b,
+.fusionParentListV824 summary b,
+.menuManagementV824 summary b{
+  color:#fff;
+  font-size:13px;
+}
+.fusionOptionalV824 summary small,
+.fusionParentListV824 summary small,
+.menuManagementV824 summary small{
+  overflow:hidden;
+  color:#91a7bf;
+  font-size:9px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.fusionOptionalV824 summary em,
+.fusionParentListV824 summary em,
+.menuManagementV824 summary em{
+  flex:0 0 auto;
+  color:#65dcff;
+  font-size:9px;
+  font-style:normal;
+  font-weight:900;
+}
+.fusionOptionalV824[open] > summary,
+.fusionParentListV824[open] > summary,
+.menuManagementV824[open] > summary{
+  border-bottom:1px solid rgba(91,192,244,.22);
+}
+.fusionOptionalV824[open] summary em:after,
+.menuManagementV824[open] summary em:after{content:" / 閉じる"}
+.fusionOptionalV824 > section,
+.fusionOptionalV824 > .fusionGoalsPanelV832{
+  margin:10px;
+}
+.fusionOptionalV824 .fusionGoalsPanelV832{
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+.fusionOptionalV824 .fusionGoalsHeadV832{
+  display:none;
+}
+.fusionOptionalV824 > .card{
+  border:0;
+  margin:0;
+  background:transparent;
+  box-shadow:none;
+}
+.fusionParentListV824{
+  margin-top:2px;
+}
+.fusionMonsterGridV824{
+  padding:10px;
+}
+.fusionFlowV824 .recipeSummary{
+  margin:0;
+}
+.fusionFlowV824 .fusionMainCard{
+  border-color:rgba(240,198,92,.4);
+}
+
+.menuHubV824{
+  gap:10px !important;
+}
+.menuPrimaryV824{
+  display:grid;
+  gap:6px;
+  margin:0;
+}
+.menuPrimaryHeadV824{
+  padding-left:7px;
+  border-left:3px solid var(--crystal-gold);
+}
+.menuPrimaryHeadV824 span{
+  color:#59d8ff;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.15em;
+}
+.menuPrimaryHeadV824 h2{
+  margin:1px 0 0;
+  font-size:15px;
+}
+.menuPrimaryV824 > .nextGoalPanel,
+.menuPrimaryV824 > .homeGuideV82{
+  margin:0;
+}
+.menuMainGridV824{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+.menuMainGridV824 button{
+  min-height:78px;
+  display:grid;
+  align-content:center;
+  gap:3px;
+  padding:10px;
+  border-radius:11px;
+  text-align:left;
+}
+.menuMainGridV824 button b{
+  color:#fff;
+  font-size:15px;
+}
+.menuMainGridV824 button span{
+  color:#bed0e3;
+  font-size:9px;
+}
+.menuMainGridV824 button.fusion{
+  border-color:rgba(190,137,255,.5);
+  background:linear-gradient(145deg,#593b86,#281b49);
+}
+.menuSubGridV824{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;
+}
+.menuSubGridV824 button{
+  min-width:0;
+  min-height:58px;
+  display:grid;
+  align-content:center;
+  gap:2px;
+  padding:7px 4px;
+  border-radius:9px;
+  text-align:center;
+}
+.menuSubGridV824 b{
+  color:#fff;
+  font-size:11px;
+}
+.menuSubGridV824 span{
+  overflow:hidden;
+  color:#91a7bf;
+  font-size:8px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.menuManagementBodyV824{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:10px;
+}
+.menuManagementBodyV824 .compactMenu{
+  align-content:start;
+}
+.menuStatusV824{
+  padding:9px;
+  border:1px solid rgba(91,192,244,.2);
+  border-radius:9px;
+  background:#06142c;
+}
+
+@media(max-width:520px){
+  .monsterDetailModalV824{
+    max-height:calc(100dvh - 14px);
+  }
+  .monsterDetailModalV824 .monsterDetailHeadV78{
+    margin:7px 0;
+  }
+  .monsterDetailTabsV824 button{
+    min-height:39px;
+    font-size:10px;
+  }
+  .detailQuickStatsV824{
+    grid-template-columns:1fr 1fr;
+  }
+  .monsterDetailModalV824 .detailActionsV78{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .fusionStepsV824 span{
+    min-height:42px;
+    font-size:9px;
+  }
+  .fusionStepsV824 b{
+    width:19px;
+    height:19px;
+  }
+  .menuSubGridV824{
+    grid-template-columns:1fr 1fr;
+  }
+  .menuManagementBodyV824{
+    grid-template-columns:1fr;
+  }
+}

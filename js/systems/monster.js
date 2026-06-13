@@ -241,7 +241,7 @@
 
     modal.innerHTML = `
     <div class="modalBg" onclick="Game.closeModal(event)">
-      <div class="modal monsterDetailModalV78" onclick="event.stopPropagation()">
+      <div class="modal monsterDetailModalV78 monsterDetailModalV824" onclick="event.stopPropagation()">
         <div class="stageTop">
           <div>
             <h2>${U.esc(m.nickname)}</h2>
@@ -263,36 +263,65 @@
           </div>
         </div>
 
-        <div class="detailStatsGridV78">
-          <div class="stat">HP<b>${m.hp}/${s.hp}</b></div>
-          <div class="stat">MP<b>${m.mp}/${s.mp}</b></div>
-          <div class="stat">攻撃<b>${s.atk}</b></div>
-          <div class="stat">守備<b>${s.def}</b></div>
-          <div class="stat">速さ<b>${s.spd}</b></div>
-          <div class="stat">賢さ<b>${s.wis}</b></div>
+        <nav class="monsterDetailTabsV824" aria-label="仲間詳細の表示切替">
+          <button class="active" data-detail-tab="overview" onclick="Game.setMonsterDetailTab('overview')">概要</button>
+          <button data-detail-tab="stats" onclick="Game.setMonsterDetailTab('stats')">能力</button>
+          <button data-detail-tab="skills" onclick="Game.setMonsterDetailTab('skills')">特技</button>
+          <button data-detail-tab="equip" onclick="Game.setMonsterDetailTab('equip')">装備</button>
+        </nav>
+
+        <div class="monsterDetailPanelV824 active" data-detail-panel="overview">
+          <div class="detailQuickStatsV824">
+            <div><span>HP</span><b>${m.hp}/${s.hp}</b></div>
+            <div><span>攻撃</span><b>${s.atk}</b></div>
+            <div><span>守備</span><b>${s.def}</b></div>
+            <div><span>素早さ</span><b>${s.spd}</b></div>
+          </div>
+          <div class="detailSectionV78">
+            <b>この仲間について</b>
+            <div class="tiny">性格：${U.esc(personality.name)} / ${U.esc(personality.desc || "")}</div>
+            ${m.mutation ? `<div class="tiny">二つ名：${U.esc(S.mutationTitleName(m))}突然変異 / ${U.esc(S.mutationTitleDef(m.mutationTitle).desc)}</div>` : ""}
+            <div class="tiny">${inParty ? "パーティで冒険中" : "牧場で待機中"} / ${needSlots}枠使用</div>
+          </div>
         </div>
 
-        <div class="detailSectionV78">
-          <b>性格・個体値</b>
-          <div class="tiny">性格：${U.esc(personality.name)} / ${U.esc(personality.desc || "")}</div>
-          ${m.mutation ? `<div class="tiny">二つ名：${U.esc(S.mutationTitleName(m))}突然変異 / ${U.esc(S.mutationTitleDef(m.mutationTitle).desc)}</div>` : ""}
-          <div class="tiny">個体値：${S.ivRank(m)} / 合計${S.ivTotal(m)} / ${ivLine}</div>
+        <div class="monsterDetailPanelV824" data-detail-panel="stats" hidden>
+          <div class="detailStatsGridV78">
+            <div class="stat">HP<b>${m.hp}/${s.hp}</b></div>
+            <div class="stat">MP<b>${m.mp}/${s.mp}</b></div>
+            <div class="stat">攻撃<b>${s.atk}</b></div>
+            <div class="stat">守備<b>${s.def}</b></div>
+            <div class="stat">速さ<b>${s.spd}</b></div>
+            <div class="stat">賢さ<b>${s.wis}</b></div>
+          </div>
+          <div class="detailSectionV78">
+            <b>性格・個体値</b>
+            <div class="tiny">性格：${U.esc(personality.name)} / ${U.esc(personality.desc || "")}</div>
+            ${m.mutation ? `<div class="tiny">二つ名：${U.esc(S.mutationTitleName(m))}突然変異 / ${U.esc(S.mutationTitleDef(m.mutationTitle).desc)}</div>` : ""}
+            <div class="tiny">個体値：${S.ivRank(m)} / 合計${S.ivTotal(m)} / ${ivLine}</div>
+          </div>
+          <div class="detailSectionV78 partySlotDetailV79">
+            <b>パーティ枠</b>
+            <div class="tiny">この仲間：${needSlots}枠 / 現在のパーティ：${S.partySizeText()} / 残り${remainSlots}枠</div>
+            <div class="tiny">${inBox && !canJoinParty ? `必要${needSlots}枠に対して残り${remainSlots}枠です。「交換してパーティへ」から戻す仲間を選べます。` : "1枠・2枠・3枠の合計が上限以内になるように編成できます。"}</div>
+          </div>
         </div>
 
-        <div class="detailSectionV78 partySlotDetailV79">
-          <b>パーティ枠</b>
-          <div class="tiny">この仲間：${needSlots}枠 / 現在のパーティ：${S.partySizeText()} / 残り${remainSlots}枠</div>
-          <div class="tiny">${inBox && !canJoinParty ? `必要${needSlots}枠に対して残り${remainSlots}枠です。「交換してパーティへ」から戻す仲間を選べます。` : "1枠・2枠・3枠の合計が上限以内になるように編成できます。"}</div>
+        <div class="monsterDetailPanelV824" data-detail-panel="skills" hidden>
+          <div class="detailSectionV78">
+            <b>覚えている特技</b>
+            <div class="detailSkillGridV78">${skills}</div>
+          </div>
         </div>
 
-        <div class="detailSectionV78">
-          <b>装備</b>
-          <div class="tiny">${equip ? `${equip.icon} ${U.esc(equip.name)} / ${S.itemStatsText(m.equip)} / ${U.esc(equip.desc || "")}` : "装備：なし"}</div>
-        </div>
-
-        <div class="detailSectionV78">
-          <b>特技</b>
-          <div class="detailSkillGridV78">${skills}</div>
+        <div class="monsterDetailPanelV824" data-detail-panel="equip" hidden>
+          <div class="detailSectionV78 detailEquipV824">
+            <b>現在の装備</b>
+            <div class="detailEquipCurrentV824">
+              ${equip ? `${V.itemVisual(m.equip,"detailEquipIconV824")}<span><b>${U.esc(equip.name)}</b><small>${S.itemStatsText(m.equip)} / ${U.esc(equip.desc || "")}</small></span>` : `<span class="detailEquipEmptyV824">装備していません</span>`}
+            </div>
+            <button class="gold" onclick="Game.equipModal('${m.uid}')">装備を変更する</button>
+          </div>
         </div>
 
         <div class="actions detailActionsV78">
@@ -304,6 +333,22 @@
         </div>
       </div>
     </div>`;
+  }
+
+  function setMonsterDetailTab(tab){
+    const modal = document.querySelector(".monsterDetailModalV824");
+    if(!modal) return;
+    const selected = ["overview","stats","skills","equip"].includes(tab) ? tab : "overview";
+    modal.querySelectorAll("[data-detail-tab]").forEach(button=>{
+      const active = button.dataset.detailTab === selected;
+      button.classList.toggle("active",active);
+      button.setAttribute("aria-selected",String(active));
+    });
+    modal.querySelectorAll("[data-detail-panel]").forEach(panel=>{
+      const active = panel.dataset.detailPanel === selected;
+      panel.hidden = !active;
+      panel.classList.toggle("active",active);
+    });
   }
 
   function equipModal(uid){
@@ -355,6 +400,7 @@
     leader,
     toggleMonsterLock,
     openMonsterDetail,
+    setMonsterDetailTab,
     equipModal,
     equip,
     unequip
