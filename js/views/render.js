@@ -3,6 +3,8 @@
 
   const S = window.MonsterLinksState;
   const V = window.MonsterLinksViews;
+  let lastView = null;
+  let lastGold = null;
 
   function disableImageDrag(root){
     root.querySelectorAll("img").forEach(image=>{
@@ -10,9 +12,34 @@
     });
   }
 
+  function animateView(app,view,changed){
+    if(!changed || S.state.settings?.reducedMotion) return;
+    const main = app.querySelector(":scope > main");
+    if(!main) return;
+    main.classList.add("viewEnterV826");
+    if(view === "reward"){
+      main.classList.add("rewardEnterV826");
+      window.MonsterLinksGame.haptic?.("reward");
+    }
+  }
+
+  function showGoldDelta(app,gold){
+    if(lastGold === null || lastGold === gold || S.state.settings?.reducedMotion) return;
+    const anchor = app.querySelector(".hudResourcesV821 button");
+    if(!anchor) return;
+    const delta = gold - lastGold;
+    const badge = document.createElement("span");
+    badge.className = `goldDeltaV826 ${delta > 0 ? "gain" : "spend"}`;
+    badge.textContent = `${delta > 0 ? "+" : ""}${delta}G`;
+    anchor.appendChild(badge);
+    setTimeout(()=>badge.remove(),900);
+  }
+
   function render(){
     const state = S.state;
     const app = document.getElementById("app");
+    const viewChanged = lastView !== null && lastView !== state.view;
+    const currentGold = Number(state.gold) || 0;
     app.classList.toggle("crystalUiV822", state.view !== "title");
     app.dataset.view = state.view;
     // v8.6-A.17: 設定の「演出をひかえめ」をタイトル/ホーム/リザルト等の軽い演出にも反映する。
@@ -20,6 +47,9 @@
     if(state.view === "title"){
       app.innerHTML = V.titleHtml();
       disableImageDrag(app);
+      animateView(app,state.view,viewChanged);
+      lastView = state.view;
+      lastGold = currentGold;
       return;
     }
     let html = V.topHtml();
@@ -42,6 +72,10 @@
     if(state.view !== "battle" && state.view !== "reward") html += V.tabsHtml();
     app.innerHTML = html;
     disableImageDrag(app);
+    animateView(app,state.view,viewChanged);
+    showGoldDelta(app,currentGold);
+    lastView = state.view;
+    lastGold = currentGold;
   }
 
   window.MonsterLinksRender = {render};

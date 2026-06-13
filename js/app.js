@@ -66,6 +66,18 @@
     beep(520,.045,"sine",.025);
   }
 
+  function haptic(kind="tap"){
+    if(settings().reducedMotion || !navigator.vibrate) return;
+    const patterns = {
+      tap:8,
+      confirm:[12,24,18],
+      reward:[18,30,22],
+      error:[20,35,20]
+    };
+    try{navigator.vibrate(patterns[kind] || patterns.tap);}
+    catch(e){}
+  }
+
   function stopMusic(){
     if(musicTimer){clearInterval(musicTimer);musicTimer = null;}
   }
@@ -100,6 +112,7 @@
     state.view = v;
     if(G._clearFusionPickNoRender) G._clearFusionPickNoRender();
     S.save();
+    playSe("tap");
     render();
   }
 
@@ -111,6 +124,7 @@
     if(state.view === "title") state.view = "home";
     S.save();
     playSe("tap");
+    haptic("confirm");
     syncMusic();
     render();
   }
@@ -163,6 +177,7 @@
     const fn = G._pendingConfirm;
     G._pendingConfirm = null;
     closeModal();
+    haptic("confirm");
     if(typeof fn === "function") fn();
   }
 
@@ -518,6 +533,6 @@
   }
 
 
-  Object.assign(G, {render, toast, delay, playSe, syncMusic, setView, saveNow, startGame, openTitle, fullHeal, startLastStage, closeModal, askConfirm, confirmYes, confirmNo, reset, createNewSlot, switchSlot, copyToSlot, deleteSlot, openBackupModal, selectBackupText, copyBackupText, openRestoreModal, restoreBackupText, toggleSetting, setSpeed, cycleBattleSpeed, setSeVolume, previewBattleSe, devAddGold, devLevelUpAll, devUnlockStages, devUnlockDex, devGetAllItems, devUnlockArena, devShowBalance});
+  Object.assign(G, {render, toast, delay, playSe, haptic, syncMusic, setView, saveNow, startGame, openTitle, fullHeal, startLastStage, closeModal, askConfirm, confirmYes, confirmNo, reset, createNewSlot, switchSlot, copyToSlot, deleteSlot, openBackupModal, selectBackupText, copyBackupText, openRestoreModal, restoreBackupText, toggleSetting, setSpeed, cycleBattleSpeed, setSeVolume, previewBattleSe, devAddGold, devLevelUpAll, devUnlockStages, devUnlockDex, devGetAllItems, devUnlockArena, devShowBalance});
   window.Game = G;
 })();

@@ -10511,3 +10511,191 @@ body.mlReducedMotionV817 .prBarV819 i{
   .questSectionV825 > summary p{display:none}
   .questSectionV825 > .questListV842{padding:7px}
 }
+
+/* =========================================================
+   v8.6-A.26 Shared transitions and interaction feedback
+   ========================================================= */
+button,
+[role="button"],
+summary{
+  position:relative;
+  isolation:isolate;
+}
+.pressPulseV826{
+  position:fixed;
+  z-index:120;
+  width:12px;
+  height:12px;
+  pointer-events:none;
+  border-radius:50%;
+  background:rgba(153,231,255,.38);
+  box-shadow:0 0 16px rgba(92,213,255,.4);
+  transform:translate(-50%,-50%) scale(0);
+  animation:pressPulseV826 .4s ease-out forwards;
+}
+.pressPulseV826.gold{
+  background:rgba(255,224,126,.42);
+  box-shadow:0 0 16px rgba(255,211,94,.42);
+}
+@keyframes pressPulseV826{
+  0%{opacity:.9;transform:translate(-50%,-50%) scale(0)}
+  70%{opacity:.35}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(14)}
+}
+.viewEnterV826{
+  transform-origin:50% 28%;
+  animation:viewEnterV826 .18s cubic-bezier(.2,.75,.35,1) both;
+}
+.viewEnterV826:after{
+  content:"";
+  position:fixed;
+  z-index:70;
+  inset:var(--app-safe-top) var(--app-safe-right) calc(var(--bottom-nav-h) + var(--app-safe-bottom)) var(--app-safe-left);
+  pointer-events:none;
+  background:linear-gradient(110deg,transparent 25%,rgba(82,213,255,.12) 49%,transparent 73%);
+  transform:translateX(-100%);
+  animation:viewSheenV826 .28s ease-out both;
+}
+.rewardEnterV826{
+  animation-duration:.25s;
+}
+@keyframes viewEnterV826{
+  from{opacity:.25;transform:translateY(5px) scale(.995);filter:brightness(.78)}
+  to{opacity:1;transform:none;filter:none}
+}
+@keyframes viewSheenV826{
+  from{opacity:.85;transform:translateX(-100%)}
+  to{opacity:0;transform:translateX(100%)}
+}
+.modalBg{
+  animation:modalShadeV826 .14s ease-out both;
+}
+.modalBg > .modal{
+  transform-origin:50% 100%;
+  animation:modalRiseV826 .18s cubic-bezier(.2,.8,.3,1) both;
+}
+@keyframes modalShadeV826{
+  from{background:rgba(0,0,0,0)}
+}
+@keyframes modalRiseV826{
+  from{opacity:0;transform:translateY(12px) scale(.985)}
+  to{opacity:1;transform:none}
+}
+.toast{
+  animation:toastInV826 .18s ease-out both;
+}
+@keyframes toastInV826{
+  from{opacity:0;transform:translate(-50%,8px) scale(.97)}
+  to{opacity:1;transform:translate(-50%,0) scale(1)}
+}
+.hudResourcesV821 > button:first-child{
+  overflow:visible;
+}
+.goldDeltaV826{
+  position:absolute;
+  z-index:12;
+  left:50%;
+  bottom:-2px;
+  min-width:max-content;
+  padding:3px 7px;
+  border:1px solid currentColor;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:1000;
+  line-height:1;
+  pointer-events:none;
+  transform:translate(-50%,100%);
+  animation:goldDeltaV826 .85s ease-out both;
+}
+.goldDeltaV826.gain{
+  color:#fff0a1;
+  background:rgba(91,62,5,.96);
+  box-shadow:0 0 12px rgba(255,211,94,.32);
+}
+.goldDeltaV826.spend{
+  color:#ffb8b8;
+  background:rgba(79,17,25,.96);
+  box-shadow:0 0 12px rgba(255,103,119,.25);
+}
+@keyframes goldDeltaV826{
+  0%{opacity:0;transform:translate(-50%,80%) scale(.82)}
+  18%{opacity:1;transform:translate(-50%,115%) scale(1.08)}
+  72%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,180%) scale(.96)}
+}
+.rewardEnterV826 .rewardHeroV817{
+  animation:rewardStageV826 .3s ease-out both;
+}
+.rewardEnterV826 .rewardEnemyV818,
+.rewardEnterV826 .rewardDexNewV818,
+.rewardEnterV826 .scoutSuccessPanelV817{
+  animation:rewardStageV826 .3s .08s ease-out both;
+}
+.rewardEnterV826 .rewardNumsV53{
+  animation:rewardStageV826 .3s .14s ease-out both;
+}
+.rewardEnterV826 .rewardPlayerRankV819,
+.rewardEnterV826 .rewardLevelBoxV818,
+.rewardEnterV826 .rewardItemSection{
+  animation:rewardStageV826 .3s .2s ease-out both;
+}
+.rewardEnterV826 .rewardActionsV817{
+  animation:rewardStageV826 .3s .26s ease-out both;
+}
+@keyframes rewardStageV826{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+.rewardDexNewV818:has(.rewardDexNewSparkV818),
+.rewardPlayerRankV819.rankUp{
+  position:relative;
+  overflow:hidden;
+}
+.rewardDexNewV818:has(.rewardDexNewSparkV818):after,
+.rewardPlayerRankV819.rankUp:after{
+  content:"";
+  position:absolute;
+  inset:-40% auto -40% -30%;
+  width:24%;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,245,190,.42),transparent);
+  transform:skewX(-18deg);
+  animation:rewardShineV826 1.15s .3s ease-out both;
+}
+@keyframes rewardShineV826{
+  from{left:-30%;opacity:0}
+  18%{opacity:1}
+  to{left:115%;opacity:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .pressPulseV826{display:none}
+  .viewEnterV826,
+  .viewEnterV826:after,
+  .modalBg,
+  .modalBg > .modal,
+  .toast,
+  .goldDeltaV826,
+  .rewardEnterV826 :is(
+    .rewardHeroV817,.rewardEnemyV818,.rewardDexNewV818,.scoutSuccessPanelV817,
+    .rewardNumsV53,.rewardPlayerRankV819,.rewardLevelBoxV818,.rewardItemSection,.rewardActionsV817
+  ),
+  .rewardDexNewV818:after,
+  .rewardPlayerRankV819.rankUp:after{
+    animation:none !important;
+  }
+}
+body.mlReducedMotionV817 .pressPulseV826{display:none}
+body.mlReducedMotionV817 .viewEnterV826,
+body.mlReducedMotionV817 .viewEnterV826:after,
+body.mlReducedMotionV817 .modalBg,
+body.mlReducedMotionV817 .modalBg > .modal,
+body.mlReducedMotionV817 .toast,
+body.mlReducedMotionV817 .goldDeltaV826,
+body.mlReducedMotionV817 .rewardEnterV826 :is(
+  .rewardHeroV817,.rewardEnemyV818,.rewardDexNewV818,.scoutSuccessPanelV817,
+  .rewardNumsV53,.rewardPlayerRankV819,.rewardLevelBoxV818,.rewardItemSection,.rewardActionsV817
+),
+body.mlReducedMotionV817 .rewardDexNewV818:after,
+body.mlReducedMotionV817 .rewardPlayerRankV819.rankUp:after{
+  animation:none !important;
+}
