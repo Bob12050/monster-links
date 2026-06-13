@@ -27,6 +27,7 @@
     const lead = state.party[0];
     const leadName = lead ? U.esc(lead.nickname || S.def(lead.id).name) : "最初の仲間";
     const lastStage = D.STAGES.find(stage=>stage.id === state.lastStage) || D.STAGES[0];
+    const pr = S.playerRankInfo ? S.playerRankInfo() : null;
     // セーブに進行があるか（つづきから感の出し分け）。図鑑数や冒険記録から推測する。
     const hasProgress = dex.discovered > 1 || (state.lastStage && state.lastStage !== D.STAGES[0]?.id) || (state.wins || 0) > 0 || state.party.length > 1;
     const startMain = hasProgress ? "冒険を再開" : "冒険をはじめる";
@@ -78,8 +79,8 @@
       </section>
 
       <section class="titleRecordV82">
+        ${pr ? `<div class="titleRankCellV819"><span>冒険者Rank</span><b>${pr.rank}${pr.isMax ? "<small> MAX</small>" : ""}</b></div>` : ""}
         <div><span>所持金</span><b>${state.gold}<small> G</small></b></div>
-        <div><span>パーティ</span><b>${S.partySizeText ? S.partySizeText() : state.party.length}<small> 枠</small></b></div>
         <div><span>図鑑</span><b>${dex.discovered}<small> / ${dex.total}</small></b></div>
         <div><span>任務達成</span><b>${quest.claimed}<small> / ${quest.total}</small></b></div>
       </section>

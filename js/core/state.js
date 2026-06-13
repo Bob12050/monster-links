@@ -333,6 +333,8 @@
       gold:80,
       stageUnlocked:1,
       wins:0,
+      playerRank:1,
+      playerExp:0,
       party:[starter],
       box:[],
       view:"home",
@@ -365,6 +367,9 @@
     data.gold = Number.isFinite(data.gold) ? data.gold : 80;
     data.stageUnlocked = Number.isFinite(data.stageUnlocked) ? data.stageUnlocked : 1;
     data.wins = Number.isFinite(data.wins) ? data.wins : 0;
+    // v8.6-A.19: 冒険者ランク。旧セーブにフィールドが無くても自然に補完（破壊的変更なし）。
+    data.playerRank = Number.isFinite(data.playerRank) ? U.clamp(Math.floor(data.playerRank),1,D.PLAYER_MAX_RANK || 30) : 1;
+    data.playerExp = Number.isFinite(data.playerExp) ? Math.max(0,Math.floor(data.playerExp)) : 0;
     data.party = Array.isArray(data.party) ? data.party.filter(m=>m && D.MONSTERS[m.id]) : [];
     data.box = Array.isArray(data.box) ? data.box.filter(m=>m && D.MONSTERS[m.id]) : [];
     if(data.party.length === 0 && data.box.length === 0){
@@ -721,6 +726,41 @@
     return lines;
   }
 
+  // v8.6-A.19: 冒険者ランク（プレイヤーEXP）。モンスター育成とは別枠。
+  function playerMaxRank(){return D.PLAYER_MAX_RANK || 30;}
+  function playerExpForRank(rank){
+    // rank から rank+1 へ上がるのに必要なEXP。上限なら付与不要を示す Infinity。
+    if(rank >= playerMaxRank()) return Infinity;
+    const table = D.PLAYER_RANK_EXP || [];
+    return table[rank - 1] || Infinity;
+  }
+  function playerRankInfo(){
+    const rank = U.clamp(Math.floor(state.playerRank || 1),1,playerMaxRank());
+    const exp = Math.max(0,Math.floor(state.playerExp || 0));
+    if(rank >= playerMaxRank()){
+      return {rank,exp,need:0,remaining:0,pct:100,isMax:true};
+    }
+    const need = playerExpForRank(rank);
+    return {rank,exp,need,remaining:Math.max(0,need - exp),pct:U.clamp(exp / need * 100,0,100),isMax:false};
+  }
+  function gainPlayerExp(amount){
+    const fromRank = U.clamp(Math.floor(state.playerRank || 1),1,playerMaxRank());
+    state.playerRank = fromRank;
+    state.playerExp = Math.max(0,Math.floor(state.playerExp || 0));
+    const gained = Math.max(0,Math.floor(Number(amount) || 0));
+    let ranksGained = 0;
+    if(state.playerRank < playerMaxRank() && gained > 0){
+      state.playerExp += gained;
+      while(state.playerRank < playerMaxRank() && state.playerExp >= playerExpForRank(state.playerRank)){
+        state.playerExp -= playerExpForRank(state.playerRank);
+        state.playerRank++;
+        ranksGained++;
+      }
+      if(state.playerRank >= playerMaxRank()) state.playerExp = 0;
+    }
+    return Object.assign({gained,fromRank,toRank:state.playerRank,ranksGained},playerRankInfo());
+  }
+
   function addItem(id,count=1){
     if(!D.ITEMS[id] || count <= 0) return false;
     state.bag[id] = (state.bag[id] || 0) + count;
@@ -947,6 +987,8 @@
     exchangePartyFromBox,
     fullHeal,
     gainExp,
+    playerRankInfo,
+    gainPlayerExp,
     addItem,
     removeItem,
     itemCount,

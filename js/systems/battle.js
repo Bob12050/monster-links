@@ -625,9 +625,11 @@
       const firstBossClear = progressStage(lines,false);
       const drops = rollDrops(b,firstBossClear);
       if(drops.length) lines.push(`アイテムを${drops.length}種類入手した！`);
+      const playerRankResult = grantPlayerExpForBattle(b,firstBossClear);
       state.reward = {
         type:"win",
         title:b.isBoss ? "ボス撃破！" : "勝利！",
+        playerRank:playerRankResult,
         stageName:b.stage?.name || "",
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
@@ -677,9 +679,11 @@
       }
       firstBossClear = progressStage(lines,true);
       const drops = b.isBoss ? rollDrops(b,firstBossClear) : [];
+      const playerRankResult = grantPlayerExpForBattle(b,firstBossClear);
       state.reward = {
         type:"scout",
         title:b.isBoss ? "ボスをスカウト！" : "スカウト成功！",
+        playerRank:playerRankResult,
         stageName:b.stage?.name || "",
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
@@ -762,6 +766,17 @@
       }
     });
     return levelUps;
+  }
+
+  // v8.6-A.19: 戦闘後の冒険者EXP（プレイヤーランク）付与。モンスターEXP・報酬計算とは別枠。
+  // 通常戦は少量、ボス戦は多め、ボス初回撃破時のみ控えめなボーナスを表示用に上乗せ。
+  function grantPlayerExpForBattle(b,firstBossClear){
+    const danger = U.clamp(Number(b?.stage?.danger) || 1,1,5);
+    const baseExp = b?.isBoss ? (30 + danger * 14) : (8 + danger * 4);
+    const firstBonus = (b?.isBoss && firstBossClear) ? danger * 20 : 0;
+    const result = S.gainPlayerExp(baseExp + firstBonus);
+    result.firstBonus = firstBonus;
+    return result;
   }
 
   function rewardContinue(){

@@ -247,6 +247,30 @@
       </div>`;
   }
 
+  function playerRankPanelHtml(pr){
+    if(!pr) return "";
+    const rankUp = (pr.ranksGained || 0) > 0;
+    const pct = U.clamp(Number(pr.pct) || 0,0,100);
+    const remainText = pr.isMax ? "最高ランク到達！" : `次のRankまであと ${pr.remaining} EXP`;
+    const gainText = `冒険者EXP +${pr.gained || 0}${pr.firstBonus ? `（初回ボーナス +${pr.firstBonus}）` : ""}`;
+    return `
+      <div class="rewardPlayerRankV819 ${rankUp ? "rankUp" : ""}">
+        <div class="prHeadV819">
+          <span class="prLabelV819">ADVENTURER</span>
+          <b class="prGainV819">${U.esc(gainText)}</b>
+          ${rankUp ? `<span class="prRankUpTagV819">RANK UP!</span>` : ""}
+        </div>
+        <div class="prRankRowV819">
+          <span class="prRankNowV819">冒険者Rank <b>${pr.toRank}</b></span>
+          ${rankUp ? `<span class="prRankJumpV819">Rank ${pr.fromRank} <i>→</i> Rank ${pr.toRank}</span>` : ""}
+        </div>
+        <div class="prBarV819" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100">
+          <i style="width:${pct}%"></i>
+        </div>
+        <small class="prRemainV819">${U.esc(remainText)}</small>
+      </div>`;
+  }
+
   function rewardHtml(){
     const r = S.state.reward;
     if(!r) return V.homeHtml();
@@ -377,6 +401,8 @@
           <div><span>DROP</span><b>${dropCount}</b></div>
           <div><span>LEVEL UP</span><b>${levelUpCount}</b></div>
         </div>
+
+        ${playerRankPanelHtml(r.playerRank)}
 
         ${levelHtml}
 

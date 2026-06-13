@@ -30,6 +30,7 @@
     const recipeTotal = (D.RECIPE_LIST || Object.keys(D.RECIPES || {})).length;
     const recipeDone = Object.keys(state.records?.completedRecipes || {}).filter(k=>state.records.completedRecipes[k]).length;
     const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
+    const pr = S.playerRankInfo ? S.playerRankInfo() : null;
 
     return `
     <main class="homeV82 homeV817">
@@ -63,6 +64,24 @@
         </div>
         <button class="${goal.cls}" onclick="Game.setView('${goal.view}')">${U.esc(goal.button)}</button>
       </section>
+
+      ${pr ? `
+      <section class="homeRankCardV819">
+        <div class="homeRankMainV819">
+          <span class="homeRankLabelV819">ADVENTURER RANK</span>
+          <b class="homeRankValueV819">冒険者Rank ${pr.rank}</b>
+          <small class="homeRankRemainV819">${
+            pr.isMax ? "最高ランク到達！"
+            : pr.remaining <= 60 ? `もう少しで冒険者Rankアップ！（あと ${pr.remaining} EXP）`
+            : pr.rank <= 2 ? "冒険を重ねてRankを上げよう"
+            : `次のRankまで ${pr.remaining} EXP`
+          }</small>
+        </div>
+        <div class="homeRankBarWrapV819">
+          <div class="homeRankBarV819" role="progressbar" aria-valuenow="${Math.round(pr.pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${U.clamp(pr.pct,0,100)}%"></i></div>
+          <span class="homeRankPctV819">${pr.isMax ? "MAX" : `${pr.exp} / ${pr.need}`}</span>
+        </div>
+      </section>` : ""}
 
       ${V.homeFusionGoalHtml ? V.homeFusionGoalHtml() : ""}
 

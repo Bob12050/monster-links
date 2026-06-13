@@ -8414,3 +8414,94 @@ body.mlReducedMotionV817 .rewardItemV818{
     animation:none !important;
   }
 }
+
+/* =========================================================
+   v8.6-A.19 プレイヤーランク・冒険者EXP
+   ・タイトル/ホーム/リザルトに冒険者Rankと冒険者EXPバーを表示
+   ・Rank Up演出は軽量。reducedMotion（設定 / OS設定）を尊重
+   ========================================================= */
+
+@keyframes mlBarFillV819{from{width:0}to{}}
+@keyframes mlRankPopV819{0%{opacity:0;transform:scale(.7)}55%{opacity:1;transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes mlRankGlowV819{0%,100%{box-shadow:0 0 0 1px rgba(255,200,90,.35),0 0 16px rgba(255,200,90,.25)}50%{box-shadow:0 0 0 1px rgba(255,200,90,.6),0 0 28px rgba(255,200,90,.55)}}
+
+/* --- タイトル画面のRankセル --- */
+.titleRankCellV819 b{color:#ffe6a0}
+
+/* --- ホーム拠点の冒険者Rankカード --- */
+.homeRankCardV819{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:12px 14px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,214,120,.12),rgba(255,255,255,.03));
+  border:1px solid rgba(255,200,90,.28);
+}
+.homeRankMainV819{display:flex;flex-direction:column;gap:1px}
+.homeRankLabelV819{font-size:10px;letter-spacing:.16em;color:var(--muted)}
+.homeRankValueV819{font-size:17px;color:#fff4dc}
+.homeRankRemainV819{font-size:11px;color:var(--muted)}
+.homeRankBarWrapV819{display:flex;align-items:center;gap:8px}
+.homeRankBarV819{
+  flex:1 1 auto;height:8px;border-radius:999px;overflow:hidden;
+  background:rgba(255,255,255,.1);
+}
+.homeRankBarV819 i{
+  display:block;height:100%;border-radius:999px;
+  background:linear-gradient(90deg,#ffe28a,#f4b740);
+  animation:mlBarFillV819 .6s ease-out both;
+}
+.homeRankPctV819{flex:0 0 auto;font-size:10px;color:var(--muted)}
+
+/* --- リザルトの冒険者EXPパネル --- */
+.rewardPlayerRankV819{
+  position:relative;z-index:1;
+  margin:10px 0 12px;
+  padding:11px 12px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,214,120,.14),rgba(255,255,255,.04));
+  border:1px solid rgba(255,200,90,.3);
+  animation:mlRevealV818 .45s ease both;
+}
+.rewardPlayerRankV819.rankUp{animation:mlRankGlowV819 2s ease-in-out infinite}
+.prHeadV819{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.prLabelV819{font-size:9px;letter-spacing:.14em;color:var(--muted)}
+.prGainV819{font-size:13px;color:#fff4dc;font-weight:800}
+.prRankUpTagV819{
+  margin-left:auto;
+  font-size:10px;font-weight:800;letter-spacing:.08em;
+  color:#0b1024;padding:2px 9px;border-radius:999px;
+  background:linear-gradient(180deg,#ffe28a,#f4b740);
+  animation:mlRankPopV819 .5s ease both;
+}
+.prRankRowV819{display:flex;align-items:baseline;gap:10px;margin:7px 0 5px;flex-wrap:wrap}
+.prRankNowV819{font-size:13px;color:#eaf2ff}
+.prRankNowV819 b{font-size:16px;color:#ffe6a0}
+.prRankJumpV819{font-size:12px;color:#ffd770;font-weight:700}
+.prRankJumpV819 i{font-style:normal;margin:0 2px}
+.prBarV819{height:9px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.1)}
+.prBarV819 i{
+  display:block;height:100%;border-radius:999px;
+  background:linear-gradient(90deg,#ffe28a,#f4b740);
+  animation:mlBarFillV819 .7s ease-out both;
+}
+.prRemainV819{display:block;margin-top:5px;font-size:11px;color:var(--muted)}
+
+/* --- 演出をひかえめにする（アプリ設定 / OS設定） --- */
+body.mlReducedMotionV817 .homeRankBarV819 i,
+body.mlReducedMotionV817 .rewardPlayerRankV819,
+body.mlReducedMotionV817 .rewardPlayerRankV819.rankUp,
+body.mlReducedMotionV817 .prRankUpTagV819,
+body.mlReducedMotionV817 .prBarV819 i{
+  animation:none !important;
+}
+@media(prefers-reduced-motion:reduce){
+  .homeRankBarV819 i,
+  .rewardPlayerRankV819,
+  .rewardPlayerRankV819.rankUp,
+  .prRankUpTagV819,
+  .prBarV819 i{
+    animation:none !important;
+  }
+}
