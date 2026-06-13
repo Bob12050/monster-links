@@ -33,7 +33,9 @@
     if(state.view === "devtools") html += V.devToolsHtml();
     if(state.view === "battle") html += V.battleHtml();
     if(state.view === "reward") html += V.rewardHtml();
-    html += V.tabsHtml();
+    // 戦闘中・リザルト中は下部ナビの誤タップで戦闘・報酬が破棄されるのを防ぐため非表示にする。
+    // 戦闘は「逃げる」、リザルトは画面内のボタンから移動する。
+    if(state.view !== "battle" && state.view !== "reward") html += V.tabsHtml();
     app.innerHTML = html;
     disableImageDrag(app);
   }

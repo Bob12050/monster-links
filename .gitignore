@@ -1,2 +1,5 @@
 # ローカル開発専用設定（マシン固有の絶対パスを含むためコミットしない）
 .claude/
+
+# Release archives are local deliverables, not GitHub Pages source.
+monster-links-*.zip

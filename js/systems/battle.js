@@ -46,8 +46,68 @@
     if(!b) return "戦闘が終了しました";
     const ally = active();
     if(!ally || ally.hp <= 0) return "戦闘不能のためオート攻撃を停止";
-    if(S.hpPct(ally) <= 25) return "HPが25%以下のためオート攻撃を停止";
     return "";
+  }
+
+  const AUTO_STRATEGIES = {
+    balanced:{name:"バランス",short:"BALANCE"},
+    offense:{name:"攻撃優先",short:"ATTACK"},
+    healing:{name:"回復優先",short:"HEAL"},
+    conserve:{name:"MP温存",short:"SAVE MP"}
+  };
+
+  function battleStrategy(){
+    const id = S.state.settings?.autoStrategy || "balanced";
+    return AUTO_STRATEGIES[id] ? id : "balanced";
+  }
+
+  function strategyInfo(){
+    const id = battleStrategy();
+    return {id,...AUTO_STRATEGIES[id]};
+  }
+
+  function usableAutoSkills(ally,kind){
+    return S.skills(ally)
+      .filter(id=>id !== "attack" && D.SKILLS[id]?.kind === kind && ally.mp >= D.SKILLS[id].cost)
+      .map(id=>({id,skill:D.SKILLS[id]}));
+  }
+
+  function bestDamageSkill(ally,enemy,mpLimit=Infinity){
+    const stats = S.stats(ally);
+    return usableAutoSkills(ally,"damage")
+      .filter(entry=>entry.skill.cost <= mpLimit)
+      .map(entry=>{
+        const sk = entry.skill;
+        const stat = stats[sk.stat] || stats.atk;
+        const affinity = adjustedMultiplier(typeMultiplier(skillElement(ally,sk),enemy));
+        return {...entry,score:stat * sk.power * affinity};
+      })
+      .sort((a,b)=>b.score-a.score)[0] || null;
+  }
+
+  function bestHealSkill(ally){
+    return usableAutoSkills(ally,"heal")
+      .sort((a,b)=>b.skill.power-a.skill.power)[0] || null;
+  }
+
+  function chooseAutoAction(){
+    const b = S.state.battle;
+    const ally = active();
+    if(!b || !ally) return {kind:"attack"};
+    const strategy = battleStrategy();
+    const hpPct = S.hpPct(ally);
+    const heal = bestHealSkill(ally);
+    const maxMp = Math.max(1,S.stats(ally).mp);
+
+    if(strategy === "healing" && hpPct <= 72 && heal) return {kind:"skill",skillId:heal.id};
+    if(strategy === "balanced" && hpPct <= 48 && heal) return {kind:"skill",skillId:heal.id};
+    if(strategy === "conserve" && hpPct <= 30 && heal) return {kind:"skill",skillId:heal.id};
+    if(hpPct <= 22 && !heal && strategy !== "offense") return {kind:"guard"};
+
+    const mpLimit = strategy === "conserve" ? Math.max(4,Math.floor(maxMp * .12)) : Infinity;
+    const damageSkill = bestDamageSkill(ally,b.enemy,mpLimit);
+    if(damageSkill) return {kind:"skill",skillId:damageSkill.id};
+    return {kind:"attack"};
   }
 
   function scheduleAutoAttack(){
@@ -74,7 +134,8 @@
         toast(safety);
         return;
       }
-      act("attack",null,true);
+      const action = chooseAutoAction();
+      act(action.kind,action.skillId || null,true);
     },G.delay(260));
   }
 
@@ -94,7 +155,7 @@
       return;
     }
     autoAttack = true;
-    log("オート攻撃を開始した");
+    log(`オート作戦「${strategyInfo().name}」を開始した`);
     S.save();
     render();
     toast("オート攻撃：ON");
@@ -102,6 +163,32 @@
   }
 
   function isBattleAuto(){return autoAttack;}
+
+  function cycleBattleStrategy(){
+    const order = ["balanced","offense","healing","conserve"];
+    const current = battleStrategy();
+    const next = order[(order.indexOf(current) + 1) % order.length];
+    setBattleStrategy(next);
+  }
+
+  function setBattleStrategy(next){
+    if(!AUTO_STRATEGIES[next]) return;
+    S.setSetting("autoStrategy",next);
+    if(S.state.battle) log(`オート作戦を「${AUTO_STRATEGIES[next].name}」に変更した`);
+    render();
+    toast(`作戦：${AUTO_STRATEGIES[next].name}`);
+    if(autoAttack) scheduleAutoAttack();
+  }
+
+  function scheduleMutationIntroEnd(battle){
+    if(!battle?.mutationIntro) return;
+    setTimeout(()=>{
+      if(S.state.battle !== battle || !battle.mutationIntro) return;
+      battle.mutationIntro = false;
+      S.save();
+      render();
+    },2600);
+  }
 
   function startBattle(id){
     const state = S.state;
@@ -112,15 +199,23 @@
     if(S.highestLv() < st.req){toast("推奨Lvに届いていません");return;}
     const eid = st.enemies[U.rand(0,st.enemies.length-1)];
     const enemy = S.makeMonster(eid,U.rand(st.min,st.max));
+    enemy.mutation = U.rand(1,100) <= 3;
+    enemy.mutationTitle = enemy.mutation ? S.randomMutationTitle() : null;
+    if(enemy.mutation){
+      const mutationStats = S.stats(enemy);
+      enemy.hp = mutationStats.hp;
+      enemy.mp = mutationStats.mp;
+    }
     enemy.nickname = S.def(eid).name;
     S.recordSeen(eid);
+    if(enemy.mutation) S.recordMutation(eid);
     state.lastStage = st.id;
     state.reward = null;
     state.battle = {
       stage:st,
       enemy,
       active:S.firstAlive(),
-      log:[`${enemy.nickname}があらわれた！`],
+      log:[enemy.mutation ? `突然変異の${enemy.nickname}があらわれた！` : `${enemy.nickname}があらわれた！`],
       guard:false,
       lock:false,
       charm:state.scoutCharm || 0,
@@ -128,13 +223,15 @@
       scoutBase:st.scout,
       scoutAttempts:0,
       scoutLocked:false,
+      mutationIntro:enemy.mutation,
       fx:null
     };
     state.scoutCharm = Math.max(0,(state.scoutCharm || 0) - 1);
     state.view = "battle";
     S.save();
     render();
-    G.playSe("tap");
+    G.playSe(enemy.mutation ? "mutation" : "tap");
+    scheduleMutationIntroEnd(state.battle);
   }
 
   function startBossBattle(id){
@@ -146,27 +243,31 @@
     if(!bossReady(st) && !state.bossCleared[st.id]){toast("まだボスの気配がありません");return;}
     const boss = st.boss;
     const enemy = S.makeMonster(boss.id,boss.level);
+    enemy.mutation = U.rand(1,100) <= 3;
+    enemy.mutationTitle = enemy.mutation ? S.randomMutationTitle() : null;
     enemy.nickname = `ボス ${S.def(boss.id).name}`;
     const before = S.stats(enemy);
+    const boost = boss.boost || {hp:.45,mp:.2,atk:.12,def:.12,wis:.12};
     enemy.bonus = {
-      hp:Math.floor(before.hp*.45),
-      mp:Math.floor(before.mp*.2),
-      atk:Math.floor(before.atk*.12),
-      def:Math.floor(before.def*.12),
+      hp:Math.floor(before.hp*boost.hp),
+      mp:Math.floor(before.mp*boost.mp),
+      atk:Math.floor(before.atk*boost.atk),
+      def:Math.floor(before.def*boost.def),
       spd:0,
-      wis:Math.floor(before.wis*.12)
+      wis:Math.floor(before.wis*boost.wis)
     };
     const es = S.stats(enemy);
     enemy.hp = es.hp;
     enemy.mp = es.mp;
     S.recordSeen(boss.id);
+    if(enemy.mutation) S.recordMutation(boss.id);
     state.lastStage = st.id;
     state.reward = null;
     state.battle = {
       stage:st,
       enemy,
       active:S.firstAlive(),
-      log:[`${enemy.nickname}が立ちはだかった！`],
+      log:[enemy.mutation ? `突然変異の${enemy.nickname}が立ちはだかった！` : `${enemy.nickname}が立ちはだかった！`],
       guard:false,
       lock:false,
       charm:state.scoutCharm || 0,
@@ -174,6 +275,7 @@
       scoutBase:boss.scout,
       scoutAttempts:0,
       scoutLocked:false,
+      mutationIntro:enemy.mutation,
       fx:{kind:"bossIntro",target:"enemy",text:"BOSS",ts:Date.now()}
     };
     state.scoutCharm = Math.max(0,(state.scoutCharm || 0) - 1);
@@ -181,9 +283,11 @@
     S.save();
     render();
     G.playSe("boss");
+    if(enemy.mutation) setTimeout(()=>G.playSe("mutation"),G.delay(180));
+    scheduleMutationIntroEnd(state.battle);
   }
 
-  function bossReady(st){return (S.state.stageWins[st.id] || 0) >= st.boss.unlockWins;}
+  function bossReady(st){return !!st.boss && (S.state.stageWins[st.id] || 0) >= st.boss.unlockWins;}
 
   function log(msg){S.state.battle.log.push(msg);}
 
@@ -199,7 +303,7 @@
     const state = S.state;
     const b = state.battle;
     if(!b || b.lock) return;
-    if(!fromAuto && kind !== "attack") stopBattleAuto();
+    if(!fromAuto) stopBattleAuto();
     const a = active();
     const e = b.enemy;
 
@@ -245,12 +349,13 @@
       }
       const chance = scoutChance();
       if(U.rand(1,100) <= chance){
-        const joined = S.makeMonster(e.id,e.level);
+        const joined = S.makeMonster(e.id,e.level,{mutation:e.mutation,mutationTitle:e.mutationTitle});
         joined.nickname = S.def(e.id).name;
+        if(joined.mutation) joined.locked = true;
         const joinedResult = S.addMonster(joined);
         b.scoutJoinResult = joinedResult;
         G.playSe("scout");
-        log(`${e.nickname}のスカウトに成功！ ${joinedResult.destination === "party" ? "パーティに加わった！" : "パーティ枠が足りないため牧場へ送られた。"}`);
+        log(`${e.nickname}のスカウトに成功！${e.mutation ? " 突然変異個体を保護して仲間にした！" : ""} ${joinedResult.destination === "party" ? "パーティに加わった！" : "パーティ枠が足りないため牧場へ送られた。"}`);
         finish("scout");
         return;
       }else{
@@ -479,7 +584,7 @@
       return firstBossClear;
     }
     state.stageWins[st.id] = (state.stageWins[st.id] || 0) + 1;
-    if(!state.bossCleared[st.id] && state.stageWins[st.id] === st.boss.unlockWins){
+    if(st.boss && !state.bossCleared[st.id] && state.stageWins[st.id] === st.boss.unlockWins){
       lines.push("奥地から強い気配がする……ボスに挑戦できるようになった！");
     }
     return false;
@@ -516,11 +621,15 @@
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyMutation:!!b.enemy.mutation,
+        enemyMutationTitle:b.enemy.mutationTitle || null,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,
         drops,
         lines,
+        retryStageId:b.stage.id,
+        retryBoss:!!b.isBoss,
         nextView:"stage"
       };
       state.battle = null;
@@ -540,6 +649,7 @@
           ? `仲間はパーティに加わりました（${S.partySizeText()}）。`
           : `仲間は牧場へ送られました（必要${b.scoutJoinResult.size}枠 / スカウト前の残り${b.scoutJoinResult.before?.remaining ?? 0}枠）。`;
         lines.push(resultText);
+        if(b.enemy.mutation) lines.push("突然変異個体を自動で保護しました。");
       }
       let reward = {exp:0,gold:0};
       let firstBossClear = false;
@@ -556,12 +666,16 @@
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyMutation:!!b.enemy.mutation,
+        enemyMutationTitle:b.enemy.mutationTitle || null,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,
         drops,
         lines,
-        nextView:"monsters"
+        retryStageId:b.stage.id,
+        retryBoss:!!b.isBoss,
+        nextView:"stage"
       };
       state.battle = null;
       state.view = "reward";
@@ -581,12 +695,16 @@
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyMutation:!!b.enemy.mutation,
+        enemyMutationTitle:b.enemy.mutationTitle || null,
         isBoss:b.isBoss,
         exp:0,
         gold:-lost,
         drops:[],
         lines:[`${lost}Gを落としてキャンプへ戻った。`,"キャンプで全員回復した。"],
-        nextView:"home"
+        retryStageId:b.stage.id,
+        retryBoss:!!b.isBoss,
+        nextView:"stage"
       };
       state.battle = null;
       state.view = "reward";
@@ -597,11 +715,22 @@
   }
 
   function rewardContinue(){
-    const next = S.state.reward?.nextView || "home";
+    const reward = S.state.reward;
+    const next = reward?.nextView || "home";
+    if(next === "stage" && reward?.retryStageId){
+      G.selectWorldStage?.(reward.retryStageId);
+    }
     S.state.reward = null;
     S.state.view = next;
     S.save();
     render();
+  }
+
+  function retryExploration(){
+    const reward = S.state.reward;
+    if(!reward?.retryStageId) return;
+    if(reward.retryBoss) startBossBattle(reward.retryStageId);
+    else startBattle(reward.retryStageId);
   }
 
   function skillModal(){
@@ -706,8 +835,12 @@
     escape,
     scoutChance,
     rewardContinue,
+    retryExploration,
     toggleBattleAuto,
     isBattleAuto,
+    strategyInfo,
+    cycleBattleStrategy,
+    setBattleStrategy,
     resetBattleAuto
   });
 

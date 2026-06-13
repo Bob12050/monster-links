@@ -27,6 +27,7 @@
     const dex = S.dexCounts();
     const quest = S.questCounts();
     const viewLabel = VIEW_LABELS[state.view] || ["冒険","MONSTER LINKS"];
+    const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
     return `
     <div class="top topV28 topV82">
       <div class="title">
@@ -44,10 +45,10 @@
         <b>${viewLabel[0]}</b>
       </div>
       <div class="status status4 statusV28">
-        <div class="pill"><span>💰</span><b>${state.gold}</b><small>G</small></div>
-        <div class="pill"><span>⭐</span><b>${S.highestLv()}</b><small>最高</small></div>
-        <div class="pill"><span>📘</span><b>${dex.discovered}/${dex.total}</b><small>図鑑</small></div>
-        <div class="pill ${quest.claimable ? "claimPill" : ""}"><span>✅</span><b>${quest.claimable}</b><small>受取</small></div>
+        <div class="pill"><span class="pillIcoV92 gold">${ico("coin")}</span><b>${state.gold}</b><small>G</small></div>
+        <div class="pill"><span class="pillIcoV92 star">${ico("star")}</span><b>${S.highestLv()}</b><small>最高</small></div>
+        <div class="pill"><span class="pillIcoV92 blue">${ico("book")}</span><b>${dex.discovered}/${dex.total}</b><small>図鑑</small></div>
+        <div class="pill ${quest.claimable ? "claimPill" : ""}"><span class="pillIcoV92 green">${ico("check")}</span><b>${quest.claimable}</b><small>受取</small></div>
       </div>
     </div>`;
   }
@@ -57,16 +58,17 @@
     const menuViews = ["menu","dex","quest","shop","settings","arena","help","devtools"];
     const monsterViews = ["monsters","fusion"];
     const items = [
-      ["home","🏰","拠点"],
-      ["stage","🗺️","冒険"],
-      ["monsters","🐲","仲間"],
-      ["menu","☰","メニュー"]
+      ["home","home","拠点"],
+      ["stage","map","冒険"],
+      ["monsters","monster","仲間"],
+      ["menu","menu","メニュー"]
     ];
+    const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
     return `<div class="tabs tabsMain tabsV82">${items.map(([v,i,t])=>{
       const active = state.view === v || (v === "menu" && menuViews.includes(state.view)) || (v === "monsters" && monsterViews.includes(state.view));
       return `
       <button class="${active ? "on" : ""}" onclick="Game.setView('${v}')" ${active ? `aria-current="page"` : ""} aria-label="${t}画面へ">
-        <span class="ico">${i}</span>${t}
+        <span class="ico">${ico(i)}</span>${t}
       </button>`;
     }).join("")}</div>`;
   }

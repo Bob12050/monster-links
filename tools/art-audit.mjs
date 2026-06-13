@@ -7,13 +7,19 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const writeFiles = process.argv.includes("--write");
 
 const formalIds = new Set([
-  "abysslevia", "aquan", "arcautomaton", "astralwyrm", "auroracat",
-  "crystagon", "demonlord", "embercub", "frostlevia", "gearbit",
-  "kingplim", "leafling", "luminel", "mossking", "orelord", "pebblon",
+  "abysslevia", "aethergolem", "aquan", "arcautomaton", "ashimp",
+  "astralwyrm", "auroracat", "cavemole", "cindrake", "cinderhorn",
+  "corewalker", "cragbear", "crystagon", "demonlord", "doomgazer", "duskwolf",
+  "embercub", "frostlevia", "gearbit", "gloomoth", "hellknight",
+  "galegryph", "heavenscale", "impfang",
+  "kingplim", "leafling", "lumenowl", "luminel", "mossking", "orelord",
+  "pearlseraph", "pebblon",
   "plim", "prismdragon", "puffbat", "thornhog", "tidalseraph",
-  "voiddragon", "volcazard", "phoenixdrake", "celestiseraph",
+  "venomhydra", "venomqueen", "venomwing", "voiddragon", "volcazard",
+  "phoenixdrake", "celestiseraph", "corallume", "seraphalcon", "sparkbug", "stormdjinn",
+  "sunhare", "thunderlion", "voltfox", "zenithdragon",
   "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf",
-  "gigacore", "glacierfang", "solarwyrm", "nightmarestag"
+  "gigacore", "glacierfang", "solarwyrm", "nightmarestag", "dewplim"
 ]);
 
 const productionWaves = [
@@ -26,44 +32,40 @@ const productionWaves = [
     id: "v8.6-B",
     label: "既存の終盤・ボス級",
     ids: [
-      "venomhydra", "arkmachine", "doomgazer", "pearlseraph",
-      "duskwolf", "corewalker", "abyssfin", "shellgolem",
-      "hellknight", "titanplim"
+      "arkmachine", "abyssfin",
+      "shellgolem", "titanplim"
     ]
   },
   {
     id: "v8.6-C",
     label: "既存の中盤・上位",
     ids: [
-      "venomqueen", "thunderlion", "forgegolem", "cinderhorn",
-      "cragbear", "lumenowl", "abyssjelly", "icetortoise",
-      "ironmantis", "impfang"
+      "forgegolem", "abyssjelly", "icetortoise",
+      "ironmantis"
     ]
   },
   {
     id: "v8.6-D",
     label: "既存の序盤・追加通常種",
     ids: [
-      "dewplim", "budbunny", "cavemole", "sparkbug", "ashimp",
-      "reefowl", "miretoad", "gearcat", "snowfairy", "frostpup",
-      "cindrake"
+      "budbunny",
+      "reefowl", "miretoad", "gearcat", "snowfairy", "frostpup"
     ]
   },
   {
     id: "v8.6-E",
     label: "既存の残り通常種",
     ids: [
-      "gloomoth", "snowcat", "voltfox", "poisonplim", "toxicshroom",
-      "sludgecko", "venomwing", "gearslime", "steelbug",
-      "thunderdrone", "corallume"
+      "snowcat", "poisonplim", "toxicshroom",
+      "sludgecko", "gearslime", "steelbug",
+      "thunderdrone"
     ]
   },
   {
     id: "v8.6-F",
     label: "天空遺跡",
     ids: [
-      "cloudplim", "sunhare", "galegryph", "skywarden", "stormdjinn",
-      "aethergolem", "seraphalcon", "heavenscale", "zenithdragon"
+      "cloudplim", "skywarden"
     ]
   }
 ];

@@ -128,7 +128,7 @@
               const on = selected.has(m.uid);
               const size = S.monsterSize ? S.monsterSize(m) : 1;
               return `<button class="partyExchangeMemberV812 ${on ? "on" : ""}" onclick="Game.togglePartyExchangeMember('${m.uid}')">
-                ${V.monsterInline(m.id,"partyExchangeMiniFaceV812")}
+                ${V.monsterInline(m,"partyExchangeMiniFaceV812")}
                 <span>
                   <b>${on ? "✓ " : ""}${U.esc(m.nickname)}</b>
                   <small>${U.esc(d.name)} / Lv${m.level} / ${size}枠</small>
@@ -140,7 +140,7 @@
           <div class="partyExchangeResultV812">
             <b>交換後のパーティ</b>
             <div>
-              ${info.remaining.map(m=>`${V.monsterInline(m.id,"miniFace")}<span>${U.esc(m.nickname)}</span>`).join("")}
+              ${info.remaining.map(m=>`${V.monsterInline(m,"miniFace")}<span>${U.esc(m.nickname)}</span>`).join("")}
               ${V.monsterInline(target.id,"miniFace")}<span>${U.esc(target.nickname)}</span>
             </div>
           </div>
@@ -251,10 +251,10 @@
         </div>
 
         <div class="monsterDetailHeadV78">
-          ${V.monsterVisual(m.id,"detailFaceV78")}
+          ${V.monsterVisual(m,"detailFaceV78")}
           <div class="detailMetaV78">
-            <div class="name">${U.esc(m.nickname)} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${sizeBadge}${m.locked ? `<span class="lockBadge">🔒 保護中</span>` : ""}</div>
-            <div class="tiny">Lv ${m.level} / EXP ${m.exp}/${S.expNext(m.level)}</div>
+            <div class="name">${U.esc(m.nickname)} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${sizeBadge}${m.mutation ? `<span class="mutationBadge">${U.esc(S.mutationTitleName(m))}突然変異</span>` : ""}${m.locked ? `<span class="lockBadge">🔒 保護中</span>` : ""}</div>
+            <div class="tiny">Lv ${m.level} / ${m.level >= D.MAX_LEVEL ? "MAX" : `EXP ${m.exp}/${S.expNext(m.level)}`}</div>
             <div class="bars">
               <div class="bar"><i style="width:${S.hpPct(m)}%"></i></div>
               <div class="bar mp"><i style="width:${S.mpPct(m)}%"></i></div>
@@ -275,6 +275,7 @@
         <div class="detailSectionV78">
           <b>性格・個体値</b>
           <div class="tiny">性格：${U.esc(personality.name)} / ${U.esc(personality.desc || "")}</div>
+          ${m.mutation ? `<div class="tiny">二つ名：${U.esc(S.mutationTitleName(m))}突然変異 / ${U.esc(S.mutationTitleDef(m.mutationTitle).desc)}</div>` : ""}
           <div class="tiny">個体値：${S.ivRank(m)} / 合計${S.ivTotal(m)} / ${ivLine}</div>
         </div>
 

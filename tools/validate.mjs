@@ -111,12 +111,44 @@ function loadGameData(scriptRefs){
     fail("ゲームデータまたはセーブ状態を初期化できませんでした");
     return null;
   }
+
+  const recipeGraph = new Map();
+  for(const recipe of data.RECIPE_LIST || []){
+    for(const parent of recipe.parents || []){
+      if(!recipeGraph.has(parent)) recipeGraph.set(parent,[]);
+      recipeGraph.get(parent).push(recipe.result);
+    }
+  }
+  const recipeVisiting = new Set();
+  const recipeVisited = new Set();
+  const recipePath = [];
+  function visitRecipeNode(id){
+    if(recipeVisiting.has(id)){
+      const start = recipePath.indexOf(id);
+      fail(`配合レシピが循環しています: ${recipePath.slice(start).concat(id).join(" -> ")}`);
+      return;
+    }
+    if(recipeVisited.has(id)) return;
+    recipeVisiting.add(id);
+    recipePath.push(id);
+    for(const result of recipeGraph.get(id) || []) visitRecipeNode(result);
+    recipePath.pop();
+    recipeVisiting.delete(id);
+    recipeVisited.add(id);
+  }
+  for(const id of Object.keys(data.MONSTERS || {})) visitRecipeNode(id);
+
   if(state.gold !== oldSave.gold) fail("旧セーブ移行で所持GOLDが保持されませんでした");
   if(state.party[0]?.nickname !== "互換テスト") fail("旧セーブ移行で仲間情報が保持されませんでした");
   if(!Array.isArray(state.fusionGoals) || state.fusionGoals.length !== 0) fail("旧セーブに空の配合目標が補完されませんでした");
+  if(!state.records?.completedRecipes || typeof state.records.completedRecipes !== "object"){
+    fail("旧セーブに空の配合済みレシピ履歴が補完されませんでした");
+  }
+  if(!state.dex?.mutated || typeof state.dex.mutated !== "object") fail("旧セーブに突然変異図鑑記録が補完されませんでした");
   if(state.settings?.speed !== "normal" || state.settings?.seVolume !== 2 || state.settings?.reducedMotion !== false){
     fail("旧セーブにv8.4の戦闘設定が正しく補完されませんでした");
   }
+  if(state.settings?.autoStrategy !== "balanced") fail("旧セーブにオート戦闘の標準作戦が補完されませんでした");
   if(state.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION) fail("旧セーブが現行の保存形式へ移行されませんでした");
   if(!localStorage.getItem("monster_links_slot_1")) fail("旧単一セーブがスロット1へ移行されませんでした");
 
@@ -133,6 +165,33 @@ function loadGameData(scriptRefs){
   if(future.saveSchemaVersion !== data.SAVE_SCHEMA_VERSION + 1){
     fail("将来版の保存形式番号を現在版へ巻き戻しました");
   }
+
+  const normalMonster = context.MonsterLinksState.makeMonster("plim",5);
+  const mutationMonster = context.MonsterLinksState.makeMonster("leafling",5,{mutation:true});
+  const cappedMonster = context.MonsterLinksState.makeMonster("puffbat",150);
+  const levelUpToCap = context.MonsterLinksState.makeMonster("pebblon",99);
+  if(normalMonster.mutation) fail("通常生成したモンスターが突然変異個体になりました");
+  if(!mutationMonster.mutation) fail("突然変異フラグが個体生成時に保持されません");
+  if(!mutationMonster.mutationTitle || !context.MonsterLinksState.mutationTitleName(mutationMonster)){
+    fail("突然変異個体に二つ名が設定されません");
+  }
+  const baseMutationComparison = context.MonsterLinksState.makeMonster("leafling",5,{
+    personality:mutationMonster.personality,
+    ivs:mutationMonster.ivs
+  });
+  const mutationStats = context.MonsterLinksState.stats(mutationMonster);
+  const baseMutationStats = context.MonsterLinksState.stats(baseMutationComparison);
+  if(!["hp","mp","atk","def","spd","wis"].some(key=>mutationStats[key] > baseMutationStats[key])){
+    fail("突然変異の二つ名による能力補正がありません");
+  }
+  if(!Array.isArray(normalMonster.lineage) || normalMonster.lineage.length !== 0) fail("通常生成モンスターの系譜初期値が空ではありません");
+  if(data.MAX_LEVEL !== 100 || cappedMonster.level !== 100) fail("モンスターの最大レベルが100に固定されていません");
+  context.MonsterLinksState.gainExp(levelUpToCap,context.MonsterLinksState.expNext(99) * 10);
+  if(levelUpToCap.level !== 100 || levelUpToCap.exp !== 0 || context.MonsterLinksState.expNext(100) !== 0){
+    fail("経験値獲得でLv100を超える、または最大レベル時のEXPが残ります");
+  }
+  context.MonsterLinksState.addMonster(mutationMonster);
+  if(!context.MonsterLinksState.state.dex.mutated.leafling) fail("突然変異個体が図鑑へ記録されません");
 
   const exchangeOneA = context.MonsterLinksState.makeMonster("plim",10);
   const exchangeOneB = context.MonsterLinksState.makeMonster("leafling",10);
@@ -188,8 +247,13 @@ function loadGameData(scriptRefs){
   const smallB = context.MonsterLinksState.makeMonster("luminel",40);
   context.MonsterLinksState.state.box.push(smallA,smallB);
   const smallPreview = context.MonsterLinksGame.fusionPreview(smallA.uid,smallB.uid);
-  if(!smallPreview || smallPreview.childSize > smallPreview.parentSizeTotal){
-    fail("通常配合で親の合計サイズを超える子が選ばれました");
+  if(!smallPreview || smallPreview.available || !smallPreview.locked || !smallPreview.reason.includes("固定配合レシピはありません")){
+    fail("未登録の親ペアが完全固定配合制で配合不可になっていません");
+  }
+  context.MonsterLinksState.state.party = [];
+  context.MonsterLinksState.state.box = [smallA,smallB];
+  if(context.MonsterLinksGame.recommendedFusions(5).length !== 0){
+    fail("未登録の親ペアがおすすめ配合へ表示されました");
   }
 
   const largeA = context.MonsterLinksState.makeMonster("astralwyrm",40);
@@ -198,6 +262,75 @@ function loadGameData(scriptRefs){
   const largePreview = context.MonsterLinksGame.fusionPreview(largeA.uid,largeB.uid);
   if(largePreview?.id !== "prismdragon" || largePreview.childSize !== 3 || largePreview.parentSizeTotal < 3){
     fail("3枠固定配合ルートが正しく判定されませんでした");
+  }
+
+  const recipeEntries = context.MonsterLinksGame.fusionRecipeEntries();
+  for(const recipe of recipeEntries){
+    const parentOptions = recipe.group === "four"
+      ? [
+          {lineage:recipe.grandparents.slice(0,2)},
+          {lineage:recipe.grandparents.slice(2,4)}
+        ]
+      : [{},{}];
+    const parentA = context.MonsterLinksState.makeMonster(recipe.parents[0],100,parentOptions[0]);
+    const parentB = context.MonsterLinksState.makeMonster(recipe.parents[1],100,parentOptions[1]);
+    context.MonsterLinksState.state.party = [];
+    context.MonsterLinksState.state.box = [parentA,parentB];
+    const preview = context.MonsterLinksGame.fusionPreview(parentA.uid,parentB.uid);
+    if(preview?.id !== recipe.result){
+      fail(`固定配合の結果が一致しません: ${recipe.parents.join("+")} -> ${recipe.result}`);
+    }else if(preview.locked){
+      fail(`最大育成しても成立しない固定配合があります: ${recipe.parents.join("+")} -> ${recipe.result}: ${preview.reason}`);
+    }
+  }
+
+  const kingParentA = context.MonsterLinksState.makeMonster("mossking",15);
+  const kingParentB = context.MonsterLinksState.makeMonster("plim",15);
+  context.MonsterLinksState.state.party = [];
+  context.MonsterLinksState.state.box = [kingParentA,kingParentB];
+  const kingPreview = context.MonsterLinksGame.fusionPreview(kingParentA.uid,kingParentB.uid);
+  if(kingPreview?.id !== "kingplim" || kingPreview.locked){
+    fail(`キングぷるミンが親平均Lv15で成立しません: ${kingPreview?.reason || "結果不一致"}`);
+  }
+
+  const completedRecipe = recipeEntries.find(recipe=>recipe.result === "aquan");
+  context.MonsterLinksState.recordFusion(false,completedRecipe.recipeKey);
+  if(!context.MonsterLinksState.state.records.completedRecipes[completedRecipe.recipeKey]){
+    fail("配合成功時にレシピキーが配合済み履歴へ記録されません");
+  }
+  context.MonsterLinksState.save();
+  const completedSaved = JSON.parse(localStorage.getItem("monster_links_slot_1"));
+  if(!completedSaved.records?.completedRecipes?.[completedRecipe.recipeKey]){
+    fail("配合済みレシピ履歴がセーブデータへ保存されません");
+  }
+
+  context.MonsterLinksState.state.party = [];
+  context.MonsterLinksState.state.box = [smallA,smallB,largeA,largeB];
+
+  const fourParentA = context.MonsterLinksState.makeMonster("stormdjinn",60,{lineage:["galegryph","thunderlion"]});
+  const fourParentB = context.MonsterLinksState.makeMonster("aethergolem",60,{lineage:["shellgolem","solarwyrm"]});
+  const wrongLineageA = context.MonsterLinksState.makeMonster("stormdjinn",60);
+  const wrongLineageB = context.MonsterLinksState.makeMonster("aethergolem",60);
+  context.MonsterLinksState.state.box.push(fourParentA,fourParentB,wrongLineageA,wrongLineageB);
+  const fourPreview = context.MonsterLinksGame.fusionPreview(fourParentA.uid,fourParentB.uid);
+  if(fourPreview?.id !== "heavenscale" || !fourPreview.fourBody || fourPreview.locked){
+    fail("正しい祖父母系譜からヘヴンスケイルの4体配合が成立しません");
+  }
+  const wrongFourPreview = context.MonsterLinksGame.fusionPreview(wrongLineageA.uid,wrongLineageB.uid);
+  if(wrongFourPreview?.fourBody || wrongFourPreview?.id === "heavenscale"){
+    fail("系譜を持たない中間素材から4体配合が成立しました");
+  }
+  const heavenscaleRecipe = context.MonsterLinksGame.fusionRecipeEntries().find(recipe=>recipe.group === "four" && recipe.result === "heavenscale");
+  const fourProgress = context.MonsterLinksGame.fourFusionProgress(heavenscaleRecipe);
+  if(fourProgress?.stage !== "ready" || !fourProgress.branches.every(branch=>branch.ready)){
+    fail("4体配合ナビが正しい中間素材2体を最終配合可能と判定しません");
+  }
+  if(fourProgress.branches.some(branch=>branch.wrongLineage !== 1)){
+    fail("4体配合ナビが系譜違いの中間素材を検出しません");
+  }
+  const fourSetStatus = context.MonsterLinksGame.recipeSetStatus(heavenscaleRecipe);
+  if(!fourSetStatus.ok || fourSetStatus.locked || !fourSetStatus.uids.includes(fourParentA.uid) || !fourSetStatus.uids.includes(fourParentB.uid)){
+    fail("4体配合の自動選択が系譜適合個体を優先しません");
   }
 
   context.MonsterLinksViews = {
@@ -217,11 +350,51 @@ function loadGameData(scriptRefs){
     vm.runInContext(fs.readFileSync(viewFile,"utf8"),context,{filename:"js/views/fusionView.js"});
     context.MonsterLinksGame.setFusionPair(largeA.uid,largeB.uid);
     const fusionHtml = context.MonsterLinksViews.fusionHtml();
+    if(!fusionHtml.includes("配合リストに登録された親2体")){
+      fail("配合画面に完全固定レシピ制の説明がありません");
+    }
+    if(fusionHtml.includes("通常配合：リスト外")){
+      fail("配合画面に廃止した通常配合の案内が残っています");
+    }
     if(!fusionHtml.includes("3枠大型モンスター")) fail("配合画面に3枠警告が表示されません");
     if(!fusionHtml.includes("配合後：")) fail("配合画面に加入先予測が表示されません");
     if(!fusionHtml.includes("recipeFilterPanelV811")) fail("配合リストに検索・フィルターが表示されません");
+    if(!fusionHtml.includes("配合レシピ達成") || !fusionHtml.includes(`1/${recipeEntries.length}`)){
+      fail("配合リストに配合済み達成数が表示されません");
+    }
+    if(!fusionHtml.includes("✓ 配合済み") || !fusionHtml.includes("completedRecipeV1")){
+      fail("成功済みレシピに配合済みマークが表示されません");
+    }
     if(!fusionHtml.includes("結果名・親素材名で検索")) fail("配合リストの検索対象説明がありません");
     if(!fusionHtml.includes('data-recipe-status="')) fail("配合レシピに状態フィルター情報がありません");
+    if(!fusionHtml.includes("4体配合") || !fusionHtml.includes("compactRecipeCardV1")) fail("配合画面に簡略化した配合カードが表示されません");
+    if(fusionHtml.includes("必要な祖父母4体") || fusionHtml.includes("同種2体必要")){
+      fail("配合一覧に配合図へ移動した詳細情報が残っています");
+    }
+    if(!fusionHtml.includes("fourRecipeSectionV1") || !fusionHtml.includes("fourBodyRecipeV1")){
+      fail("4体配合レシピに専用の全幅レイアウトが適用されません");
+    }
+    if(!fusionHtml.includes("系譜図を開く") || !fusionHtml.includes("Game.openFusionTree")){
+      fail("4体配合レシピから系譜図を開く導線がありません");
+    }
+    if(!fusionHtml.includes("配合図を開く")){
+      fail("2体配合レシピから配合図を開く導線がありません");
+    }
+    const twoRecipe = context.MonsterLinksGame.fusionRecipeEntries().find(recipe=>recipe.group !== "four" && recipe.result === "aquan");
+    const twoTreeHtml = context.MonsterLinksViews.twoFusionTreeHtml(twoRecipe,context.MonsterLinksGame.recipeSetStatus(twoRecipe));
+    if(!twoTreeHtml.includes("2体配合 配合図") || !twoTreeHtml.includes("twoTreeParentsV1") || !twoTreeHtml.includes("配合")){
+      fail("2体配合の配合図モーダルを生成できません");
+    }
+    if(!twoTreeHtml.includes("リーフリン") || !twoTreeHtml.includes("ぷるミン")){
+      fail("2体配合図に親モンスター2体が表示されません");
+    }
+    const fourTreeHtml = context.MonsterLinksViews.fourFusionTreeHtml(heavenscaleRecipe,fourProgress);
+    if(!fourTreeHtml.includes("4体配合 系譜図") || !fourTreeHtml.includes("fourTreeBranchesV1") || !fourTreeHtml.includes("2系統を重ねる")){
+      fail("4体配合の系譜図モーダルを生成できません");
+    }
+    if(!fourTreeHtml.includes("この中間素材を作る") && !fourTreeHtml.includes("最終配合をセット")){
+      fail("4体配合の系譜図に配合操作がありません");
+    }
 
     const modal = {innerHTML:""};
     context.document = {
@@ -361,19 +534,39 @@ function loadGameData(scriptRefs){
     const activeMonster = context.MonsterLinksState.state.party[context.MonsterLinksState.state.battle.active];
     activeMonster.hp = 1;
     context.MonsterLinksGame.toggleBattleAuto();
-    if(context.MonsterLinksGame.isBattleAuto()) fail("HP25%以下でオート攻撃を開始できてしまいます");
+    if(!context.MonsterLinksGame.isBattleAuto()) fail("低HP時に回復・防御用のオート作戦を開始できません");
+    context.MonsterLinksGame.toggleBattleAuto();
+    context.MonsterLinksGame.setBattleStrategy("healing");
+    if(context.MonsterLinksState.state.settings.autoStrategy !== "healing") fail("オート戦闘の作戦を変更・保存できません");
+    context.MonsterLinksGame.setBattleStrategy("balanced");
     activeMonster.hp = context.MonsterLinksState.stats(activeMonster).hp;
     if(Object.prototype.hasOwnProperty.call(context.MonsterLinksState.state,"autoAttack")){
       fail("オート攻撃状態がセーブデータへ保存されています");
     }
 
     const appSource = fs.readFileSync(path.join(root,"js","app.js"),"utf8");
-    for(const sound of ["weak","resist","allyHit","guard","ko","boss"]){
+    for(const sound of ["weak","resist","allyHit","guard","ko","boss","mutation"]){
       if(!appSource.includes(`kind === "${sound}"`)) fail(`v8.4効果音がありません: ${sound}`);
     }
     const battleSource = fs.readFileSync(battleSystemFile,"utf8");
     if(!battleSource.includes("current !== battle || current.lock")) fail("古いオート攻撃タイマーを無効化する防御がありません");
-    if(!battleSource.includes("if(!fromAuto && kind !== \"attack\") stopBattleAuto()")) fail("手動コマンドでオート攻撃を解除する処理がありません");
+    if(!battleSource.includes("if(!fromAuto) stopBattleAuto()")) fail("手動コマンドでオート作戦を解除する処理がありません");
+    if(!battleSource.includes("U.rand(1,100) <= 3")) fail("探索に突然変異個体の出現判定がありません");
+    if(!battleSource.includes("mutation:e.mutation,mutationTitle:e.mutationTitle")) fail("スカウト時に突然変異個体の二つ名を引き継げません");
+    if(!battleSource.includes("chooseAutoAction") || !battleSource.includes("bestDamageSkill")) fail("オート作戦の行動選択処理がありません");
+    if(!battleSource.includes("if(joined.mutation) joined.locked = true")) fail("突然変異個体がスカウト時に自動保護されません");
+    if(!battleSource.includes("scheduleMutationIntroEnd")) fail("突然変異遭遇演出を一度だけ終了する処理がありません");
+    const battleViewSource = fs.readFileSync(battleViewFile,"utf8");
+    if(!battleViewSource.includes("mutationEncounterV1") || !battleViewSource.includes("RARE ENCOUNTER")){
+      fail("突然変異遭遇の専用バナーがありません");
+    }
+    const mutationCss = fs.readFileSync(path.join(root,"css","style.css"),"utf8");
+    if(!mutationCss.includes(".mutationBattle") || !mutationCss.includes(".reducedMotionV84 .mutationEncounterV1")){
+      fail("突然変異遭遇演出または演出軽減対応がありません");
+    }
+    const fusionSource = fs.readFileSync(path.join(root,"js","systems","fusion.js"),"utf8");
+    if(fusionSource.includes("inherited.mutation")) fail("配合で突然変異が遺伝する実装になっています");
+    if(!fusionSource.includes("lineage:[a.id,b.id]")) fail("配合後の子に親2種の系譜が保存されません");
     const arenaSource = fs.readFileSync(path.join(root,"js","systems","arena.js"),"utf8");
     if(!arenaSource.includes("G.resetBattleAuto?.()")) fail("闘技場の新ラウンドでオート攻撃がリセットされません");
     const settingsViewFile = path.join(root,"js","views","settingsView.js");
@@ -429,6 +622,47 @@ function loadGameData(scriptRefs){
     if(!goalsPanel.includes("配合目標") || !goalsPanel.includes("今すぐ配合可能")) fail("配合画面に目標進捗が表示されません");
     const goalHome = context.MonsterLinksViews.homeFusionGoalHtml();
     if(!goalHome.includes("PRIORITY FUSION GOAL") || !goalHome.includes("アクアン")) fail("拠点に最優先の配合目標が表示されません");
+
+    const boxBeforeFourGoal = context.MonsterLinksState.state.box.slice();
+    const dexBeforeFourGoal = {
+      discovered:{...context.MonsterLinksState.state.dex.discovered},
+      scouted:{...context.MonsterLinksState.state.dex.scouted}
+    };
+    context.MonsterLinksState.state.box.push(fourParentA,fourParentB,wrongLineageA,wrongLineageB);
+    context.MonsterLinksState.state.fusionGoals = ["heavenscale"];
+    const fourGoalInfo = context.MonsterLinksGame.fusionGoalInfo("heavenscale");
+    const fourGoalsPanel = context.MonsterLinksViews.fusionGoalsPanelHtml();
+    if(!fourGoalInfo?.best?.four || !fourGoalInfo.best.ready) fail("4体配合目標の進捗が取得できません");
+    if(!fourGoalsPanel.includes("4体配合ナビ") || !fourGoalsPanel.includes("系譜適合") || !fourGoalsPanel.includes("最終配合をセット")){
+      fail("配合目標画面に4体配合ナビと操作ボタンが表示されません");
+    }
+    if(!fourGoalsPanel.includes("fourGoalCardV1")){
+      fail("4体配合目標カードに全幅レイアウト用クラスがありません");
+    }
+    context.MonsterLinksGame.openFourFusionStep(heavenscaleRecipe.recipeKey,"final");
+    if(context.MonsterLinksGame.fusionPick.length !== 2 || context.MonsterLinksGame.fusionForcedRecipeKey !== heavenscaleRecipe.recipeKey){
+      fail("4体配合ナビから最終配合をセットできません");
+    }
+    context.MonsterLinksGame._clearFusionPickNoRender();
+
+    context.MonsterLinksState.state.box = heavenscaleRecipe.grandparents.map(id=>context.MonsterLinksState.makeMonster(id,60));
+    const intermediateGoalInfo = context.MonsterLinksGame.fusionGoalInfo("heavenscale");
+    const intermediateGoalsPanel = context.MonsterLinksViews.fusionGoalsPanelHtml();
+    if(intermediateGoalInfo?.best?.four?.stage !== "intermediates" || !intermediateGoalsPanel.includes("この中間素材を作る")){
+      fail("祖父母が揃った4体配合目標に中間素材作成ボタンが表示されません");
+    }
+    const firstIntermediateRecipe = intermediateGoalInfo.best.four.branches[0].intermediateRecipe;
+    context.MonsterLinksGame.openFourFusionStep(heavenscaleRecipe.recipeKey,0);
+    if(context.MonsterLinksGame.fusionForcedRecipeKey !== firstIntermediateRecipe?.recipeKey){
+      fail("4体配合ナビから中間素材の配合をセットできません");
+    }
+    context.MonsterLinksGame._clearFusionPickNoRender();
+
+    context.MonsterLinksState.state.box = boxBeforeFourGoal;
+    context.MonsterLinksState.state.dex.discovered = dexBeforeFourGoal.discovered;
+    context.MonsterLinksState.state.dex.scouted = dexBeforeFourGoal.scouted;
+    context.MonsterLinksState.state.fusionGoals = ["aquan"];
+
     context.MonsterLinksGame.openFusionGoal("aquan");
     if(context.MonsterLinksState.state.view !== "fusion" || context.MonsterLinksGame.fusionPick.length !== 2){
       fail("作成可能な配合目標から親2体をセットできません");
@@ -557,7 +791,7 @@ function loadGameData(scriptRefs){
   try{
     if(Object.keys(data.MONSTERS).length !== 84) fail("v8.5のモンスター数が84体ではありません");
     if(data.STAGES.length !== 13) fail("v8.5のステージ数が13件ではありません");
-    if(data.RECIPE_LIST.length !== 82) fail("v8.5の配合数が82件ではありません");
+    if(data.RECIPE_LIST.length !== 83) fail("4体配合追加後の配合数が83件ではありません");
     if(Object.keys(data.ITEMS).length !== 28) fail("v8.5の装備数が28件ではありません");
     if(data.QUESTS.length !== 54) fail("v8.5の任務数が54件ではありません");
 
@@ -599,7 +833,7 @@ function loadGameData(scriptRefs){
     }
 
     const skyRecipes = data.RECIPE_LIST.filter(recipe=>skyMonsterIds.includes(recipe.result));
-    if(skyRecipes.length !== 10) fail("v8.5天空遺跡の配合ルートが10件ではありません");
+    if(skyRecipes.length !== 11) fail("4体配合追加後の天空遺跡配合ルートが11件ではありません");
     const zenithParentA = context.MonsterLinksState.makeMonster("heavenscale",60);
     const zenithParentB = context.MonsterLinksState.makeMonster("celestiseraph",60);
     context.MonsterLinksState.state.box.push(zenithParentA,zenithParentB);
@@ -726,6 +960,14 @@ function validateData(D){
       if(!monsters[parent]) fail(`配合 ${recipe.result}: 不明な親です: ${parent}`);
     }
     if(!monsters[recipe.result]) fail(`配合: 不明な結果です: ${recipe.result}`);
+    if(recipe.group === "four"){
+      if(!Array.isArray(recipe.grandparents) || recipe.grandparents.length !== 4){
+        fail(`4体配合 ${recipe.result}: 祖父母が4体定義されていません`);
+      }
+      for(const grandparent of recipe.grandparents || []){
+        if(!monsters[grandparent]) fail(`4体配合 ${recipe.result}: 不明な祖父母です: ${grandparent}`);
+      }
+    }
     const parentSize = (recipe.parents || []).reduce((sum,id)=>sum + Math.max(1,Number(monsters[id]?.size || 1)),0);
     const childSize = Math.max(1,Number(monsters[recipe.result]?.size || 1));
     if(parentSize < childSize){

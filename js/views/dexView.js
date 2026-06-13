@@ -72,6 +72,7 @@
     const filteredIds = ids.filter(id=>window.MonsterLinksGame.matchDexId ? window.MonsterLinksGame.matchDexId(id) : true);
     const discoveredPct = counts.total ? Math.floor(counts.discovered / counts.total * 100) : 0;
     const scoutedPct = counts.total ? Math.floor(counts.scouted / counts.total * 100) : 0;
+    const mutationCount = Object.keys(D.MONSTERS).filter(id=>state.dex.mutated?.[id]).length;
     const ranks = Object.keys(D.RANK || {}).sort((a,b)=>D.RANK[a]-D.RANK[b]);
     return `
     <main>
@@ -86,6 +87,10 @@
           <div class="dexProgressBox">
             <span>スカウト</span><b>${counts.scouted}/${counts.total}</b>
             <div class="bar"><i style="width:${scoutedPct}%"></i></div>
+          </div>
+          <div class="dexProgressBox mutation">
+            <span>突然変異発見</span><b>${mutationCount}/${counts.total}</b>
+            <div class="bar"><i style="width:${counts.total ? mutationCount / counts.total * 100 : 0}%"></i></div>
           </div>
         </div>
       </section>
@@ -117,6 +122,7 @@
 
   function dexCard(id,discovered,scouted){
     const d = S.def(id);
+    const mutationFound = !!S.state.dex?.mutated?.[id];
     const recipeCount = (window.MonsterLinksGame.fusionRecipeEntries?.() || []).filter(recipe=>recipe.result === id).length;
     const isGoal = !!window.MonsterLinksGame.isFusionGoal?.(id);
     if(!discovered){
@@ -128,7 +134,7 @@
     }
     return `<div class="dexCard dexCardV31 dexCardRouteV83 ${scouted ? "scouted" : ""} ${isGoal ? "fusionGoalV832" : ""}" role="button" tabindex="0" onclick="Game.openDexDetail('${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Game.openDexDetail('${id}')}">
       <button class="dexGoalButtonV832 ${isGoal ? "on" : ""}" aria-label="${isGoal ? "配合目標から外す" : "配合目標に登録"}" onclick="event.stopPropagation();Game.toggleFusionGoal('${id}')">${isGoal ? "★" : "☆"}</button>
-      <div class="dexArtFrame">${V.monsterVisual(id,'dexFace dexFaceV31')}</div>
+      <div class="dexArtFrame">${V.monsterVisual({id,mutation:mutationFound},'dexFace dexFaceV31')}${mutationFound ? `<span class="mutationDexMark">突然変異発見</span>` : ""}</div>
       <div class="name">${d.name} <span class="tag">${d.rank}</span></div>
       <div class="dexMetaLine">
         <span class="type">${typeLabel(d.type)}</span>
@@ -184,9 +190,16 @@
     const sameParent = parents[0] === parents[1];
     const status = dexRecipeStatus(recipe);
     const requirement = window.MonsterLinksGame.fusionRequirementText
-      ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe.minAvg)
+      ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe)
       : recipe.minAvg ? `親平均Lv${recipe.minAvg}以上` : "条件なし";
+    const fourRoute = recipe.group === "four" && recipe.grandparents?.length === 4
+      ? `<div class="dexFourRouteV1">
+          <b>4体配合</b>
+          <span>${recipe.grandparents.map(id=>S.state.dex?.discovered?.[id] ? U.esc(S.def(id).name) : "？？？？").join(" ＋ ")}</span>
+        </div>`
+      : "";
     return `<article class="dexRecipeCardV83 ${status.key}">
+      ${fourRoute}
       <div class="dexRecipeRouteV83">
         <div>
           ${dexKnownMonster(parents[0],"dexRouteMonsterV83")}
@@ -214,7 +227,7 @@
       ? recipe.parents[0]
       : recipe.parents.find(parent=>parent !== recipe._sourceId);
     const requirement = window.MonsterLinksGame.fusionRequirementText
-      ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe.minAvg)
+      ? window.MonsterLinksGame.fusionRequirementText(recipe.result,recipe)
       : "条件なし";
     return `<article class="dexUseRecipeV83 ${resultKnown ? status.key : "secret"}">
       <div class="dexUseRouteV83">
@@ -240,6 +253,8 @@
     const outgoing = recipes.filter(recipe=>recipe.parents.includes(id)).map(recipe=>Object.assign({_sourceId:id},recipe));
     const owned = S.owned().filter(monster=>monster.id === id);
     const scouted = !!S.state.dex?.scouted?.[id];
+    const mutationFound = !!S.state.dex?.mutated?.[id];
+    const ownedMutations = owned.filter(monster=>monster.mutation).length;
     const isGoal = !!window.MonsterLinksGame.isFusionGoal?.(id);
     const skills = skillTextForDex(d);
 
@@ -255,15 +270,16 @@
         </div>
 
         <section class="dexDetailHeroV83">
-          ${V.monsterVisual(id,"dexDetailArtV83")}
+          ${V.monsterVisual({id,mutation:mutationFound},"dexDetailArtV83")}
           <div>
-            <div class="dexDetailBadgesV83"><span class="tag">${d.rank}</span><span class="type">${U.esc(typeLabel(d.type))}</span>${V.sizeBadge ? V.sizeBadge(d) : ""}</div>
+            <div class="dexDetailBadgesV83"><span class="tag">${d.rank}</span><span class="type">${U.esc(typeLabel(d.type))}</span>${V.sizeBadge ? V.sizeBadge(d) : ""}${mutationFound ? `<span class="mutationBadge">突然変異発見済み</span>` : ""}</div>
             <h3>${U.esc(d.name)}</h3>
             <p>技：${U.esc(skills)}</p>
             <button class="dexGoalDetailButtonV832 ${isGoal ? "on" : ""}" onclick="Game.toggleFusionGoal('${id}',true)">${isGoal ? "★ 配合目標に登録中" : "☆ 配合目標に登録"}</button>
             <div class="dexDetailRecordV83">
               <div><span>図鑑状態</span><b>${scouted ? "スカウト済み" : "発見済み"}</b></div>
               <div><span>現在の所持</span><b>${owned.length}体</b></div>
+              <div><span>突然変異個体</span><b>${ownedMutations}体</b></div>
               <div><span>作成ルート</span><b>${incoming.length}件</b></div>
               <div><span>素材ルート</span><b>${outgoing.length}件</b></div>
             </div>
@@ -292,7 +308,6 @@
 
         <div class="actions dexDetailActionsV83">
           ${isGoal ? `<button class="green" onclick="Game.closeModal();Game.openFusionGoal('${id}')">目標の進捗を見る</button>` : ""}
-          <button class="primary" onclick="Game.openDexArtViewer('${id}')">大きく鑑賞</button>
           <button class="gold" onclick="Game.closeModal();Game.setView('fusion')">配合画面を見る</button>
           <button onclick="Game.closeModal()">閉じる</button>
         </div>

@@ -32,6 +32,26 @@
     return ivs;
   }
 
+  const MUTATION_TITLES = {
+    fierce:{name:"猛き",desc:"攻撃が高い突然変異個体。",mod:{atk:1.08}},
+    ironwall:{name:"堅牢なる",desc:"HPと守備が高い突然変異個体。",mod:{hp:1.05,def:1.08}},
+    swift:{name:"疾風の",desc:"素早さが高い突然変異個体。",mod:{spd:1.10}},
+    sage:{name:"叡智の",desc:"MPと賢さが高い突然変異個体。",mod:{mp:1.05,wis:1.08}}
+  };
+
+  function randomMutationTitle(){
+    const ids = Object.keys(MUTATION_TITLES);
+    return ids[U.rand(0,ids.length-1)] || "fierce";
+  }
+
+  function mutationTitleDef(id){
+    return MUTATION_TITLES[id] || MUTATION_TITLES.fierce;
+  }
+
+  function mutationTitleName(m){
+    return m?.mutation ? mutationTitleDef(m.mutationTitle).name : "";
+  }
+
   function partySlotLimit(){
     return Math.max(1,Math.floor(Number(D.PARTY_SLOT_LIMIT || D.MAX_PARTY || 3)));
   }
@@ -187,7 +207,7 @@
   }
 
   function defaultSettings(){
-    return {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false};
+    return {music:false,sound:true,speed:"normal",seVolume:2,reducedMotion:false,autoStrategy:"balanced"};
   }
 
   function normalizeSettings(data){
@@ -197,6 +217,9 @@
     data.settings.speed = ["slow","normal","fast","ultra"].includes(data.settings.speed) ? data.settings.speed : "normal";
     data.settings.seVolume = U.clamp(Math.floor(Number(data.settings.seVolume) || 2),1,3);
     data.settings.reducedMotion = !!data.settings.reducedMotion;
+    data.settings.autoStrategy = ["balanced","offense","healing","conserve"].includes(data.settings.autoStrategy)
+      ? data.settings.autoStrategy
+      : "balanced";
   }
 
   function slotSummary(slot){
@@ -250,6 +273,12 @@
     Object.entries(mod).forEach(([k,v])=>{
       if(out[k] !== undefined) out[k] = Math.max(1,Math.floor(out[k] * v));
     });
+    if(m.mutation){
+      const mutationMod = mutationTitleDef(m.mutationTitle).mod || {};
+      Object.entries(mutationMod).forEach(([k,v])=>{
+        if(out[k] !== undefined) out[k] = Math.max(1,Math.floor(out[k] * v));
+      });
+    }
     return out;
   }
 
@@ -263,10 +292,12 @@
   }
 
   function expNext(lv){
+    if(lv >= D.MAX_LEVEL) return 0;
     return Math.floor(18 + Math.pow(lv,1.55)*14);
   }
 
   function makeMonster(id,level=1,inherited={}){
+    level = U.clamp(Math.floor(Number(level) || 1),1,D.MAX_LEVEL);
     const m = {
       uid:U.uid(),
       id,
@@ -277,6 +308,9 @@
       skillPlus:inherited.skillPlus || [],
       personality:inherited.personality || randomPersonality(),
       ivs:inherited.ivs || randomIvs(),
+      mutation:!!inherited.mutation,
+      mutationTitle:inherited.mutation ? (MUTATION_TITLES[inherited.mutationTitle] ? inherited.mutationTitle : randomMutationTitle()) : null,
+      lineage:Array.isArray(inherited.lineage) ? inherited.lineage.filter(parentId=>D.MONSTERS[parentId]).slice(0,2) : [],
       equip:null,
       locked:false,
       hp:1,
@@ -308,10 +342,10 @@
       scoutCharm:0,
       stageWins:{},
       bossCleared:{},
-      dex:{discovered:{},scouted:{}},
+      dex:{discovered:{},scouted:{},mutated:{}},
       fusionGoals:[],
       bag:{force_ring:1},
-      records:{scouts:0,fusions:0,specialFusions:0,equips:0,bossWins:0,bossScouts:0,items:{}},
+      records:{scouts:0,fusions:0,specialFusions:0,equips:0,bossWins:0,bossScouts:0,items:{},completedRecipes:{}},
       quests:{claimed:{}},
       arena:{unlocked:1,cleared:{},wins:0},
       settings:defaultSettings()
@@ -365,9 +399,11 @@
     data.dex = data.dex || {};
     data.dex.discovered = data.dex.discovered || {};
     data.dex.scouted = data.dex.scouted || {};
+    data.dex.mutated = data.dex.mutated || {};
     data.party.concat(data.box).forEach(m=>{
       data.dex.discovered[m.id] = true;
       data.dex.scouted[m.id] = true;
+      if(m.mutation) data.dex.mutated[m.id] = true;
     });
     data.fusionGoals = Array.isArray(data.fusionGoals)
       ? [...new Set(data.fusionGoals.filter(id=>D.MONSTERS[id]))].slice(0,3)
@@ -383,6 +419,13 @@
     Object.keys(data.records.items).forEach(id=>{
       if(!D.ITEMS[id]) delete data.records.items[id];
       else data.records.items[id] = Math.max(0,Math.floor(Number(data.records.items[id]) || 0));
+    });
+    data.records.completedRecipes = data.records.completedRecipes && typeof data.records.completedRecipes === "object"
+      ? data.records.completedRecipes
+      : {};
+    Object.keys(data.records.completedRecipes).forEach(key=>{
+      if(!data.records.completedRecipes[key]) delete data.records.completedRecipes[key];
+      else data.records.completedRecipes[key] = true;
     });
     data.quests = data.quests && typeof data.quests === "object" ? data.quests : {};
     data.quests.claimed = data.quests.claimed && typeof data.quests.claimed === "object" ? data.quests.claimed : {};
@@ -406,8 +449,8 @@
   function fixMonster(m){
     m.uid = m.uid || U.uid();
     m.nickname = m.nickname || def(m.id).name;
-    m.level = Number.isFinite(m.level) ? Math.max(1,m.level) : 1;
-    m.exp = Number.isFinite(m.exp) ? Math.max(0,m.exp) : 0;
+    m.level = Number.isFinite(m.level) ? U.clamp(Math.floor(m.level),1,D.MAX_LEVEL) : 1;
+    m.exp = m.level >= D.MAX_LEVEL ? 0 : (Number.isFinite(m.exp) ? Math.max(0,m.exp) : 0);
     m.bonus = m.bonus || {hp:0,mp:0,atk:0,def:0,spd:0,wis:0};
     ["hp","mp","atk","def","spd","wis"].forEach(k=>m.bonus[k] = Number.isFinite(m.bonus[k]) ? m.bonus[k] : 0);
     m.skillPlus = Array.isArray(m.skillPlus) ? m.skillPlus.filter(id=>D.SKILLS[id]) : [];
@@ -418,6 +461,11 @@
     });
     m.equip = D.ITEMS[m.equip] ? m.equip : null;
     m.locked = !!m.locked;
+    m.mutation = !!m.mutation;
+    m.mutationTitle = m.mutation
+      ? (MUTATION_TITLES[m.mutationTitle] ? m.mutationTitle : randomMutationTitle())
+      : null;
+    m.lineage = Array.isArray(m.lineage) ? m.lineage.filter(parentId=>D.MONSTERS[parentId]).slice(0,2) : [];
     const s = stats(m);
     m.hp = Number.isFinite(m.hp) ? U.clamp(m.hp,0,s.hp) : s.hp;
     m.mp = Number.isFinite(m.mp) ? U.clamp(m.mp,0,s.mp) : s.mp;
@@ -551,6 +599,7 @@
     if(key === "speed" && ["slow","normal","fast","ultra"].includes(value)) state.settings.speed = value;
     if(key === "seVolume") state.settings.seVolume = U.clamp(Math.floor(Number(value) || 2),1,3);
     if(key === "reducedMotion") state.settings.reducedMotion = !!value;
+    if(key === "autoStrategy" && ["balanced","offense","healing","conserve"].includes(value)) state.settings.autoStrategy = value;
     save();
   }
 
@@ -567,13 +616,23 @@
 
   function hpPct(m){return U.clamp(m.hp / stats(m).hp * 100,0,100);}
   function mpPct(m){return U.clamp(m.mp / stats(m).mp * 100,0,100);}
-  function expPct(m){return U.clamp(m.exp / expNext(m.level) * 100,0,100);}
+  function expPct(m){
+    if(m.level >= D.MAX_LEVEL) return 100;
+    return U.clamp(m.exp / expNext(m.level) * 100,0,100);
+  }
 
   function recordSeen(id){if(D.MONSTERS[id]) state.dex.discovered[id] = true;}
   function recordScouted(id){
     if(D.MONSTERS[id]){
       state.dex.discovered[id] = true;
       state.dex.scouted[id] = true;
+    }
+  }
+
+  function recordMutation(id){
+    if(D.MONSTERS[id]){
+      state.dex.discovered[id] = true;
+      state.dex.mutated[id] = true;
     }
   }
 
@@ -586,6 +645,7 @@
 
   function addMonster(m){
     recordScouted(m.id);
+    if(m.mutation) recordMutation(m.id);
     const size = monsterSize(m);
     const before = partySlotInfo();
     if(canAddToParty(m)){
@@ -643,8 +703,13 @@
 
   function gainExp(m,amount){
     const lines = [];
+    if(m.level >= D.MAX_LEVEL){
+      m.level = D.MAX_LEVEL;
+      m.exp = 0;
+      return lines;
+    }
     m.exp += amount;
-    while(m.exp >= expNext(m.level)){
+    while(m.level < D.MAX_LEVEL && m.exp >= expNext(m.level)){
       m.exp -= expNext(m.level);
       m.level++;
       const s = stats(m);
@@ -652,6 +717,7 @@
       m.mp = s.mp;
       lines.push(`${m.nickname}はLv${m.level}に上がった！`);
     }
+    if(m.level >= D.MAX_LEVEL) m.exp = 0;
     return lines;
   }
 
@@ -707,9 +773,15 @@
     if(isBoss) state.records.bossScouts = (state.records.bossScouts || 0) + 1;
   }
 
-  function recordFusion(isSpecial=false){
+  function recordFusion(isSpecial=false,recipeKey=""){
     state.records.fusions = (state.records.fusions || 0) + 1;
     if(isSpecial) state.records.specialFusions = (state.records.specialFusions || 0) + 1;
+    if(recipeKey){
+      state.records.completedRecipes = state.records.completedRecipes && typeof state.records.completedRecipes === "object"
+        ? state.records.completedRecipes
+        : {};
+      state.records.completedRecipes[String(recipeKey)] = true;
+    }
   }
   function recordEquip(){state.records.equips = (state.records.equips || 0) + 1;}
   function recordBossWin(){state.records.bossWins = (state.records.bossWins || 0) + 1;}
@@ -825,6 +897,9 @@
     personalityDef,
     randomPersonality,
     randomIvs,
+    mutationTitleDef,
+    mutationTitleName,
+    randomMutationTitle,
     partySlotLimit,
     monsterSize,
     partySizeUsed,
@@ -865,6 +940,7 @@
     expPct,
     recordSeen,
     recordScouted,
+    recordMutation,
     dexCounts,
     addMonster,
     removeMonster,
