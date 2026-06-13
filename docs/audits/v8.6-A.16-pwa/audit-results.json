@@ -1,0 +1,42 @@
+{
+  "errors": [],
+  "version": "8.6-A.16",
+  "registration": {
+    "exists": true,
+    "scope": "http://127.0.0.1:54479/",
+    "active": "activated"
+  },
+  "cacheAfterInstall": {
+    "names": [
+      "monster-links-8.6-A.16"
+    ],
+    "entries": 57
+  },
+  "cacheAfterCleanup": [
+    "monster-links-8.6-A.16"
+  ],
+  "versionedRequests": {
+    "css": true,
+    "scripts": 45
+  },
+  "onlineErrors": [],
+  "offline": {
+    "loaded": true,
+    "version": "8.6-A.16",
+    "title": "モンスターリンクス v8.6-A.16",
+    "expectedNetworkErrors": 0
+  },
+  "onlineAgain": {
+    "loaded": true,
+    "version": "8.6-A.16"
+  },
+  "manifest": {
+    "display": "standalone",
+    "start_url": "./?source=pwa",
+    "iconSizes": [
+      "192x192",
+      "512x512"
+    ]
+  },
+  "ok": true
+}

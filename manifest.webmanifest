@@ -1,0 +1,28 @@
+{
+  "id": "./",
+  "name": "モンスターリンクス",
+  "short_name": "Monster Links",
+  "description": "モンスターを育成・配合して冒険するソロ向けRPG",
+  "lang": "ja",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#080d1d",
+  "theme_color": "#0b1024",
+  "icons": [
+    {
+      "src": "assets/images/ui/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/ui/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

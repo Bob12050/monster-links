@@ -1,7 +1,7 @@
 # Monster Links 現行プロジェクト仕様書
 
-更新日: 2026-06-07  
-対象バージョン: v8.6-A.1
+更新日: 2026-06-13
+対象バージョン: v8.6-A.16
 
 この文書は、普通のChatGPTや別の開発担当へプロジェクトを引き継ぐための現行仕様書です。
 古いdocsと内容が異なる場合は、この文書と実際のゲームコードを優先してください。
@@ -40,8 +40,8 @@ GitHub Pagesのmain / rootで動く状態を維持する
 ```text
 モンスター: 84体
 ステージ: 13件
-配合レシピ: 82件
-JavaScript: 44ファイル
+配合レシピ: 83件
+JavaScript: 45ファイル
 CSS: 1ファイル
 ルートdocs Markdown: 142ファイル
 モンスター画像: PNG 75 / SVG 64
@@ -95,6 +95,9 @@ assets/images/items/       アイテム画像
 
 tools/validate.mjs         総合回帰検証
 tools/art-audit.mjs        モンスター画像管理表の監査・生成
+manifest.webmanifest       ホーム画面追加・standalone表示設定
+service-worker.js          更新優先のPWAキャッシュ制御
+js/pwa.js                  Service Worker登録・更新確認
 ```
 
 ## 6. セーブ互換性
@@ -248,6 +251,10 @@ node tools/art-audit.mjs
 ```powershell
 node tools/art-audit.mjs --write
 ```
+
+PWA更新時は、`GAME_VERSION`、`index.html`の`?v=`、`service-worker.js`、`js/pwa.js`のバージョンを必ず一致させてください。
+オンライン時はネットワーク優先、通信不能時だけ現行バージョンのキャッシュへフォールバックします。
+更新頻度が高いため、旧キャッシュを残す変更やcache-firstへの変更は禁止です。
 
 検証対象:
 

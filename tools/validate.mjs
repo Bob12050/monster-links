@@ -44,9 +44,11 @@ function indexAssets(){
   const refs = [...html.matchAll(/(?:src|href)="([^"]+)"/g)].map(match=>match[1]);
   for(const ref of refs){
     if(/^(?:https?:|data:|#)/.test(ref)) continue;
-    if(!fs.existsSync(path.join(root,ref))) fail(`index.html: 参照先がありません: ${ref}`);
+    const fileRef = ref.split(/[?#]/,1)[0];
+    if(!fs.existsSync(path.join(root,fileRef))) fail(`index.html: 参照先がありません: ${ref}`);
   }
-  return [...html.matchAll(/<script\s+src="([^"]+\.js)"><\/script>/g)].map(match=>match[1]);
+  return [...html.matchAll(/<script\s+src="([^"]+\.js(?:\?[^"]*)?)"><\/script>/g)]
+    .map(match=>match[1].split(/[?#]/,1)[0]);
 }
 
 function storage(initial={}){
@@ -1001,10 +1003,60 @@ function checkDocsMirror(){
   }
 }
 
+function checkPwa(data){
+  const index = fs.readFileSync(path.join(root,"index.html"),"utf8");
+  const manifestFile = path.join(root,"manifest.webmanifest");
+  const workerFile = path.join(root,"service-worker.js");
+  const pwaFile = path.join(root,"js","pwa.js");
+  if(!fs.existsSync(manifestFile)) fail("PWA: manifest.webmanifest がありません");
+  if(!fs.existsSync(workerFile)) fail("PWA: service-worker.js がありません");
+  if(!fs.existsSync(pwaFile)) fail("PWA: js/pwa.js がありません");
+  if(!fs.existsSync(manifestFile) || !fs.existsSync(workerFile) || !fs.existsSync(pwaFile)) return;
+
+  let manifest;
+  try{
+    manifest = JSON.parse(fs.readFileSync(manifestFile,"utf8"));
+  }catch(error){
+    fail(`PWA: manifest.webmanifest が不正です: ${error.message}`);
+    return;
+  }
+  for(const icon of manifest.icons || []){
+    if(!fs.existsSync(path.join(root,icon.src || ""))) fail(`PWA: アイコンがありません: ${icon.src}`);
+  }
+  if(manifest.display !== "standalone") fail("PWA: display が standalone ではありません");
+  if(manifest.scope !== "./") fail("PWA: GitHub Pages向けscopeが ./ ではありません");
+
+  const version = data.GAME_VERSION;
+  const worker = fs.readFileSync(workerFile,"utf8");
+  const pwa = fs.readFileSync(pwaFile,"utf8");
+  if(!worker.includes(`const VERSION = "${version}"`)) fail("PWA: Service WorkerのバージョンがGAME_VERSIONと一致しません");
+  if(!pwa.includes(`const VERSION = "${version}"`)) fail("PWA: 登録処理のバージョンがGAME_VERSIONと一致しません");
+  if(!index.includes(`v=${version}`)) fail("PWA: index.htmlに現行バージョンのキャッシュバスターがありません");
+
+  const versionedRefs = [...index.matchAll(/(?:src|href)="([^"]+\.(?:js|css)\?v=([^"]+))"/g)];
+  for(const [,ref,refVersion] of versionedRefs){
+    if(refVersion !== version) fail(`PWA: キャッシュバスターが不一致です: ${ref}`);
+  }
+  const indexScripts = [...index.matchAll(/<script\s+src="([^"]+\.js)(?:\?[^"]*)?"><\/script>/g)]
+    .map(match=>match[1].replace(/^\.\//,""));
+  const coreBlock = worker.match(/const CORE_FILES = \[([\s\S]*?)\];/)?.[1] || "";
+  const workerScripts = [...coreBlock.matchAll(/"(\.\/[^"]+\.js)"/g)]
+    .map(match=>match[1].replace(/^\.\//,""));
+  for(const script of indexScripts){
+    if(!workerScripts.includes(script)) fail(`PWA: 必須JSがService WorkerのCORE_FILESにありません: ${script}`);
+  }
+  if(!worker.includes('cache:"no-store"')) fail("PWA: ネットワーク取得がno-store優先ではありません");
+  if(!worker.includes("deleteOldCaches")) fail("PWA: 旧キャッシュ削除処理がありません");
+  if(!pwa.includes('updateViaCache:"none"')) fail("PWA: Service Worker更新確認がHTTPキャッシュを回避していません");
+}
+
 checkSyntax();
 const scripts = indexAssets();
 const data = loadGameData(scripts);
-if(data) validateData(data);
+if(data){
+  validateData(data);
+  checkPwa(data);
+}
 checkDocsMirror();
 
 for(const message of warnings) console.warn(`WARN: ${message}`);
@@ -1016,4 +1068,4 @@ if(errors.length){
 
 console.log(`検証成功: JavaScript ${walk(path.join(root,"js"),".js").length}ファイル`);
 console.log(`モンスター ${Object.keys(data.MONSTERS).length}体 / ステージ ${data.STAGES.length}件 / 配合 ${data.RECIPE_LIST.length}件`);
-console.log("旧セーブ互換性、画像・データ参照、主要画面生成を確認しました。");
+console.log("旧セーブ互換性、画像・データ参照、主要画面生成、PWA更新制御を確認しました。");
