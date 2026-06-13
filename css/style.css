@@ -7743,6 +7743,10 @@ select,
   -webkit-overflow-scrolling:touch;
   scrollbar-gutter:stable;
 }
+.app > main.worldAdventureV851{
+  grid-auto-rows:max-content;
+  align-content:start;
+}
 .app > main.titleScreenV82{
   min-height:100%;
   margin:0;
