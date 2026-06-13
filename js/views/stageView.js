@@ -198,17 +198,117 @@
       </section>`;
   }
 
+  // v8.6-A.17: 冒険画面の表示モード（クエストボード ⇄ ワールドマップ）。
+  // セッション内のみ保持し、セーブ形式には保存しない。
+  let stageViewMode = "board";
+
+  function setStageViewMode(mode){
+    stageViewMode = mode === "map" ? "map" : "board";
+    G.playSe?.("tap");
+    G.render?.();
+  }
+
+  function stageModeToggleHtml(){
+    const cleared = D.STAGES.filter(st=>S.state.bossCleared[st.id]).length;
+    const unlocked = U.clamp(Number(S.state.stageUnlocked) || 1,1,D.STAGES.length);
+    return `
+      <section class="stageModeBarV817" aria-label="冒険画面の表示切替">
+        <div class="stageModeCopyV817">
+          <span>ADVENTURE</span>
+          <b>冒険クエストボード</b>
+          <small>解放 ${unlocked}/${D.STAGES.length} ・ ボス制覇 ${cleared}</small>
+        </div>
+        <div class="stageModeSwitchV817" role="tablist">
+          <button class="${stageViewMode === "board" ? "active" : ""}" role="tab" aria-selected="${stageViewMode === "board"}" onclick="Game.setStageViewMode('board')">📋 ボード</button>
+          <button class="${stageViewMode === "map" ? "active" : ""}" role="tab" aria-selected="${stageViewMode === "map"}" onclick="Game.setStageViewMode('map')">🗺️ マップ</button>
+        </div>
+      </section>`;
+  }
+
+  function questCardHtml(st,index,currentId){
+    const status = stageStatus(st);
+    const open = st.unlock <= S.state.stageUnlocked;
+    const enough = S.highestLv() >= st.req;
+    const cleared = !!S.state.bossCleared[st.id];
+    const ready = G.bossReady?.(st) || cleared;
+    const wins = S.state.stageWins[st.id] || 0;
+    const progressPct = U.clamp(wins / st.boss.unlockWins * 100,0,100);
+    const current = st.id === currentId;
+    const last = st.id === S.state.lastStage;
+    const locked = status.key === "locked";
+    return `
+      <article class="questCardV817 ${status.key} ${current ? "selected" : ""} ${last ? "lastVisited" : ""}"
+        data-quest-stage="${st.id}"
+        onclick="Game.selectWorldStage('${st.id}')">
+        <div class="questCardThumbV817">
+          ${V.stageThumb(st,"questCardImageV817")}
+          <span class="questCardAreaV817">AREA ${String(index + 1).padStart(2,"0")}</span>
+          <strong class="questCardStatusV817 ${status.key}">${locked ? "🔒 " : ""}${status.label}</strong>
+          ${last ? `<span class="questCardLastV817">前回</span>` : ""}
+        </div>
+        <div class="questCardBodyV817">
+          <div class="questCardTitleV817">
+            <b>${st.icon} ${U.esc(st.name)}</b>
+            <div class="questCardMetaV817">
+              <span class="qcLvV817">推奨 Lv ${st.req}</span>
+              <span class="qcLvV817">敵 Lv ${st.min}〜${st.max}</span>
+              <span class="qcDangerV817 stageStars">${V.stageDanger(st)}</span>
+            </div>
+          </div>
+
+          <div class="questCardBossV817">
+            ${V.monsterInline(st.boss.id,"questCardBossFaceV817")}
+            <div>
+              <span>AREA BOSS</span>
+              <b>${U.esc(S.def(st.boss.id).name)} <small>Lv ${st.boss.level}</small></b>
+            </div>
+            <div class="questCardBossGaugeV817" aria-label="ボス気配 ${Math.min(wins,st.boss.unlockWins)}/${st.boss.unlockWins}"><i style="width:${progressPct}%"></i></div>
+          </div>
+
+          <div class="questCardRowV817">
+            <span class="qcRowLabelV817">出現</span>
+            <div class="questCardEnemiesV817">${V.stageEnemyList(st)}</div>
+          </div>
+          <div class="questCardRowV817">
+            <span class="qcRowLabelV817">報酬</span>
+            <div class="questCardDropsV817">${V.stageDropList(st) || `<small class="qcMutedV817">探索で入手</small>`}</div>
+          </div>
+
+          <div class="questCardActionsV817" onclick="event.stopPropagation()">
+            <button class="primary" ${(!open || !enough) ? "disabled" : ""} onclick="Game.startBattle('${st.id}')">通常探索</button>
+            <button class="red" ${(!open || !enough || !ready) ? "disabled" : ""} onclick="Game.startBossBattle('${st.id}')">${ready ? "ボス挑戦" : `気配 ${Math.min(wins,st.boss.unlockWins)}/${st.boss.unlockWins}`}</button>
+          </div>
+          ${open && !enough ? `<small class="questCardNoticeV817">最高Lvが${st.req}未満。育成してから挑もう。</small>` : ""}
+          ${!open ? `<small class="questCardNoticeV817 locked">前の地域のボス撃破/スカウトで解放。</small>` : ""}
+        </div>
+      </article>`;
+  }
+
+  function questBoardHtml(current){
+    return `
+      <section class="questBoardV817" aria-label="クエストボード">
+        <div class="questBoardGridV817">
+          ${D.STAGES.map((st,index)=>questCardHtml(st,index,current.id)).join("")}
+        </div>
+      </section>`;
+  }
+
   function stageHtml(){
     const current = selectedStage();
-    window.setTimeout?.(()=>{
-      const viewport = document.querySelector?.(".worldMapViewportV851");
-      const node = document.querySelector?.(`.worldNodeV851[data-stage-id="${current.id}"]`);
-      if(!viewport || !node) return;
-      const left = Math.max(0,node.offsetLeft - viewport.clientWidth / 2);
-      viewport.scrollTo?.({left,behavior:S.state.settings?.reducedMotion ? "auto" : "smooth"});
-    },0);
+    if(stageViewMode === "map"){
+      window.setTimeout?.(()=>{
+        const viewport = document.querySelector?.(".worldMapViewportV851");
+        const node = document.querySelector?.(`.worldNodeV851[data-stage-id="${current.id}"]`);
+        if(!viewport || !node) return;
+        const left = Math.max(0,node.offsetLeft - viewport.clientWidth / 2);
+        viewport.scrollTo?.({left,behavior:S.state.settings?.reducedMotion ? "auto" : "smooth"});
+      },0);
+    }
+    // ワールドマップは検証・既存機能のため常に出力し、ボード表示中はCSSで隠す。
     return `
-      <main class="worldAdventureV851">
+      <main class="worldAdventureV851 stageViewMode-${stageViewMode}">
+        ${stageModeToggleHtml()}
+        ${questBoardHtml(current)}
         ${worldMapHtml(current)}
         ${stageQuickActionsHtml(current)}
         ${stageDetailHtml(current)}
@@ -216,5 +316,5 @@
   }
 
   Object.assign(V,{stageHtml});
-  Object.assign(G,{selectWorldStage});
+  Object.assign(G,{selectWorldStage,setStageViewMode});
 })();

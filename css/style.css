@@ -8146,3 +8146,164 @@ body.mlReducedMotionV817 .rewardTagV817.newTag{
     animation:none !important;
   }
 }
+
+/* =========================================================
+   v8.6-A.17 冒険画面：クエストボード（カード一覧）と表示切替
+   ・ワールドマップは検証/既存機能のため常に出力し、ボード表示中はCSSで隠す
+   ========================================================= */
+
+/* --- 表示モードの出し分け --- */
+.stageViewMode-board .worldMapPanelV851,
+.stageViewMode-board .worldStageQuickV8615,
+.stageViewMode-board .worldStageDetailV851{display:none}
+.stageViewMode-map .questBoardV817{display:none}
+
+/* --- 切替バー --- */
+.stageModeBarV817{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:12px 14px;
+  margin-bottom:12px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.1);
+}
+.stageModeCopyV817 span{display:block;font-size:10px;letter-spacing:.18em;color:var(--muted)}
+.stageModeCopyV817 b{display:block;font-size:17px;color:#eaf2ff}
+.stageModeCopyV817 small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.stageModeSwitchV817{
+  display:inline-flex;
+  padding:3px;
+  border-radius:999px;
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.1);
+}
+.stageModeSwitchV817 button{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+  padding:7px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:background .15s ease,color .15s ease;
+}
+.stageModeSwitchV817 button.active{
+  color:#0b1024;
+  background:linear-gradient(180deg,#bfe6ff,#8cc8f0);
+}
+
+/* --- ボードのグリッド --- */
+.questBoardGridV817{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+@media(min-width:680px){
+  .questBoardGridV817{grid-template-columns:1fr 1fr}
+}
+
+/* --- クエストカード --- */
+.questCardV817{
+  position:relative;
+  display:grid;
+  grid-template-columns:96px 1fr;
+  gap:12px;
+  padding:10px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.1);
+  cursor:pointer;
+  overflow:hidden;
+  transition:transform .12s ease,border-color .15s ease,box-shadow .15s ease;
+  animation:mlFadeUpV817 .4s ease both;
+}
+.questCardV817:active{transform:scale(.985)}
+.questCardV817.selected{
+  border-color:rgba(140,200,240,.6);
+  box-shadow:0 0 0 1px rgba(140,200,240,.5),0 8px 22px rgba(0,0,0,.35);
+}
+.questCardV817.cleared{border-color:rgba(116,240,160,.32)}
+.questCardV817.boss{border-color:rgba(255,150,120,.4)}
+.questCardV817.locked{opacity:.6}
+.questCardV817.locked .questCardImageV817{filter:grayscale(.85) brightness(.7)}
+
+.questCardThumbV817{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  min-height:118px;
+  background:rgba(0,0,0,.25);
+}
+.questCardImageV817{width:100%;height:100%;position:absolute;inset:0}
+.questCardImageV817 img{width:100%;height:100%;object-fit:cover}
+.questCardAreaV817{
+  position:absolute;top:6px;left:6px;
+  font-size:9px;letter-spacing:.08em;font-weight:800;
+  padding:2px 7px;border-radius:999px;
+  background:rgba(8,14,40,.7);color:#cfe0ff;
+}
+.questCardStatusV817{
+  position:absolute;bottom:6px;left:6px;
+  font-size:10px;font-weight:800;letter-spacing:.06em;
+  padding:2px 8px;border-radius:999px;
+  background:rgba(8,14,40,.78);color:#dfe9ff;
+}
+.questCardStatusV817.cleared{background:linear-gradient(180deg,#9bf0c0,#4ec98a);color:#08321f}
+.questCardStatusV817.boss{background:linear-gradient(180deg,#ffb48a,#f4794d);color:#3a1405}
+.questCardStatusV817.open{background:linear-gradient(180deg,#bfe6ff,#79bdf0);color:#082038}
+.questCardLastV817{
+  position:absolute;top:6px;right:6px;
+  font-size:9px;font-weight:800;padding:2px 7px;border-radius:999px;
+  color:#0b1024;background:linear-gradient(180deg,#9be8ff,#4ec0f5);
+}
+
+.questCardBodyV817{display:flex;flex-direction:column;gap:8px;min-width:0}
+.questCardTitleV817 b{display:block;font-size:15px;color:#eaf2ff;line-height:1.3}
+.questCardMetaV817{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.qcLvV817{
+  font-size:11px;font-weight:700;color:#eaf2ff;
+  padding:1px 8px;border-radius:999px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+}
+.qcDangerV817{font-size:11px;letter-spacing:.04em;color:#ffd27a}
+
+.questCardBossV817{
+  display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:center;
+  padding:7px 9px;border-radius:12px;
+  background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);
+}
+.questCardBossFaceV817{width:34px;height:34px;border-radius:9px;overflow:hidden}
+.questCardBossFaceV817 img{width:100%;height:100%;object-fit:cover}
+.questCardBossV817 span{display:block;font-size:9px;letter-spacing:.1em;color:var(--muted)}
+.questCardBossV817 b{display:block;font-size:12.5px;color:#ffe0d2}
+.questCardBossGaugeV817{
+  grid-column:1/-1;height:5px;border-radius:999px;overflow:hidden;
+  background:rgba(255,255,255,.1);
+}
+.questCardBossGaugeV817 i{display:block;height:100%;background:linear-gradient(90deg,#ffb48a,#f4794d)}
+
+.questCardRowV817{display:flex;gap:8px;align-items:flex-start}
+.qcRowLabelV817{
+  flex:0 0 auto;font-size:10px;color:var(--muted);
+  padding-top:3px;width:28px;
+}
+.questCardEnemiesV817,.questCardDropsV817{
+  display:flex;flex-wrap:wrap;gap:5px;min-width:0;
+}
+.qcMutedV817{color:var(--muted);font-size:11px}
+
+.questCardActionsV817{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px}
+.questCardActionsV817 button{font-size:13px;padding:9px 8px}
+.questCardNoticeV817{display:block;font-size:11px;color:#ffd27a;line-height:1.4}
+.questCardNoticeV817.locked{color:var(--muted)}
+
+/* --- 演出をひかえめにする --- */
+body.mlReducedMotionV817 .questCardV817{animation:none}
+@media(prefers-reduced-motion:reduce){
+  .questCardV817{animation:none}
+}
