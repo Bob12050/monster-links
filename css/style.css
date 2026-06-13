@@ -10095,3 +10095,419 @@ body.mlReducedMotionV817 .prBarV819 i{
     grid-template-columns:1fr;
   }
 }
+
+/* =========================================================
+   v8.6-A.25 Shop, encyclopedia and mission screen cleanup
+   ========================================================= */
+.shopHubV825,
+.dexHubV825,
+.questHubV825{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:10px;
+}
+.shopHubV825 > *,
+.dexHubV825 > *,
+.questHubV825 > *{
+  flex:0 0 auto;
+}
+.shopHeroV825,
+.dexHeroV825{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:16px;
+  padding:16px;
+  border:1px solid rgba(240,198,92,.58);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 85% 0,rgba(53,202,255,.18),transparent 45%),
+    linear-gradient(145deg,rgba(15,48,87,.98),rgba(5,18,40,.99));
+  box-shadow:0 12px 28px rgba(0,0,0,.32),inset 0 1px rgba(192,234,255,.11);
+}
+.shopHeroTitleV825 > span,
+.dexHeroTitleV825 > span,
+.shopSectionHeadV825 span,
+.questReadyHeadV825 span{
+  color:#63dcff;
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.16em;
+}
+.shopHeroTitleV825 h1,
+.dexHeroTitleV825 h1{
+  margin:3px 0;
+  color:#fff4c6;
+  font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+  font-size:27px;
+}
+.shopHeroTitleV825 p,
+.dexHeroTitleV825 p{
+  margin:0;
+  color:#aebdd0;
+  font-size:10px;
+}
+.shopWalletV825{
+  min-width:165px;
+  padding:10px 14px;
+  border:1px solid rgba(240,198,92,.45);
+  border-radius:12px;
+  text-align:right;
+  background:rgba(3,13,31,.72);
+}
+.shopWalletV825 span,
+.shopWalletV825 em{
+  display:block;
+  color:#9eb0c6;
+  font-size:8px;
+  font-style:normal;
+}
+.shopWalletV825 strong{
+  display:block;
+  margin:2px 0;
+  color:#ffe68b;
+  font-size:25px;
+}
+.shopWalletV825 strong small{font-size:10px}
+.shopSectionV825,
+.questReadyV825{
+  padding:12px;
+  border:1px solid rgba(91,192,244,.24);
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(10,32,63,.96),rgba(4,15,34,.98));
+}
+.shopSectionHeadV825{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+.shopSectionHeadV825 h2,
+.questReadyHeadV825 h2{
+  margin:2px 0 0;
+  font-size:18px;
+}
+.shopSectionHeadV825 > small{
+  color:#8fa3ba;
+  font-size:9px;
+}
+.shopServiceGridV825{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+}
+.shopServiceV825{
+  min-width:0;
+  padding:10px;
+  border:1px solid rgba(91,192,244,.27);
+  border-radius:11px;
+  background:linear-gradient(155deg,rgba(18,53,94,.94),rgba(6,20,44,.98));
+}
+.shopServiceV825.heal{border-top-color:#70e8b7}
+.shopServiceV825.training{border-top-color:#ffd66b}
+.shopServiceV825.scout{border-top-color:#a68bff}
+.shopServiceTopV825{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:2px 8px;
+}
+.shopServiceTopV825 span{
+  grid-column:1/-1;
+  color:#72ddff;
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:.12em;
+}
+.shopServiceTopV825 b{font-size:13px}
+.shopServiceTopV825 strong{color:#ffe58d;font-size:12px}
+.shopServiceV825 p{
+  min-height:32px;
+  margin:7px 0;
+  color:#aebed0;
+  font-size:9px;
+  line-height:1.45;
+}
+.shopServiceV825 > button{width:100%;min-height:42px}
+.shopBulkInfoV825{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:#91a5bd;
+  font-size:8px;
+}
+.shopBulkInfoV825 b{color:#fff0b0;font-size:10px}
+.shopBulkV825 .bulkBuyGrid{
+  grid-template-columns:repeat(4,1fr);
+  gap:4px;
+  margin-top:5px;
+}
+.shopBulkV825 .bulkBuyGrid button{
+  min-height:38px;
+  padding:5px 2px;
+  font-size:9px;
+}
+.shopItemGridV825{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+}
+.shopItemV825{
+  min-width:0;
+  display:grid;
+  grid-template-columns:62px minmax(0,1fr);
+  gap:9px;
+  padding:9px;
+  border:1px solid rgba(91,192,244,.26);
+  border-radius:11px;
+  background:linear-gradient(150deg,rgba(17,49,87,.94),rgba(5,18,40,.98));
+}
+.shopItemV825.unaffordable{opacity:.7}
+.shopItemVisualV825{
+  width:62px;
+  height:62px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(240,198,92,.38);
+  border-radius:10px;
+  background:#06152e;
+}
+.shopItemVisualV825 .itemIcon{width:100%;height:100%}
+.shopItemHeadV825{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:6px;
+}
+.shopItemHeadV825 b{font-size:12px}
+.shopItemHeadV825 span{
+  flex:0 0 auto;
+  padding:3px 5px;
+  border-radius:999px;
+  color:#a9bfd5;
+  background:rgba(255,255,255,.07);
+  font-size:7px;
+}
+.shopItemStatsV825{
+  display:block;
+  margin-top:3px;
+  color:#66ddff;
+  font-size:9px;
+}
+.shopItemBodyV825 p{
+  min-height:27px;
+  margin:4px 0;
+  color:#9eafc4;
+  font-size:8px;
+  line-height:1.4;
+}
+.shopItemBuyV825{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:7px;
+}
+.shopItemBuyV825 > strong{color:#ffe27c;font-size:14px}
+.shopItemBuyV825 > strong small{font-size:7px}
+.shopItemBuyV825 button{min-width:78px;min-height:36px;padding:5px;font-size:10px}
+.shopBagV825{
+  overflow:hidden;
+  border:1px solid rgba(91,192,244,.26);
+  border-radius:12px;
+  background:#06162f;
+}
+.shopBagV825 > summary{
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 13px;
+  cursor:pointer;
+  list-style:none;
+}
+.shopBagV825 > summary::-webkit-details-marker{display:none}
+.shopBagV825 summary span{display:grid;gap:2px}
+.shopBagV825 summary b{font-size:13px}
+.shopBagV825 summary small{color:#91a5bd;font-size:9px}
+.shopBagV825 summary em{color:#64dcff;font-size:11px;font-style:normal;font-weight:1000}
+.shopBagV825[open] > summary{border-bottom:1px solid rgba(91,192,244,.2)}
+.shopBagBodyV825{padding:10px}
+
+.dexHeroV825 .dexProgressWrap{
+  min-width:340px;
+  margin:0;
+}
+.dexListSummaryV825{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:9px 12px;
+  border:1px solid rgba(91,192,244,.2);
+  border-radius:10px;
+  background:#06162f;
+}
+.dexListSummaryV825 b{color:#fff0b0;font-size:11px}
+.dexListSummaryV825 span{color:#91a6bd;font-size:9px}
+.dexRankSectionsV825{display:grid;gap:8px}
+.dexRankCardV825{
+  overflow:hidden;
+  border:1px solid rgba(91,192,244,.24);
+  border-radius:13px;
+  background:linear-gradient(180deg,rgba(10,32,63,.97),rgba(4,15,34,.98));
+}
+.dexRankCardV825.complete{border-color:rgba(240,198,92,.42)}
+.dexRankCardV825 > summary{
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:9px 12px;
+  cursor:pointer;
+  list-style:none;
+}
+.dexRankCardV825 > summary::-webkit-details-marker{display:none}
+.dexRankCardV825 > summary span{
+  color:#64dcff;
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:.14em;
+}
+.dexRankCardV825 > summary h2{margin:1px 0 0;font-size:16px}
+.dexRankCountV825{text-align:right}
+.dexRankCountV825 b{display:block;color:#fff0ad;font-size:16px}
+.dexRankCountV825 small{display:block;color:#91a6bd;font-size:7px}
+.dexRankCardV825[open] > summary{border-bottom:1px solid rgba(91,192,244,.2)}
+.dexRankCardV825 > .dexGrid{padding:10px}
+.dexCardV825{
+  position:relative;
+  align-content:start;
+  min-width:0;
+  padding:8px !important;
+  border-radius:11px !important;
+}
+.dexCardV825 .dexArtFrame{margin-bottom:5px}
+.dexCardV825 .name{font-size:11px}
+.dexCardV825 .dexMetaLine{justify-content:center;margin-top:3px}
+.dexCardV825.unknown{opacity:.58}
+.dexCardFootV825{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:4px;
+  margin-top:6px;
+  padding-top:6px;
+  border-top:1px solid rgba(91,192,244,.14);
+}
+.dexCardFootV825 > span{color:#91a5bc;font-size:7px}
+.dexStatusV825{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:3px 5px;
+  border:1px solid rgba(91,192,244,.28);
+  border-radius:999px;
+  color:#80dfff;
+  background:rgba(25,104,154,.24);
+  font-size:7px;
+}
+.dexStatusV825.scouted{
+  border-color:rgba(112,234,186,.38);
+  color:#9bf1cc;
+  background:rgba(25,126,91,.23);
+}
+.dexStatusV825.unknown{
+  width:max-content;
+  margin:6px auto 0;
+  color:#91a1b4;
+  background:rgba(255,255,255,.05);
+}
+
+.questOverviewV825{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+}
+.questOverviewV825 > div{
+  padding:10px;
+  border:1px solid rgba(91,192,244,.24);
+  border-radius:10px;
+  text-align:center;
+  background:linear-gradient(180deg,rgba(16,48,86,.95),rgba(5,19,42,.98));
+}
+.questOverviewV825 span,
+.questOverviewV825 small{display:block;color:#91a6bd;font-size:8px}
+.questOverviewV825 b{display:block;margin:2px;color:#fff0ad;font-size:21px}
+.questReadyV825{
+  border-color:rgba(240,198,92,.55);
+  box-shadow:0 0 18px rgba(240,198,92,.08);
+}
+.questReadyHeadV825{margin-bottom:9px}
+.questSectionV825{
+  overflow:hidden;
+  border:1px solid rgba(91,192,244,.24);
+  border-radius:13px;
+  background:linear-gradient(180deg,rgba(10,32,63,.97),rgba(4,15,34,.98));
+}
+.questSectionV825.fusion{border-color:rgba(181,132,255,.32)}
+.questSectionV825 > summary{
+  min-height:66px;
+  margin:0;
+  padding:10px 12px;
+  cursor:pointer;
+  list-style:none;
+}
+.questSectionV825 > summary::-webkit-details-marker{display:none}
+.questSectionV825[open] > summary{border-bottom:1px solid rgba(91,192,244,.2)}
+.questSectionV825 > .questListV842{padding:10px}
+.questCardV825{
+  border-radius:10px;
+  background:linear-gradient(155deg,rgba(16,48,86,.92),rgba(5,18,40,.97));
+}
+.questCardV825.claimable{
+  border-color:rgba(240,198,92,.72);
+  background:linear-gradient(155deg,rgba(92,67,20,.9),rgba(34,24,7,.97));
+}
+.questCardV825.claimable .questCardTopV842 > strong{
+  color:#3a2600;
+  background:#ffe078;
+}
+
+@media(max-width:720px){
+  .shopHeroV825,
+  .dexHeroV825{grid-template-columns:1fr}
+  .shopWalletV825{text-align:left}
+  .dexHeroV825 .dexProgressWrap{min-width:0}
+  .shopServiceGridV825{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .shopHeroV825,
+  .dexHeroV825{padding:13px;border-radius:14px}
+  .shopHeroTitleV825 h1,
+  .dexHeroTitleV825 h1{font-size:23px}
+  .shopWalletV825{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:center;
+    min-width:0;
+  }
+  .shopWalletV825 strong{grid-row:1/3;grid-column:2;font-size:21px}
+  .shopSectionV825,.questReadyV825{padding:9px}
+  .shopSectionHeadV825{align-items:flex-start}
+  .shopSectionHeadV825 > small{max-width:130px;text-align:right}
+  .shopItemGridV825{grid-template-columns:1fr}
+  .shopItemV825{grid-template-columns:56px minmax(0,1fr)}
+  .shopItemVisualV825{width:56px;height:56px}
+  .dexListSummaryV825{align-items:flex-start;flex-direction:column}
+  .dexRankCardV825 > .dexGrid{padding:7px}
+  .dexCardV825 .dexGoalButtonV832{width:27px;height:27px}
+  .questOverviewV825{gap:5px}
+  .questOverviewV825 > div{padding:8px 4px}
+  .questOverviewV825 b{font-size:18px}
+  .questSectionV825 > summary{align-items:center}
+  .questSectionV825 > summary p{display:none}
+  .questSectionV825 > .questListV842{padding:7px}
+}

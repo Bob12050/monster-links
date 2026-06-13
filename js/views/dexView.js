@@ -81,11 +81,15 @@
     const scoutedPct = counts.total ? Math.floor(counts.scouted / counts.total * 100) : 0;
     const mutationCount = Object.keys(D.MONSTERS).filter(id=>state.dex.mutated?.[id]).length;
     const ranks = Object.keys(D.RANK || {}).sort((a,b)=>D.RANK[a]-D.RANK[b]);
+    const firstVisibleRank = ranks.find(rank=>filteredIds.some(id=>S.def(id).rank===rank));
     return `
-    <main>
-      <section class="hero dexHeroV31">
-        <h1>モンスター図鑑</h1>
-        <p>戦うと発見、仲間にするとスカウト済み。画像アートが入ったモンスターは図鑑でも大きく表示されます。</p>
+    <main class="dexHubV825">
+      <section class="dexHeroV825">
+        <div class="dexHeroTitleV825">
+          <span>MONSTER ENCYCLOPEDIA</span>
+          <h1>モンスター図鑑</h1>
+          <p>遭遇、スカウト、突然変異の記録を集めよう。</p>
+        </div>
         <div class="dexProgressWrap">
           <div class="dexProgressBox">
             <span>発見</span><b>${counts.discovered}/${counts.total}</b>
@@ -104,24 +108,26 @@
 
       ${filterControls("dex",filter)}
 
-      <section class="card listSummaryCard">
+      <section class="dexListSummaryV825">
         <b>表示中 ${filteredIds.length}/${ids.length}体</b>
-        <span class="tiny">検索・フィルター条件に一致したモンスターだけを表示しています。</span>
+        <span>カードを押すと能力、所持数、配合ルートを確認できます</span>
       </section>
 
-      <section class="dexRankSections">
+      <section class="dexRankSections dexRankSectionsV825">
         ${filteredIds.length ? ranks.map(rank=>{
           const group = filteredIds.filter(id=>S.def(id).rank===rank);
           if(!group.length) return "";
           const got = group.filter(id=>state.dex.discovered[id]).length;
-          return `<section class="card dexRankCard">
-            <div class="sectionTitle">
-              <div><h2>${rank}ランク</h2><p>${got}/${group.length} 発見</p></div>
-            </div>
+          const complete = got === group.length;
+          return `<details class="dexRankCardV825 ${complete ? "complete" : ""}" ${rank === firstVisibleRank ? "open" : ""}>
+            <summary>
+              <div><span>RANK ${rank}</span><h2>${rank}ランク</h2></div>
+              <div class="dexRankCountV825"><b>${got}/${group.length}</b><small>${complete ? "COMPLETE" : "発見"}</small></div>
+            </summary>
             <div class="dexGrid dexGridV31">
               ${group.map(id=>V.dexCard(id,state.dex.discovered[id],state.dex.scouted[id])).join("")}
             </div>
-          </section>`;
+          </details>`;
         }).join("") : `<div class="empty">条件に一致するモンスターはいません。</div>`}
       </section>
     </main>`;
@@ -133,23 +139,25 @@
     const recipeCount = (window.MonsterLinksGame.fusionRecipeEntries?.() || []).filter(recipe=>recipe.result === id).length;
     const isGoal = !!window.MonsterLinksGame.isFusionGoal?.(id);
     if(!discovered){
-      return `<div class="dexCard dexCardV31 unknown">
+      return `<div class="dexCard dexCardV31 dexCardV825 unknown">
         <div class="dexFace dexFaceV31">❔</div>
         <div class="name">？？？？ <span class="tag">${d.rank}</span></div>
-        <div class="dexMetaLine"><span class="type">${typeLabel(d.type)}</span>${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}<span class="type">未発見</span></div>
+        <div class="dexMetaLine"><span class="type">${typeLabel(d.type)}</span>${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">${d.size || 1}枠</span>`}</div>
+        <strong class="dexStatusV825 unknown">未発見</strong>
       </div>`;
     }
-    return `<div class="dexCard dexCardV31 dexCardRouteV83 ${scouted ? "scouted" : ""} ${isGoal ? "fusionGoalV832" : ""}" role="button" tabindex="0" onclick="Game.openDexDetail('${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Game.openDexDetail('${id}')}">
+    return `<div class="dexCard dexCardV31 dexCardV825 dexCardRouteV83 ${scouted ? "scouted" : ""} ${isGoal ? "fusionGoalV832" : ""}" role="button" tabindex="0" onclick="Game.openDexDetail('${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Game.openDexDetail('${id}')}">
       <button class="dexGoalButtonV832 ${isGoal ? "on" : ""}" aria-label="${isGoal ? "配合目標から外す" : "配合目標に登録"}" onclick="event.stopPropagation();Game.toggleFusionGoal('${id}')">${isGoal ? "★" : "☆"}</button>
       <div class="dexArtFrame">${V.monsterVisual({id,mutation:mutationFound},'dexFace dexFaceV31')}${mutationFound ? `<span class="mutationDexMark">突然変異発見</span>` : ""}</div>
       <div class="name">${d.name} <span class="tag">${d.rank}</span></div>
       <div class="dexMetaLine">
         <span class="type">${typeLabel(d.type)}</span>
         ${V.sizeBadge ? V.sizeBadge(d) : `<span class="sizeBadge">🧩 ${d.size || 1}枠</span>`}
-        <span class="type">${scouted ? "スカウト済み" : "発見のみ"}</span>
       </div>
-      <div class="tiny">技：${skillTextForDex(d)}</div>
-      <div class="dexRouteHintV83"><span>配合ルート</span><b>${recipeCount ? `${recipeCount}件` : "特殊ルートなし"}</b><em>詳細を見る</em></div>
+      <div class="dexCardFootV825">
+        <strong class="dexStatusV825 ${scouted ? "scouted" : "discovered"}">${scouted ? "スカウト済み" : "発見済み"}</strong>
+        <span>${recipeCount ? `配合ルート ${recipeCount}件` : "配合ルートなし"}</span>
+      </div>
     </div>`;
   }
 

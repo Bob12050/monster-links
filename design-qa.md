@@ -1,54 +1,41 @@
 **Comparison Target**
 - Source visual truth: `docs/design/v8.6-A.21-crystal-adventure-hud-reference.png`
-- Implementation set: `docs/audits/v8.6-A.24-ui-cleanup/screen-contact-sheet.png`
+- Implementation set: `docs/audits/v8.6-A.25-ui-cleanup/screen-contact-sheet.png`
 - Viewport: 390 x 844 CSS pixels
-- States: monster detail overview, fusion parent selection, and main menu
-- Full comparison: `docs/audits/v8.6-A.24-ui-cleanup/comparison-reference-cleanup.png`
-- Focused evidence: `04-fusion-ready.png`, `05-monster-equip.png`, `06-equip-modal.png`, and `07-menu-management.png`
+- States: shop, monster encyclopedia, and mission board
 
 **Findings**
 - No actionable P0, P1, or P2 issue remains.
-- [P3] Secondary panels use simpler decoration than the concept.
-  Location: detail tabs, fusion steps, and menu section frames.
-  Evidence: the source has bespoke illustrated ornaments while the implementation uses the existing Crystal component language.
-  Impact: information remains clearer at mobile size and no unapproved art replacement is introduced.
-  Fix: add approved ornamental raster assets in a future art release.
-- [P3] The fusion result can still be vertically long for advanced recipes.
-  Location: fusion preview after two parents are selected.
-  Evidence: inherited skills, bonuses, and lineage information remain available below the result.
-  Impact: the parent list now closes automatically, substantially reducing initial clutter.
-  Fix: consider a result-details tab in a later fusion-specific UX pass.
+- [P3] The encyclopedia progress hero occupies more vertical space than the other two screens.
+  Impact: all three collection metrics remain visible without opening another panel.
+  Follow-up: consider a compact metric carousel only if more collection categories are added.
 
 **Required Fidelity Surfaces**
-- Fonts and typography: display headings, tab labels, step labels, primary menu labels, and secondary descriptions have distinct hierarchy and readable wrapping.
-- Spacing and layout rhythm: detail content is divided into four tabs; fusion follows three explicit steps; menu functions are grouped into primary, secondary, and management levels.
-- Colors and visual tokens: navy surfaces, cyan active states, gold actions, green party actions, and violet fusion cues remain consistent with the Crystal direction.
-- Image quality and asset fidelity: official monster and item assets remain unchanged and correctly scaled.
-- Copy and content: existing stats, skills, equipment, fusion goals, recipes, menu counts, and management actions remain connected to live state.
+- Typography: display headings, section labels, values, descriptions, and actions have distinct hierarchy.
+- Layout: fixed top HUD and bottom navigation remain stable; page content scrolls only inside the main application region.
+- Colors: navy surfaces, cyan lines, gold currency/actions, green recovery, and violet fusion cues match the Crystal UI.
+- Assets: existing monster and item images remain unchanged and correctly scaled.
+- Interactions: shop actions, encyclopedia filters/details, rank disclosures, mission disclosures, target navigation, and reward actions remain functional.
 
 **Patches Made**
-- Added four functional monster-detail tabs with internally scrolling panels.
-- Added a focused equipment panel while retaining existing equipment actions.
-- Added a three-step fusion progress indicator.
-- Collapsed fusion goals and recommendations by default.
-- Automatically collapsed the parent list after two parents were selected.
-- Reorganized the menu into next action, four primary functions, facilities/records, and management.
+- Added wallet and purchase-state summary to the shop.
+- Reorganized services, accessories, and inventory by purpose.
+- Simplified encyclopedia cards and added rank disclosures.
+- Added mission overview metrics and reward-ready priority section.
+- Prevented flex/grid children from shrinking inside the fixed application shell.
+- Confirmed zero horizontal overflow at 390 x 844.
 
 **Implementation Checklist**
-- [x] Monster overview tab
-- [x] Monster stats tab
-- [x] Monster skills tab
-- [x] Monster equipment tab
-- [x] Equipment modal
-- [x] Fusion step indicator
-- [x] Fusion optional sections
-- [x] Automatic parent-list collapse
-- [x] Primary menu grouping
-- [x] Secondary menu grouping
-- [x] Management disclosure
+- [x] Shop wallet and service hierarchy
+- [x] Accessory purchase states
+- [x] Inventory disclosure
+- [x] Encyclopedia progress hierarchy
+- [x] Rank disclosure sections
+- [x] Discovery and scout status
+- [x] Mission overview metrics
+- [x] Reward-ready priority
+- [x] Mission category disclosures
 - [x] No horizontal overflow
-
-**Follow-up Polish**
-- Add approved decorative assets and optionally introduce a separate fusion-result details tab later.
+- [x] Browser console clean
 
 final result: passed
