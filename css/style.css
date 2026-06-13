@@ -21,9 +21,6 @@
   --gold:#ffd36a;
   --green:#74f0a0;
   --red:#ff6b7a;
-  /* DQ風コマンドウィンドウの縁取り色 */
-  --frame:#cfd9ff;
-  --frame-inner:#0a1130;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
@@ -31,11 +28,10 @@ body{
   min-height:100vh;
   background:radial-gradient(circle at top,#263b76,#0b1024 55%,#050814);
   color:var(--text);
-  /* 丸ゴシック系（Apple端末のヒラギノ丸ゴ等）でドラクエ風の丸み。未対応環境はsystem-uiへ。 */
-  font-family:"Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro","M PLUS Rounded 1c","Rounded Mplus 1c",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 button{
-  border:1px solid rgba(207,217,255,.5);
+  border:1px solid rgba(255,255,255,.14);
   background:linear-gradient(#314677,#1e2b50);
   color:var(--text);
   border-radius:14px;
@@ -85,14 +81,10 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
   font-size:12px;
 }
 .hero,.card{
-  background:linear-gradient(180deg,#22326e 0%,#15224a 45%,#0e1838 100%);
-  border:2px solid var(--frame);
-  border-radius:18px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.28),
-    inset 0 0 0 2px var(--frame-inner),
-    inset 0 -10px 26px rgba(0,0,0,.35),
-    0 18px 34px rgba(0,0,0,.5);
+  background:linear-gradient(180deg,rgba(35,48,88,.96),rgba(20,29,55,.96));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  box-shadow:0 16px 35px rgba(0,0,0,.35);
 }
 .hero{
   padding:18px;
@@ -153,15 +145,6 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
 }
 .tabs .on{background:linear-gradient(#1f96b7,#174f78)}
 .ico{display:block;font-size:18px;margin-bottom:2px}
-/* 自作SVGアイコン */
-.mlIcon{display:inline-block;width:1em;height:1em;vertical-align:-0.14em;fill:currentColor}
-.ico .mlIcon{width:24px;height:24px}
-.pillIcoV92{display:inline-flex;align-items:center;justify-content:center}
-.pillIcoV92 .mlIcon{width:16px;height:16px}
-.pillIcoV92.gold{color:#ffd36a}
-.pillIcoV92.star{color:#ffe07a}
-.pillIcoV92.blue{color:#7fd3ff}
-.pillIcoV92.green{color:#74f0a0}
 .mon{
   display:grid;
   grid-template-columns:64px 1fr;
@@ -171,15 +154,13 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
 .face{
   width:64px;
   height:64px;
-  border-radius:15px;
+  border-radius:18px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:36px;
-  /* DQ風モンスター枠：青みの奥行き＋明るいフレーム＋内側ベゼル */
-  background:radial-gradient(circle at 38% 26%,rgba(125,165,255,.32),rgba(8,14,40,.5) 72%),linear-gradient(180deg,#18244e,#0c1430);
-  border:2px solid var(--frame);
-  box-shadow:0 0 0 2px var(--frame-inner) inset,0 3px 8px rgba(0,0,0,.4);
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.32),rgba(255,255,255,.06) 60%);
+  border:1px solid rgba(255,255,255,.16);
 }
 .name{
   font-weight:900;
@@ -380,9 +361,9 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
   height:34px;
   align-items:center;
   justify-content:center;
-  border-radius:10px;
-  background:linear-gradient(180deg,#18244e,#0c1430);
-  border:1px solid rgba(207,217,255,.45);
+  border-radius:11px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
   font-size:20px;
   vertical-align:middle;
 }
@@ -608,7 +589,7 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
 }
 .face.monsterAsset{
   padding:4px;
-  background:radial-gradient(circle at 38% 26%,rgba(125,165,255,.30),rgba(8,14,40,.55) 72%),linear-gradient(180deg,#18244e,#0c1430);
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.32),rgba(255,255,255,.06) 60%);
 }
 .sprite.monsterAsset{
   padding:6px;
@@ -629,10 +610,9 @@ button:disabled{opacity:.45;filter:grayscale(.7);box-shadow:none;transform:none;
   height:78px;
   margin:0 auto 8px;
   padding:4px;
-  border-radius:15px;
-  background:radial-gradient(circle at 38% 26%,rgba(125,165,255,.30),rgba(8,14,40,.55) 72%),linear-gradient(180deg,#18244e,#0c1430);
-  border:2px solid var(--frame);
-  box-shadow:0 0 0 2px var(--frame-inner) inset,0 3px 8px rgba(0,0,0,.4);
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
 }
 .assetFallback{
   font-size:inherit;
@@ -3509,21 +3489,6 @@ button:hover:before{
   white-space:nowrap;
   text-overflow:ellipsis;
 }
-.selectedParentSlot > div{
-  flex:1 1 auto;
-  min-width:0;
-}
-.selectedParentRemoveV1{
-  flex:0 0 auto;
-  width:30px;
-  height:30px;
-  min-height:30px;
-  padding:0;
-  border-radius:10px;
-  font-size:18px;
-  line-height:1;
-  align-self:flex-start;
-}
 .emptyParent{
   opacity:.72;
 }
@@ -3554,7 +3519,7 @@ button:hover:before{
 }
 .routeDashGrid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:8px;
 }
 .routeDashCard{
@@ -3602,8 +3567,6 @@ button:hover:before{
 }
 .routeRecipeV75{
   position:relative;
-  display:block;
-  min-width:0;
 }
 .routeRecipeV75.canMake{
   border-color:rgba(100,255,170,.32)!important;
@@ -3611,54 +3574,6 @@ button:hover:before{
 .routeRecipeV75.hasMats{
   border-color:rgba(255,218,110,.28)!important;
 }
-.compactRecipeCardV1{padding:10px}
-.compactRecipeHeadV1{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  margin-bottom:9px;
-}
-.compactRecipeHeadV1 .routeStatus{font-size:9px;padding:3px 7px}
-.compactRecipeTypeV1{color:#c9b5df;font-size:8px;font-weight:900}
-.compactRecipeRouteV1{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
-  gap:5px;
-  align-items:center;
-}
-.compactRecipeRouteV1 > div{
-  min-width:0;
-  display:grid;
-  justify-items:center;
-  gap:4px;
-  padding:7px 4px;
-  border-radius:11px;
-  background:rgba(0,0,0,.16);
-  text-align:center;
-}
-.compactRecipeRouteV1 > div.result{background:rgba(110,231,255,.07)}
-.compactRecipeRouteV1 > div > b{
-  width:100%;
-  overflow:hidden;
-  color:#eef4ff;
-  font-size:8px;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.compactRecipeRouteV1 > span{color:#d4c1e8;font-size:12px;font-weight:1000}
-.compactRecipeFaceV1{
-  width:42px;
-  height:42px;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
-}
-.compactRecipeFaceV1 img{width:100%;height:100%;object-fit:contain}
-.compactRecipeFaceV1.secret{color:#aebbd0;font-size:20px}
-.compactRecipeCardV1 .fusionTreeOpenBtnV1{min-height:36px;margin-top:9px}
 .routeStatusWrap{
   margin-bottom:8px;
 }
@@ -3685,19 +3600,6 @@ button:hover:before{
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.12);
   color:var(--muted);
-}
-.routeStatus.completed{
-  color:#b8ffd8;
-  border-color:rgba(74,222,128,.48);
-  background:rgba(34,197,94,.18);
-}
-.routeDashCard.completed{
-  border-color:rgba(74,222,128,.42);
-  background:linear-gradient(145deg,rgba(34,197,94,.16),rgba(15,23,42,.82));
-}
-.completedRecipeV1{
-  border-color:rgba(74,222,128,.45);
-  box-shadow:inset 0 0 0 1px rgba(74,222,128,.12);
 }
 .routeParents{
   display:grid;
@@ -3758,12 +3660,6 @@ button:hover:before{
   .routePlus{
     transform:rotate(90deg);
   }
-}
-@media(max-width:420px){
-  .compactRecipeRouteV1{gap:3px}
-  .compactRecipeFaceV1{width:36px;height:36px}
-  .compactRecipeRouteV1 > div{padding:6px 2px}
-  .compactRecipeRouteV1 > div > b{font-size:7px}
 }
 
 
@@ -4878,7 +4774,7 @@ button:hover:before{
 }
 
 .topV82{
-  border-bottom:2px solid var(--frame);
+  border-bottom-color:rgba(110,231,255,.16);
   box-shadow:0 10px 30px rgba(0,0,0,.18);
 }
 .logoBtnV82{display:flex;align-items:center;gap:8px}
@@ -4892,7 +4788,7 @@ button:hover:before{
   left:50%;
   right:auto;
   transform:translateX(-50%);
-  border:2px solid var(--frame);
+  border:1px solid rgba(255,255,255,.12);
   border-bottom:0;
   border-radius:22px 22px 0 0;
   box-shadow:0 -12px 35px rgba(0,0,0,.28);
@@ -4904,9 +4800,9 @@ button:hover:before{
   background:transparent;
 }
 .tabsV82 button.on{
-  color:#2a1d02;
-  border-color:#ffe9a8;
-  background:linear-gradient(180deg,#f0c451,#b9821f);
+  color:#fff;
+  border-color:rgba(110,231,255,.2);
+  background:linear-gradient(180deg,rgba(48,158,193,.5),rgba(23,79,120,.72));
 }
 .tabsV82 button.on:before{
   content:"";
@@ -4916,8 +4812,8 @@ button:hover:before{
   top:0;
   height:3px;
   border-radius:999px;
-  background:#fff3c4;
-  box-shadow:0 0 12px rgba(255,221,120,.9);
+  background:var(--blue);
+  box-shadow:0 0 12px var(--blue);
 }
 
 .homeV82{display:grid;gap:12px}
@@ -5059,7 +4955,6 @@ button:hover:before{
   background:rgba(5,9,25,.24);
   font-size:26px;
 }
-.hubIconV82 .mlIcon{width:28px;height:28px;color:#fff}
 .hubPlaceV82 b,.hubPlaceV82 small{display:block}
 .hubPlaceV82 b{font-size:14px}
 .hubPlaceV82 small{margin-top:3px;color:#d8e4ff;font-size:10px}
@@ -6850,12 +6745,6 @@ button:hover:before{
 }
 .battleAutoControlV841 > button.on b{color:#e5ffed}
 .battleAutoControlV841 > button.on small{color:#b9f4cc}
-.battleAutoControlV841 .battleStrategyButtonV1{
-  border-color:#7567d8;
-  background:linear-gradient(180deg,#292750,#1a1d39);
-}
-.battleAutoControlV841 .battleStrategyButtonV1 b{color:#e5e1ff}
-.battleAutoControlV841 .battleStrategyButtonV1 small{color:#aaa3e8}
 .battleMessageV821.autoV841{
   border-color:rgba(116,240,160,.3);
   background:linear-gradient(90deg,rgba(31,118,68,.34),rgba(15,26,48,.92));
@@ -7093,7 +6982,7 @@ button:hover:before{
   background:#122740;border:1px solid rgba(255,255,255,.24);
   color:#cbeaff;font-size:7px;font-weight:1000;text-shadow:none;
 }
-.worldNodeV851 b{display:block;margin-top:6px;font-size:10px;white-space:nowrap;text-shadow:0 1px 3px rgba(4,9,20,.95),0 0 6px rgba(4,9,20,.85)}
+.worldNodeV851 b{display:block;margin-top:6px;font-size:10px;white-space:nowrap}
 .worldNodeV851 small{display:inline-block;margin-top:2px;padding:2px 5px;border-radius:99px;background:rgba(9,23,41,.76);font-size:6px;letter-spacing:.08em}
 .worldNodeV851.cleared .worldNodeIconV851{background:linear-gradient(145deg,#cf9b35,#80601e);border-color:#fff1ad}
 .worldNodeV851.boss .worldNodeIconV851{background:linear-gradient(145deg,#d75868,#7b2339);border-color:#ffd0d5}
@@ -7132,384 +7021,6 @@ button:hover:before{
 .worldStageInfoBlockV851 .stageTraitWrap{justify-content:flex-start}
 .worldStageInfoBlockV851 .stageTrait,.worldStageInfoBlockV851 .stageEnemyChip,.worldStageInfoBlockV851 .stageDrop{font-size:8px;min-height:22px;padding:3px 6px}
 .worldStageInfoBlockV851 .miniFace,.worldStageInfoBlockV851 .miniItemIcon{width:20px;height:20px;flex-basis:20px}
-
-/* Mutation variants */
-.mutationMonster img{
-  filter:hue-rotate(145deg) saturate(1.55) brightness(1.08) drop-shadow(0 0 12px rgba(111,238,255,.48));
-}
-.mutationMonster:not(.monsterAsset){
-  filter:hue-rotate(145deg) saturate(1.55) brightness(1.08);
-}
-.mutationBadge,.mutationDexMark{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid rgba(108,231,255,.48);
-  border-radius:999px;
-  background:linear-gradient(135deg,rgba(45,119,156,.88),rgba(116,73,171,.88));
-  color:#e8fbff;
-  font-size:9px;
-  font-weight:900;
-  line-height:1;
-  padding:4px 7px;
-  vertical-align:middle;
-  box-shadow:0 0 10px rgba(104,220,255,.2);
-}
-.dexArtFrame{position:relative}
-.mutationDexMark{
-  position:absolute;
-  right:7px;
-  bottom:7px;
-  pointer-events:none;
-}
-.dexProgressBox.mutation .bar i{
-  background:linear-gradient(90deg,#42bdd1,#9d75e8);
-}
-.mutationBattle{
-  box-shadow:inset 0 0 45px rgba(91,220,255,.18),0 0 28px rgba(125,91,224,.2);
-}
-.mutationBattle.mutationIntro{
-  animation:mutationBattleFlashV1 1.15s ease-out both;
-}
-.mutationBattle .enemyActorV821:after{
-  content:"";
-  position:absolute;
-  inset:7% 8%;
-  border:2px solid rgba(143,239,255,.62);
-  border-radius:50%;
-  box-shadow:0 0 28px rgba(98,224,255,.52),inset 0 0 24px rgba(157,103,238,.38);
-  pointer-events:none;
-  animation:mutationRingV1 1.6s ease-in-out infinite;
-}
-.mutationEncounterV1{
-  position:absolute;
-  z-index:30;
-  top:92px;
-  left:50%;
-  width:min(360px,calc(100% - 28px));
-  transform:translateX(-50%);
-  padding:10px 16px;
-  border:1px solid rgba(151,237,255,.62);
-  border-radius:14px;
-  background:linear-gradient(135deg,rgba(21,83,111,.94),rgba(83,47,133,.94));
-  color:#f1fdff;
-  text-align:center;
-  box-shadow:0 0 28px rgba(96,224,255,.36);
-  pointer-events:none;
-  animation:mutationBannerV1 2.5s ease-out both;
-}
-.mutationEncounterV1 span,.mutationEncounterV1 b,.mutationEncounterV1 small{display:block}
-.mutationEncounterV1 span{font-size:8px;font-weight:1000;letter-spacing:.18em;color:#9df3ff}
-.mutationEncounterV1 b{margin-top:3px;font-size:18px}
-.mutationEncounterV1 small{margin-top:3px;font-size:9px;color:#d8eaff}
-@keyframes mutationBattleFlashV1{
-  0%{filter:brightness(1)}
-  18%{filter:brightness(1.65) saturate(1.45)}
-  48%{filter:brightness(.92) saturate(1.2)}
-  100%{filter:none}
-}
-@keyframes mutationRingV1{
-  0%,100%{transform:scale(.94);opacity:.48}
-  50%{transform:scale(1.06);opacity:.95}
-}
-@keyframes mutationBannerV1{
-  0%{opacity:0;transform:translate(-50%,-18px) scale(.86)}
-  15%,72%{opacity:1;transform:translate(-50%,0) scale(1)}
-  100%{opacity:0;transform:translate(-50%,-8px) scale(.98)}
-}
-.reducedMotionV84.mutationBattle.mutationIntro{animation:none}
-.reducedMotionV84 .mutationEncounterV1{animation:mutationBannerReducedV1 1.8s ease-out both}
-.reducedMotionV84.mutationBattle .enemyActorV821:after{animation:none;opacity:.7}
-@keyframes mutationBannerReducedV1{
-  0%,100%{opacity:0}
-  12%,82%{opacity:1}
-}
-
-/* Four-monster fusion */
-.fourFusionNotice{
-  border-color:rgba(210,151,255,.48);
-  background:linear-gradient(135deg,rgba(93,48,139,.42),rgba(28,105,133,.36));
-  color:#f4deff;
-}
-.fourFusionRouteV1,.fourRecipeRouteV1,.dexFourRouteV1{
-  margin-top:9px;
-  padding:9px;
-  border:1px solid rgba(197,139,255,.3);
-  border-radius:12px;
-  background:rgba(70,39,104,.2);
-}
-.fourRecipeSectionV1 .recipeGrid{grid-template-columns:1fr}
-.fourBodyRecipeV1{
-  width:100%;
-  padding:12px;
-}
-.fourBodyRecipeV1 > *{min-width:0}
-.fourBodyRecipeV1 .routeStatusWrap{display:block}
-.fourBodyRecipeV1 .fourRecipeRouteV1{width:100%}
-.fourBodyRecipeV1 .routeParents{margin-top:10px}
-.fourBodyRecipeV1 .rareLock,
-.fourBodyRecipeV1 .recipeNote{
-  display:block;
-  width:100%;
-  overflow-wrap:anywhere;
-  word-break:normal;
-}
-.fourFusionRouteV1 > b,.fourRecipeRouteV1 > b,.dexFourRouteV1 > b{display:block;color:#ead0ff;font-size:10px}
-.fourFusionRouteV1 > div{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:5px;
-  margin-top:7px;
-}
-.fourFusionRouteV1 > div > span{display:block;text-align:center;font-size:8px;color:#dce8f8}
-.fourFusionRouteV1 .miniFace{margin:0 auto 3px}
-.fourGrandparentGridV1{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:7px 0}
-.fourGrandparentGridV1 > span{
-  display:grid;
-  place-items:center;
-  min-width:0;
-  padding:6px 3px;
-  border-radius:9px;
-  background:rgba(0,0,0,.2);
-  text-align:center;
-}
-.fourBodyRecipeV1 .fourGrandparentGridV1 > span{min-height:78px}
-.fourBodyRecipeV1 .fourGrandparentGridV1 small{
-  max-width:100%;
-  overflow-wrap:anywhere;
-  word-break:normal;
-}
-.fourTreeOpenBtnV1{width:100%;margin-top:8px}
-.fusionTreeOpenBtnV1{width:100%;margin-top:8px}
-.fourGrandparentGridV1 small{margin-top:3px;font-size:7px;line-height:1.25}
-.fourGrandparentGridV1 em{font-size:6px;color:#aebbd0;font-style:normal}
-.dexFourRouteV1 span{display:block;margin-top:4px;color:#dbe5f4;font-size:9px;line-height:1.5}
-@media(max-width:520px){
-  .fourFusionRouteV1 > div,.fourGrandparentGridV1{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .fourBodyRecipeV1{padding:9px}
-}
-
-/* Four-monster lineage tree */
-.fourFusionTreeModalV1{
-  width:min(980px,100%);
-  max-height:92vh;
-  padding:0;
-  overflow:auto;
-  border-color:rgba(202,145,255,.34);
-  background:linear-gradient(180deg,#26355c,#11182e);
-}
-.fourFusionTreeHeadV1{
-  position:sticky;
-  top:0;
-  z-index:5;
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-  padding:15px 17px;
-  border-bottom:1px solid rgba(255,255,255,.1);
-  background:rgba(27,38,69,.96);
-  backdrop-filter:blur(10px);
-}
-.fourFusionTreeHeadV1 span{color:#dcbaff;font-size:8px;font-weight:1000;letter-spacing:.15em}
-.fourFusionTreeHeadV1 h2{margin:3px 0;font-size:21px}
-.fourFusionTreeHeadV1 p{margin:0;color:#b9c5d8;font-size:9px;line-height:1.5}
-.fourTreeLegendV1{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px 0}
-.fourTreeLegendV1 span{
-  padding:4px 7px;
-  border:1px solid currentColor;
-  border-radius:999px;
-  font-size:7px;
-}
-.fourTreeLegendV1 .ready{color:#8de9ad}
-.fourTreeLegendV1 .condition{color:#ffe099}
-.fourTreeLegendV1 .wrong{color:#d9a8ff}
-.fourTreeLegendV1 .missing{color:#ff9bad}
-.fourTreeCanvasV1{padding:14px 16px 18px}
-.fourTreeBranchesV1{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.fourTreeBranchV1{
-  min-width:0;
-  display:grid;
-  gap:8px;
-  align-content:start;
-  padding:12px;
-  border:1px solid rgba(202,145,255,.18);
-  border-radius:16px;
-  background:rgba(75,45,113,.12);
-}
-.fourTreeGrandparentsV1{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
-  gap:7px;
-  align-items:center;
-}
-.fourTreePlusV1{color:#dcbaff;font-size:17px;font-weight:1000;text-align:center}
-.fourTreeConnectorV1{
-  position:relative;
-  height:30px;
-  display:grid;
-  place-items:center;
-  color:#cab5df;
-  font-size:7px;
-}
-.fourTreeConnectorV1:before{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(202,145,255,.42)}
-.fourTreeConnectorV1 span{position:relative;padding:2px 6px;border-radius:99px;background:#222e50}
-.fourTreeNodeV1{
-  min-width:0;
-  display:grid;
-  grid-template-columns:58px minmax(0,1fr) auto;
-  gap:9px;
-  align-items:center;
-  padding:9px;
-  border:1px solid rgba(255,255,255,.11);
-  border-radius:13px;
-  background:rgba(0,0,0,.18);
-}
-.fourTreeNodeV1.ready{border-color:rgba(116,240,160,.38);background:rgba(42,132,78,.12)}
-.fourTreeNodeV1.condition{border-color:rgba(255,211,106,.38);background:rgba(139,99,29,.12)}
-.fourTreeNodeV1.wrong{border-color:rgba(202,145,255,.42);background:rgba(95,55,137,.16)}
-.fourTreeNodeV1.missing{border-color:rgba(255,107,122,.3);background:rgba(136,43,60,.1)}
-.fourTreeFaceV1{width:58px;height:58px;border-radius:11px;background:rgba(255,255,255,.06)}
-.fourTreeNodeV1 b,.fourTreeNodeV1 span,.fourTreeNodeV1 small{display:block}
-.fourTreeNodeV1 b{font-size:10px;overflow-wrap:anywhere}
-.fourTreeNodeV1 span{margin-top:3px;color:#d8e2f1;font-size:8px}
-.fourTreeNodeV1 small{margin-top:2px;color:#aebbd0;font-size:7px}
-.fourTreeDexBtnV1{min-height:30px;padding:4px 7px;font-size:7px}
-.fourTreeActionV1{width:100%;min-height:38px}
-.fourTreeMergeV1{
-  position:relative;
-  height:52px;
-  display:grid;
-  place-items:center;
-  color:#e3c8ff;
-  font-size:8px;
-  font-weight:900;
-}
-.fourTreeMergeV1:before{content:"";position:absolute;inset:0 25%;border-left:1px solid rgba(202,145,255,.42);border-right:1px solid rgba(202,145,255,.42);border-bottom:1px solid rgba(202,145,255,.42);border-radius:0 0 18px 18px}
-.fourTreeMergeV1 span{position:relative;padding:3px 8px;border-radius:99px;background:#192440}
-.fourTreeResultV1{width:min(470px,100%);margin:auto;display:grid;gap:8px}
-.fourTreeResultV1 > button{min-height:43px}
-.twoFusionTreeModalV1{width:min(820px,100%)}
-.twoTreeCanvasV1{padding-top:18px}
-.twoTreeParentsV1{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
-  gap:12px;
-  align-items:center;
-}
-.twoTreeConnectorV1{
-  position:relative;
-  height:64px;
-  display:grid;
-  place-items:center;
-  color:#e3c8ff;
-  font-size:8px;
-  font-weight:900;
-}
-.twoTreeConnectorV1:before{
-  content:"";
-  position:absolute;
-  inset:0 25%;
-  border-left:1px solid rgba(202,145,255,.42);
-  border-right:1px solid rgba(202,145,255,.42);
-  border-bottom:1px solid rgba(202,145,255,.42);
-  border-radius:0 0 18px 18px;
-}
-.twoTreeConnectorV1 span{position:relative;padding:3px 8px;border-radius:99px;background:#192440}
-.fourTreeSecretV1{display:grid;place-items:center;color:#b9c5d8;font-size:24px}
-@media(max-width:700px){
-  .fourTreeBranchesV1{grid-template-columns:1fr}
-  .fourTreeMergeV1:before{inset:0 50%;border-right:0;border-bottom:0;border-radius:0}
-  .fourTreeGrandparentsV1{grid-template-columns:1fr}
-  .fourTreePlusV1{line-height:1}
-  .twoTreeParentsV1{grid-template-columns:1fr}
-  .twoTreeConnectorV1:before{inset:0 50%;border-right:0;border-bottom:0;border-radius:0}
-}
-@media(max-width:420px){
-  .fourTreeNodeV1{grid-template-columns:48px minmax(0,1fr)}
-  .fourTreeFaceV1{width:48px;height:48px}
-  .fourTreeDexBtnV1{grid-column:1/-1}
-}
-
-/* Four-monster fusion goal navigator */
-.fourGoalNavigatorV1{display:grid;gap:8px}
-.fourGoalNavigatorHeadV1,.fourGoalCompactV1{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-}
-.fourGoalNavigatorHeadV1 b,.fourGoalCompactV1 b{color:#ead0ff;font-size:10px}
-.fourGoalNavigatorHeadV1 span,.fourGoalCompactV1 span{color:#b9a2d5;font-size:8px}
-.fusionGoalCardV832.fourGoalCardV1{grid-column:1/-1}
-.fourGoalBranchesV1{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.fourGoalBranchV1{
-  display:grid;
-  gap:5px;
-  align-content:start;
-  padding:6px;
-  border:1px solid rgba(197,139,255,.18);
-  border-radius:10px;
-  background:rgba(70,39,104,.14);
-}
-.fourGoalBranchV1.ready{border-color:rgba(116,240,160,.22);background:rgba(41,128,75,.08)}
-.fourGoalGrandparentsV1{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
-  align-items:center;
-  gap:4px;
-}
-.fourGoalGrandparentV1{
-  min-width:0;
-  display:grid;
-  grid-template-columns:31px minmax(0,1fr);
-  gap:4px;
-  align-items:center;
-}
-.fourGoalGrandparentV1 b,.fourGoalGrandparentV1 small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.fourGoalGrandparentV1 b{font-size:7px}
-.fourGoalGrandparentV1 small{color:#ff9bac;font-size:6px}
-.fourGoalGrandparentV1.ready small{color:#91eab0}
-.fourGoalPlusV1{color:#d8b7f5;font-size:9px}
-.fourGoalArrowV1{color:#cda9ec;font-size:9px;text-align:center}
-.fourGoalIntermediateV1{
-  display:grid;
-  grid-template-columns:39px minmax(0,1fr);
-  gap:6px;
-  align-items:center;
-  padding:5px;
-  border-radius:9px;
-  background:rgba(0,0,0,.17);
-}
-.fourGoalIntermediateV1 b,.fourGoalIntermediateV1 small{display:block}
-.fourGoalIntermediateV1 b{font-size:8px}
-.fourGoalIntermediateV1 small{margin-top:2px;color:#d5b9ee;font-size:7px}
-.fourGoalBranchV1 button,.fourGoalFinalV1 button{min-height:30px;padding:4px;font-size:7px}
-.fourGoalFinalV1{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:3px 8px;
-  align-items:center;
-  padding:7px;
-  border:1px solid rgba(255,214,99,.18);
-  border-radius:10px;
-  background:rgba(0,0,0,.14);
-}
-.fourGoalFinalV1 span,.fourGoalFinalV1 small{font-size:7px}
-.fourGoalFinalV1 span{color:#c9d3e2}
-.fourGoalFinalV1 b{color:#ffe59a;font-size:9px}
-.fourGoalFinalV1 small{color:#b7a4ca}
-.fourGoalFinalV1 button{grid-column:1/-1}
-@media(max-width:580px){
-  .fourGoalBranchesV1{grid-template-columns:1fr}
-}
-@media(max-width:800px){
-  .fusionGoalCardV832.fourGoalCardV1{display:block}
-}
-@media(max-width:380px){
-  .fourGoalGrandparentV1{grid-template-columns:26px minmax(0,1fr)}
-  .fourGoalGrandparentV1 .goalMaterialFaceSmallV832{width:26px;height:26px}
-}
 .worldBossPanelV851{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:center;overflow:hidden;padding:9px 10px 12px;border:1px solid rgba(255,100,120,.2);border-radius:13px;background:linear-gradient(145deg,rgba(143,43,62,.17),rgba(255,255,255,.035))}
 .worldBossFaceV851{width:48px;height:48px;grid-row:1/3;border-radius:11px;background:rgba(0,0,0,.18)}
 .worldBossPanelV851 b{display:block;margin-top:2px;font-size:11px}.worldBossPanelV851 b small{color:#dfb9c0;font-size:8px}.worldBossPanelV851 p{margin:2px 0 0;color:#aeb9ca;font-size:8px}
@@ -7572,9 +7083,9 @@ select:focus-visible{
 }
 .viewContextV861 b{font-size:13px}
 .tabsV82 button[aria-current="page"]{
-  border-color:#ffe9a8;
-  color:#2a1d02;
-  box-shadow:inset 0 0 0 1px rgba(255,231,115,.35),0 0 16px rgba(255,210,75,.2);
+  border-color:rgba(255,232,126,.65);
+  color:#fff7cf;
+  box-shadow:inset 0 0 0 1px rgba(255,231,115,.18),0 0 16px rgba(255,210,75,.12);
 }
 .tabsV82 button[aria-current="page"] .ico{
   filter:drop-shadow(0 0 5px rgba(255,226,115,.55));
@@ -7657,4 +7168,516 @@ select:focus-visible{
   .commandsV821 button{min-height:68px}
   .worldNodeV851 small{font-size:9px}
   .worldMapLegendV851{font-size:10px}
+}
+
+/* v8.6-A.3: monster art showcase polish */
+.monsterCardV78,
+.partyFormationCardV831,
+.pastureMonsterCardV831,
+.dexCardV31{
+  position:relative;
+  border-color:rgba(142,210,255,.18);
+  box-shadow:0 18px 38px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.monsterCardV78::before,
+.partyFormationCardV831::before,
+.pastureMonsterCardV831::before,
+.dexCardV31::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.12),transparent 28%),
+    linear-gradient(135deg,rgba(110,231,255,.07),transparent 42%);
+}
+.monsterCardV78 > *,
+.partyFormationCardV831 > *,
+.pastureMonsterCardV831 > *,
+.dexCardV31 > *{
+  position:relative;
+  z-index:1;
+}
+.monsterCardV78{
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 0% 0%,rgba(110,231,255,.14),transparent 34%),
+    linear-gradient(180deg,rgba(40,57,96,.97),rgba(18,27,52,.97));
+}
+.monsterCardV78 .face{
+  width:82px;
+  height:82px;
+  border-radius:22px;
+  background:
+    radial-gradient(ellipse at center,rgba(255,255,255,.22),rgba(110,231,255,.08) 46%,rgba(0,0,0,.12) 74%);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:inset 0 0 18px rgba(255,255,255,.06);
+}
+.monsterCardV78 .face img,
+.pastureMonsterFaceV831 img,
+.partyFormationFaceV831 img,
+.dexFaceV31 img,
+.detailFaceV78 img,
+.dexDetailArtV83 img{
+  filter:drop-shadow(0 13px 12px rgba(0,0,0,.42));
+}
+.monsterCardV78 .name,
+.monsterCardTitleV831,
+.dexCardV31 .name{
+  letter-spacing:.01em;
+}
+.monsterCardV78 .tag,
+.monsterCardV78 .type,
+.rankFlagV831,
+.dexCardV31 .tag,
+.dexCardV31 .type,
+.sizeBadge{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+.partyFormationCardV831{
+  background:
+    radial-gradient(circle at 50% 0%,rgba(110,231,255,.12),transparent 42%),
+    linear-gradient(180deg,rgba(45,63,102,.94),rgba(19,29,55,.96));
+}
+.partyFormationCardV831.leader{
+  border-color:rgba(255,218,114,.5);
+  box-shadow:0 20px 44px rgba(0,0,0,.28), inset 0 0 30px rgba(255,200,74,.08);
+}
+.partyFormationArtV831{
+  background:
+    radial-gradient(ellipse at 50% 78%,rgba(0,0,0,.28),transparent 44%),
+    radial-gradient(circle at 50% 34%,rgba(255,255,255,.13),rgba(110,231,255,.08) 40%,rgba(0,0,0,.11) 74%);
+}
+.partyFormationFaceV831{
+  transform:scale(1.06);
+}
+.pastureMonsterCardV831{
+  background:
+    radial-gradient(circle at 0% 0%,rgba(157,241,186,.12),transparent 36%),
+    linear-gradient(145deg,rgba(42,67,81,.9),rgba(15,32,46,.94));
+}
+.pastureMonsterMainV831{
+  grid-template-columns:104px minmax(0,1fr);
+  gap:10px;
+}
+.pastureMonsterFaceV831{
+  width:104px;
+  height:104px;
+  border-radius:18px;
+  background:
+    radial-gradient(ellipse at 50% 80%,rgba(0,0,0,.28),transparent 48%),
+    radial-gradient(circle at 45% 34%,rgba(255,255,255,.14),rgba(127,220,161,.08) 54%,rgba(0,0,0,.12));
+  border:1px solid rgba(255,255,255,.12);
+}
+.pastureCardActionV831 button{
+  border-color:rgba(255,255,255,.13);
+}
+.dexCardV31{
+  background:
+    radial-gradient(circle at 50% 2%,rgba(110,231,255,.16),transparent 42%),
+    linear-gradient(180deg,rgba(37,52,88,.98),rgba(16,25,48,.98));
+}
+.dexArtFrame{
+  background:
+    radial-gradient(ellipse at 50% 82%,rgba(0,0,0,.27),transparent 44%),
+    linear-gradient(180deg,rgba(255,255,255,.08),rgba(0,0,0,.13));
+  border-color:rgba(255,255,255,.13);
+  box-shadow:inset 0 0 22px rgba(255,255,255,.04);
+}
+.dexFaceV31{
+  height:162px;
+  padding:4px;
+}
+.dexCardV31.scouted{
+  border-color:rgba(116,240,160,.42);
+  box-shadow:0 0 0 1px rgba(116,240,160,.12),0 18px 36px rgba(0,0,0,.27);
+}
+.monsterDetailModalV78{
+  border-color:rgba(110,231,255,.22);
+  background:
+    radial-gradient(circle at 16% 8%,rgba(110,231,255,.16),transparent 32%),
+    linear-gradient(180deg,#263b66,#121b34);
+  box-shadow:0 28px 70px rgba(0,0,0,.55);
+}
+.monsterDetailHeadV78{
+  grid-template-columns:168px minmax(0,1fr);
+  align-items:stretch;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(0,0,0,.12));
+}
+.detailFaceV78{
+  width:168px;
+  height:168px;
+  border-radius:26px;
+  background:
+    radial-gradient(ellipse at 50% 82%,rgba(0,0,0,.3),transparent 44%),
+    radial-gradient(circle at 45% 28%,rgba(255,255,255,.18),rgba(110,231,255,.09) 50%,rgba(0,0,0,.12));
+  box-shadow:inset 0 0 24px rgba(255,255,255,.06);
+}
+.detailMetaV78{
+  align-self:center;
+}
+.detailStatsGridV78 .stat,
+.detailSectionV78{
+  border-color:rgba(255,255,255,.12);
+  background:rgba(255,255,255,.065);
+}
+.detailActionsV78{
+  margin:12px -14px -14px;
+  padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+}
+.dexDetailHeroV83{
+  background:
+    radial-gradient(circle at 12% 15%,rgba(110,231,255,.14),transparent 34%),
+    linear-gradient(135deg,rgba(255,255,255,.075),rgba(0,0,0,.14));
+}
+.dexDetailArtV83{
+  background:
+    radial-gradient(ellipse at 50% 82%,rgba(0,0,0,.3),transparent 45%),
+    radial-gradient(circle at 45% 30%,rgba(255,255,255,.16),rgba(110,231,255,.08) 54%,rgba(0,0,0,.12));
+  box-shadow:inset 0 0 24px rgba(255,255,255,.05);
+}
+@media(max-width:580px){
+  .monsterCardV78{
+    grid-template-columns:78px minmax(0,1fr);
+  }
+  .monsterCardV78 .face{
+    width:78px;
+    height:78px;
+  }
+  .pastureMonsterMainV831{
+    grid-template-columns:86px minmax(0,1fr);
+  }
+  .pastureMonsterFaceV831{
+    width:86px;
+    height:86px;
+  }
+  .dexFaceV31{
+    height:136px;
+  }
+  .monsterDetailHeadV78{
+    grid-template-columns:118px minmax(0,1fr);
+    gap:10px;
+    padding:10px;
+  }
+  .detailFaceV78{
+    width:118px;
+    height:118px;
+    border-radius:22px;
+  }
+}
+@media(max-width:380px){
+  .monsterDetailHeadV78{
+    grid-template-columns:1fr;
+  }
+  .detailFaceV78{
+    width:100%;
+    height:180px;
+  }
+}
+
+/* v8.6-A.4: dex art viewer */
+.dexArtViewerBgV864{
+  align-items:center;
+  padding:16px;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(110,231,255,.2),transparent 34%),
+    rgba(0,0,0,.72);
+}
+.dexArtViewerModalV864{
+  width:min(940px,100%);
+  max-height:94vh;
+  padding:0;
+  overflow:hidden;
+  border-color:rgba(110,231,255,.28);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(110,231,255,.18),transparent 36%),
+    linear-gradient(180deg,#263b66,#10182e);
+  box-shadow:0 30px 80px rgba(0,0,0,.64);
+}
+.dexArtViewerTopV864{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px 10px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  background:rgba(6,12,28,.48);
+}
+.dexArtViewerTopV864 span{
+  display:block;
+  color:#9feeff;
+  font-size:10px;
+  font-weight:1000;
+  letter-spacing:.18em;
+}
+.dexArtViewerTopV864 h2{
+  margin:3px 0 2px;
+  font-size:27px;
+}
+.dexArtViewerTopV864 p{
+  margin:0;
+  color:#bfd0e4;
+  font-size:12px;
+}
+.dexArtViewerTopV864 button{
+  min-height:40px;
+  padding:8px 12px;
+}
+.dexArtViewerStageV864{
+  position:relative;
+  min-height:420px;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:
+    radial-gradient(ellipse at 50% 82%,rgba(0,0,0,.38),transparent 38%),
+    radial-gradient(circle at 50% 38%,rgba(255,255,255,.12),rgba(110,231,255,.07) 44%,rgba(0,0,0,.18) 78%);
+}
+.dexArtViewerStageV864::before,
+.dexArtViewerStageV864::after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+}
+.dexArtViewerStageV864::before{
+  inset:22px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:28px;
+}
+.dexArtViewerStageV864::after{
+  left:50%;
+  bottom:42px;
+  width:min(420px,72%);
+  height:42px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.38),transparent 72%);
+}
+.dexArtViewerArtV864{
+  position:relative;
+  z-index:1;
+  width:min(560px,88vw);
+  height:min(560px,58vh);
+  display:grid;
+  place-items:center;
+  font-size:120px;
+}
+.dexArtViewerArtV864 img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter:drop-shadow(0 24px 24px rgba(0,0,0,.52));
+}
+.dexArtViewerMetaV864{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  padding:10px 16px 0;
+}
+.dexArtViewerActionsV864{
+  position:sticky;
+  bottom:0;
+  margin:0;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  border-top:1px solid rgba(255,255,255,.1);
+  background:rgba(8,14,30,.94);
+}
+@media(max-width:620px){
+  .dexArtViewerBgV864{
+    padding:10px;
+    align-items:flex-end;
+  }
+  .dexArtViewerModalV864{
+    max-height:95vh;
+    border-radius:22px 22px 16px 16px;
+  }
+  .dexArtViewerTopV864{
+    padding:12px;
+  }
+  .dexArtViewerTopV864 h2{
+    font-size:21px;
+  }
+  .dexArtViewerTopV864 p{
+    font-size:11px;
+  }
+  .dexArtViewerStageV864{
+    min-height:330px;
+    padding:12px;
+  }
+  .dexArtViewerArtV864{
+    width:100%;
+    height:min(430px,52vh);
+  }
+  .dexArtViewerActionsV864{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ===== v8.6-A.5 fixed app shell and mobile interaction ===== */
+:root{
+  --app-height:100vh;
+  --app-safe-top:env(safe-area-inset-top,0px);
+  --app-safe-right:env(safe-area-inset-right,0px);
+  --app-safe-bottom:env(safe-area-inset-bottom,0px);
+  --app-safe-left:env(safe-area-inset-left,0px);
+}
+@supports(height:100svh){
+  :root{--app-height:100svh}
+}
+@supports(height:100dvh){
+  :root{--app-height:100dvh}
+}
+html,
+body{
+  width:100%;
+  height:100%;
+  min-height:100%;
+  overflow:hidden;
+  overscroll-behavior:none;
+}
+body{
+  position:fixed;
+  inset:0;
+  height:var(--app-height);
+  touch-action:manipulation;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+body,
+button,
+[role="button"],
+summary,
+img{
+  -webkit-tap-highlight-color:transparent;
+}
+img{
+  -webkit-user-drag:none;
+  pointer-events:none;
+}
+input,
+textarea,
+select,
+[contenteditable="true"],
+.backupTextarea{
+  -webkit-user-select:text;
+  user-select:text;
+  -webkit-touch-callout:default;
+  touch-action:auto;
+}
+.app{
+  position:fixed;
+  inset:0;
+  width:min(980px,100%);
+  height:var(--app-height);
+  min-height:0;
+  margin:auto;
+  padding:var(--app-safe-top) var(--app-safe-right) var(--app-safe-bottom) var(--app-safe-left);
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto;
+  overflow:hidden;
+  overscroll-behavior:none;
+}
+.app > .top{
+  position:relative;
+  top:auto;
+  z-index:30;
+  margin:0;
+  padding:8px max(10px,var(--app-safe-right)) 8px max(10px,var(--app-safe-left));
+  flex:none;
+}
+.app > main{
+  min-width:0;
+  min-height:0;
+  margin:0;
+  padding:10px 12px 16px;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-gutter:stable;
+}
+.app > main.titleScreenV82{
+  min-height:100%;
+  margin:0;
+  padding:clamp(16px,3vw,36px) 12px calc(16px + var(--app-safe-bottom));
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+.app > .tabs,
+.app > .tabs.tabsMain,
+.app > .tabsV82{
+  position:relative;
+  left:auto;
+  right:auto;
+  bottom:auto;
+  z-index:40;
+  width:100%;
+  min-height:var(--bottom-nav-h);
+  margin:0;
+  padding:8px max(10px,var(--app-safe-right)) calc(8px + var(--app-safe-bottom)) max(10px,var(--app-safe-left));
+  transform:none;
+  flex:none;
+  border-radius:20px 20px 0 0;
+}
+.scroll-panel,
+.modal-body,
+.list,
+.log,
+.pastureGridV831,
+.dexRankSections,
+.recipeListV811,
+.settingList{
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+.modalBg{
+  overflow:hidden;
+  overscroll-behavior:none;
+  padding:max(12px,var(--app-safe-top)) max(12px,var(--app-safe-right)) max(12px,var(--app-safe-bottom)) max(12px,var(--app-safe-left));
+}
+.modal{
+  max-height:calc(var(--app-height) - var(--app-safe-top) - var(--app-safe-bottom) - 24px);
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+.modal > .stageTop:first-child,
+.modal > header:first-child,
+.fourFusionTreeHeadV1,
+.dexArtViewerTopV864{
+  position:sticky;
+  top:-15px;
+  z-index:5;
+  padding-top:15px;
+  background:linear-gradient(#26365e 78%,rgba(38,54,94,0));
+}
+button,
+[role="button"],
+summary{
+  touch-action:manipulation;
+  transition:transform .11s ease,filter .11s ease,box-shadow .11s ease;
+}
+button:active:not(:disabled),
+[role="button"]:active,
+summary:active{
+  transform:translateY(2px) scale(.985);
+  filter:brightness(.92);
+}
+@media(max-width:520px){
+  .app > main{padding:8px 10px 12px}
+  .app > .top{padding-top:6px;padding-bottom:6px}
+  .app > .tabs,
+  .app > .tabs.tabsMain,
+  .app > .tabsV82{padding-top:7px}
+}
+@media(prefers-reduced-motion:reduce){
+  button,
+  [role="button"],
+  summary{transition:none}
 }

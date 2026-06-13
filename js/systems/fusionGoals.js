@@ -36,20 +36,6 @@
   function routeProgress(recipe){
     const materials = recipeMaterials(recipe);
     const status = G.recipeSetStatus?.(recipe) || {ok:false,locked:false};
-    const four = recipe.group === "four" ? G.fourFusionProgress?.(recipe) : null;
-    if(four){
-      return {
-        recipe,
-        materials,
-        status:four.status,
-        four,
-        key:four.stage === "intermediates" ? "missing" : four.stage,
-        label:four.label,
-        ready:four.ready,
-        progress:four.progress,
-        required:four.required
-      };
-    }
     let key = "missing";
     let label = "素材を集めよう";
     if(status.ok && status.locked){
@@ -146,85 +132,6 @@
     G.toast?.(info.routes.length ? `${info.def.name}の素材進捗を表示します` : "固定配合ルートはありません");
   }
 
-  function openFourFusionStep(recipeKey,branchIndex="final"){
-    const recipe = (G.fusionRecipeEntries?.() || []).find(item=>item.recipeKey === recipeKey && item.group === "four");
-    const progress = recipe && G.fourFusionProgress?.(recipe);
-    if(!recipe || !progress) return;
-    S.state.view = "fusion";
-    S.save();
-
-    if(branchIndex === "final"){
-      if(progress.status?.ok && G.setFusionFromRecipe){
-        G.setFusionFromRecipe(recipe.recipeKey);
-        return;
-      }
-      G.render?.();
-      G.toast?.("正しい系譜の中間素材2体が必要です");
-      return;
-    }
-
-    const branch = progress.branches[Number(branchIndex)];
-    if(!branch) return;
-    if(branch.ready){
-      G.render?.();
-      G.toast?.(`${D.MONSTERS[branch.parentId].name}は準備済みです`);
-      return;
-    }
-    if(branch.intermediateRecipe && G.setFusionFromRecipe){
-      const status = G.recipeSetStatus?.(branch.intermediateRecipe);
-      if(status?.ok){
-        G.setFusionFromRecipe(branch.intermediateRecipe.recipeKey);
-        return;
-      }
-    }
-    G.render?.();
-    G.toast?.(`${D.MONSTERS[branch.parentId].name}の祖父母素材が不足しています`);
-  }
-
-  function openFourFusionTree(recipeKey){
-    const recipe = (G.fusionRecipeEntries?.() || []).find(item=>item.recipeKey === recipeKey && item.group === "four");
-    const progress = recipe && G.fourFusionProgress?.(recipe);
-    const html = recipe && progress && window.MonsterLinksViews?.fourFusionTreeHtml?.(recipe,progress);
-    if(!html){
-      G.toast?.("4体配合の系譜図を開けませんでした");
-      return;
-    }
-    let modal = document.getElementById("modal");
-    if(!modal){
-      modal = document.createElement("div");
-      modal.id = "modal";
-      document.body.appendChild(modal);
-    }
-    modal.innerHTML = html;
-    G.playSe?.("tap");
-  }
-
-  function openFusionTree(recipeKey){
-    const recipe = (G.fusionRecipeEntries?.() || []).find(item=>item.recipeKey === recipeKey);
-    if(!recipe){
-      G.toast?.("配合図を開けませんでした");
-      return;
-    }
-    if(recipe.group === "four"){
-      openFourFusionTree(recipeKey);
-      return;
-    }
-    const status = G.recipeSetStatus?.(recipe) || {ok:false,locked:false};
-    const html = window.MonsterLinksViews?.twoFusionTreeHtml?.(recipe,status);
-    if(!html){
-      G.toast?.("配合図を開けませんでした");
-      return;
-    }
-    let modal = document.getElementById("modal");
-    if(!modal){
-      modal = document.createElement("div");
-      modal.id = "modal";
-      document.body.appendChild(modal);
-    }
-    modal.innerHTML = html;
-    G.playSe?.("tap");
-  }
-
   function openFusionGoalDex(id){
     if(!D.MONSTERS[id]) return;
     S.state.view = "dex";
@@ -244,9 +151,6 @@
     toggleFusionGoal,
     prioritizeFusionGoal,
     openFusionGoal,
-    openFourFusionStep,
-    openFourFusionTree,
-    openFusionTree,
     openFusionGoalDex
   });
 })();

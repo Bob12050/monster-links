@@ -4,11 +4,18 @@
   const S = window.MonsterLinksState;
   const V = window.MonsterLinksViews;
 
+  function disableImageDrag(root){
+    root.querySelectorAll("img").forEach(image=>{
+      image.draggable = false;
+    });
+  }
+
   function render(){
     const state = S.state;
     const app = document.getElementById("app");
     if(state.view === "title"){
       app.innerHTML = V.titleHtml();
+      disableImageDrag(app);
       return;
     }
     let html = V.topHtml();
@@ -26,10 +33,9 @@
     if(state.view === "devtools") html += V.devToolsHtml();
     if(state.view === "battle") html += V.battleHtml();
     if(state.view === "reward") html += V.rewardHtml();
-    // 戦闘中・リザルト中は下部ナビの誤タップで戦闘・報酬が破棄されるのを防ぐため非表示にする。
-    // 戦闘は「逃げる」、リザルトは画面内のボタンから移動する。
-    if(state.view !== "battle" && state.view !== "reward") html += V.tabsHtml();
+    html += V.tabsHtml();
     app.innerHTML = html;
+    disableImageDrag(app);
   }
 
   window.MonsterLinksRender = {render};

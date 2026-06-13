@@ -60,7 +60,6 @@
     if(kind === "guard"){beep(260,.08,"triangle",.027);beep(390,.11,"sine",.024,.045);return;}
     if(kind === "ko"){beep(180,.07,"square",.032);beep(120,.12,"sawtooth",.025,.055);beep(72,.16,"triangle",.02,.14);return;}
     if(kind === "boss"){beep(92,.16,"sawtooth",.029);beep(69,.2,"square",.022,.12);return;}
-    if(kind === "mutation"){beep(523,.07,"sine",.03);beep(784,.09,"triangle",.038,.06);beep(1175,.14,"sine",.04,.14);return;}
     if(kind === "scout"){beep(880,.08,"triangle",.04);beep(1320,.11,"triangle",.035,.08);return;}
     if(kind === "error"){beep(150,.11,"sawtooth",.025);return;}
     beep(520,.045,"sine",.025);
@@ -435,7 +434,7 @@
   function devLevelUpAll(amount=5){
     const n = U.clamp(Math.floor(Number(amount) || 1),1,50);
     S.owned().forEach(m=>{
-      m.level = U.clamp((Number(m.level) || 1) + n,1,D.MAX_LEVEL);
+      m.level = Math.max(1,(Number(m.level) || 1) + n);
       m.exp = 0;
     });
     S.fullHeal();

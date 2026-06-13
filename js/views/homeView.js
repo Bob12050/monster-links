@@ -18,7 +18,6 @@
     const lastStage = D.STAGES.find(stage=>stage.id === state.lastStage) || D.STAGES[0];
     const arenaClears = Object.values(state.arena?.cleared || {}).filter(Boolean).length;
     const bagCount = Object.values(state.bag || {}).reduce((sum,count)=>sum + count,0);
-    const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
 
     return `
     <main class="homeV82">
@@ -34,7 +33,7 @@
           </button>
         </div>
         <div class="homeLeaderV82">
-          ${lead ? V.monsterVisual(lead,"homeLeaderArtV82") : `<div class="homeLeaderArtV82">?</div>`}
+          ${lead ? V.monsterVisual(lead.id,"homeLeaderArtV82") : `<div class="homeLeaderArtV82">?</div>`}
           <div class="homeLeaderNameV82">
             <small>LEADER</small>
             <b>${lead ? U.esc(lead.nickname || leadDef.name) : "仲間がいません"}</b>
@@ -65,32 +64,32 @@
         </div>
         <div class="hubGridV82">
           <button class="hubPlaceV82 hubAdventurePlaceV82" onclick="Game.setView('stage')">
-            <span class="hubIconV82">${ico("map")}</span>
+            <span class="hubIconV82">🗺️</span>
             <span><b>冒険門</b><small>探索とボス戦へ</small></span>
             <em>${state.stageUnlocked} 地域</em>
           </button>
           <button class="hubPlaceV82 hubPasturePlaceV82" onclick="Game.setView('monsters')">
-            <span class="hubIconV82">${ico("camp")}</span>
+            <span class="hubIconV82">🏕️</span>
             <span><b>モンスター牧場</b><small>編成・育成・装備</small></span>
             <em>${state.party.length + state.box.length} 体</em>
           </button>
           <button class="hubPlaceV82 hubFusionPlaceV82" onclick="Game.setView('fusion')">
-            <span class="hubIconV82">${ico("fusion")}</span>
-            <span><b>配合研究所</b><small>新しい仲間を作る</small></span>
+            <span class="hubIconV82">🔮</span>
+            <span><b>配合研究所</b><small>新しい仲間を生み出す</small></span>
             <em>${state.records?.fusions || 0} 回</em>
           </button>
           <button class="hubPlaceV82 hubArenaPlaceV82" onclick="Game.setView('arena')">
-            <span class="hubIconV82">${ico("swords")}</span>
+            <span class="hubIconV82">⚔️</span>
             <span><b>闘技場</b><small>連戦で腕試し</small></span>
             <em>${arenaClears} 制覇</em>
           </button>
           <button class="hubPlaceV82 hubQuestPlaceV82 ${quest.claimable ? "hasNoticeV82" : ""}" onclick="Game.setView('quest')">
-            <span class="hubIconV82">${ico("scroll")}</span>
+            <span class="hubIconV82">📜</span>
             <span><b>任務掲示板</b><small>目標と報酬を確認</small></span>
             <em>${fusionQuestClaimable ? `${fusionQuestClaimable} 件 研究報酬` : quest.claimable ? `${quest.claimable} 件受取` : "確認"}</em>
           </button>
           <button class="hubPlaceV82 hubShopPlaceV82" onclick="Game.setView('shop')">
-            <span class="hubIconV82">${ico("bag")}</span>
+            <span class="hubIconV82">🛍️</span>
             <span><b>旅人の商店</b><small>道具と装備を準備</small></span>
             <em>${bagCount} 個</em>
           </button>

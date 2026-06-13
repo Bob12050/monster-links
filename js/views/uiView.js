@@ -20,7 +20,6 @@
     }
 
     const readyBoss = D.STAGES.find(st=>{
-      if(!st.boss) return false;
       const open = st.unlock <= S.state.stageUnlocked;
       const enough = S.highestLv() >= st.req;
       const cleared = !!S.state.bossCleared[st.id];
@@ -46,7 +45,7 @@
     });
     if(trainStage){
       const wins = S.state.stageWins[trainStage.id] || 0;
-      const need = Math.max(0,(trainStage.boss?.unlockWins || 0) - wins);
+      const need = Math.max(0,trainStage.boss.unlockWins - wins);
       return {
         icon:trainStage.icon,
         title:`${trainStage.name}を探索`,

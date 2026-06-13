@@ -59,7 +59,7 @@
     demonlord:{name:"デモンロード",rank:"S",type:"dark",emoji:"👹",image:"assets/images/monsters/demonlord.png",size:3,base:{hp:172,mp:70,atk:62,def:50,spd:40,wis:60},grow:{hp:33,mp:13,atk:14,def:12,spd:9,wis:14},skills:[["chaosflare",1],["demonclaw",3],["drain",6],["overdrive",10]]},
 
     // v6.9 batch1 formal additions
-    dewplim:{name:"アワマリン",rank:"F",type:"water",emoji:"🫧",image:"assets/images/monsters/dewplim.png",size:1,base:{"hp":32,"mp":16,"atk":9,"def":10,"spd":11,"wis":14},grow:{"hp":7,"mp":4,"atk":2,"def":3,"spd":3,"wis":4},skills:[["splash",2],["heal",6]]},
+    dewplim:{name:"しずくぷる",rank:"F",type:"water",emoji:"💧",image:"assets/images/monsters/dewplim.png",size:1,base:{"hp":32,"mp":16,"atk":9,"def":10,"spd":11,"wis":14},grow:{"hp":7,"mp":4,"atk":2,"def":3,"spd":3,"wis":4},skills:[["splash",2],["heal",6]]},
     budbunny:{name:"つぼみラビ",rank:"F",type:"nature",emoji:"🌷",image:"assets/images/monsters/budbunny.png",size:1,base:{"hp":29,"mp":12,"atk":11,"def":9,"spd":15,"wis":10},grow:{"hp":7,"mp":3,"atk":3,"def":2,"spd":4,"wis":3},skills:[["needle",2],["heal",7]]},
     cavemole:{name:"ドリモール",rank:"E",type:"stone",emoji:"🦡",image:"assets/images/monsters/cavemole.png",size:1,base:{"hp":43,"mp":7,"atk":17,"def":18,"spd":8,"wis":6},grow:{"hp":10,"mp":1,"atk":5,"def":5,"spd":2,"wis":1},skills:[["crush",3],["bite",6]]},
     sparkbug:{name:"スパークバグ",rank:"E",type:"light",emoji:"⚡",image:"assets/images/monsters/sparkbug.png",size:1,base:{"hp":34,"mp":18,"atk":12,"def":10,"spd":17,"wis":16},grow:{"hp":8,"mp":4,"atk":3,"def":3,"spd":5,"wis":4},skills:[["spark",2],["thunder",8]]},
@@ -82,13 +82,13 @@
 
     // v8.5 sky ruins additions
     cloudplim:{name:"雲ぷる",rank:"C",type:"slime",emoji:"☁️",image:"assets/images/monsters/cloudplim.svg",size:1,base:{hp:78,mp:38,atk:20,def:24,spd:28,wis:34},grow:{hp:16,mp:8,atk:5,def:6,spd:7,wis:8},skills:[["spark",1],["heal",4],["holywave",10]]},
-    sunhare:{name:"サンラビ",rank:"C",type:"light",emoji:"☀️",image:"assets/images/monsters/sunhare.png",size:1,base:{hp:74,mp:34,atk:27,def:20,spd:35,wis:29},grow:{hp:15,mp:7,atk:7,def:5,spd:8,wis:7},skills:[["spark",1],["bite",4],["starfall",10]]},
-    galegryph:{name:"ゲイルグリフ",rank:"B",type:"wing",emoji:"🪽",image:"assets/images/monsters/galegryph.png",size:1,base:{hp:98,mp:38,atk:39,def:27,spd:43,wis:31},grow:{hp:20,mp:8,atk:9,def:6,spd:10,wis:7},skills:[["bite",1],["thunder",4],["holywave",10]]},
+    sunhare:{name:"サンラビ",rank:"C",type:"light",emoji:"☀️",image:"assets/images/monsters/sunhare.svg",size:1,base:{hp:74,mp:34,atk:27,def:20,spd:35,wis:29},grow:{hp:15,mp:7,atk:7,def:5,spd:8,wis:7},skills:[["spark",1],["bite",4],["starfall",10]]},
+    galegryph:{name:"ゲイルグリフ",rank:"B",type:"wing",emoji:"🪽",image:"assets/images/monsters/galegryph.svg",size:1,base:{hp:98,mp:38,atk:39,def:27,spd:43,wis:31},grow:{hp:20,mp:8,atk:9,def:6,spd:10,wis:7},skills:[["bite",1],["thunder",4],["holywave",10]]},
     skywarden:{name:"スカイウォーデン",rank:"B",type:"machine",emoji:"🛡️",image:"assets/images/monsters/skywarden.svg",size:2,base:{hp:126,mp:34,atk:41,def:48,spd:25,wis:30},grow:{hp:25,mp:7,atk:10,def:11,spd:6,wis:7},skills:[["laser",1],["quake",5],["overdrive",10]]},
-    stormdjinn:{name:"ストームジン",rank:"A",type:"light",emoji:"⚡",image:"assets/images/monsters/stormdjinn.png",size:1,base:{hp:112,mp:58,atk:34,def:31,spd:46,wis:50},grow:{hp:22,mp:11,atk:8,def:7,spd:11,wis:12},skills:[["thunder",1],["holywave",4],["starfall",9]]},
-    aethergolem:{name:"エーテルゴーレム",rank:"A",type:"stone",emoji:"💠",image:"assets/images/monsters/aethergolem.png",size:2,base:{hp:148,mp:38,atk:48,def:56,spd:20,wis:34},grow:{hp:29,mp:7,atk:11,def:13,spd:5,wis:8},skills:[["quake",1],["laser",5],["holywave",10]]},
-    seraphalcon:{name:"セラファルコン",rank:"A",type:"wing",emoji:"🪽",image:"assets/images/monsters/seraphalcon.png",size:1,base:{hp:108,mp:54,atk:42,def:30,spd:48,wis:45},grow:{hp:21,mp:10,atk:10,def:7,spd:11,wis:10},skills:[["holywave",1],["megaheal",5],["starfall",9]]},
-    heavenscale:{name:"ヘヴンスケイル",rank:"S",type:"dragon",emoji:"🌌",image:"assets/images/monsters/heavenscale.png",size:2,base:{hp:158,mp:66,atk:57,def:48,spd:43,wis:58},grow:{hp:30,mp:12,atk:13,def:11,spd:10,wis:13},skills:[["starfall",1],["thunder",4],["holywave",7],["megaheal",11]]},
-    zenithdragon:{name:"ゼニスドラゴン",rank:"S",type:"dragon",emoji:"☀️",image:"assets/images/monsters/zenithdragon.png",size:3,base:{hp:188,mp:78,atk:68,def:58,spd:48,wis:70},grow:{hp:35,mp:14,atk:15,def:13,spd:11,wis:15},skills:[["holywave",1],["starfall",3],["overdrive",7],["megaheal",11]]},
+    stormdjinn:{name:"ストームジン",rank:"A",type:"light",emoji:"⚡",image:"assets/images/monsters/stormdjinn.svg",size:1,base:{hp:112,mp:58,atk:34,def:31,spd:46,wis:50},grow:{hp:22,mp:11,atk:8,def:7,spd:11,wis:12},skills:[["thunder",1],["holywave",4],["starfall",9]]},
+    aethergolem:{name:"エーテルゴーレム",rank:"A",type:"stone",emoji:"💠",image:"assets/images/monsters/aethergolem.svg",size:2,base:{hp:148,mp:38,atk:48,def:56,spd:20,wis:34},grow:{hp:29,mp:7,atk:11,def:13,spd:5,wis:8},skills:[["quake",1],["laser",5],["holywave",10]]},
+    seraphalcon:{name:"セラファルコン",rank:"A",type:"wing",emoji:"🪽",image:"assets/images/monsters/seraphalcon.svg",size:1,base:{hp:108,mp:54,atk:42,def:30,spd:48,wis:45},grow:{hp:21,mp:10,atk:10,def:7,spd:11,wis:10},skills:[["holywave",1],["megaheal",5],["starfall",9]]},
+    heavenscale:{name:"ヘヴンスケイル",rank:"S",type:"dragon",emoji:"🌌",image:"assets/images/monsters/heavenscale.svg",size:2,base:{hp:158,mp:66,atk:57,def:48,spd:43,wis:58},grow:{hp:30,mp:12,atk:13,def:11,spd:10,wis:13},skills:[["starfall",1],["thunder",4],["holywave",7],["megaheal",11]]},
+    zenithdragon:{name:"ゼニスドラゴン",rank:"S",type:"dragon",emoji:"☀️",image:"assets/images/monsters/zenithdragon.svg",size:3,base:{hp:188,mp:78,atk:68,def:58,spd:48,wis:70},grow:{hp:35,mp:14,atk:15,def:13,spd:11,wis:15},skills:[["holywave",1],["starfall",3],["overdrive",7],["megaheal",11]]},
   };
 })();

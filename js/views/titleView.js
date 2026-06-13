@@ -10,10 +10,10 @@
     const state = S.state;
     const dex = S.dexCounts();
     const quest = S.questCounts();
-    const showcase = state.party.slice(0,3);
+    const partyIds = state.party.map(monster=>monster.id).slice(0,3);
     for(const id of ["plim","leafling","puffbat"]){
-      if(showcase.length >= 3) break;
-      if(!showcase.some(monster=>monster.id === id)) showcase.push({id});
+      if(partyIds.length >= 3) break;
+      if(!partyIds.includes(id)) partyIds.push(id);
     }
     const lead = state.party[0];
     const leadName = lead ? U.esc(lead.nickname || S.def(lead.id).name) : "最初の仲間";
@@ -51,10 +51,10 @@
 
         <div class="titleShowcaseV82" aria-label="現在の仲間">
           <div class="titleSunV82"></div>
-          ${showcase.map((monster,index)=>`
+          ${partyIds.map((id,index)=>`
             <div class="titleMonsterSlotV82 slot${index + 1}">
-              ${V.monsterVisual(monster,`titleMonsterArtV82 art${index + 1}`)}
-              <span>${U.esc(S.def(monster.id).name)}</span>
+              ${V.monsterVisual(id,`titleMonsterArtV82 art${index + 1}`)}
+              <span>${U.esc(S.def(id).name)}</span>
             </div>
           `).join("")}
           <div class="titleGroundV82"></div>

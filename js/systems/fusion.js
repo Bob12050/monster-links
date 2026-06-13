@@ -28,40 +28,13 @@
     return [String(a || ""),String(b || "")].sort().join("+");
   }
 
-  function sortedIds(ids=[]){
-    return ids.map(id=>String(id || "")).sort();
-  }
-
-  function fourRecipeKey(recipe){
-    return `four:${sortedIds(recipe?.grandparents).join("+")}:${recipeKeyFromIds(recipe?.parents?.[0],recipe?.parents?.[1])}`;
-  }
-
-  function monsterLineage(m){
-    return Array.isArray(m?.lineage) ? m.lineage.filter(id=>D.MONSTERS?.[id]).slice(0,2) : [];
-  }
-
-  function fourParentLineageMatches(recipe,monster,parentIndex){
-    if(recipe?.group !== "four" || !monster || ![0,1].includes(parentIndex)) return false;
-    if(monster.id !== recipe.parents?.[parentIndex]) return false;
-    const actual = sortedIds(monsterLineage(monster));
-    const required = sortedIds(recipe.grandparents?.slice(parentIndex * 2,parentIndex * 2 + 2));
-    return actual.length === 2 && required.length === 2 && actual.every((id,index)=>id === required[index]);
-  }
-
-  function fourLineageMatches(recipe,a,b){
-    if(recipe?.group !== "four" || !Array.isArray(recipe.grandparents) || recipe.grandparents.length !== 4) return false;
-    if(recipeKeyFromIds(a?.id,b?.id) !== recipeKeyFromIds(recipe.parents?.[0],recipe.parents?.[1])) return false;
-    return (fourParentLineageMatches(recipe,a,0) && fourParentLineageMatches(recipe,b,1))
-      || (fourParentLineageMatches(recipe,a,1) && fourParentLineageMatches(recipe,b,0));
-  }
-
   function fusionRecipeEntries(){
     const raw = D.RECIPE_LIST || Object.entries(D.RECIPES || {}).map(([key,result])=>({parents:key.split("+"),result,group:"basic"}));
     const seen = new Set();
     const out = [];
     raw.forEach((r,index)=>{
       if(!r || !Array.isArray(r.parents) || r.parents.length < 2 || !r.result) return;
-      const key = r.group === "four" ? fourRecipeKey(r) : recipeKeyFromIds(r.parents[0],r.parents[1]);
+      const key = recipeKeyFromIds(r.parents[0],r.parents[1]);
       if(seen.has(key)) return;
       seen.add(key);
       out.push(Object.assign({recipeKey:key,order:index},r));
@@ -69,85 +42,16 @@
     return out;
   }
 
-  function fourFusionProgress(recipe){
-    if(recipe?.group !== "four" || !Array.isArray(recipe.grandparents) || recipe.grandparents.length !== 4){
-      return null;
-    }
-    const all = S.owned();
-    const entries = fusionRecipeEntries();
-    const branches = [0,1].map(index=>{
-      const parentId = recipe.parents[index];
-      const grandparentIds = recipe.grandparents.slice(index * 2,index * 2 + 2);
-      const intermediateOwned = all.filter(monster=>monster.id === parentId);
-      const compatible = intermediateOwned.filter(monster=>fourParentLineageMatches(recipe,monster,index));
-      const usable = compatible.filter(monster=>!monster.locked).sort((a,b)=>(b.level || 1)-(a.level || 1));
-      const compatibleLocked = compatible.filter(monster=>monster.locked);
-      const wrongLineage = intermediateOwned.filter(monster=>!fourParentLineageMatches(recipe,monster,index));
-      const grandparents = grandparentIds.map((id,slot)=>{
-        const needAtSlot = grandparentIds.slice(0,slot + 1).filter(value=>value === id).length;
-        const owned = all.filter(monster=>monster.id === id);
-        const usableOwned = owned.filter(monster=>!monster.locked);
-        return {
-          id,
-          have:usableOwned.length,
-          locked:owned.length - usableOwned.length,
-          ready:usableOwned.length >= needAtSlot
-        };
-      });
-      const intermediateRecipe = entries.find(candidate=>
-        candidate.group !== "four"
-        && candidate.result === parentId
-        && candidate.recipeKey === recipeKeyFromIds(grandparentIds[0],grandparentIds[1])
-      ) || null;
-      return {
-        index,
-        parentId,
-        grandparentIds,
-        grandparents,
-        grandparentsReady:grandparents.every(item=>item.ready),
-        compatible:compatible.length,
-        compatibleLocked:compatibleLocked.length,
-        wrongLineage:wrongLineage.length,
-        ready:usable.length > 0,
-        best:usable[0] || null,
-        intermediateRecipe
-      };
-    });
-    const status = recipeSetStatus(recipe);
-    const bothReady = branches.every(branch=>branch.ready);
-    let stage = "grandparents";
-    let label = "祖父母を集めよう";
-    if(bothReady && status.ok && !status.locked){
-      stage = "ready";
-      label = "最終配合可能";
-    }else if(bothReady || branches.every(branch=>branch.ready || branch.compatibleLocked > 0)){
-      stage = "condition";
-      label = "中間素材を育成・保護解除";
-    }else if(branches.every(branch=>branch.ready || branch.grandparentsReady)){
-      stage = "intermediates";
-      label = "中間素材を作ろう";
-    }
-    const progress = branches.reduce((sum,branch)=>{
-      if(branch.ready || branch.compatibleLocked) return sum + 3;
-      return sum + branch.grandparents.filter(item=>item.ready).length;
-    },0);
-    return {recipe,branches,status,stage,label,ready:stage === "ready",progress,required:6};
-  }
-
   function findRecipe(a,b){
-    const entries = fusionRecipeEntries();
-    const four = entries.find(r=>r.group === "four" && fourLineageMatches(r,a,b));
-    if(four) return four;
     const key = recipeKeyFromIds(a.id,b.id);
-    return entries.find(r=>r.group !== "four" && r.recipeKey === key) || null;
+    return fusionRecipeEntries().find(r=>r.recipeKey === key) || null;
   }
 
   function forcedRecipeFor(a,b){
     if(!fusionForcedRecipeKey) return null;
-    const recipe = fusionRecipeEntries().find(r=>r.recipeKey === fusionForcedRecipeKey) || null;
-    if(!recipe || recipeKeyFromIds(a.id,b.id) !== recipeKeyFromIds(recipe.parents?.[0],recipe.parents?.[1])) return null;
-    if(recipe.group === "four" && !fourLineageMatches(recipe,a,b)) return null;
-    return recipe;
+    const key = recipeKeyFromIds(a.id,b.id);
+    if(key !== fusionForcedRecipeKey) return null;
+    return fusionRecipeEntries().find(r=>r.recipeKey === fusionForcedRecipeKey) || null;
   }
 
   const FUSION_RANK_LEVEL_REQ = {
@@ -177,6 +81,10 @@
     return D.RANK?.[d?.rank] || 1;
   }
 
+  function rankValueByMonster(m){
+    return rankValueById(m?.id);
+  }
+
   function requiredAvgForResult(id,recipe=null){
     const rank = rankValueById(id);
     const byRank = FUSION_RANK_LEVEL_REQ[rank] || 0;
@@ -184,30 +92,110 @@
     return Math.max(Number(recipe?.minAvg) || 0, byRank, bySize);
   }
 
-  function fusionRequirementText(resultId,recipe={}){
-    const minAvg = recipe?.minAvg;
+  function rankConditionReason(resultId,a,b){
+    const childRank = rankValueById(resultId);
+    const ar = rankValueByMonster(a);
+    const br = rankValueByMonster(b);
+    const high = Math.max(ar,br);
+    const low = Math.min(ar,br);
+
+    if(childRank >= 7){
+      if(high < 6) return "Sランク作成には親のどちらかがAランク以上である必要があります";
+      if(low < 5) return "Sランク作成には親2体がどちらもBランク以上である必要があります";
+    }else if(childRank >= 6){
+      if(high < 5) return "Aランク作成には親のどちらかがBランク以上である必要があります";
+    }else if(childRank >= 5){
+      if(high < 4) return "Bランク作成には親のどちらかがCランク以上である必要があります";
+    }
+    return "";
+  }
+
+  function fusionRequirementText(resultId,minAvg=0){
     const rank = rankValueById(resultId);
     const size = fusionMonsterSize(resultId);
     const req = Math.max(Number(minAvg) || 0, FUSION_RANK_LEVEL_REQ[rank] || 0, FUSION_SIZE_LEVEL_REQ[size] || 0);
     const lines = [];
     if(req) lines.push(`親平均Lv${req}以上`);
     if(size >= 3) lines.push(`親の合計サイズ${size}枠以上`);
+    if(rank >= 7) lines.push("親のどちらかA以上・両方B以上");
+    else if(rank >= 6) lines.push("親のどちらかB以上");
+    else if(rank >= 5) lines.push("親のどちらかC以上");
     return lines.join(" / ") || "条件なし";
   }
 
   function recipeLockReason(recipe,a,b,resultId=null){
-    const id = resultId || recipe?.result;
-    if(!id) return "固定配合レシピがありません";
-    if(recipe?.group === "four" && !fourLineageMatches(recipe,a,b)){
-      return "指定された祖父母4体の系譜を持つ中間素材2体が必要です";
-    }
+    const id = resultId || recipe?.result || chooseChild(a,b);
     const childSize = fusionMonsterSize(id);
     const parentSize = fusionParentSizeTotal(a,b);
     if(parentSize < childSize) return `${childSize}枠モンスター作成には親の合計サイズ${childSize}枠以上が必要です`;
     const avg = Math.floor((a.level + b.level) / 2);
     const req = requiredAvgForResult(id,recipe);
     if(req && avg < req) return `親2体の平均Lv${req}以上で成立します`;
-    return "";
+    return rankConditionReason(id,a,b);
+  }
+
+  function stableFusionIndex(a,b,list,tag=""){
+    const key = [String(a?.id || ""),String(b?.id || "")].sort().join("+") + ":" + tag;
+    let hash = 0;
+    for(let i=0;i<key.length;i++){
+      hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
+    }
+    return Math.abs(hash) % Math.max(1,list.length);
+  }
+
+  function stablePick(a,b,list,tag=""){
+    return list[stableFusionIndex(a,b,list,tag)];
+  }
+
+  function sizeAllowedResults(a,b,list){
+    const maxSize = fusionParentSizeTotal(a,b);
+    const allowed = list.filter(id=>D.MONSTERS?.[id] && fusionMonsterSize(id) <= maxSize);
+    return allowed.length ? allowed : list.filter(id=>D.MONSTERS?.[id]);
+  }
+
+  function chooseChild(a,b){
+    const types = [S.def(a.id).type,S.def(b.id).type].sort().join("+");
+    const high = Math.max(D.RANK[S.def(a.id).rank],D.RANK[S.def(b.id).rank]);
+    const table = {
+      "beast+fire":"embercub",
+      "dark+water":"gloomoth",
+      "dragon+machine":"crystagon",
+      "fire+stone":"cindrake",
+      "light+water":"tidalseraph",
+      "nature+wing":"thornhog",
+      "slime+stone":"gearbit",
+      "nature+slime":"mossking",
+      "stone+stone":"orelord",
+      "slime+water":"frostpup",
+      "water+wing":"snowcat",
+      "stone+water":"icetortoise",
+      "light+machine":"voltfox",
+      "beast+machine":"ironmantis",
+      "beast+dark":"duskwolf",
+      "machine+machine":"arcautomaton",
+      "dragon+light":"prismdragon",
+      "slime+nature":"kingplim",
+      "light+wing":"auroracat",
+      "dark+light":"eclipsewolf",
+      "dark+slime":"poisonplim",
+      "dark+nature":"toxicshroom",
+      "dark+wing":"venomwing",
+      "machine+slime":"gearslime",
+      "machine+stone":"corewalker"
+    };
+    if(table[types] && fusionMonsterSize(table[types]) <= fusionParentSizeTotal(a,b)) return table[types];
+
+    // v7.1.1:
+    // 通常配合の候補選択はランダムにしない。
+    // おすすめ表示・選択後プレビュー・実際の配合結果がズレないよう、
+    // 同じ親IDの組み合わせなら必ず同じ結果を返す。
+    if(high >= 7) return stablePick(a,b,sizeAllowedResults(a,b,["prismdragon","phoenixdrake","celestiseraph","voiddragon","omegaframe","venomchimera"]),"S");
+    if(high >= 6) return stablePick(a,b,sizeAllowedResults(a,b,["frostlevia","arcautomaton","astralwyrm","prismdragon","arkmachine","venomhydra"]),"A");
+    if(high >= 5) return stablePick(a,b,sizeAllowedResults(a,b,["tidalseraph","volcazard","duskwolf","frostlevia","arcautomaton","corewalker"]),"B");
+    if(high >= 4) return stablePick(a,b,sizeAllowedResults(a,b,["luminel","crystagon","tidalseraph","icetortoise","ironmantis","steelbug","thunderdrone"]),"C");
+    if(high === 3) return stablePick(a,b,sizeAllowedResults(a,b,["cindrake","gearbit","gloomoth","mossking","orelord","snowcat","voltfox","toxicshroom","gearslime"]),"D");
+    if(high === 2) return stablePick(a,b,sizeAllowedResults(a,b,["embercub","aquan","thornhog","frostpup","poisonplim"]),"E");
+    return stablePick(a,b,sizeAllowedResults(a,b,["plim","leafling","puffbat","pebblon"]),"F");
   }
 
   function childLevel(a,b){
@@ -297,8 +285,6 @@
         recipeKey:"",
         group:"normal",
         special:false,
-        fourBody:false,
-        grandparents:[],
         locked:true,
         reason:"保護ロック中の仲間は配合素材にできません",
         note:"",
@@ -315,32 +301,7 @@
     }
     const forcedRecipe = forcedRecipeFor(a,b);
     const recipe = forcedRecipe || findRecipe(a,b);
-    if(!recipe){
-      return {
-        id:null,
-        level:1,
-        recipe:false,
-        recipeKey:"",
-        group:"none",
-        special:false,
-        fourBody:false,
-        grandparents:[],
-        available:false,
-        locked:true,
-        reason:"この組み合わせの固定配合レシピはありません",
-        note:"配合リストから作りたいモンスターのレシピを確認してください",
-        bonus:{hp:0,mp:0,atk:0,def:0,spd:0,wis:0},
-        ivs:{hp:0,mp:0,atk:0,def:0,spd:0,wis:0},
-        skillCandidates:[],
-        selectedSkills:[],
-        avgLevel:Math.floor((a.level + b.level) / 2),
-        childSize:0,
-        parentSizeTotal:fusionParentSizeTotal(a,b),
-        partyOutcome:null,
-        parents:[a,b]
-      };
-    }
-    const id = recipe.result;
+    const id = recipe ? recipe.result : chooseChild(a,b);
     const lockReason = recipeLockReason(recipe,a,b,id);
     const level = childLevel(a,b);
     const skillList = skillCandidates(a,b);
@@ -348,14 +309,11 @@
     return {
       id,
       level,
-      available:true,
       recipe:!!recipe,
       forcedRecipe:!!forcedRecipe,
       recipeKey:recipe?.recipeKey || "",
       group:recipe?.group || "normal",
-      special:recipe?.group === "rare" || recipe?.group === "four",
-      fourBody:recipe?.group === "four",
-      grandparents:recipe?.grandparents || [],
+      special:recipe?.group === "rare",
       locked:!!lockReason,
       reason:lockReason,
       note:recipe?.note || "",
@@ -411,14 +369,6 @@
     render();
   }
 
-  function removeFusionParent(uid){
-    if(!fusionPick.includes(uid)) return;
-    fusionPick = fusionPick.filter(x=>x!==uid);
-    fusionSkillPick = [];
-    fusionForcedRecipeKey = "";
-    render();
-  }
-
   function toggleFusionSkill(id){
     if(fusionPick.length !== 2) return;
     const all = S.owned();
@@ -463,7 +413,7 @@
         const a = all[i], b = all[j];
         if(a.locked || b.locked) continue;
         const prev = fusionPreview(a.uid,b.uid);
-        if(!prev?.available) continue;
+        if(!prev) continue;
         const rankValue = D.RANK[S.def(prev.id).rank] || 1;
         const score = rankValue * 100 + prev.level + (prev.recipe ? 30 : 0) + (prev.special ? 70 : 0) - (prev.locked ? 120 : 0);
         out.push({a,b,prev,score});
@@ -581,8 +531,8 @@
     const all = S.owned();
     const p0 = recipe.parents[0];
     const p1 = recipe.parents[1];
-    const list0 = all.filter(m=>m.id === p0 && !m.locked && (recipe.group !== "four" || fourParentLineageMatches(recipe,m,0)));
-    const list1 = all.filter(m=>m.id === p1 && !m.locked && (recipe.group !== "four" || fourParentLineageMatches(recipe,m,1)));
+    const list0 = all.filter(m=>m.id === p0 && !m.locked);
+    const list1 = all.filter(m=>m.id === p1 && !m.locked);
 
     if(p0 === p1){
       if(list0.length < 2) return {ok:false,label:"素材不足",cls:"",uids:[]};
@@ -652,7 +602,6 @@
     if(S.owned().length <= 2){toast("仲間が2体だけの時は配合できません");return null;}
 
     const prev = fusionPreview(a.uid,b.uid);
-    if(!prev?.available){toast(prev?.reason || "固定配合レシピがありません");return null;}
     if(prev.locked){toast(prev.reason || "特殊配合の条件を満たしていません");return null;}
 
     sanitizeFusionSkillPick(a,b);
@@ -672,7 +621,7 @@
       : `牧場送り予定（パーティ残り${Math.max(0,outcome.limit-outcome.afterParents.used)}枠に対して子は${outcome.childSize}枠）`;
     const skillLine = selected.length ? selected.map(id=>D.SKILLS?.[id]?.name || id).join(" / ") : "なし";
     const returnedEquipment = [a,b].filter(m=>m.equip).map(m=>D.ITEMS[m.equip]?.name || m.equip);
-    const recipeLine = prev.fourBody ? "4体配合" : prev.forcedRecipe ? "配合リストから選択" : "固定レシピ";
+    const recipeLine = prev.recipe ? (prev.forcedRecipe ? "配合リストから選択" : "固定レシピ") : "通常配合";
     const visual = (id,cls) => V.monsterVisual ? V.monsterVisual(id,cls) : `<div class="${cls}">${U.esc(S.def(id).emoji || "❔")}</div>`;
 
     fusionPendingConfirmation = {
@@ -767,8 +716,7 @@
       bonus:prev.bonus,
       skillPlus:selected,
       ivs:S.inheritIvs(a,b),
-      personality:Math.random() < .5 ? a.personality : b.personality,
-      lineage:[a.id,b.id]
+      personality:Math.random() < .5 ? a.personality : b.personality
     };
     if(Math.random() < .18) inherited.personality = S.randomPersonality();
 
@@ -781,7 +729,7 @@
     const child = S.makeMonster(prev.id,1,inherited);
     child.nickname = S.def(child.id).name + "＋";
     const joinResult = S.addMonster(child);
-    S.recordFusion(!!prev.special,prev.recipeKey);
+    S.recordFusion(!!prev.special);
 
     fusionPick = [];
     fusionSkillPick = [];
@@ -823,14 +771,12 @@
     pickFusion,
     setFusionPair,
     clearFusion,
-    removeFusionParent,
     doFusion,
     fusionPreview,
     toggleFusionSkill,
     clearFusionSkills,
     recommendedFusions,
     fusionRecipeEntries,
-    fourFusionProgress,
     recipeSetStatus,
     fusionRequirementText,
     fusionPartyOutcome,

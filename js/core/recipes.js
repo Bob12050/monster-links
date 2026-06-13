@@ -5,8 +5,7 @@
   P.RECIPE_GROUPS = {
     basic:{name:"基本配合",desc:"序盤〜中盤で使いやすい固定配合。まずはここから集めると進めやすいです。"},
     advanced:{name:"上位配合",desc:"B〜Sランクを狙う上位固定配合。新エリアや闘技場攻略向けです。"},
-    rare:{name:"レア特殊配合",desc:"指定モンスター2体に加えて、親の平均Lv条件を満たすと成立する特別な配合です。"},
-    four:{name:"4体配合",desc:"指定された祖父母4体から中間素材2体を作り、その系譜を持つ2体を配合する終盤向けルートです。"}
+    rare:{name:"レア特殊配合",desc:"指定モンスター2体に加えて、親の平均Lv条件を満たすと成立する特別な配合です。"}
   };
 
   P.RECIPE_LIST = [
@@ -63,14 +62,14 @@
     {group:"advanced",parents:["duskwolf","embercub"],result:"impfang",note:"魔界門への入り口"},
     {group:"advanced",parents:["impfang","ironmantis"],result:"hellknight",note:"闇の重装アタッカー"},
     {group:"advanced",parents:["hellknight","luminel"],result:"doomgazer",note:"闇の騎士と光属性から生まれる魔眼"},
-    {group:"advanced",parents:["doomgazer","venomhydra"],result:"chaoswyrm",note:"呪眼と毒竜から生まれる混沌竜"},
+    {group:"advanced",parents:["doomgazer","voiddragon"],result:"chaoswyrm",note:"混沌をまとった竜"},
     {group:"rare",parents:["abysslevia","pearlseraph"],result:"chaoswyrm",minAvg:34,note:"深海と聖光から生まれる混沌竜"},
-    {group:"rare",parents:["chaoswyrm","eclipsewolf"],result:"voiddragon",minAvg:38,note:"混沌と月蝕を重ねる虚無の禁断配合"},
+    {group:"rare",parents:["chaoswyrm","demonlord"],result:"voiddragon",minAvg:38,note:"魔界門の先にある禁断配合"},
     {group:"rare",parents:["abysslevia","chaoswyrm"],result:"demonlord",minAvg:40,note:"深淵と混沌を統べる魔王配合"},
 
 
     // v7.2 batch1 recipe additions
-    {group:"basic",parents:["plim","aquan"],result:"dewplim",note:"泡と水晶をまとった水精霊"},
+    {group:"basic",parents:["plim","aquan"],result:"dewplim",note:"水滴ぷる系への入り口"},
     {group:"basic",parents:["budbunny","leafling"],result:"reefowl",note:"自然と水辺の飛行型"},
     {group:"basic",parents:["pebblon","thornhog"],result:"cavemole",note:"洞くつの地中けもの"},
     {group:"basic",parents:["sparkbug","plim"],result:"ashimp",note:"低ランクの火小悪魔"},
@@ -96,10 +95,9 @@
     {group:"advanced",parents:["galegryph","thunderlion"],result:"stormdjinn",minAvg:38,note:"雷雲を操る光属性の精霊"},
     {group:"advanced",parents:["shellgolem","solarwyrm"],result:"aethergolem",minAvg:40,note:"天空晶を核に持つ大型ゴーレム"},
     {group:"advanced",parents:["lumenowl","galegryph"],result:"seraphalcon",minAvg:40,note:"聖光をまとう翼系の上位種"},
-    {group:"four",parents:["stormdjinn","aethergolem"],grandparents:["galegryph","thunderlion","shellgolem","solarwyrm"],result:"heavenscale",minAvg:48,note:"ゲイルグリフ＋サンダーライオン、シェルゴーレム＋ソーラーウィルムの系譜を重ねる4体配合"},
+    {group:"rare",parents:["stormdjinn","aethergolem"],result:"heavenscale",minAvg:48,note:"天空の雷と大地の核を統べる聖竜"},
     {group:"rare",parents:["heavenscale","celestiseraph"],result:"zenithdragon",minAvg:55,note:"天頂へ至る天空遺跡の守護竜"},
     {group:"rare",parents:["solarwyrm","celestiseraph"],result:"zenithdragon",minAvg:58,note:"太陽と聖天の力を重ねる別系統の天頂配合"},
-    {group:"four",parents:["seraphalcon","celestiseraph"],grandparents:["lumenowl","galegryph","astralwyrm","tidalseraph"],result:"zenithdragon",minAvg:55,note:"セラファルコンとセレスティアルセラフへ至る2系譜を重ねる4体配合"},
   ];
 
   P.RECIPES = P.RECIPE_LIST.reduce((acc,r)=>{

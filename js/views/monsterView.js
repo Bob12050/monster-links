@@ -72,7 +72,7 @@
     const canMove = S.state.party.length > 1;
     return `<article class="partyFormationCardV831 ${isLeader ? "leader" : ""}">
       <div class="partyFormationArtV831">
-        ${V.monsterVisual(m,"partyFormationFaceV831")}
+        ${V.monsterVisual(m.id,"partyFormationFaceV831")}
         <span class="partyPositionV831">${isLeader ? "LEADER" : "MEMBER"}</span>
         <span class="partySizeFlagV831">${size}枠</span>
       </div>
@@ -87,7 +87,6 @@
         <div class="monsterMetaV831">
           <span>Lv ${m.level}</span>
           <span>${U.esc(D.TYPES[d.type])}</span>
-          ${m.mutation ? `<span>${U.esc(S.mutationTitleName(m))}突然変異</span>` : ""}
           ${m.locked ? "<span>🔒 保護中</span>" : ""}
         </div>
         <div class="monsterStatusBarsV831">
@@ -113,7 +112,7 @@
     const joinAction = canJoin ? `Game.toParty('${m.uid}')` : `Game.openPartyExchange('${m.uid}')`;
     return `<article class="pastureMonsterCardV831 ${m.locked ? "locked" : ""}">
       <button class="pastureMonsterMainV831" onclick="Game.openMonsterDetail('${m.uid}','box')">
-        ${V.monsterVisual(m,"pastureMonsterFaceV831")}
+        ${V.monsterVisual(m.id,"pastureMonsterFaceV831")}
         <span class="pastureMonsterCopyV831">
           <span class="monsterCardTitleV831">
             <span><small>${U.esc(d.name)}</small><b>${U.esc(m.nickname)}</b></span>
@@ -121,7 +120,6 @@
           </span>
           <span class="monsterMetaV831">
             <span>Lv ${m.level}</span><span>${U.esc(D.TYPES[d.type])}</span><span>${size}枠</span>
-            ${m.mutation ? `<span>${U.esc(S.mutationTitleName(m))}突然変異</span>` : ""}
             ${m.locked ? "<span>🔒</span>" : ""}
           </span>
           <span class="pastureStatsV831">HP ${m.hp}/${s.hp}　攻 ${s.atk}　守 ${s.def}　速 ${s.spd}</span>
@@ -171,7 +169,7 @@
           </div>
         </div>
         ${leader ? `<div class="monsterCampLeaderV831">
-          ${V.monsterVisual(leader,"monsterCampLeaderArtV831")}
+          ${V.monsterVisual(leader.id,"monsterCampLeaderArtV831")}
           <span><small>現在の先頭</small><b>${U.esc(leader.nickname)}</b><em>${U.esc(leaderDef.name)} / Lv ${leader.level}</em></span>
         </div>` : ""}
       </section>

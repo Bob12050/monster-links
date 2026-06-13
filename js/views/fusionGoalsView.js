@@ -21,57 +21,12 @@
     </div>`;
   }
 
-  function fourGrandparentHtml(item){
-    const known = !!S.state.dex?.discovered?.[item.id];
-    return `<div class="fourGoalGrandparentV1 ${item.ready ? "ready" : "missing"}">
-      ${known ? V.monsterInline(item.id,"goalMaterialFaceSmallV832") : `<span class="goalMaterialFaceSmallV832">？</span>`}
-      <span><b>${U.esc(knownMaterialName(item.id))}</b><small>${item.ready ? "所持" : item.locked ? `保護中 ${item.locked}` : "不足"}</small></span>
-    </div>`;
-  }
-
-  function fourBranchHtml(route,branch){
-    const parentKnown = !!S.state.dex?.discovered?.[branch.parentId];
-    let state = "未作成";
-    if(branch.ready) state = `系譜適合・Lv${branch.best?.level || 1}`;
-    else if(branch.compatibleLocked) state = `系譜適合・保護中 ${branch.compatibleLocked}体`;
-    else if(branch.wrongLineage) state = `系譜違い ${branch.wrongLineage}体`;
-    return `<div class="fourGoalBranchV1 ${branch.ready ? "ready" : ""}">
-      <div class="fourGoalGrandparentsV1">${branch.grandparents.map(fourGrandparentHtml).join('<span class="fourGoalPlusV1">＋</span>')}</div>
-      <span class="fourGoalArrowV1">↓</span>
-      <div class="fourGoalIntermediateV1">
-        ${parentKnown ? V.monsterInline(branch.parentId,"goalMaterialFaceV832") : `<span class="goalMaterialFaceV832">？</span>`}
-        <span><b>${U.esc(knownMaterialName(branch.parentId))}</b><small>${U.esc(state)}</small></span>
-      </div>
-      ${!branch.ready && branch.intermediateRecipe ? `<button onclick="Game.openFourFusionStep('${route.recipe.recipeKey}',${branch.index})">この中間素材を作る</button>` : ""}
-    </div>`;
-  }
-
-  function fourGoalRouteHtml(info,route,compact){
-    if(compact){
-      return `<div class="goalRouteV832 ${route.key}">
-        <div class="fourGoalCompactV1"><b>4体配合ナビ</b><span>${route.four.progress}/${route.four.required}段階</span></div>
-        <div class="goalRouteStateV832"><span>${U.esc(route.label)}</span><small>2つの祖父母系譜から中間素材を作成</small></div>
-      </div>`;
-    }
-    return `<div class="goalRouteV832 ${route.key} fourGoalNavigatorV1">
-      <div class="fourGoalNavigatorHeadV1"><b>4体配合ナビ</b><span>${route.four.progress}/${route.four.required}段階</span></div>
-      <div class="fourGoalBranchesV1">${route.four.branches.map(branch=>fourBranchHtml(route,branch)).join("")}</div>
-      <div class="fourGoalFinalV1">
-        <span>${route.four.branches.map(branch=>U.esc(knownMaterialName(branch.parentId))).join(" ＋ ")}</span>
-        <b>→ ${U.esc(info.def.name)}</b>
-        <small>${U.esc(route.label)}</small>
-        ${route.four.branches.every(branch=>branch.ready) ? `<button class="gold" onclick="Game.openFourFusionStep('${route.recipe.recipeKey}','final')">最終配合をセット</button>` : ""}
-      </div>
-    </div>`;
-  }
-
   function goalRouteHtml(info,compact=false){
     if(!info.best){
-      return `<div class="goalNoRouteV832">固定配合ルートはありません。探索やスカウトで仲間にしましょう。</div>`;
+      return `<div class="goalNoRouteV832">固定配合ルートはありません。スカウトや通常配合で探しましょう。</div>`;
     }
     const route = info.best;
-    if(route.four) return fourGoalRouteHtml(info,route,compact);
-    const requirement = window.MonsterLinksGame.fusionRequirementText?.(info.id,route.recipe) || "条件なし";
+    const requirement = window.MonsterLinksGame.fusionRequirementText?.(info.id,route.recipe.minAvg) || "条件なし";
     return `<div class="goalRouteV832 ${route.key}">
       <div class="goalRouteMaterialsV832">${route.materials.map(material=>goalMaterialHtml(material,compact)).join('<span class="goalPlusV832">＋</span>')}</div>
       <div class="goalRouteStateV832">
@@ -104,7 +59,7 @@
   }
 
   function fusionGoalCardHtml(info,index){
-    return `<article class="fusionGoalCardV832 ${info.best?.four ? "fourGoalCardV1" : ""} ${info.complete ? "complete" : ""}">
+    return `<article class="fusionGoalCardV832 ${info.complete ? "complete" : ""}">
       <div class="fusionGoalTargetV832">
         ${V.monsterVisual(info.id,"fusionGoalArtV832")}
         <div>
