@@ -22,6 +22,7 @@
   let fusionSkillPick = [];
   let fusionForcedRecipeKey = "";
   let fusionPendingConfirmation = null;
+  let fusionBirthMessage = "";
   let fusionRecipeFilters = {query:"",size:"all",status:"all"};
 
   function recipeKeyFromIds(a,b){
@@ -743,6 +744,52 @@
     openFusionConfirmation(context);
   }
 
+  function showFusionBirth(child,joinResult){
+    const V = window.MonsterLinksViews || {};
+    const def = S.def(child.id);
+    const visual = V.monsterVisual
+      ? V.monsterVisual(child,"fusionBirthMonsterV827")
+      : `<div class="fusionBirthMonsterV827">${U.esc(def.emoji || "❔")}</div>`;
+    const destination = joinResult.destination === "party" ? "パーティに加わりました" : "牧場へ送りました";
+    fusionBirthMessage = `${child.nickname}が生まれました！ ${destination}。`;
+
+    let modal = document.getElementById("modal");
+    if(!modal){
+      modal = document.createElement("div");
+      modal.id = "modal";
+      document.body.appendChild(modal);
+    }
+    modal.innerHTML = `
+      <div class="modalBg fusionBirthBackdropV827">
+        <section class="fusionBirthV827" role="dialog" aria-modal="true" aria-labelledby="fusionBirthTitleV827">
+          <div class="fusionBirthSkyV827"></div>
+          <div class="fusionBirthParticlesV827" aria-hidden="true"></div>
+          <div class="fusionBirthSealV827" aria-hidden="true">
+            <i></i><i></i><i></i>
+            <span>LINK</span>
+          </div>
+          <div class="fusionBirthFlashV827" aria-hidden="true"></div>
+          <div class="fusionBirthResultV827">
+            <small>NEW MONSTER</small>
+            <div class="fusionBirthArtV827">${visual}</div>
+            <h2 id="fusionBirthTitleV827">${U.esc(child.nickname)}</h2>
+            <p>${U.esc(def.name)} / ${U.esc(def.rank)}ランク / Lv1</p>
+            <b>${U.esc(destination)}</b>
+            <button class="gold fusionBirthContinueV827" onclick="Game.finishFusionBirth()">仲間を迎える</button>
+          </div>
+        </section>
+      </div>`;
+    G.playSe?.("mutation");
+    G.haptic?.("reward");
+  }
+
+  function finishFusionBirth(){
+    const message = fusionBirthMessage;
+    fusionBirthMessage = "";
+    if(G.closeModal) G.closeModal();
+    if(message) toast(message);
+  }
+
   function confirmFusion(){
     const pending = fusionPendingConfirmation;
     if(!pending) return;
@@ -788,7 +835,7 @@
     fusionForcedRecipeKey = "";
     S.save();
     render();
-    toast(`${child.nickname}が生まれました！${joinResult.destination === "party" ? " パーティに加わりました。" : " 枠不足のため牧場へ送りました。"}`);
+    showFusionBirth(child,joinResult);
   }
 
   function cancelFusionConfirmation(ev){
@@ -842,6 +889,7 @@
     setFusionFromRecipe,
     openFusionRecipeList,
     confirmFusion,
+    finishFusionBirth,
     cancelFusionConfirmation,
     _clearFusionPickNoRender
   });

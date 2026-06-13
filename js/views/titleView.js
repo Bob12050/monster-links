@@ -36,7 +36,7 @@
       : "新しい旅立ちへ";
 
     return `
-    <main class="titleScreenV82 titleScreenV817" style="--title-bg:url('${U.esc(backgroundAssetUrl(lastStage?.image || "assets/images/stages/meadow.png"))}')">
+    <main class="titleScreenV82 titleScreenV817" style="--title-bg:url('${U.esc(backgroundAssetUrl(lastStage?.image || "assets/images/stages/meadow_v827.jpg"))}')">
       <div class="titleSkyV82"></div>
       <div class="titleMistV82"></div>
       <section class="titleWorldV82">

@@ -6210,7 +6210,7 @@ button:hover:before{
   background:
     linear-gradient(90deg,rgba(8,19,34,.95) 0%,rgba(10,25,42,.78) 48%,rgba(8,16,31,.28) 100%),
     linear-gradient(0deg,rgba(8,17,31,.88),transparent 70%),
-    url("../assets/images/stages/meadow.png") center/cover;
+    url("../assets/images/stages/meadow_v827.jpg") center/cover;
   filter:saturate(.82);
 }
 .monsterCampCopyV831,.monsterCampLeaderV831{position:relative;z-index:1}
@@ -6496,7 +6496,7 @@ button:hover:before{
 @media(max-width:580px){
   .monsterBaseV831{gap:10px}
   .monsterCampV831{min-height:350px;grid-template-columns:1fr;padding:17px}
-  .monsterCampBackdropV831{background:linear-gradient(0deg,rgba(8,17,31,.97) 0%,rgba(8,17,31,.5) 75%),url("../assets/images/stages/meadow.png") center/cover}
+  .monsterCampBackdropV831{background:linear-gradient(0deg,rgba(8,17,31,.97) 0%,rgba(8,17,31,.5) 75%),url("../assets/images/stages/meadow_v827.jpg") center/cover}
   .monsterCampCopyV831{align-self:end;padding-top:148px}
   .monsterCampCopyV831 h1{font-size:25px}
   .monsterCampCopyV831 > p{font-size:10px}
@@ -10699,3 +10699,210 @@ body.mlReducedMotionV817 .rewardDexNewV818:after,
 body.mlReducedMotionV817 .rewardPlayerRankV819.rankUp:after{
   animation:none !important;
 }
+
+/* =========================================================
+   v8.6-A.27 Premium base/stage art and fusion birth sequence
+   ========================================================= */
+.homeHeroV821{background-position:center 42%}
+
+.fusionBirthBackdropV827{
+  z-index:1400;
+  display:grid;
+  place-items:center;
+  padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom));
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(55,230,255,.2),transparent 34%),
+    linear-gradient(180deg,rgba(4,9,29,.88),rgba(3,5,18,.97));
+}
+.fusionBirthV827{
+  position:relative;
+  isolation:isolate;
+  width:min(100%,480px);
+  min-height:min(720px,calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(125,227,255,.48);
+  border-radius:28px;
+  background:
+    linear-gradient(180deg,rgba(14,42,73,.58),rgba(5,12,31,.95)),
+    url("../assets/images/backgrounds/base_camp_v827.jpg") center 44%/cover;
+  box-shadow:
+    0 0 0 2px rgba(9,21,52,.95),
+    0 0 0 4px rgba(204,161,67,.7),
+    0 28px 80px rgba(0,0,0,.7),
+    inset 0 0 90px rgba(20,192,255,.14);
+}
+.fusionBirthV827::before,.fusionBirthV827::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.fusionBirthV827::before{
+  z-index:-1;
+  background:
+    linear-gradient(90deg,rgba(2,6,22,.85),transparent 18% 82%,rgba(2,6,22,.85)),
+    linear-gradient(0deg,rgba(2,5,20,.92),transparent 55%);
+}
+.fusionBirthV827::after{
+  border:8px solid transparent;
+  border-image:linear-gradient(135deg,rgba(255,222,130,.85),transparent 22% 78%,rgba(99,226,255,.78)) 1;
+  opacity:.75;
+}
+.fusionBirthSkyV827{
+  position:absolute;
+  inset:-25%;
+  z-index:0;
+  background:conic-gradient(from 0deg,transparent,rgba(81,223,255,.13),transparent 18%,rgba(255,215,111,.12),transparent 38%);
+  animation:fusionBirthSkyV827 5.4s linear infinite;
+}
+.fusionBirthParticlesV827{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  opacity:0;
+  background:
+    radial-gradient(circle at 18% 76%,#fff 0 2px,transparent 3px),
+    radial-gradient(circle at 78% 69%,#7eeaff 0 3px,transparent 4px),
+    radial-gradient(circle at 28% 32%,#ffd97d 0 2px,transparent 3px),
+    radial-gradient(circle at 68% 22%,#fff 0 2px,transparent 3px),
+    radial-gradient(circle at 88% 42%,#7eeaff 0 2px,transparent 3px);
+  background-size:180px 220px,210px 170px,160px 190px,230px 210px,190px 160px;
+  animation:fusionBirthParticlesV827 2.2s .15s ease-out forwards;
+}
+.fusionBirthSealV827{
+  position:absolute;
+  left:50%;
+  top:44%;
+  z-index:3;
+  width:220px;
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  translate:-50% -50%;
+  scale:.16;
+  opacity:0;
+  border:2px solid rgba(149,239,255,.9);
+  border-radius:50%;
+  color:#fff5c7;
+  text-shadow:0 0 14px #61dcff;
+  box-shadow:0 0 25px #47dfff,inset 0 0 35px rgba(85,226,255,.35);
+  animation:fusionBirthSealInV827 1.35s .12s cubic-bezier(.2,.85,.2,1) forwards;
+}
+.fusionBirthSealV827::before,.fusionBirthSealV827::after,.fusionBirthSealV827 i{
+  content:"";
+  position:absolute;
+  inset:12%;
+  border:1px solid rgba(255,222,128,.75);
+  transform:rotate(45deg);
+}
+.fusionBirthSealV827::after{inset:24%;border-color:rgba(118,235,255,.9)}
+.fusionBirthSealV827 i:nth-child(1){transform:rotate(15deg)}
+.fusionBirthSealV827 i:nth-child(2){transform:rotate(75deg)}
+.fusionBirthSealV827 i:nth-child(3){inset:32%;border-radius:50%;transform:none}
+.fusionBirthSealV827 span{
+  position:relative;
+  z-index:1;
+  font:800 14px/1 system-ui,sans-serif;
+  letter-spacing:.34em;
+  padding-left:.34em;
+}
+.fusionBirthFlashV827{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+  opacity:0;
+  background:#fff;
+  animation:fusionBirthFlashV827 .68s 1.2s ease-out both;
+}
+.fusionBirthResultV827{
+  position:relative;
+  z-index:6;
+  width:100%;
+  align-self:end;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:80px 22px 28px;
+  opacity:0;
+  transform:translateY(24px);
+  animation:fusionBirthResultInV827 .65s 1.48s cubic-bezier(.2,.85,.2,1) forwards;
+}
+.fusionBirthResultV827 small{
+  color:#8cecff;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.24em;
+  text-shadow:0 0 10px #23cfff;
+}
+.fusionBirthArtV827{
+  width:min(72vw,300px);
+  height:min(72vw,300px);
+  display:grid;
+  place-items:center;
+  margin:-4px 0 -8px;
+  filter:drop-shadow(0 18px 18px rgba(0,0,0,.55)) drop-shadow(0 0 20px rgba(101,224,255,.55));
+}
+.fusionBirthMonsterV827,.fusionBirthMonsterV827 img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+.fusionBirthResultV827 h2{
+  margin:0;
+  color:#fff9d7;
+  font-size:clamp(26px,8vw,38px);
+  line-height:1.15;
+  text-align:center;
+  text-shadow:0 3px 0 #56360d,0 0 18px rgba(255,215,103,.6);
+}
+.fusionBirthResultV827 p{margin:7px 0 2px;color:#d9f7ff;font-weight:800}
+.fusionBirthResultV827 > b{color:#ffe19a;font-size:13px}
+.fusionBirthContinueV827{
+  width:min(100%,310px);
+  min-height:52px;
+  margin-top:18px;
+  font-size:16px;
+  box-shadow:0 9px 22px rgba(0,0,0,.38),0 0 18px rgba(255,201,67,.22);
+}
+@keyframes fusionBirthSkyV827{to{transform:rotate(360deg)}}
+@keyframes fusionBirthParticlesV827{
+  0%{opacity:0;transform:translateY(40px) scale(.8)}
+  35%{opacity:1}
+  100%{opacity:.75;transform:translateY(-26px) scale(1.08)}
+}
+@keyframes fusionBirthSealInV827{
+  0%{opacity:0;scale:.16;transform:rotate(-90deg)}
+  48%{opacity:1;scale:1.08;transform:rotate(0)}
+  100%{opacity:0;scale:1.55;transform:rotate(60deg)}
+}
+@keyframes fusionBirthFlashV827{
+  0%,100%{opacity:0}
+  34%{opacity:.96}
+}
+@keyframes fusionBirthResultInV827{to{opacity:1;transform:translateY(0)}}
+@media(max-height:680px){
+  .fusionBirthV827{min-height:calc(100dvh - 20px)}
+  .fusionBirthResultV827{padding:48px 18px 18px}
+  .fusionBirthArtV827{width:220px;height:220px}
+  .fusionBirthContinueV827{min-height:46px;margin-top:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .fusionBirthSkyV827,.fusionBirthParticlesV827,.fusionBirthSealV827,
+  .fusionBirthFlashV827,.fusionBirthResultV827{animation:none!important}
+  .fusionBirthSealV827,.fusionBirthFlashV827{display:none}
+  .fusionBirthParticlesV827{opacity:.55}
+  .fusionBirthResultV827{opacity:1;transform:none}
+}
+body.mlReducedMotionV817 .fusionBirthSkyV827,
+body.mlReducedMotionV817 .fusionBirthParticlesV827,
+body.mlReducedMotionV817 .fusionBirthSealV827,
+body.mlReducedMotionV817 .fusionBirthFlashV827,
+body.mlReducedMotionV817 .fusionBirthResultV827{animation:none!important}
+body.mlReducedMotionV817 .fusionBirthSealV827,
+body.mlReducedMotionV817 .fusionBirthFlashV827{display:none}
+body.mlReducedMotionV817 .fusionBirthParticlesV827{opacity:.55}
+body.mlReducedMotionV817 .fusionBirthResultV827{opacity:1;transform:none}

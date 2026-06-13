@@ -20,6 +20,7 @@
     const quest = S.questCounts();
     const fusionQuestClaimable = D.QUESTS.filter(q=>q.group === "fusionGoal" && S.questClaimable(q)).length;
     const lastStage = D.STAGES.find(stage=>stage.id === state.lastStage) || D.STAGES[0];
+    const baseCampBackground = "assets/images/backgrounds/base_camp_v827.jpg";
     const arenaClears = Object.values(state.arena?.cleared || {}).filter(Boolean).length;
     const recipeTotal = (D.RECIPE_LIST || Object.keys(D.RECIPES || {})).length;
     const recipeDone = Object.keys(state.records?.completedRecipes || {}).filter(key=>state.records.completedRecipes[key]).length;
@@ -28,7 +29,7 @@
 
     return `
     <main class="homeV82 homeV817 homeV821">
-      <section class="homeHeroV821" style="--home-bg:url('${U.esc(backgroundAssetUrl(lastStage?.image || "assets/images/stages/meadow.png"))}')">
+      <section class="homeHeroV821" style="--home-bg:url('${U.esc(backgroundAssetUrl(baseCampBackground))}')">
         <div class="homeHeroShadeV821"></div>
         <div class="homeHeroLightV821"></div>
 

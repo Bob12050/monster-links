@@ -87,7 +87,7 @@
         <p class="tiny">PNGを同じID名で置くと、ゲーム側はPNGを優先表示します。PNGがない場合は同梱SVG、さらに失敗した場合は絵文字に戻ります。</p>
         <div class="assetPathGrid">
           <div><b>モンスター</b><code>assets/images/monsters/plim.png</code></div>
-          <div><b>ステージ</b><code>assets/images/stages/meadow.png</code></div>
+          <div><b>ステージ</b><code>assets/images/stages/meadow_v827.jpg</code></div>
           <div><b>装備</b><code>assets/images/items/force_ring.png</code></div>
         </div>
       </div>
