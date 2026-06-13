@@ -6,6 +6,15 @@
   const S = window.MonsterLinksState;
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
+  function backgroundAssetUrl(src){
+    if(!globalThis.document?.baseURI) return src;
+    try{
+      return new URL(src,document.baseURI).href;
+    }catch{
+      return src;
+    }
+  }
+
   function homeHtml(){
     const state = S.state;
     const lead = state.party[0];
@@ -22,7 +31,7 @@
 
     return `
     <main class="homeV82">
-      <section class="homeCampV82" style="--home-bg:url('${U.esc(lastStage?.image || "assets/images/stages/meadow.png")}')">
+      <section class="homeCampV82" style="--home-bg:url('${U.esc(backgroundAssetUrl(lastStage?.image || "assets/images/stages/meadow.png"))}')">
         <div class="homeCampShadeV82"></div>
         <div class="homeWelcomeV82">
           <span class="homeChapterV82">MONSTER LINKS BASE CAMP</span>

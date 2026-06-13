@@ -6,6 +6,15 @@
   const S = window.MonsterLinksState;
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
+  function backgroundAssetUrl(src){
+    if(!globalThis.document?.baseURI) return src;
+    try{
+      return new URL(src,document.baseURI).href;
+    }catch{
+      return src;
+    }
+  }
+
   function titleHtml(){
     const state = S.state;
     const dex = S.dexCounts();
@@ -20,7 +29,7 @@
     const lastStage = D.STAGES.find(stage=>stage.id === state.lastStage) || D.STAGES[0];
 
     return `
-    <main class="titleScreenV82" style="--title-bg:url('${U.esc(lastStage?.image || "assets/images/stages/meadow.png")}')">
+    <main class="titleScreenV82" style="--title-bg:url('${U.esc(backgroundAssetUrl(lastStage?.image || "assets/images/stages/meadow.png"))}')">
       <div class="titleSkyV82"></div>
       <div class="titleMistV82"></div>
       <section class="titleWorldV82">

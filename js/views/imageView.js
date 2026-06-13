@@ -5,6 +5,13 @@
   const U = window.MonsterLinksUtils;
   const S = window.MonsterLinksState;
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
+  const SVG_ONLY_ASSETS = new Set([
+    "assets/images/items/sky_shard.svg",
+    "assets/images/items/aether_wing.svg",
+    "assets/images/items/zenith_core.svg",
+    "assets/images/stages/sky_ruins.svg",
+    "assets/images/stages/arena.svg"
+  ]);
 
   function assetErrorInline(){
     return "if(this.dataset.altSrc){this.src=this.dataset.altSrc;this.removeAttribute('data-alt-src');}else{this.parentElement.classList.add('assetFallback');this.parentElement.textContent=this.parentElement.dataset.fallback;}";
@@ -12,10 +19,20 @@
 
   function pngPreferred(src){
     if(!src) return {primary:"", fallback:""};
+    if(SVG_ONLY_ASSETS.has(src)) return {primary:src, fallback:""};
     if(/\.svg(\?.*)?$/i.test(src)){
       return {primary:src.replace(/\.svg(\?.*)?$/i,".png$1"), fallback:src};
     }
     return {primary:src, fallback:""};
+  }
+
+  function assetUrl(src){
+    if(!src) return "";
+    try{
+      return new URL(src,document.baseURI).href;
+    }catch{
+      return src;
+    }
   }
 
   function imgTag(srcInfo,alt){
@@ -101,7 +118,7 @@
   function stageStyle(st){
     if(!st || !st.image) return "";
     const srcInfo = pngPreferred(st.image);
-    return `style="--stage-bg:url('${U.esc(srcInfo.primary)}');--stage-bg-fallback:url('${U.esc(srcInfo.fallback || srcInfo.primary)}')"`;
+    return `style="--stage-bg:url('${U.esc(assetUrl(srcInfo.primary))}');--stage-bg-fallback:url('${U.esc(assetUrl(srcInfo.fallback || srcInfo.primary))}')"`;
   }
 
   function stageThumb(st,className="stageThumb"){

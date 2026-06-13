@@ -1,0 +1,274 @@
+{
+  "viewport": "390x844",
+  "stagePresses": [
+    {
+      "stageId": "meadow",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 2,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "cave",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 2,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "brook",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 1,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "volcano",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 1,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "tower",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 1,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "snowfield",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 2,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "thunder_ruins",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 2,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "prism_sanctuary",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 2,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "poison_bog",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 1,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "machine_city",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 1,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "deep_sea_temple",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 1,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "demon_gate",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 1,
+      "activeShiftY": 1
+    },
+    {
+      "stageId": "sky_ruins",
+      "selected": true,
+      "exploreEnabled": true,
+      "activeShiftX": 1,
+      "activeShiftY": 1
+    }
+  ],
+  "touchStagePresses": [
+    {
+      "stageId": "sky_ruins",
+      "selected": true
+    },
+    {
+      "stageId": "demon_gate",
+      "selected": true
+    },
+    {
+      "stageId": "deep_sea_temple",
+      "selected": true
+    },
+    {
+      "stageId": "machine_city",
+      "selected": true
+    },
+    {
+      "stageId": "poison_bog",
+      "selected": true
+    },
+    {
+      "stageId": "prism_sanctuary",
+      "selected": true
+    },
+    {
+      "stageId": "thunder_ruins",
+      "selected": true
+    },
+    {
+      "stageId": "snowfield",
+      "selected": true
+    },
+    {
+      "stageId": "tower",
+      "selected": true
+    },
+    {
+      "stageId": "volcano",
+      "selected": true
+    },
+    {
+      "stageId": "brook",
+      "selected": true
+    },
+    {
+      "stageId": "cave",
+      "selected": true
+    },
+    {
+      "stageId": "meadow",
+      "selected": true
+    }
+  ],
+  "navPresses": [
+    {
+      "expected": "home",
+      "actual": "home"
+    },
+    {
+      "expected": "stage",
+      "actual": "stage"
+    },
+    {
+      "expected": "monsters",
+      "actual": "monsters"
+    },
+    {
+      "expected": "menu",
+      "actual": "menu"
+    }
+  ],
+  "views": [
+    {
+      "view": "home",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "stage",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "monsters",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "dex",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "fusion",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "shop",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "settings",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "menu",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "arena",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "quest",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    },
+    {
+      "view": "help",
+      "bodyScroll": 0,
+      "mainPresent": true,
+      "mainOverflowY": "auto",
+      "mainScrollable": true,
+      "tabsVisible": true
+    }
+  ],
+  "title": {
+    "bodyScroll": 0,
+    "mainPresent": true,
+    "mainOverflowY": "auto",
+    "startWorked": true
+  },
+  "modal": {
+    "backdropOverflow": "hidden",
+    "modalOverflowY": "auto",
+    "fitsViewport": true
+  },
+  "missingResources": [],
+  "errors": [],
+  "exploreEnabled": true,
+  "battleStarted": true,
+  "ok": true
+}
