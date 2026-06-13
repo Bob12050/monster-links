@@ -8,158 +8,84 @@
 
   function backgroundAssetUrl(src){
     if(!globalThis.document?.baseURI) return src;
-    try{
-      return new URL(src,document.baseURI).href;
-    }catch{
-      return src;
-    }
+    try{return new URL(src,document.baseURI).href;}catch{return src;}
   }
 
   function homeHtml(){
     const state = S.state;
     const lead = state.party[0];
     const leadDef = lead ? S.def(lead.id) : null;
-    const leadStats = lead ? S.stats(lead) : null;
     const goal = V.nextGoal();
     const dex = S.dexCounts();
     const quest = S.questCounts();
     const fusionQuestClaimable = D.QUESTS.filter(q=>q.group === "fusionGoal" && S.questClaimable(q)).length;
     const lastStage = D.STAGES.find(stage=>stage.id === state.lastStage) || D.STAGES[0];
     const arenaClears = Object.values(state.arena?.cleared || {}).filter(Boolean).length;
-    const bagCount = Object.values(state.bag || {}).reduce((sum,count)=>sum + count,0);
     const recipeTotal = (D.RECIPE_LIST || Object.keys(D.RECIPES || {})).length;
-    const recipeDone = Object.keys(state.records?.completedRecipes || {}).filter(k=>state.records.completedRecipes[k]).length;
+    const recipeDone = Object.keys(state.records?.completedRecipes || {}).filter(key=>state.records.completedRecipes[key]).length;
+    const rankRewards = S.playerRankRewardInfo ? S.playerRankRewardInfo() : {claimable:0};
     const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
-    const pr = S.playerRankInfo ? S.playerRankInfo() : null;
-    const rankRewards = S.playerRankRewardInfo ? S.playerRankRewardInfo() : null;
 
     return `
-    <main class="homeV82 homeV817">
-      <section class="homeCampV82" style="--home-bg:url('${U.esc(backgroundAssetUrl(lastStage?.image || "assets/images/stages/meadow.png"))}')">
-        <div class="homeCampShadeV82"></div>
-        <div class="homeWelcomeV82">
-          <span class="homeChapterV82">MONSTER LINKS BASE CAMP</span>
-          <h1>リンクスの拠点</h1>
-          <p>${lastStage ? `${U.esc(lastStage.name)}への道が開かれています。` : "次の冒険に備えましょう。"}</p>
-          <button class="primary homeAdventureV82" onclick="Game.startLastStage()">
-            <span>前回の場所へ出発</span>
-            <small>${lastStage ? U.esc(lastStage.name) : "冒険地"}</small>
-          </button>
+    <main class="homeV82 homeV817 homeV821">
+      <section class="homeHeroV821" style="--home-bg:url('${U.esc(backgroundAssetUrl(lastStage?.image || "assets/images/stages/meadow.png"))}')">
+        <div class="homeHeroShadeV821"></div>
+        <div class="homeHeroLightV821"></div>
+
+        <div class="homeHeroHeadingV821">
+          <span>MONSTER LINKS BASE CAMP</span>
+          <b>リンクスの拠点</b>
         </div>
-        <div class="homeLeaderV82">
-          ${lead ? V.monsterVisual(lead,"homeLeaderArtV82") : `<div class="homeLeaderArtV82">?</div>`}
-          <div class="homeLeaderNameV82">
+
+        <div class="homeLeaderStageV821">
+          ${lead ? V.monsterVisual(lead,"homeLeaderArtV821") : `<div class="homeLeaderArtV821">?</div>`}
+          <div class="homeLeaderPlateV821">
             <small>LEADER</small>
             <b>${lead ? U.esc(lead.nickname || leadDef.name) : "仲間がいません"}</b>
-            ${lead ? `<span>Lv ${lead.level}・${U.esc(D.TYPES[leadDef.type])}</span>` : ""}
+            ${lead ? `<span>Lv ${lead.level} / ${U.esc(D.TYPES[leadDef.type])}</span>` : ""}
           </div>
         </div>
-      </section>
 
-      <section class="homeGuideV82">
-        <div class="homeGuideIconV82">${goal.icon}</div>
-        <div>
-          <span>冒険案内</span>
-          <b>${U.esc(goal.title)}</b>
-          <p>${U.esc(goal.text)}</p>
-        </div>
-        <button class="${goal.cls}" onclick="Game.setView('${goal.view}')">${U.esc(goal.button)}</button>
-      </section>
-
-      ${pr ? `
-      <section class="homeRankCardV819">
-        <div class="homeRankMainV819">
-          <span class="homeRankLabelV819">ADVENTURER RANK</span>
-          <b class="homeRankValueV819">冒険者Rank ${pr.rank}</b>
-          <small class="homeRankRemainV819">${
-            pr.isMax ? "最高ランク到達！"
-            : pr.remaining <= 60 ? `もう少しで冒険者Rankアップ！（あと ${pr.remaining} EXP）`
-            : pr.rank <= 2 ? "冒険を重ねてRankを上げよう"
-            : `次のRankまで ${pr.remaining} EXP`
-          }</small>
-        </div>
-        <div class="homeRankBarWrapV819">
-          <div class="homeRankBarV819" role="progressbar" aria-valuenow="${Math.round(pr.pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${U.clamp(pr.pct,0,100)}%"></i></div>
-          <span class="homeRankPctV819">${pr.isMax ? "MAX" : `${pr.exp} / ${pr.need}`}</span>
-        </div>
-        <button class="homeRankRewardButtonV820 ${rankRewards?.claimable ? "claimable" : ""}" onclick="Game.openPlayerRankRewards()">
-          <span>ランク報酬</span>
-          <b>${rankRewards?.claimable ? `${rankRewards.claimable}件 受取可能` : "報酬一覧"}</b>
+        <button class="homeAdventureV821" onclick="Game.startLastStage()">
+          <span class="homeAdventureGemV821">${ico("map")}</span>
+          <span><small>ADVENTURE</small><b>冒険へ</b><em>${U.esc(lastStage?.name || "冒険地を選ぶ")}</em></span>
+          <i>›</i>
         </button>
-      </section>` : ""}
+
+        <div class="homeHeroQuickV821">
+          <button class="${rankRewards.claimable ? "claimable" : ""}" onclick="Game.openPlayerRankRewards()">
+            <span>${ico("star")}</span><b>ランク報酬</b><small>${rankRewards.claimable ? `${rankRewards.claimable}件受取` : "一覧"}</small>
+          </button>
+          <button class="${quest.claimable ? "claimable" : ""}" onclick="Game.setView('quest')">
+            <span>${ico("scroll")}</span><b>任務</b><small>${fusionQuestClaimable ? `${fusionQuestClaimable}件 研究報酬` : quest.claimable ? `${quest.claimable}件受取` : "確認"}</small>
+          </button>
+        </div>
+      </section>
+
+      <button class="homeMissionRibbonV821" onclick="Game.setView('${goal.view}')">
+        <span class="homeMissionIconV821">${ico("star")}</span>
+        <span><small>NEXT MISSION</small><b>${U.esc(goal.title)}</b><em>${U.esc(goal.text)}</em></span>
+        <i>›</i>
+      </button>
 
       ${V.homeFusionGoalHtml ? V.homeFusionGoalHtml() : ""}
 
-      <section class="hubWorldV82">
-        <div class="hubHeadingV82">
-          <div>
-            <span>BASE FACILITIES</span>
-            <h2>施設を選ぶ</h2>
-          </div>
-          <small>行きたい場所をタップ</small>
-        </div>
-        <div class="hubGridV82">
-          <button class="hubPlaceV82 hubAdventurePlaceV82" onclick="Game.setView('stage')">
-            <span class="hubIconV82">${ico("map")}</span>
-            <span><b>冒険門</b><small>探索とボス戦へ</small></span>
-            <em>${state.stageUnlocked} 地域</em>
-          </button>
-          <button class="hubPlaceV82 hubPasturePlaceV82" onclick="Game.setView('monsters')">
-            <span class="hubIconV82">${ico("camp")}</span>
-            <span><b>モンスター牧場</b><small>編成・育成・装備</small></span>
-            <em>${state.party.length + state.box.length} 体</em>
-          </button>
-          <button class="hubPlaceV82 hubFusionPlaceV82" onclick="Game.setView('fusion')">
-            <span class="hubIconV82">${ico("fusion")}</span>
-            <span><b>配合研究所</b><small>新しい仲間を作る</small></span>
-            <em>${state.records?.fusions || 0} 回</em>
-          </button>
-          <button class="hubPlaceV82 hubArenaPlaceV82" onclick="Game.setView('arena')">
-            <span class="hubIconV82">${ico("swords")}</span>
-            <span><b>闘技場</b><small>連戦で腕試し</small></span>
-            <em>${arenaClears} 制覇</em>
-          </button>
-          <button class="hubPlaceV82 hubQuestPlaceV82 ${quest.claimable ? "hasNoticeV82" : ""}" onclick="Game.setView('quest')">
-            <span class="hubIconV82">${ico("scroll")}</span>
-            <span><b>任務掲示板</b><small>目標と報酬を確認</small></span>
-            <em>${fusionQuestClaimable ? `${fusionQuestClaimable} 件 研究報酬` : quest.claimable ? `${quest.claimable} 件受取` : "確認"}</em>
-          </button>
-          <button class="hubPlaceV82 hubShopPlaceV82" onclick="Game.setView('shop')">
-            <span class="hubIconV82">${ico("bag")}</span>
-            <span><b>旅人の商店</b><small>道具と装備を準備</small></span>
-            <em>${bagCount} 個</em>
-          </button>
-        </div>
-      </section>
-
-      <section class="homeFooterGridV82">
-        <div class="homePartyPanelV82">
-          <div class="homePanelTitleV82">
-            <span>パーティ状況</span>
-            <button class="ghost" onclick="Game.setView('monsters')">編成を見る</button>
-          </div>
-          ${lead ? `
-            <div class="homePartyStatusV82">
-              <div><span>HP</span><b>${lead.hp} / ${leadStats.hp}</b></div>
-              <div><span>MP</span><b>${lead.mp} / ${leadStats.mp}</b></div>
-              <div><span>使用枠</span><b>${S.partySizeText ? S.partySizeText() : state.party.length}</b></div>
-            </div>
-          ` : `<div class="empty">パーティを編成してください</div>`}
-          <button class="green homeHealV82" onclick="Game.fullHeal(true)">パーティを全回復</button>
-        </div>
-        <div class="homeRecordPanelV82">
-          <div class="homePanelTitleV82"><span>冒険の記録</span></div>
-          <button onclick="Game.setView('dex')"><span>図鑑</span><b>${dex.discovered}<small> / ${dex.total}</small></b></button>
-          <button onclick="Game.setView('quest')"><span>達成任務</span><b>${quest.claimed}<small> / ${quest.total}</small></b></button>
-          <button onclick="Game.setView('fusion')"><span>配合研究</span><b>${recipeDone}<small> / ${recipeTotal}</small></b></button>
-          <button onclick="Game.setView('menu')"><span>その他</span><b>メニューへ</b></button>
+      <section class="homeFacilityPanelV821 hubWorldV82">
+        <header>
+          <div><span>BASE FACILITIES</span><h2>拠点施設</h2></div>
+          <small>目的の施設を選択</small>
+        </header>
+        <div class="homeFacilityGridV821">
+          <button onclick="Game.setView('stage')"><span>${ico("map")}</span><b>冒険門</b><small>${state.stageUnlocked}地域</small></button>
+          <button onclick="Game.setView('monsters')"><span>${ico("camp")}</span><b>牧場</b><small>${state.party.length + state.box.length}体</small></button>
+          <button onclick="Game.setView('fusion')"><span>${ico("fusion")}</span><b>配合所</b><small>${recipeDone}/${recipeTotal}</small></button>
+          <button onclick="Game.setView('arena')"><span>${ico("swords")}</span><b>闘技場</b><small>${arenaClears}制覇</small></button>
+          <button onclick="Game.setView('shop')"><span>${ico("bag")}</span><b>ショップ</b><small>${state.gold}G</small></button>
+          <button onclick="Game.setView('dex')"><span>${ico("book")}</span><b>図鑑</b><small>${dex.discovered}/${dex.total}</small></button>
         </div>
       </section>
     </main>`;
   }
 
-  Object.assign(V, {
-    homeHtml
-  });
-
+  Object.assign(V, {homeHtml});
 })();

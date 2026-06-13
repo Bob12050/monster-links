@@ -1,7 +1,6 @@
 (() => {
   "use strict";
 
-  const D = window.MonsterLinksData;
   const S = window.MonsterLinksState;
   const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
@@ -12,7 +11,7 @@
     fusion:["配合","FUSION LAB"],
     dex:["図鑑","MONSTER DEX"],
     quest:["任務","QUEST BOARD"],
-    shop:["商店","ITEM SHOP"],
+    shop:["ショップ","ITEM SHOP"],
     arena:["闘技場","ARENA"],
     menu:["メニュー","MENU"],
     settings:["設定・セーブ","SETTINGS"],
@@ -24,58 +23,76 @@
 
   function topHtml(){
     const state = S.state;
-    const dex = S.dexCounts();
     const quest = S.questCounts();
+    const pr = S.playerRankInfo ? S.playerRankInfo() : {rank:1,exp:0,need:100,pct:0,isMax:false};
+    const rankRewards = S.playerRankRewardInfo ? S.playerRankRewardInfo() : {claimable:0};
     const viewLabel = VIEW_LABELS[state.view] || ["冒険","MONSTER LINKS"];
+    const lead = state.party[0];
     const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
+    const notice = quest.claimable + rankRewards.claimable;
+
     return `
-    <div class="top topV28 topV82">
-      <div class="title">
-        <button class="logoBtn logoBtnV82" onclick="Game.openTitle()">
-          <img src="assets/images/ui/logo_mark.svg" alt="">
-          <span><b>モンスターリンクス</b><small>MONSTER LINKS</small></span>
+    <header class="top topV28 topV82 gameHudV821">
+      <button class="hudBrandV821" onclick="Game.openTitle()" aria-label="タイトル画面へ">
+        <img src="assets/images/ui/logo_mark.svg" alt="">
+        <span><b>モンスターリンクス</b><small>MONSTER LINKS</small></span>
+      </button>
+
+      <button class="hudRankV821" onclick="Game.openPlayerRankRewards()" aria-label="冒険者ランクと報酬">
+        <span class="hudAvatarV821">${lead ? V.monsterInline(lead,"hudAvatarMonsterV821") : ico("monster")}</span>
+        <span class="hudRankTextV821"><small>RANK</small><b>${pr.rank}</b></span>
+        <span class="hudExpV821">
+          <i style="width:${pr.isMax ? 100 : pr.pct}%"></i>
+          <small>${pr.isMax ? "MAX" : `${pr.exp}/${pr.need}`}</small>
+        </span>
+        ${rankRewards.claimable ? `<em class="hudBadgeV821">${rankRewards.claimable}</em>` : ""}
+      </button>
+
+      <div class="hudResourcesV821">
+        <button onclick="Game.setView('shop')" aria-label="所持金とショップ">
+          <span class="hudResourceIconV821 gold">${ico("coin")}</span>
+          <b>${state.gold}</b>
         </button>
-        <div class="topActions">
-          <button class="ghost miniTopBtn" onclick="Game.setView('menu')" aria-label="メニュー">☰</button>
-          <button class="ghost miniTopBtn saveTopBtnV82" onclick="Game.saveNow()" aria-label="現在の進行を保存">保存</button>
-        </div>
+        <button onclick="Game.setView('monsters')" aria-label="パーティ編成">
+          <span class="hudResourceIconV821 party">${ico("monster")}</span>
+          <b>${S.partySizeText ? S.partySizeText() : `${state.party.length}/3`}</b>
+        </button>
       </div>
-      <div class="viewContextV861" aria-live="polite">
-        <span>${viewLabel[1]}</span>
-        <b>${viewLabel[0]}</b>
+
+      <button class="hudNoticeV821 ${notice ? "hasNotice" : ""}" onclick="Game.setView('quest')" aria-label="受取可能な報酬">
+        ${ico("scroll")}
+        ${notice ? `<em>${notice}</em>` : ""}
+      </button>
+
+      <button class="hudMenuV821" onclick="Game.setView('menu')" aria-label="メニュー">${ico("menu")}</button>
+
+      <div class="hudViewLabelV821 viewContextV861" aria-live="polite">
+        <span>${viewLabel[1]}</span><b>${viewLabel[0]}</b>
       </div>
-      <div class="status status4 statusV28">
-        <div class="pill"><span class="pillIcoV92 gold">${ico("coin")}</span><b>${state.gold}</b><small>G</small></div>
-        <div class="pill"><span class="pillIcoV92 star">${ico("star")}</span><b>${S.highestLv()}</b><small>最高</small></div>
-        <div class="pill"><span class="pillIcoV92 blue">${ico("book")}</span><b>${dex.discovered}/${dex.total}</b><small>図鑑</small></div>
-        <div class="pill ${quest.claimable ? "claimPill" : ""}"><span class="pillIcoV92 green">${ico("check")}</span><b>${quest.claimable}</b><small>受取</small></div>
-      </div>
-    </div>`;
+    </header>`;
   }
 
   function tabsHtml(){
     const state = S.state;
     const menuViews = ["menu","dex","quest","shop","settings","arena","help","devtools"];
-    const monsterViews = ["monsters","fusion"];
     const items = [
       ["home","home","拠点"],
       ["stage","map","冒険"],
       ["monsters","monster","仲間"],
+      ["fusion","fusion","配合"],
       ["menu","menu","メニュー"]
     ];
     const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
-    return `<div class="tabs tabsMain tabsV82">${items.map(([v,i,t])=>{
-      const active = state.view === v || (v === "menu" && menuViews.includes(state.view)) || (v === "monsters" && monsterViews.includes(state.view));
+
+    return `<nav class="tabs tabsMain tabsV82 gameDockV821" aria-label="主要ナビゲーション">${items.map(([view,icon,label])=>{
+      const active = state.view === view || (view === "menu" && menuViews.includes(state.view));
       return `
-      <button class="${active ? "on" : ""}" onclick="Game.setView('${v}')" ${active ? `aria-current="page"` : ""} aria-label="${t}画面へ">
-        <span class="ico">${ico(i)}</span>${t}
+      <button class="${active ? "on" : ""}" onclick="Game.setView('${view}')" ${active ? `aria-current="page"` : ""} aria-label="${label}画面へ">
+        <span class="dockIconV821">${ico(icon)}</span>
+        <span class="dockLabelV821">${label}</span>
       </button>`;
-    }).join("")}</div>`;
+    }).join("")}</nav>`;
   }
 
-  Object.assign(V, {
-    topHtml,
-    tabsHtml
-  });
-
+  Object.assign(V, {topHtml,tabsHtml});
 })();
