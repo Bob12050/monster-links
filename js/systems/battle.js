@@ -816,7 +816,7 @@
     const icons = {fire:"🔥",water:"💧",light:"⚡",dark:"🌑",nature:"🌿",stone:"🪨",beast:"🦷",machine:"⚙️",wing:"🪽",dragon:"🐉"};
     document.getElementById("modal").innerHTML = `
     <div class="modalBg" onclick="Game.closeModal(event)">
-      <div class="modal battleModalV821" onclick="event.stopPropagation()">
+      <div class="modal battleModalV821 battleModalV823" onclick="event.stopPropagation()">
         <div class="battleModalHeadV821"><div><span>SKILL COMMAND</span><h2>とくぎを選択</h2></div><b>MP ${a.mp}/${S.stats(a).mp}</b></div>
         <div class="skillListV821">
           ${list.length ? list.map(id=>{
@@ -843,7 +843,7 @@
     const b = S.state.battle;
     document.getElementById("modal").innerHTML = `
     <div class="modalBg" onclick="Game.closeModal(event)">
-      <div class="modal battleModalV821" onclick="event.stopPropagation()">
+      <div class="modal battleModalV821 battleModalV823" onclick="event.stopPropagation()">
         <div class="battleModalHeadV821"><div><span>PARTY CHANGE</span><h2>交代する仲間</h2></div><b>${S.partySizeText ? S.partySizeText() : S.state.party.length}</b></div>
         <div class="switchListV821">
           ${S.state.party.map((m,i)=>{

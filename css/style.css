@@ -9337,3 +9337,362 @@ body.mlReducedMotionV817 .prBarV819 i{
     margin-inline:2px;
   }
 }
+
+/* =========================================================
+   v8.6-A.23 Battle and result Crystal UI
+   ========================================================= */
+.app.crystalUiV822[data-view="battle"] > main.battlePageV823{
+  padding:8px;
+  background:
+    radial-gradient(circle at 50% 0,rgba(32,180,238,.16),transparent 260px),
+    #030916;
+}
+.battleV823{
+  border:1px solid rgba(97,202,255,.34);
+  border-bottom-color:rgba(240,198,92,.62);
+  border-radius:18px;
+  background:#061126;
+  box-shadow:
+    0 14px 32px rgba(0,0,0,.48),
+    inset 0 0 0 1px rgba(190,237,255,.06);
+}
+.battleV823 .battleHeaderV821{
+  min-height:72px;
+  border-bottom:1px solid rgba(240,198,92,.52);
+  background:
+    radial-gradient(circle at 95% 0,rgba(49,194,255,.16),transparent 42%),
+    linear-gradient(180deg,rgba(9,29,57,.98),rgba(4,15,34,.94));
+  box-shadow:0 8px 18px rgba(0,0,0,.24);
+}
+.battleV823 .battleAreaLabelV821{
+  color:#68ddff;
+}
+.battleV823 .battlePlaceV821{
+  font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+  color:#fff;
+}
+.battleV823 .battleModeV821{
+  border-color:rgba(240,198,92,.58);
+  color:#ffe9aa;
+  background:rgba(75,55,18,.56);
+}
+.battleV823 .battleArenaV821{
+  border-bottom:1px solid rgba(83,190,244,.23);
+}
+.battleV823 .battleArenaV821:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(3,11,27,.28),transparent 26%,transparent 74%,rgba(3,11,27,.24)),
+    linear-gradient(180deg,rgba(3,10,25,.08),transparent 62%,rgba(3,10,25,.38));
+}
+.battleV823 .battleHudV821{
+  z-index:7;
+  border-radius:12px;
+  background:
+    linear-gradient(150deg,rgba(13,39,73,.97),rgba(4,15,34,.95));
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.38),
+    inset 0 1px rgba(185,235,255,.11);
+}
+.battleV823 .enemyHudV821{
+  border-color:rgba(255,104,124,.7);
+  border-left-width:4px;
+}
+.battleV823 .allyHudV821{
+  border-color:rgba(63,207,255,.75);
+  border-right-width:4px;
+}
+.battleV823 .fighterLabelV821{
+  border:1px solid rgba(255,255,255,.24);
+  box-shadow:inset 0 1px rgba(255,255,255,.18);
+}
+.battleV823 .rankBadgeV821{
+  border-color:rgba(240,198,92,.68);
+  color:#fff0ba;
+  background:linear-gradient(180deg,rgba(130,91,21,.72),rgba(55,37,8,.78));
+  box-shadow:0 0 12px rgba(240,198,92,.12);
+}
+.battleV823 .battleBarRowV821 > div{
+  height:10px;
+  border-color:rgba(160,221,255,.18);
+  background:#020713;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.55);
+}
+.battleV823 .battleBarRowV821 i{
+  border-right:1px solid rgba(255,255,255,.58);
+}
+.battleV823 .battleActorV821{
+  z-index:4;
+}
+.battleV823 .enemyActorV821 .battleSpriteV821{
+  filter:drop-shadow(0 0 18px rgba(255,104,124,.1));
+}
+.battleV823 .allyActorV821 .battleSpriteV821{
+  filter:drop-shadow(0 0 18px rgba(54,209,255,.12));
+}
+.battleV823 .battleClashV821{
+  z-index:6;
+  border-color:rgba(240,198,92,.58);
+  background:
+    radial-gradient(circle,#17365c 0,#07152e 58%,rgba(3,10,24,.3) 70%);
+  box-shadow:0 0 20px rgba(54,209,255,.18);
+}
+.battleV823 .battleClashV821 span{
+  color:#fff0b8;
+  font-family:Georgia,"Times New Roman",serif;
+}
+.battleV823 .battlePartyRailV821{
+  border-color:rgba(81,192,246,.2);
+  background:linear-gradient(180deg,rgba(8,27,53,.97),rgba(4,14,32,.98));
+}
+.battleV823 .battlePartyRailV821 button{
+  border:1px solid rgba(91,190,242,.22);
+  background:rgba(7,22,46,.78);
+}
+.battleV823 .battlePartyRailV821 button.active{
+  border-color:#59d8ff;
+  background:linear-gradient(155deg,rgba(13,103,159,.62),rgba(7,31,64,.88));
+  box-shadow:0 0 13px rgba(44,195,247,.15);
+}
+.battleV823 .battleMessageV821{
+  min-height:55px;
+  border-bottom:1px solid rgba(240,198,92,.38);
+  background:
+    linear-gradient(90deg,rgba(9,85,125,.92),rgba(5,24,50,.98) 54%,rgba(6,17,39,.98));
+  box-shadow:inset 4px 0 #43d4ff;
+}
+.battleV823 .battleMessageV821.waiting{
+  box-shadow:inset 4px 0 var(--crystal-gold);
+}
+.battleV823 .battleMessageV821 > span{
+  color:#93ebff;
+}
+.battleV823 .battleCommandDeckV821{
+  bottom:4px;
+  border-top:1px solid rgba(91,200,255,.34);
+  background:
+    radial-gradient(circle at 50% 0,rgba(27,134,196,.13),transparent 50%),
+    linear-gradient(180deg,rgba(8,25,52,.98),rgba(3,10,24,.99));
+  box-shadow:0 -12px 26px rgba(0,0,0,.42);
+}
+.battleV823 .commandHeadingV821{
+  align-items:center;
+}
+.battleV823 .commandHeadingV821 > div:first-child{
+  padding-left:8px;
+  border-left:3px solid var(--crystal-gold);
+}
+.battleV823 .battleAutoControlV841 button{
+  border-color:rgba(91,196,248,.34);
+  background:linear-gradient(180deg,#173d6d,#0a2144);
+}
+.battleV823 .battleAutoControlV841 button.on{
+  border-color:#74e9c4;
+  background:linear-gradient(180deg,#168b6c,#07513f);
+}
+.battleV823 .commandsV821{
+  gap:6px;
+}
+.battleV823 .commandsV821 button{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(154,215,248,.3);
+  border-bottom-color:rgba(240,198,92,.42);
+  border-radius:11px;
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.14),
+    0 4px 0 rgba(0,0,0,.36);
+}
+.battleV823 .commandsV821 button:before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:3px;
+  background:var(--command-accent,#62d7ff);
+  box-shadow:0 0 9px var(--command-accent,#62d7ff);
+}
+.battleV823 .commandsV821 button:active{
+  transform:translateY(2px) scale(.98);
+  box-shadow:inset 0 1px rgba(255,255,255,.12),0 2px 0 rgba(0,0,0,.42);
+}
+.battleV823 .attackCommandV821{--command-accent:#ff6f7d;background:linear-gradient(145deg,#792d41,#391426)}
+.battleV823 .skillCommandV821{--command-accent:#ffd15f;background:linear-gradient(145deg,#76551c,#352409)}
+.battleV823 .scoutCommandV821{--command-accent:#6ff0b5;background:linear-gradient(145deg,#176b52,#083528)}
+.battleV823 .guardCommandV821{--command-accent:#62c9ff;background:linear-gradient(145deg,#205b89,#0b2947)}
+.battleV823 .switchCommandV821{--command-accent:#bf98ff;background:linear-gradient(145deg,#533d82,#261b45)}
+.battleV823 .escapeCommandV821{--command-accent:#a9b5ce;background:linear-gradient(145deg,#3d4a64,#1c2538)}
+.battleV823 .battleLogDetailsV821{
+  border-top-color:rgba(240,198,92,.28);
+  background:#020713;
+}
+.battleV823 .battleLogDetailsV821 summary{
+  color:#ffe8a7;
+}
+.battleV823 .battleFloatV821{
+  border-color:rgba(240,198,92,.66);
+  color:#fff;
+  background:rgba(4,14,32,.9);
+  box-shadow:0 0 20px rgba(54,209,255,.2);
+}
+
+.app.crystalUiV822 .battleModalV823{
+  width:min(560px,calc(100vw - 18px));
+  max-height:calc(100dvh - 28px);
+  border-color:rgba(240,198,92,.68);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 88% 0,rgba(50,197,255,.18),transparent 38%),
+    linear-gradient(180deg,#102b52,#06142c);
+}
+.battleModalV823 .battleModalHeadV821{
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(91,195,246,.22);
+}
+.battleModalV823 .battleModalHeadV821 span{
+  color:#64dfff;
+}
+.battleModalV823 .skillListV821,
+.battleModalV823 .switchListV821{
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+.battleModalV823 .skillOptionV821,
+.battleModalV823 .switchListV821 button{
+  border:1px solid rgba(94,195,246,.28);
+  border-radius:11px;
+  background:linear-gradient(155deg,rgba(18,51,91,.96),rgba(6,20,44,.98));
+}
+.battleModalV823 .skillOptionV821:not(:disabled):active,
+.battleModalV823 .switchListV821 button:not(:disabled):active{
+  border-color:#64ddff;
+  transform:scale(.985);
+}
+.battleModalV823 .skillIconV821,
+.battleModalV823 .switchFaceV821{
+  border:1px solid rgba(240,198,92,.42);
+  background:#07152e;
+}
+
+.app.crystalUiV822[data-view="reward"] > main.rewardPageV823{
+  padding:10px 8px 24px;
+  background:
+    radial-gradient(circle at 50% 0,rgba(47,193,255,.22),transparent 330px),
+    linear-gradient(180deg,#07142c,#030815);
+}
+.rewardBoxV823{
+  width:min(720px,100%);
+  margin:0 auto;
+  padding:14px;
+  border:1px solid rgba(240,198,92,.65);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% -30px,rgba(55,204,255,.18),transparent 280px),
+    linear-gradient(180deg,rgba(13,39,74,.99),rgba(4,15,34,.99));
+  box-shadow:0 18px 42px rgba(0,0,0,.44),inset 0 1px rgba(205,240,255,.12);
+}
+.rewardBoxV823.win,
+.rewardBoxV823.scout{
+  border-top:3px solid #5ee0ff;
+}
+.rewardBoxV823.lose{
+  border-top:3px solid #ff7580;
+}
+.rewardBoxV823 .rewardHeroV817{
+  padding:14px;
+  border:1px solid rgba(93,199,251,.28);
+  border-bottom-color:rgba(240,198,92,.5);
+  border-radius:13px;
+  background:linear-gradient(145deg,rgba(17,55,97,.94),rgba(7,24,51,.96));
+}
+.rewardBoxV823 .rewardBigIcon{
+  border:1px solid rgba(240,198,92,.58);
+  border-radius:50%;
+  background:rgba(8,24,51,.82);
+  box-shadow:0 0 20px rgba(240,198,92,.16);
+}
+.rewardBoxV823 .rewardTitleV53{
+  color:#fff5d0;
+  font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+  text-shadow:0 2px 6px rgba(0,0,0,.5);
+}
+.rewardBoxV823 .rewardEnemyV818,
+.rewardBoxV823 :is(.rewardPlayerRankV819,.rewardLevelBoxV818,.rewardItemSection,.rewardDetailLog){
+  border:1px solid rgba(91,194,246,.24);
+  border-radius:12px;
+  background:rgba(4,16,36,.58);
+}
+.rewardBoxV823 .rewardNumsV53{
+  gap:6px;
+}
+.rewardBoxV823 .rewardNumsV53 > div{
+  border:1px solid rgba(91,194,246,.27);
+  border-radius:10px;
+  background:linear-gradient(180deg,rgba(17,51,91,.94),rgba(6,20,43,.96));
+}
+.rewardBoxV823 .rewardNumsV53 span{
+  color:#72ddff;
+}
+.rewardBoxV823 .rewardNumsV53 b{
+  color:#fff0b3;
+}
+.rewardBoxV823 .rewardActionsV817{
+  position:sticky;
+  bottom:4px;
+  z-index:8;
+  padding:8px;
+  border:1px solid rgba(240,198,92,.45);
+  border-radius:12px;
+  background:rgba(4,14,32,.96);
+  box-shadow:0 -8px 22px rgba(0,0,0,.36);
+}
+.rewardBoxV823 .rewardActionsV817 button{
+  min-height:48px;
+}
+.rewardBoxV823 .rewardActionsV817 .primary{
+  border-color:#76e9ff;
+  background:linear-gradient(180deg,#17bae9,#0875bd);
+}
+
+@media(max-width:520px){
+  .app.crystalUiV822[data-view="battle"] > main.battlePageV823{
+    padding:5px;
+  }
+  .battleV823{
+    border-radius:14px;
+  }
+  .battleV823 .battleHeaderV821{
+    min-height:60px;
+  }
+  .battleV823 .battleArenaV821{
+    height:292px;
+  }
+  .battleV823 .battleMessageV821{
+    min-height:51px;
+  }
+  .battleV823 .commandsV821 button{
+    min-height:61px;
+  }
+  .battleV823 .battleLogDetailsV821 .battleLogV23{
+    max-height:96px;
+  }
+  .rewardBoxV823{
+    padding:10px;
+    border-radius:14px;
+  }
+  .rewardBoxV823 .rewardHeroV817{
+    padding:11px;
+  }
+  .rewardBoxV823 .rewardActionsV817{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .rewardBoxV823 .rewardActionsV817 .primary{
+    grid-column:1/-1;
+  }
+}

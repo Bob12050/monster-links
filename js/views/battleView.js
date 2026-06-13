@@ -28,8 +28,8 @@
     const mutationTitle = enemy.mutation ? S.mutationTitleName(enemy) : "";
 
     return `
-    <main class="battlePageV821">
-      <section class="battle battleV821 battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
+    <main class="battlePageV821 battlePageV823">
+      <section class="battle battleV821 battleV823 battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
         ${b.mutationIntro ? `<div class="mutationEncounterV1" aria-label="突然変異個体が出現"><span>RARE ENCOUNTER</span><b>${U.esc(mutationTitle)}突然変異個体 出現</b><small>色違いで能力補正を持つ珍しいモンスターです</small></div>` : ""}
         <div class="battleHeaderV821">
           <div>
@@ -372,8 +372,8 @@
         </div>`;
 
     return `
-    <main>
-      <section class="rewardBox rewardBoxV53 rewardBoxV817 rewardBoxV818 ${r.type}">
+    <main class="rewardPageV823">
+      <section class="rewardBox rewardBoxV53 rewardBoxV817 rewardBoxV818 rewardBoxV823 ${r.type}">
         <div class="rewardBurst" aria-hidden="true"></div>
 
         <div class="rewardHero rewardHeroV817">
