@@ -8307,3 +8307,110 @@ body.mlReducedMotionV817 .questCardV817{animation:none}
 @media(prefers-reduced-motion:reduce){
   .questCardV817{animation:none}
 }
+
+/* =========================================================
+   v8.6-A.18 戦闘結果画面・モンスター獲得演出強化
+   ・勝利/敗北リザルト、レベルアップ、NEW図鑑登録、獲得演出の見せ方を強化
+   ・演出は軽量。reducedMotion（設定 / OS設定）を尊重
+   ========================================================= */
+
+@keyframes mlRevealV818{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes mlGlowV818{0%,100%{box-shadow:0 0 0 1px rgba(116,240,160,.3),0 0 16px rgba(116,240,160,.25)}50%{box-shadow:0 0 0 1px rgba(116,240,160,.55),0 0 26px rgba(116,240,160,.5)}}
+@keyframes mlDexSparkV818{0%,100%{opacity:.5;transform:scale(.9) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(15deg)}}
+
+/* --- 勝利タイトルのポップ（既存rewardBoxV817のポップを少し強調） --- */
+.rewardBoxV818 .rewardTitleV53{animation:mlPopV817 .5s ease both}
+.rewardBoxV818.lose .rewardBigIcon{filter:grayscale(.4)}
+
+/* --- 倒した/敗れた敵ライン --- */
+.rewardEnemyV818.lose{border-color:rgba(255,140,120,.3)}
+
+/* --- NEW図鑑登録パネル --- */
+.rewardDexNewV818{
+  position:relative;
+  z-index:1;
+  margin:10px 0 12px;
+  padding:11px 12px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,214,120,.18),rgba(255,255,255,.04));
+  border:1px solid rgba(255,200,90,.4);
+  animation:mlRevealV818 .45s ease both;
+}
+.rewardDexNewV818 > b{
+  display:block;
+  font-size:13px;letter-spacing:.04em;font-weight:800;
+  color:#ffe6a0;
+  text-shadow:0 0 12px rgba(255,200,90,.5);
+}
+.rewardDexNewSparkV818{
+  position:absolute;top:8px;right:12px;
+  font-size:18px;color:#ffd770;
+  animation:mlDexSparkV818 1.6s ease-in-out infinite;
+}
+.rewardDexNewBodyV818{display:flex;align-items:center;gap:10px;margin-top:8px}
+.rewardDexNewFaceV818{width:46px;height:46px;border-radius:12px;overflow:hidden;flex:0 0 auto}
+.rewardDexNewFaceV818 img{width:100%;height:100%;object-fit:cover}
+.rewardDexNoV818{display:block;font-size:10px;letter-spacing:.1em;color:var(--muted)}
+.rewardDexNewBodyV818 b{display:block;font-size:15px;color:#fff4dc}
+.rewardDexNewBodyV818 small{display:block;font-size:11px;color:var(--muted)}
+
+/* --- 仲間加入カードの光（既存scoutSuccessPanelに付与） --- */
+.rewardBoxV818.scout .scoutSuccessPanelV817{animation:mlGlowV818 2.4s ease-in-out infinite}
+
+/* --- レベルアップ（構造化表示） --- */
+.rewardLevelGridV818{display:flex;flex-direction:column;gap:8px}
+.rewardLevelCardV818{
+  padding:9px 11px;
+  border-radius:14px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  animation:mlRevealV818 .4s ease both;
+}
+.rewardLevelCardV818.textOnly{font-size:13px;color:#eaf2ff}
+.rewardLevelHeadV818{display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center}
+.rewardLevelFaceV818{width:34px;height:34px;border-radius:9px;overflow:hidden}
+.rewardLevelFaceV818 img{width:100%;height:100%;object-fit:cover}
+.rewardLevelHeadV818 b{display:block;font-size:13.5px;color:#eaf2ff}
+.rewardLevelJumpV818{display:block;font-size:12px;color:#9be8ff;font-weight:700}
+.rewardLevelJumpV818 i{font-style:normal;color:#ffd770;margin:0 2px}
+.rewardLevelUpTagV818{
+  font-size:9px;font-weight:800;letter-spacing:.08em;
+  color:#0b1024;padding:2px 8px;border-radius:999px;
+  background:linear-gradient(180deg,#ffe28a,#f4b740);
+}
+.rewardStatGainsV818{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.rewardStatChipV818{
+  font-size:11px;color:#d7ffe6;
+  padding:2px 9px;border-radius:999px;
+  background:rgba(116,240,160,.14);
+  border:1px solid rgba(116,240,160,.3);
+}
+.rewardStatChipV818 b{color:#aef7c8;font-weight:800}
+
+/* --- 報酬アイテムの順番表示（軽いスタッガー） --- */
+.rewardItemV818{animation:mlRevealV818 .4s ease both;animation-delay:calc(var(--rIndexV818,0) * .06s)}
+
+/* --- リザルト操作ボタン --- */
+.rewardActionsV817 .primary small{display:block;font-size:10px;font-weight:600;opacity:.85;margin-top:1px}
+.rewardActionsV817 button{transition:transform .1s ease}
+.rewardActionsV817 button:active{transform:scale(.96)}
+
+/* --- 演出をひかえめにする（アプリ設定 / OS設定） --- */
+body.mlReducedMotionV817 .rewardBoxV818 .rewardTitleV53,
+body.mlReducedMotionV817 .rewardDexNewV818,
+body.mlReducedMotionV817 .rewardDexNewSparkV818,
+body.mlReducedMotionV817 .rewardBoxV818.scout .scoutSuccessPanelV817,
+body.mlReducedMotionV817 .rewardLevelCardV818,
+body.mlReducedMotionV817 .rewardItemV818{
+  animation:none !important;
+}
+@media(prefers-reduced-motion:reduce){
+  .rewardBoxV818 .rewardTitleV53,
+  .rewardDexNewV818,
+  .rewardDexNewSparkV818,
+  .rewardBoxV818.scout .scoutSuccessPanelV817,
+  .rewardLevelCardV818,
+  .rewardItemV818{
+    animation:none !important;
+  }
+}

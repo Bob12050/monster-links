@@ -621,7 +621,7 @@
       state.wins++;
       if(b.isBoss) S.recordBossWin();
       const lines = [];
-      state.party.forEach(m=>{if(m.hp > 0) lines.push(...S.gainExp(m,reward.exp));});
+      const levelUps = grantPartyExp(reward.exp,lines);
       const firstBossClear = progressStage(lines,false);
       const drops = rollDrops(b,firstBossClear);
       if(drops.length) lines.push(`アイテムを${drops.length}種類入手した！`);
@@ -638,6 +638,7 @@
         enemyMutation:!!b.enemy.mutation,
         enemyMutationTitle:b.enemy.mutationTitle || null,
         dexNew:!!b.dexNewSeen,
+        levelUps,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,
@@ -668,10 +669,11 @@
       }
       let reward = {exp:0,gold:0};
       let firstBossClear = false;
+      let levelUps = [];
       if(b.isBoss){
         reward = battleRewards(b);
         state.gold += reward.gold;
-        state.party.forEach(m=>{if(m.hp > 0) lines.push(...S.gainExp(m,reward.exp));});
+        levelUps = grantPartyExp(reward.exp,lines);
       }
       firstBossClear = progressStage(lines,true);
       const drops = b.isBoss ? rollDrops(b,firstBossClear) : [];
@@ -688,6 +690,7 @@
         enemyMutation:!!b.enemy.mutation,
         enemyMutationTitle:b.enemy.mutationTitle || null,
         dexNew:!!b.dexNewScouted,
+        levelUps,
         joinDestination:b.scoutJoinResult?.destination || null,
         isBoss:b.isBoss,
         exp:reward.exp,
@@ -713,11 +716,16 @@
       state.reward = {
         type:"lose",
         title:"全滅……",
+        stageName:b.stage?.name || "",
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyRank:S.def(b.enemy.id).rank,
+        enemyType:S.def(b.enemy.id).type,
+        enemyLevel:b.enemy.level,
         enemyMutation:!!b.enemy.mutation,
         enemyMutationTitle:b.enemy.mutationTitle || null,
+        levelUps:[],
         isBoss:b.isBoss,
         exp:0,
         gold:-lost,
@@ -735,6 +743,27 @@
     }
   }
 
+  // v8.6-A.18: リザルトのレベルアップ詳細（Lv前→後・ステータス上昇）を取得する表示専用ヘルパー。
+  // 経験値計算（gainExp）はそのまま使い、付与前後を観測するだけでバランスは変えない。
+  function grantPartyExp(amount,lines){
+    const STAT_KEYS = ["hp","mp","atk","def","spd","wis"];
+    const levelUps = [];
+    S.state.party.forEach(m=>{
+      if(m.hp <= 0) return;
+      const before = m.level;
+      const beforeStats = S.stats(m);
+      const gained = S.gainExp(m,amount);
+      if(gained.length) lines.push(...gained);
+      if(m.level > before){
+        const afterStats = S.stats(m);
+        const gains = {};
+        STAT_KEYS.forEach(k=>{ gains[k] = (afterStats[k] || 0) - (beforeStats[k] || 0); });
+        levelUps.push({id:m.id,name:m.nickname,from:before,to:m.level,gains});
+      }
+    });
+    return levelUps;
+  }
+
   function rewardContinue(){
     const reward = S.state.reward;
     const next = reward?.nextView || "home";
@@ -743,6 +772,16 @@
     }
     S.state.reward = null;
     S.state.view = next;
+    S.save();
+    render();
+  }
+
+  // v8.6-A.18: 既に解放済みの次ステージへ移動するだけ。新たな解放仕様は作らない。
+  function rewardGotoStage(id){
+    if(!D.STAGES.some(st=>st.id === id)) return;
+    S.state.reward = null;
+    G.selectWorldStage?.(id);
+    S.state.view = "stage";
     S.save();
     render();
   }
@@ -856,6 +895,7 @@
     escape,
     scoutChance,
     rewardContinue,
+    rewardGotoStage,
     retryExploration,
     toggleBattleAuto,
     isBattleAuto,

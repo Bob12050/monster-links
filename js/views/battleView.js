@@ -214,9 +214,37 @@
 
   function rewardSubText(r){
     if(r.type === "scout") return r.isBoss ? "ボスを仲間にした！" : "新しい仲間が加わった！";
-    if(r.type === "lose") return "キャンプで体勢を立て直そう";
+    if(r.type === "lose") return r.isBoss ? "ボスは手ごわい……態勢を立て直そう" : "敵が強かった……キャンプで立て直そう";
     if(r.isBoss) return "次の地域へ進む大きな一歩";
     return "探索成功。育成と報酬を確認しよう";
+  }
+
+  // v8.6-A.18: 図鑑No.はモンスター定義の並び順から安全に導出（表示専用・データ非変更）。
+  function dexNumber(id){
+    const idx = Object.keys(D.MONSTERS).indexOf(id);
+    return idx >= 0 ? String(idx + 1).padStart(3,"0") : "";
+  }
+
+  const STAT_LABELS_V818 = {hp:"HP",mp:"MP",atk:"攻",def:"守",spd:"速",wis:"賢"};
+
+  function levelUpCardHtml(lu){
+    const gains = lu.gains || {};
+    const chips = Object.keys(STAT_LABELS_V818)
+      .filter(k=>(gains[k] || 0) > 0)
+      .map(k=>`<span class="rewardStatChipV818">${STAT_LABELS_V818[k]} <b>+${gains[k]}</b></span>`)
+      .join("");
+    return `
+      <div class="rewardLevelCardV818">
+        <div class="rewardLevelHeadV818">
+          ${V.monsterInline(lu.id,"rewardLevelFaceV818")}
+          <div>
+            <b>${U.esc(lu.name)}</b>
+            <span class="rewardLevelJumpV818">Lv ${lu.from} <i>→</i> Lv ${lu.to}</span>
+          </div>
+          <em class="rewardLevelUpTagV818">LEVEL UP</em>
+        </div>
+        ${chips ? `<div class="rewardStatGainsV818">${chips}</div>` : ""}
+      </div>`;
   }
 
   function rewardHtml(){
@@ -224,20 +252,27 @@
     if(!r) return V.homeHtml();
 
     const lines = r.lines || [];
+    const levelUps = Array.isArray(r.levelUps) ? r.levelUps : [];
+    // 旧フォーマット（levelUps無し）でも崩れないようテキスト行を保険として使う。
     const levelLines = lines.filter(x=>/Lv\d+に上がった/.test(x));
     const otherLines = lines.filter(x=>!/Lv\d+に上がった/.test(x));
+    const levelUpCount = levelUps.length || levelLines.length;
     const dropCount = (r.drops || []).reduce((sum,x)=>sum + (x.count || 1),0);
 
-    const dropHtml = r.drops && r.drops.length ? r.drops.map(x=>{
+    const dropHtml = r.drops && r.drops.length ? r.drops.map((x,index)=>{
       const item = D.ITEMS[x.id];
       if(!item) return "";
-      return `<div class="rewardItem rewardItemV53">${V.itemVisual(x.id,"rewardIcon")}<div><b>${U.esc(item.name)}</b><small>${S.itemStatsText(x.id)}</small></div><em>×${x.count}</em></div>`;
+      return `<div class="rewardItem rewardItemV53 rewardItemV818" style="--rIndexV818:${index}">${V.itemVisual(x.id,"rewardIcon")}<div><b>${U.esc(item.name)}</b><small>${S.itemStatsText(x.id)}</small></div><em>×${x.count}</em></div>`;
     }).join("") : `<div class="empty rewardEmpty">アイテム入手なし</div>`;
 
-    const levelHtml = levelLines.length ? `
-      <div class="rewardLevelBox">
-        <h2>レベルアップ</h2>
-        <div class="rewardLevelList">${levelLines.map(x=>`<div>✨ ${U.esc(x)}</div>`).join("")}</div>
+    const levelHtml = levelUpCount ? `
+      <div class="rewardLevelBox rewardLevelBoxV818">
+        <h2>レベルアップ ${levelUpCount > 1 ? `<small>×${levelUpCount}</small>` : ""}</h2>
+        <div class="rewardLevelGridV818">${
+          levelUps.length
+            ? levelUps.map(levelUpCardHtml).join("")
+            : levelLines.map(x=>`<div class="rewardLevelCardV818 textOnly">✨ ${U.esc(x)}</div>`).join("")
+        }</div>
       </div>` : "";
 
     const logHtml = otherLines.length ? `
@@ -248,7 +283,22 @@
 
     const rankText = r.enemyRank ? U.esc(r.enemyRank) : "";
     const typeText = r.enemyType ? U.esc(D.TYPES[r.enemyType] || r.enemyType) : "";
-    const newBadge = r.dexNew ? `<span class="rewardNewTagV817">NEW</span>` : "";
+    const dexNo = r.enemyId ? dexNumber(r.enemyId) : "";
+
+    // NEW図鑑登録（勝利・スカウト時に初めて図鑑入りした場合のみ）
+    const dexNewPanel = r.dexNew && r.type !== "lose" ? `
+      <div class="rewardDexNewV818">
+        <span class="rewardDexNewSparkV818" aria-hidden="true">✦</span>
+        <b>NEW 図鑑登録！</b>
+        <div class="rewardDexNewBodyV818">
+          ${r.enemyId ? V.monsterInline(r.enemyId,"rewardDexNewFaceV818") : ""}
+          <div>
+            <span class="rewardDexNoV818">No.${dexNo}</span>
+            <b>${U.esc(D.MONSTERS[r.enemyId]?.name || r.enemyName)}</b>
+            <small>${rankText ? `${rankText}ランク` : ""}${rankText && typeText ? " ・ " : ""}${typeText}</small>
+          </div>
+        </div>
+      </div>` : "";
 
     const scoutPanel = r.type === "scout" ? `
       <div class="scoutSuccessPanel scoutSuccessPanelV817">
@@ -261,16 +311,45 @@
               ${rankText ? `<span class="rewardTagV817 rankTag">${rankText}ランク</span>` : ""}
               ${typeText ? `<span class="rewardTagV817 typeTag">${typeText}</span>` : ""}
               ${r.enemyLevel ? `<span class="rewardTagV817">Lv ${r.enemyLevel}</span>` : ""}
+              ${dexNo ? `<span class="rewardTagV817">No.${dexNo}</span>` : ""}
               ${r.dexNew ? `<span class="rewardTagV817 newTag">図鑑NEW</span>` : ""}
             </div>
-            <span class="rewardJoinDestV817">${r.joinDestination === "party" ? "パーティに加わった！" : r.joinDestination === "box" ? "牧場（ボックス）に預けられた。" : "仲間画面でステータスや装備を確認できます。"}</span>
+            <span class="rewardJoinDestV817">${r.joinDestination === "party" ? "パーティに加わった！" : r.joinDestination === "box" ? "牧場（仲間一覧）に送られた。パーティ枠が空いたら編成できます。" : "仲間画面でステータスや装備を確認できます。"}</span>
           </div>
         </div>
       </div>` : "";
 
+    const enemyLineText = r.type === "lose"
+      ? `${r.enemyName}${r.enemyLevel ? ` Lv ${r.enemyLevel}` : ""} に敗れた`
+      : `${r.isBoss ? "撃破" : "勝利"}：${r.enemyName}${r.enemyLevel ? ` Lv ${r.enemyLevel}` : ""}`;
+
+    // 次のクエスト導線：既に解放済みの「次の地域」があるときだけ表示（解放仕様は作らない）。
+    let nextStage = null;
+    if(r.isBoss && (r.type === "win" || r.type === "scout") && r.retryStageId){
+      const cur = D.STAGES.find(st=>st.id === r.retryStageId);
+      if(cur){
+        const nxt = D.STAGES.find(st=>st.unlock === (cur.unlock + 1));
+        if(nxt && nxt.unlock <= S.state.stageUnlocked) nextStage = nxt;
+      }
+    }
+
+    const actionsHtml = r.type === "lose" ? `
+        <div class="actions rewardActionsV53 rewardActionsV817">
+          ${r.retryStageId ? `<button class="primary" onclick="Game.retryExploration()">再挑戦する</button>` : ""}
+          <button class="gold" onclick="Game.rewardContinue()">冒険へ戻る</button>
+          <button class="ghost" onclick="Game.setView('home')">拠点へ戻る</button>
+          <button class="ghost" onclick="Game.setView('monsters')">仲間を育てる</button>
+        </div>` : `
+        <div class="actions rewardActionsV53 rewardActionsV817">
+          ${nextStage ? `<button class="primary" onclick="Game.rewardGotoStage('${nextStage.id}')">次のクエストへ <small>${U.esc(nextStage.name)}</small></button>` : ""}
+          ${r.retryStageId ? `<button class="${nextStage ? "gold" : "primary"}" onclick="Game.retryExploration()">もう一度挑戦</button>` : ""}
+          <button class="${nextStage ? "ghost" : "gold"}" onclick="Game.rewardContinue()">冒険へ戻る</button>
+          <button class="ghost" onclick="Game.setView('home')">拠点へ戻る</button>
+        </div>`;
+
     return `
     <main>
-      <section class="rewardBox rewardBoxV53 rewardBoxV817 ${r.type}">
+      <section class="rewardBox rewardBoxV53 rewardBoxV817 rewardBoxV818 ${r.type}">
         <div class="rewardBurst" aria-hidden="true"></div>
 
         <div class="rewardHero rewardHeroV817">
@@ -278,15 +357,17 @@
           <div>
             <div class="rewardTitle rewardTitleV53">${U.esc(r.title)}</div>
             <div class="rewardSub">${U.esc(rewardSubText(r))}</div>
-            ${r.stageName ? `<div class="rewardStageV817">${U.esc(r.stageName)}</div>` : ""}
+            ${r.stageName ? `<div class="rewardStageV817">📍 ${U.esc(r.stageName)}</div>` : ""}
           </div>
         </div>
 
-        <div class="rewardEnemy rewardEnemyV53">
+        <div class="rewardEnemy rewardEnemyV53 rewardEnemyV818 ${r.type}">
           ${r.enemyId ? V.monsterInline({id:r.enemyId,mutation:r.enemyMutation,mutationTitle:r.enemyMutationTitle},"miniFace") : U.esc(r.enemyEmoji || "❔")}
-          <span>${U.esc(r.enemyName)}</span>
-          ${r.type !== "scout" ? newBadge : ""}
+          <span>${U.esc(enemyLineText)}</span>
+          ${r.type !== "scout" && r.dexNew ? `<span class="rewardNewTagV817">NEW</span>` : ""}
         </div>
+
+        ${dexNewPanel}
 
         ${scoutPanel}
 
@@ -294,24 +375,20 @@
           <div><span>EXP</span><b>${r.exp}</b></div>
           <div><span>GOLD</span><b>${r.gold >= 0 ? "+"+r.gold : r.gold}</b></div>
           <div><span>DROP</span><b>${dropCount}</b></div>
-          <div><span>LEVEL UP</span><b>${levelLines.length}</b></div>
+          <div><span>LEVEL UP</span><b>${levelUpCount}</b></div>
         </div>
 
         ${levelHtml}
 
+        ${r.type === "lose" ? "" : `
         <div class="rewardItemSection">
           <h2>入手アイテム</h2>
           <div class="rewardItems rewardItemsV53">${dropHtml}</div>
-        </div>
+        </div>`}
 
         ${logHtml}
 
-        <div class="actions rewardActionsV53 rewardActionsV817">
-          <button class="primary" onclick="Game.rewardContinue()">${r.nextView === "stage" ? "次に進む（マップへ）" : "次に進む"}</button>
-          ${r.retryStageId ? `<button class="gold" onclick="Game.retryExploration()">もう一度挑戦</button>` : ""}
-          <button class="ghost" onclick="Game.setView('home')">拠点に戻る</button>
-          <button class="ghost" onclick="Game.setView('monsters')">仲間を見る</button>
-        </div>
+        ${actionsHtml}
       </section>
     </main>`;
   }
