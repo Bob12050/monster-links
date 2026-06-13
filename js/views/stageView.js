@@ -175,6 +175,27 @@
       </section>`;
   }
 
+  function stageQuickActionsHtml(st){
+    const open = st.unlock <= S.state.stageUnlocked;
+    const enough = S.highestLv() >= st.req;
+    const cleared = !!S.state.bossCleared[st.id];
+    const ready = G.bossReady?.(st) || cleared;
+    const wins = S.state.stageWins[st.id] || 0;
+    return `
+      <section class="worldStageQuickV8615" aria-label="選択中ステージの操作">
+        <div class="worldStageQuickCopyV8615">
+          <span>SELECTED AREA</span>
+          <b>${st.icon} ${U.esc(st.name)}</b>
+          <small>推奨 Lv ${st.req} ・ ボス気配 ${Math.min(wins,st.boss.unlockWins)}/${st.boss.unlockWins}</small>
+        </div>
+        <div class="worldStageQuickButtonsV8615">
+          <button class="primary" ${(!open || !enough) ? "disabled" : ""} onclick="Game.startBattle('${st.id}')">通常探索</button>
+          <button class="red" ${(!open || !enough || !ready) ? "disabled" : ""} onclick="Game.startBossBattle('${st.id}')">ボス挑戦</button>
+          <button class="ghost" onclick="document.querySelector('.worldStageDetailV851')?.scrollIntoView({behavior:MonsterLinksState.state.settings?.reducedMotion?'auto':'smooth',block:'start'})">詳細</button>
+        </div>
+      </section>`;
+  }
+
   function stageHtml(){
     const current = selectedStage();
     window.setTimeout?.(()=>{
@@ -187,6 +208,7 @@
     return `
       <main class="worldAdventureV851">
         ${worldMapHtml(current)}
+        ${stageQuickActionsHtml(current)}
         ${stageDetailHtml(current)}
       </main>`;
   }

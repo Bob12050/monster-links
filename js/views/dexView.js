@@ -28,7 +28,13 @@
     const ranks = Object.keys(D.RANK || {}).sort((a,b)=>D.RANK[a]-D.RANK[b]);
     const types = Object.keys(D.TYPES || {});
     if(scope === "dex"){
-      return `<section class="card filterPanel">
+      const active = !!(f.q || f.rank !== "all" || f.type !== "all" || (f.size || "all") !== "all" || f.status !== "all");
+      return `<details class="card filterPanel compactFilterV8615" ${active ? "open" : ""}>
+        <summary class="compactFilterSummaryV8615">
+          <span><b>図鑑を検索・絞り込み</b><small>${active ? "条件を適用中" : "名前・ランク・属性・状態"}</small></span>
+          <span class="compactFilterToggleV8615">${active ? "条件あり" : "開く"}</span>
+        </summary>
+        <div class="compactFilterBodyV8615">
         <div class="filterHead">
           <div><h2>図鑑検索</h2><p class="tiny">150匹規模に備えて、名前・ランク・属性・サイズ・状態で絞り込めます。</p></div>
           <button onclick="Game.clearListFilter('dex')">リセット</button>
@@ -55,7 +61,8 @@
             ${opt("unknown","未発見",f.status)}
           </select></label>
         </div>
-      </section>`;
+        </div>
+      </details>`;
     }
     return "";
   }

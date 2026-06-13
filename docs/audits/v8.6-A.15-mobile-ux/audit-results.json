@@ -1,0 +1,50 @@
+{
+  "viewport": "390x844",
+  "errors": [],
+  "missingResources": [],
+  "adventure": {
+    "quickVisible": true,
+    "quickHeight": 122,
+    "bodyScroll": 0,
+    "mainScrollable": true
+  },
+  "battleStarted": true,
+  "battle": {
+    "deckVisible": true,
+    "deckTop": 627,
+    "deckBottom": 819,
+    "buttons": [
+      {
+        "width": 115,
+        "height": 62
+      },
+      {
+        "width": 115,
+        "height": 62
+      },
+      {
+        "width": 115,
+        "height": 62
+      },
+      {
+        "width": 115,
+        "height": 62
+      },
+      {
+        "width": 115,
+        "height": 62
+      },
+      {
+        "width": 115,
+        "height": 62
+      }
+    ]
+  },
+  "dexCollapsed": true,
+  "dexOpen": true,
+  "fusionCollapsed": true,
+  "fusionOpen": true,
+  "monsterFilterPresent": true,
+  "version": "8.6-A.15",
+  "ok": true
+}

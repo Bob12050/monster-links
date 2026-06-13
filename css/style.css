@@ -7830,3 +7830,161 @@ summary:active{
   [role="button"],
   summary{transition:none}
 }
+
+/* ===== v8.6-A.15 mobile information hierarchy and action flow ===== */
+.worldStageQuickV8615{
+  position:sticky;
+  bottom:0;
+  z-index:18;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  padding:10px 12px;
+  border:1px solid rgba(110,231,255,.28);
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(24,55,91,.96),rgba(10,25,49,.97));
+  box-shadow:0 10px 28px rgba(0,0,0,.3);
+  backdrop-filter:blur(12px);
+}
+.worldStageQuickCopyV8615{min-width:0}
+.worldStageQuickCopyV8615 span,
+.worldStageQuickCopyV8615 b,
+.worldStageQuickCopyV8615 small{display:block}
+.worldStageQuickCopyV8615 span{
+  color:#78dff4;
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.14em;
+}
+.worldStageQuickCopyV8615 b{
+  margin-top:2px;
+  overflow:hidden;
+  font-size:15px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.worldStageQuickCopyV8615 small{
+  margin-top:2px;
+  color:#afbdd0;
+  font-size:10px;
+}
+.worldStageQuickButtonsV8615{
+  display:grid;
+  grid-template-columns:repeat(3,auto);
+  gap:6px;
+}
+.worldStageQuickButtonsV8615 button{
+  min-height:44px;
+  padding:7px 12px;
+  font-size:11px;
+}
+
+.compactFilterV8615{
+  padding:0;
+  overflow:hidden;
+}
+.compactFilterSummaryV8615{
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  cursor:pointer;
+  list-style:none;
+}
+.compactFilterSummaryV8615::-webkit-details-marker{display:none}
+.compactFilterSummaryV8615 > span:first-child{min-width:0}
+.compactFilterSummaryV8615 b,
+.compactFilterSummaryV8615 small{display:block}
+.compactFilterSummaryV8615 b{font-size:13px}
+.compactFilterSummaryV8615 small{
+  margin-top:2px;
+  overflow:hidden;
+  color:#99aac0;
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.compactFilterToggleV8615{
+  flex:0 0 auto;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(110,231,255,.1);
+  color:#a8efff;
+  font-size:10px;
+  font-weight:900;
+}
+.compactFilterV8615[open] .compactFilterToggleV8615{background:rgba(116,240,160,.12);color:#a9f3c1}
+.compactFilterV8615[open] .compactFilterToggleV8615::after{content:" / 閉じる"}
+.compactFilterBodyV8615{
+  padding:0 12px 12px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.compactFilterBodyV8615 > .filterHead,
+.compactFilterBodyV8615 > .recipeSearchRowV811{margin-top:10px}
+
+.battlePageV821 .battleCommandDeckV821{
+  position:sticky;
+  bottom:16px;
+  z-index:25;
+  border-top:1px solid rgba(110,231,255,.2);
+  box-shadow:0 -12px 30px rgba(0,0,0,.42);
+  backdrop-filter:blur(12px);
+}
+
+@media(max-width:520px){
+  .app > .top{
+    padding-top:5px;
+    padding-bottom:5px;
+  }
+  .app > .tabs,
+  .app > .tabs.tabsMain,
+  .app > .tabsV82{
+    min-height:64px;
+    padding-top:5px;
+    padding-bottom:calc(5px + var(--app-safe-bottom));
+  }
+  .tabsV82 button{min-height:52px}
+  .worldStageQuickV8615{
+    grid-template-columns:1fr;
+    gap:7px;
+    padding:9px;
+  }
+  .worldStageQuickButtonsV8615{grid-template-columns:1fr 1fr 72px}
+  .worldStageQuickButtonsV8615 button{
+    min-height:46px;
+    padding:7px;
+    font-size:11px;
+  }
+  .worldStageQuickCopyV8615 small{font-size:10px}
+  .battleArenaV821{height:285px}
+  .battleCommandDeckV821{padding:8px}
+  .commandHeadingV821{align-items:center}
+  .commandHeadingV821 > div:first-child span{font-size:9px}
+  .commandsV821 button{
+    min-height:62px;
+    border-radius:13px;
+  }
+  .commandsV821 button b{font-size:11px}
+  .commandsV821 button small{font-size:9px}
+  .filterGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .filterGrid label:first-child{grid-column:1/-1}
+  .filterGrid input,
+  .filterGrid select{min-height:46px;font-size:16px}
+  .recipeSearchRowV811{grid-template-columns:1fr auto}
+  .recipeSearchRowV811 label{grid-column:1/-1}
+  .recipeFilterButtonsV811{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .recipeFilterButtonsV811 button{min-height:44px}
+}
+
+@media(max-width:360px){
+  .worldStageQuickButtonsV8615{grid-template-columns:1fr 1fr}
+  .worldStageQuickButtonsV8615 .ghost{grid-column:1/-1}
+  .filterGrid{grid-template-columns:1fr}
+  .filterGrid label:first-child{grid-column:auto}
+}

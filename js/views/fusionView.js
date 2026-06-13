@@ -301,7 +301,12 @@
     function recipeFilterHtml(){
       const counts = {1:0,2:0,3:0};
       entries.forEach(r=>counts[resultSize(r)] = (counts[resultSize(r)] || 0) + 1);
-      return `<section class="recipeFilterPanelV811">
+      return `<details class="recipeFilterPanelV811 compactFilterV8615">
+        <summary class="compactFilterSummaryV8615">
+          <span><b>配合レシピを検索・絞り込み</b><small>状態・結果サイズ・モンスター名</small></span>
+          <span class="compactFilterToggleV8615">開く</span>
+        </summary>
+        <div class="compactFilterBodyV8615">
         <div class="recipeSearchRowV811">
           <label>
             <span>モンスター名検索</span>
@@ -328,7 +333,8 @@
             <button class="recipeSizeFilterBtn" data-size-filter="3" onclick="Game.filterFusionRecipeSize('3')">3枠 ${counts[3] || 0}</button>
           </div>
         </div>
-      </section>`;
+        </div>
+      </details>`;
     }
 
     const groupHtml = group => {
