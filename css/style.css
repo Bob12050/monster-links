@@ -9024,3 +9024,316 @@ body.mlReducedMotionV817 .prBarV819 i{
   visibility:visible !important;
   opacity:1 !important;
 }
+
+/* =========================================================
+   v8.6-A.22 Crystal UI system
+   Home HUDの視覚言語を全ゲーム画面へ展開する共通レイヤー。
+   ========================================================= */
+.app.crystalUiV822{
+  --crystal-surface:#0a1832;
+  --crystal-surface-2:#0d2345;
+  --crystal-surface-3:#102b50;
+  --crystal-line:rgba(91,198,255,.3);
+  --crystal-line-strong:rgba(230,184,77,.58);
+  --crystal-copy:#f4f9ff;
+  --crystal-muted:#9bb2ca;
+  --crystal-cyan:#36d1ff;
+  --crystal-gold:#f0c65c;
+  --crystal-danger:#ff6a76;
+}
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821){
+  position:relative;
+  gap:12px;
+  padding:12px 10px 24px;
+  color:var(--crystal-copy);
+  background:
+    radial-gradient(circle at 50% -80px,rgba(32,153,221,.2),transparent 310px),
+    linear-gradient(180deg,#07142c,#050b19 72%);
+}
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > .hero,
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > section:first-child:not(.card){
+  position:relative;
+  overflow:hidden;
+  margin:0 0 12px;
+  padding:18px 16px;
+  border:1px solid var(--crystal-line);
+  border-bottom-color:var(--crystal-line-strong);
+  border-radius:12px;
+  background:
+    radial-gradient(circle at 88% 0,rgba(53,208,255,.2),transparent 42%),
+    linear-gradient(145deg,rgba(15,46,86,.98),rgba(5,17,40,.98));
+  box-shadow:inset 0 1px rgba(170,234,255,.12),0 8px 22px rgba(0,0,0,.28);
+}
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > .hero:before,
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > section:first-child:not(.card):before{
+  content:"";
+  position:absolute;
+  left:15px;
+  top:10px;
+  width:44px;
+  height:2px;
+  border-radius:99px;
+  background:var(--crystal-gold);
+  box-shadow:0 0 10px rgba(240,198,92,.5);
+}
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > .hero h1,
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > section:first-child:not(.card) h1{
+  margin:4px 0 5px;
+  color:#fff;
+  font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+  font-size:22px;
+  text-shadow:0 2px 5px rgba(0,0,0,.55);
+}
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > .hero p,
+.app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > section:first-child:not(.card) p{
+  color:var(--crystal-muted);
+  font-size:11px;
+  line-height:1.55;
+}
+.app.crystalUiV822 .card{
+  border:1px solid var(--crystal-line);
+  border-radius:12px;
+  background:
+    linear-gradient(180deg,rgba(14,38,73,.97),rgba(6,18,40,.98));
+  box-shadow:inset 0 1px rgba(165,231,255,.09),0 8px 18px rgba(0,0,0,.22);
+}
+.app.crystalUiV822 .card h2,
+.app.crystalUiV822 .sectionTitle h2{
+  color:#fff;
+  font-size:16px;
+}
+.app.crystalUiV822 .card h2:after{
+  content:"";
+  display:block;
+  width:42px;
+  height:2px;
+  margin-top:6px;
+  border-radius:99px;
+  background:linear-gradient(90deg,var(--crystal-gold),transparent);
+}
+.app.crystalUiV822 :is(.tiny,.notice,.empty,small){
+  color:var(--crystal-muted);
+}
+.app.crystalUiV822 :is(input,select,textarea){
+  min-height:42px;
+  border:1px solid rgba(93,188,237,.35);
+  border-radius:9px;
+  color:#f5fbff;
+  background:#061329;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.28);
+}
+.app.crystalUiV822 :is(input,select,textarea):focus{
+  outline:2px solid rgba(54,209,255,.44);
+  border-color:var(--crystal-cyan);
+}
+.app.crystalUiV822 main button{
+  border-color:rgba(100,190,235,.36);
+  background:linear-gradient(180deg,#183d69,#0a2143);
+  box-shadow:inset 0 1px rgba(214,244,255,.13),0 3px 8px rgba(0,0,0,.24);
+}
+.app.crystalUiV822 main button.primary{
+  border-color:#70e3ff;
+  background:linear-gradient(180deg,#13b9ec,#0875c1);
+  box-shadow:inset 0 1px rgba(255,255,255,.3),0 0 14px rgba(30,190,248,.24);
+}
+.app.crystalUiV822 main button.gold{
+  border-color:#ffe298;
+  color:#fff9df;
+  background:linear-gradient(180deg,#a87819,#694307);
+}
+.app.crystalUiV822 main button.green{
+  border-color:#82edc5;
+  background:linear-gradient(180deg,#168c6c,#075443);
+}
+.app.crystalUiV822 main button.red{
+  border-color:#ff9aa2;
+  background:linear-gradient(180deg,#a83b4b,#651725);
+}
+.app.crystalUiV822 main button:disabled{
+  opacity:.42;
+  filter:saturate(.5);
+  box-shadow:none;
+}
+.app.crystalUiV822 :is(.tag,.type,.rankFlagV831,.arenaRankBadge){
+  border-color:rgba(240,198,92,.55);
+  color:#ffe7a3;
+  background:rgba(91,61,12,.68);
+}
+.app.crystalUiV822 :is(.notice,.empty){
+  border-color:rgba(83,183,236,.22);
+  background:rgba(3,13,31,.55);
+}
+
+/* 冒険 */
+.app.crystalUiV822[data-view="stage"] > main.worldAdventureV851{
+  padding-top:10px;
+}
+.app.crystalUiV822 .stageModeBarV817{
+  position:sticky;
+  top:0;
+  z-index:8;
+  border:1px solid var(--crystal-line);
+  border-bottom-color:var(--crystal-line-strong);
+  border-radius:12px;
+  background:rgba(5,17,40,.96);
+  box-shadow:0 8px 18px rgba(0,0,0,.3);
+  backdrop-filter:blur(10px);
+}
+.app.crystalUiV822 .stageModeCopyV817 > span,
+.app.crystalUiV822 :is(.worldMapHeadV851,.worldStageTitleV851) > div > span{
+  color:var(--crystal-cyan);
+  letter-spacing:.14em;
+}
+.app.crystalUiV822 .stageModeSwitchV817{
+  padding:3px;
+  border:1px solid rgba(87,190,242,.25);
+  border-radius:10px;
+  background:#040e21;
+}
+.app.crystalUiV822 .stageModeSwitchV817 button.active{
+  color:white;
+  border-color:#75e2ff;
+  background:linear-gradient(180deg,#119bd6,#07538f);
+}
+.app.crystalUiV822 .questCardV817,
+.app.crystalUiV822 .worldStageDetailV851,
+.app.crystalUiV822 .worldMapPanelV851{
+  border-color:var(--crystal-line);
+  box-shadow:0 10px 24px rgba(0,0,0,.27);
+}
+.app.crystalUiV822 .questCardV817.selected{
+  border-color:var(--crystal-gold);
+  box-shadow:0 0 0 1px rgba(240,198,92,.25),0 0 20px rgba(47,197,255,.17);
+}
+.app.crystalUiV822 .worldStageQuickV8615{
+  bottom:6px;
+  border:1px solid var(--crystal-line-strong);
+  border-radius:12px;
+  background:rgba(6,19,43,.97);
+  box-shadow:0 -6px 20px rgba(0,0,0,.38);
+}
+
+/* 仲間 */
+.app.crystalUiV822 .monsterCampV831{
+  border:1px solid var(--crystal-line);
+  border-bottom-color:var(--crystal-line-strong);
+  border-radius:12px;
+  box-shadow:0 10px 24px rgba(0,0,0,.3);
+}
+.app.crystalUiV822 .monsterEyebrowV831,
+.app.crystalUiV822 .sectionEyebrowV831{
+  color:var(--crystal-cyan);
+}
+.app.crystalUiV822 :is(.partyFormationV831,.pastureWorldV831){
+  padding:13px;
+  border:1px solid var(--crystal-line);
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(13,36,70,.97),rgba(6,18,40,.98));
+  box-shadow:0 8px 20px rgba(0,0,0,.24);
+}
+.app.crystalUiV822 .partyFormationCardV831{
+  border-color:rgba(93,195,248,.34);
+  background:linear-gradient(160deg,#102e55,#07162f);
+}
+.app.crystalUiV822 .partyFormationCardV831.leader{
+  border-color:var(--crystal-gold);
+}
+.app.crystalUiV822 .pastureMonsterCardV831{
+  border-color:rgba(93,195,248,.26);
+  background:rgba(5,17,39,.82);
+}
+.app.crystalUiV822 .monsterFilterDetailsV831{
+  border:1px solid rgba(88,190,242,.27);
+  border-radius:10px;
+  background:rgba(3,13,31,.62);
+}
+
+/* 配合 */
+.app.crystalUiV822[data-view="fusion"] > main{
+  padding-bottom:34px;
+}
+.app.crystalUiV822 .fusionHeroV34{
+  border-bottom-color:rgba(184,115,255,.7) !important;
+  background:
+    radial-gradient(circle at 86% 0,rgba(166,89,255,.25),transparent 42%),
+    linear-gradient(145deg,#172858,#090f2e) !important;
+}
+.app.crystalUiV822 .fusionMainCard{
+  border-color:rgba(187,126,255,.44);
+  box-shadow:inset 0 1px rgba(224,205,255,.12),0 0 22px rgba(115,57,205,.15);
+}
+.app.crystalUiV822 .selectedParentsPanelV728,
+.app.crystalUiV822 .fusionPreviewV34,
+.app.crystalUiV822 .routeDashboardV75{
+  border-color:rgba(173,118,246,.34);
+  background:linear-gradient(160deg,rgba(28,37,84,.96),rgba(9,17,47,.98));
+}
+.app.crystalUiV822 .stickyActions{
+  position:sticky;
+  bottom:4px;
+  z-index:7;
+  padding:8px;
+  border:1px solid rgba(240,198,92,.42);
+  border-radius:11px;
+  background:rgba(5,14,35,.95);
+  box-shadow:0 -6px 18px rgba(0,0,0,.32);
+}
+.app.crystalUiV822 .recipeDetails > summary,
+.app.crystalUiV822 .compactFilterSummaryV8615{
+  border-radius:10px;
+  background:rgba(3,13,31,.54);
+}
+
+/* 図鑑・ショップ・設定・メニュー・闘技場・任務 */
+.app.crystalUiV822 :is(.dexCardV31,.itemCard,.settingRow,.slotCard,.arenaCard,.questCardV842){
+  border-color:rgba(91,190,242,.28);
+  background:linear-gradient(155deg,rgba(15,40,75,.96),rgba(5,17,39,.98));
+  box-shadow:0 5px 14px rgba(0,0,0,.2);
+}
+.app.crystalUiV822 :is(.dexCardV31,.itemCard,.arenaCard,.questCardV842):active{
+  border-color:var(--crystal-cyan);
+}
+.app.crystalUiV822 .questCardV842.claimable{
+  border-color:var(--crystal-gold);
+  box-shadow:0 0 16px rgba(240,198,92,.14);
+}
+.app.crystalUiV822 .menuV56 button{
+  min-height:64px;
+  border-color:rgba(91,190,242,.3);
+  background:linear-gradient(150deg,#12345e,#071a37);
+}
+.app.crystalUiV822 .menuV56 button b{
+  color:#fff;
+}
+.app.crystalUiV822 .settingRow{
+  padding:11px;
+  border:1px solid rgba(91,190,242,.22);
+  border-radius:10px;
+}
+.app.crystalUiV822 .modalBg{
+  background:rgba(0,4,14,.82);
+  backdrop-filter:blur(6px);
+}
+.app.crystalUiV822 .modal{
+  border:1px solid rgba(240,198,92,.56);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 85% 0,rgba(48,196,255,.15),transparent 38%),
+    linear-gradient(180deg,#102a50,#061329);
+  box-shadow:0 18px 52px rgba(0,0,0,.62),inset 0 1px rgba(188,237,255,.13);
+}
+
+@media(max-width:620px){
+  .app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821){
+    padding:9px 8px 22px;
+  }
+  .app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > .hero,
+  .app.crystalUiV822 > main:not(.homeV821):not(.battlePageV821) > section:first-child:not(.card){
+    padding:16px 13px 13px;
+  }
+  .app.crystalUiV822 .card{padding:12px}
+  .app.crystalUiV822 :is(.partyFormationV831,.pastureWorldV831){padding:10px}
+  .app.crystalUiV822 .worldStageQuickV8615{
+    margin-inline:2px;
+  }
+}

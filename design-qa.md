@@ -1,48 +1,52 @@
 **Comparison Target**
 - Source visual truth: `docs/design/v8.6-A.21-crystal-adventure-hud-reference.png`
-- Implementation: `docs/audits/v8.6-A.21-crystal-hud/implementation-final.png`
-- Viewport: 390 x 844 CSS pixels
-- State: Home/base screen, default player data
-- Full-view evidence: `docs/audits/v8.6-A.21-crystal-hud/comparison-final.png`
-- Focused evidence: `docs/audits/v8.6-A.21-crystal-hud/comparison-hud.png` and `docs/audits/v8.6-A.21-crystal-hud/comparison-dock.png`
+- Implemented screen set: `docs/audits/v8.6-A.22-crystal-ui/screen-contact-sheet.png`
+- Viewport: 390 x 844 CSS pixels per screen
+- States: adventure, monsters, fusion, dex, quest, shop, settings, menu, and arena
+- Full comparison: `docs/audits/v8.6-A.22-crystal-ui/comparison-reference-screens.png`
+- Focused evidence: individual numbered screenshots in the same audit folder
 
 **Findings**
-- No actionable P0, P1, or P2 mismatch remains.
-- [P3] Decorative density is lower than the concept.
-  Location: top HUD, adventure button frame, bottom dock.
-  Evidence: the concept uses bespoke gold filigree and illustrated tab icons; the implementation uses the existing icon set and lighter CSS framing.
-  Impact: the implementation is slightly less ornate, but keeps controls readable at 390 px and avoids replacing official project assets.
-  Fix: optional future polish can add project-approved ornamental image assets without changing layout or behavior.
-- [P3] Hero art direction differs intentionally.
-  Location: home hero.
-  Evidence: the concept shows a crowned, cloaked slime in a tent camp; the implementation uses the existing official slime art and existing stage background.
-  Impact: composition and hierarchy match, while art identity and asset compatibility are preserved.
-  Fix: none for A.21. A future art pass should only use approved replacement assets.
+- No actionable P0, P1, or P2 issue remains.
+- [P3] Decorative detail remains lighter than the concept image.
+  Location: generic cards and secondary buttons.
+  Evidence: the concept uses bespoke illustrated gold frames while the implementation uses the existing project icons and a reusable navy, cyan, and gold component layer.
+  Impact: secondary screens are less ornate, but remain clearer at mobile size and visually belong to the same game.
+  Fix: add approved ornamental raster assets in a later dedicated art pass.
+- [P3] Dense collection screens remain long.
+  Location: dex, quest, and adventure board.
+  Evidence: all existing entries remain present in one internally scrolling screen.
+  Impact: functionality and data visibility are preserved, though future category paging could reduce scan length.
+  Fix: consider tabs or virtualized sections in a later UX release.
 
 **Required Fidelity Surfaces**
-- Fonts and typography: hierarchy is preserved with compact HUD labels, prominent Rank, and a large Japanese adventure CTA. Small text remains readable without wrapping.
-- Spacing and layout rhythm: fixed 95 px HUD, flexible scrollable main area, and fixed 78 px five-tab dock fit the 390 x 844 viewport without horizontal overflow.
-- Colors and visual tokens: navy, cyan, and gold consistently map to the concept's premium adventure palette with adequate foreground contrast.
-- Image quality and asset fidelity: official transparent monster artwork remains sharp and correctly scaled. No placeholder art, inline SVG replacement, or emoji asset substitution was introduced.
-- Copy and content: Rank, EXP, gold, party capacity, rewards, mission, facilities, and five navigation labels are represented with live game data.
+- Fonts and typography: screen headings use a stronger Japanese display treatment; HUD labels, card headings, body copy, and state labels have distinct weights and sizes.
+- Spacing and layout rhythm: every screen retains the fixed 95 px HUD and 78 px dock, with a 671 px internally scrolling main area at the test viewport.
+- Colors and visual tokens: navy surfaces, cyan active states, and gold progression/action accents consistently extend the selected Crystal Adventure direction.
+- Image quality and asset fidelity: existing official monster, stage, and item images remain unchanged and correctly scaled. No placeholder replacement was introduced.
+- Copy and content: existing game copy, live counts, controls, rewards, recipes, and settings remain populated from the current state.
 
-**Patches Made Since Previous QA Pass**
-- Forced the bottom navigation into one stable five-column row.
-- Restored the official monster art's intended scale and visibility.
-- Preserved legacy validation hooks for hub, view context, and research reward text.
-- Verified Rank, gold, party, reward, quest, navigation, and adventure interactions.
+**Patches Made**
+- Added the `crystalUiV822` application state and per-view `data-view` hook.
+- Added shared Crystal surface, card, button, input, tag, notice, and modal styling.
+- Added focused styling for adventure selection, party/pasture management, and fusion flow.
+- Unified dex, quest, shop, settings, menu, and arena secondary components.
+- Preserved the existing battle UI while verifying its transition from the redesigned adventure screen.
 
 **Implementation Checklist**
-- [x] Premium fixed top HUD
-- [x] Large central official monster art
-- [x] Primary adventure CTA
-- [x] Mission and reward shortcuts
-- [x] Fixed five-tab bottom dock
-- [x] Internal main-area scrolling only
+- [x] Adventure board and map
+- [x] Monster party and pasture
+- [x] Fusion selection and preview
+- [x] Monster dex
+- [x] Quest board
+- [x] Shop and item bag
+- [x] Settings and save management
+- [x] Menu and arena
+- [x] Modal visual treatment
+- [x] Mobile navigation and internal scrolling
 - [x] Functional first-screen controls
-- [x] Mobile portrait visual comparison
 
 **Follow-up Polish**
-- Add approved ornamental raster assets in a dedicated art release if more filigree and illustrated tab icons are desired.
+- Add project-approved decorative frame assets and category paging when those become separate art and UX tasks.
 
 final result: passed
