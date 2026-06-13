@@ -13,6 +13,8 @@
   function render(){
     const state = S.state;
     const app = document.getElementById("app");
+    // v8.6-A.17: 設定の「演出をひかえめ」をタイトル/ホーム/リザルト等の軽い演出にも反映する。
+    document.body?.classList.toggle("mlReducedMotionV817", !!state.settings?.reducedMotion);
     if(state.view === "title"){
       app.innerHTML = V.titleHtml();
       disableImageDrag(app);

@@ -246,31 +246,46 @@
         <div class="log rewardLog">${otherLines.map(x=>`<div>${U.esc(x)}</div>`).join("")}</div>
       </details>` : "";
 
+    const rankText = r.enemyRank ? U.esc(r.enemyRank) : "";
+    const typeText = r.enemyType ? U.esc(D.TYPES[r.enemyType] || r.enemyType) : "";
+    const newBadge = r.dexNew ? `<span class="rewardNewTagV817">NEW</span>` : "";
+
     const scoutPanel = r.type === "scout" ? `
-      <div class="scoutSuccessPanel">
-        ${r.enemyId ? V.monsterVisual({id:r.enemyId,mutation:r.enemyMutation,mutationTitle:r.enemyMutationTitle},"rewardScoutFace") : `<div class="rewardScoutFace">${U.esc(r.enemyEmoji || "🤝")}</div>`}
-        <div>
-          <b>${U.esc(r.enemyName)}が仲間になった！${r.enemyMutation ? ` <span class="mutationBadge">${U.esc(S.mutationTitleName({mutation:true,mutationTitle:r.enemyMutationTitle}))}突然変異</span>` : ""}</b>
-          <span>仲間画面でステータスや装備を確認できます。</span>
+      <div class="scoutSuccessPanel scoutSuccessPanelV817">
+        <div class="rewardJoinBannerV817">${r.isBoss ? "ボスが仲間になった！" : "新しい仲間が加わった！"}</div>
+        <div class="rewardJoinBodyV817">
+          ${r.enemyId ? V.monsterVisual({id:r.enemyId,mutation:r.enemyMutation,mutationTitle:r.enemyMutationTitle},"rewardScoutFace") : `<div class="rewardScoutFace">${U.esc(r.enemyEmoji || "🤝")}</div>`}
+          <div class="rewardJoinInfoV817">
+            <b>${U.esc(r.enemyName)}が仲間になった！${r.enemyMutation ? ` <span class="mutationBadge">${U.esc(S.mutationTitleName({mutation:true,mutationTitle:r.enemyMutationTitle}))}突然変異</span>` : ""}</b>
+            <div class="rewardJoinTagsV817">
+              ${rankText ? `<span class="rewardTagV817 rankTag">${rankText}ランク</span>` : ""}
+              ${typeText ? `<span class="rewardTagV817 typeTag">${typeText}</span>` : ""}
+              ${r.enemyLevel ? `<span class="rewardTagV817">Lv ${r.enemyLevel}</span>` : ""}
+              ${r.dexNew ? `<span class="rewardTagV817 newTag">図鑑NEW</span>` : ""}
+            </div>
+            <span class="rewardJoinDestV817">${r.joinDestination === "party" ? "パーティに加わった！" : r.joinDestination === "box" ? "牧場（ボックス）に預けられた。" : "仲間画面でステータスや装備を確認できます。"}</span>
+          </div>
         </div>
       </div>` : "";
 
     return `
     <main>
-      <section class="rewardBox rewardBoxV53 ${r.type}">
+      <section class="rewardBox rewardBoxV53 rewardBoxV817 ${r.type}">
         <div class="rewardBurst" aria-hidden="true"></div>
 
-        <div class="rewardHero">
+        <div class="rewardHero rewardHeroV817">
           <div class="rewardBigIcon">${rewardIcon(r)}</div>
           <div>
             <div class="rewardTitle rewardTitleV53">${U.esc(r.title)}</div>
             <div class="rewardSub">${U.esc(rewardSubText(r))}</div>
+            ${r.stageName ? `<div class="rewardStageV817">${U.esc(r.stageName)}</div>` : ""}
           </div>
         </div>
 
         <div class="rewardEnemy rewardEnemyV53">
           ${r.enemyId ? V.monsterInline({id:r.enemyId,mutation:r.enemyMutation,mutationTitle:r.enemyMutationTitle},"miniFace") : U.esc(r.enemyEmoji || "❔")}
           <span>${U.esc(r.enemyName)}</span>
+          ${r.type !== "scout" ? newBadge : ""}
         </div>
 
         ${scoutPanel}
@@ -291,11 +306,11 @@
 
         ${logHtml}
 
-        <div class="actions rewardActionsV53">
-          ${r.retryStageId ? `<button class="primary" onclick="Game.retryExploration()">もう一度探索する</button>` : ""}
-          <button onclick="Game.rewardContinue()">${r.nextView === "stage" ? "マップ選択へ戻る" : "続ける"}</button>
-          <button onclick="Game.setView('shop')">道具袋を見る</button>
-          <button onclick="Game.setView('monsters')">仲間を見る</button>
+        <div class="actions rewardActionsV53 rewardActionsV817">
+          <button class="primary" onclick="Game.rewardContinue()">${r.nextView === "stage" ? "次に進む（マップへ）" : "次に進む"}</button>
+          ${r.retryStageId ? `<button class="gold" onclick="Game.retryExploration()">もう一度挑戦</button>` : ""}
+          <button class="ghost" onclick="Game.setView('home')">拠点に戻る</button>
+          <button class="ghost" onclick="Game.setView('monsters')">仲間を見る</button>
         </div>
       </section>
     </main>`;

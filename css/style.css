@@ -7988,3 +7988,161 @@ summary:active{
   .filterGrid{grid-template-columns:1fr}
   .filterGrid label:first-child{grid-column:auto}
 }
+
+/* =========================================================
+   v8.6-A.17 本格ゲーム導線強化：軽いUI演出と表示強化
+   ・タイトル/ホーム/クエストボード/リザルト/獲得演出の見せ方を整える
+   ・演出は控えめ。reducedMotion（設定 / OS設定）を尊重する
+   ========================================================= */
+
+/* --- 共通の軽いアニメーション定義 --- */
+@keyframes mlFadeUpV817{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes mlFloatV817{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes mlPopV817{0%{opacity:0;transform:scale(.82)}60%{opacity:1;transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes mlSparkV817{0%,100%{opacity:1;filter:brightness(1)}50%{opacity:.7;filter:brightness(1.5)}}
+@keyframes mlTapBlinkV817{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* --- タイトル画面 --- */
+.titleScreenV817 .titleCopyV82{animation:mlFadeUpV817 .55s ease both}
+.titleScreenV817 .titleShowcaseV82{animation:mlFadeUpV817 .7s ease both}
+.titleLeadLvV817{
+  display:inline-block;
+  margin-left:6px;
+  padding:1px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-style:normal;
+  color:#0b1024;
+  background:linear-gradient(180deg,#ffe28a,#f4b740);
+  vertical-align:middle;
+}
+.titleStartV817{position:relative;overflow:hidden}
+.titleTapHintV817{
+  display:block;
+  margin-top:4px;
+  font-size:10px;
+  letter-spacing:.16em;
+  font-style:normal;
+  opacity:.7;
+  animation:mlTapBlinkV817 1.8s ease-in-out infinite;
+}
+
+/* --- ホーム拠点：カードの軽い浮遊感 --- */
+.homeV817 .homeLeaderV82{animation:mlFloatV817 6s ease-in-out infinite}
+.homeV817 .hubPlaceV82{transition:transform .12s ease,box-shadow .12s ease}
+.homeV817 .hubPlaceV82:active{transform:scale(.96)}
+.homeV817 .homeGuideV82{animation:mlFadeUpV817 .5s ease both}
+
+/* --- クエストボード（ワールドノード）押下感・前回プレイ --- */
+.worldNodeV817{transition:transform .12s ease}
+.worldNodeV817:active{transform:translate(-50%,-50%) scale(.93)}
+.worldNodeLastV817{
+  position:absolute;
+  top:-8px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:1px 7px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.06em;
+  color:#0b1024;
+  background:linear-gradient(180deg,#9be8ff,#4ec0f5);
+  box-shadow:0 2px 6px rgba(0,0,0,.35);
+  z-index:2;
+  white-space:nowrap;
+}
+.worldNodeV817.lastVisited{animation:mlSparkV817 2.4s ease-in-out infinite}
+
+/* --- リザルト画面 --- */
+.rewardBoxV817{animation:mlPopV817 .4s ease both}
+.rewardHeroV817 .rewardTitle{animation:mlPopV817 .5s ease both}
+.rewardStageV817{margin-top:3px;font-size:12px;color:var(--muted)}
+.rewardNewTagV817,.rewardTagV817.newTag{
+  display:inline-block;
+  margin-left:6px;
+  padding:1px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.08em;
+  color:#0b1024;
+  background:linear-gradient(180deg,#ffe6a0,#ffc24d);
+  box-shadow:0 0 10px rgba(255,200,90,.6);
+  animation:mlSparkV817 1.6s ease-in-out infinite;
+}
+.scoutSuccessPanelV817{
+  display:block;
+  grid-template-columns:none;
+  padding:12px;
+}
+.rewardJoinBannerV817{
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.04em;
+  color:#d7ffe6;
+  text-align:center;
+  margin-bottom:10px;
+  animation:mlPopV817 .45s ease both;
+}
+.rewardJoinBodyV817{
+  display:grid;
+  grid-template-columns:72px 1fr;
+  gap:12px;
+  align-items:center;
+}
+.rewardJoinInfoV817 b{display:block;color:#eafff2;font-size:15px;line-height:1.4}
+.rewardJoinTagsV817{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0}
+.rewardTagV817{
+  display:inline-block;
+  padding:1px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  color:#eafff2;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);
+}
+.rewardTagV817.rankTag{
+  color:#0b1024;
+  background:linear-gradient(180deg,#ffd98a,#f4b740);
+  border-color:transparent;
+}
+.rewardTagV817.typeTag{
+  color:#0b1024;
+  background:linear-gradient(180deg,#bfe6ff,#8cc8f0);
+  border-color:transparent;
+}
+.rewardJoinDestV817{display:block;font-size:12px;color:var(--muted);line-height:1.45}
+.rewardActionsV817{display:flex;flex-wrap:wrap;gap:8px}
+.rewardActionsV817 .primary{flex:1 1 100%}
+
+/* --- 演出をひかえめにする（アプリ設定 / OS設定） --- */
+body.mlReducedMotionV817 .titleScreenV817 .titleCopyV82,
+body.mlReducedMotionV817 .titleScreenV817 .titleShowcaseV82,
+body.mlReducedMotionV817 .titleTapHintV817,
+body.mlReducedMotionV817 .homeV817 .homeLeaderV82,
+body.mlReducedMotionV817 .homeV817 .homeGuideV82,
+body.mlReducedMotionV817 .worldNodeV817.lastVisited,
+body.mlReducedMotionV817 .rewardBoxV817,
+body.mlReducedMotionV817 .rewardHeroV817 .rewardTitle,
+body.mlReducedMotionV817 .rewardJoinBannerV817,
+body.mlReducedMotionV817 .rewardNewTagV817,
+body.mlReducedMotionV817 .rewardTagV817.newTag{
+  animation:none !important;
+}
+@media(prefers-reduced-motion:reduce){
+  .titleScreenV817 .titleCopyV82,
+  .titleScreenV817 .titleShowcaseV82,
+  .titleTapHintV817,
+  .homeV817 .homeLeaderV82,
+  .homeV817 .homeGuideV82,
+  .worldNodeV817.lastVisited,
+  .rewardBoxV817,
+  .rewardHeroV817 .rewardTitle,
+  .rewardJoinBannerV817,
+  .rewardNewTagV817,
+  .rewardTagV817.newTag{
+    animation:none !important;
+  }
+}

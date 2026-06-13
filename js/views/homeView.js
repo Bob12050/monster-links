@@ -27,10 +27,12 @@
     const lastStage = D.STAGES.find(stage=>stage.id === state.lastStage) || D.STAGES[0];
     const arenaClears = Object.values(state.arena?.cleared || {}).filter(Boolean).length;
     const bagCount = Object.values(state.bag || {}).reduce((sum,count)=>sum + count,0);
+    const recipeTotal = (D.RECIPE_LIST || Object.keys(D.RECIPES || {})).length;
+    const recipeDone = Object.keys(state.records?.completedRecipes || {}).filter(k=>state.records.completedRecipes[k]).length;
     const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
 
     return `
-    <main class="homeV82">
+    <main class="homeV82 homeV817">
       <section class="homeCampV82" style="--home-bg:url('${U.esc(backgroundAssetUrl(lastStage?.image || "assets/images/stages/meadow.png"))}')">
         <div class="homeCampShadeV82"></div>
         <div class="homeWelcomeV82">
@@ -125,6 +127,7 @@
           <div class="homePanelTitleV82"><span>冒険の記録</span></div>
           <button onclick="Game.setView('dex')"><span>図鑑</span><b>${dex.discovered}<small> / ${dex.total}</small></b></button>
           <button onclick="Game.setView('quest')"><span>達成任務</span><b>${quest.claimed}<small> / ${quest.total}</small></b></button>
+          <button onclick="Game.setView('fusion')"><span>配合研究</span><b>${recipeDone}<small> / ${recipeTotal}</small></b></button>
           <button onclick="Game.setView('menu')"><span>その他</span><b>メニューへ</b></button>
         </div>
       </section>

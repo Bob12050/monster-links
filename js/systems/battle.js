@@ -207,6 +207,9 @@
       enemy.mp = mutationStats.mp;
     }
     enemy.nickname = S.def(eid).name;
+    // v8.6-A.17: リザルトのNEW図鑑表示用に、出会う前の登録状態を控えておく（記録判定そのものは変更しない）。
+    const dexNewSeen = !state.dex.discovered[eid];
+    const dexNewScouted = !state.dex.scouted[eid];
     S.recordSeen(eid);
     if(enemy.mutation) S.recordMutation(eid);
     state.lastStage = st.id;
@@ -214,6 +217,8 @@
     state.battle = {
       stage:st,
       enemy,
+      dexNewSeen,
+      dexNewScouted,
       active:S.firstAlive(),
       log:[enemy.mutation ? `突然変異の${enemy.nickname}があらわれた！` : `${enemy.nickname}があらわれた！`],
       guard:false,
@@ -259,6 +264,9 @@
     const es = S.stats(enemy);
     enemy.hp = es.hp;
     enemy.mp = es.mp;
+    // v8.6-A.17: リザルトのNEW図鑑表示用に、出会う前の登録状態を控えておく（記録判定そのものは変更しない）。
+    const dexNewSeen = !state.dex.discovered[boss.id];
+    const dexNewScouted = !state.dex.scouted[boss.id];
     S.recordSeen(boss.id);
     if(enemy.mutation) S.recordMutation(boss.id);
     state.lastStage = st.id;
@@ -266,6 +274,8 @@
     state.battle = {
       stage:st,
       enemy,
+      dexNewSeen,
+      dexNewScouted,
       active:S.firstAlive(),
       log:[enemy.mutation ? `突然変異の${enemy.nickname}が立ちはだかった！` : `${enemy.nickname}が立ちはだかった！`],
       guard:false,
@@ -618,11 +628,16 @@
       state.reward = {
         type:"win",
         title:b.isBoss ? "ボス撃破！" : "勝利！",
+        stageName:b.stage?.name || "",
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyRank:S.def(b.enemy.id).rank,
+        enemyType:S.def(b.enemy.id).type,
+        enemyLevel:b.enemy.level,
         enemyMutation:!!b.enemy.mutation,
         enemyMutationTitle:b.enemy.mutationTitle || null,
+        dexNew:!!b.dexNewSeen,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,
@@ -663,11 +678,17 @@
       state.reward = {
         type:"scout",
         title:b.isBoss ? "ボスをスカウト！" : "スカウト成功！",
+        stageName:b.stage?.name || "",
         enemyId:b.enemy.id,
         enemyName:b.enemy.nickname,
         enemyEmoji:S.def(b.enemy.id).emoji,
+        enemyRank:S.def(b.enemy.id).rank,
+        enemyType:S.def(b.enemy.id).type,
+        enemyLevel:b.enemy.level,
         enemyMutation:!!b.enemy.mutation,
         enemyMutationTitle:b.enemy.mutationTitle || null,
+        dexNew:!!b.dexNewScouted,
+        joinDestination:b.scoutJoinResult?.destination || null,
         isBoss:b.isBoss,
         exp:reward.exp,
         gold:reward.gold,

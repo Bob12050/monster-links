@@ -44,19 +44,21 @@
     const status = stageStatus(st);
     const current = st.id === currentId;
     const next = st.unlock === (Number(S.state.stageUnlocked) || 1) + 1;
+    const last = st.id === S.state.lastStage;
     return `
       <button
-        class="worldNodeV851 ${status.key} ${current ? "selected" : ""} ${next ? "next" : ""}"
+        class="worldNodeV851 ${status.key} worldNodeV817 ${current ? "selected" : ""} ${next ? "next" : ""} ${last ? "lastVisited" : ""}"
         style="--map-x:${point[0]}%;--map-y:${point[1]}%"
         data-stage-id="${st.id}"
         onclick="Game.selectWorldStage('${st.id}')"
-        aria-label="${U.esc(st.name)} ${status.label}"
+        aria-label="${U.esc(st.name)} ${status.label} 推奨Lv${st.req}${last ? " 前回プレイ" : ""}"
         aria-pressed="${current ? "true" : "false"}">
         <span class="worldNodePulseV851"></span>
+        ${last ? `<span class="worldNodeLastV817">前回</span>` : ""}
         <span class="worldNodeIconV851"><i>${status.key === "locked" ? "🔒" : st.icon}</i></span>
         <span class="worldNodeNumberV851">${String(index + 1).padStart(2,"0")}</span>
         <b>${U.esc(st.name)}</b>
-        <small>${status.label}</small>
+        <small>${status.key === "locked" ? status.label : `${status.label}・推奨Lv${st.req}`}</small>
       </button>`;
   }
 
