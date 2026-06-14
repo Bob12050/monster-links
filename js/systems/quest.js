@@ -38,7 +38,7 @@
       total.scoutCharm ? `<div class="questRewardResultItemV838 scout"><span>SCOUT</span><b>次の戦闘で効果発動</b></div>` : ""
     ].filter(Boolean).join("");
     modal.innerHTML = `<div class="modalBg questRewardBackdropV838" onclick="Game.closeModal(event)">
-      <section class="modal questRewardResultV838" onclick="event.stopPropagation()" role="dialog" aria-modal="true">
+      <section class="modal questRewardResultV838 rewardMomentV846" onclick="event.stopPropagation()" role="dialog" aria-modal="true">
         <div class="questRewardGlowV838" aria-hidden="true"></div>
         <header><span>MISSION COMPLETE</span><h2>任務報酬を獲得</h2><p>${list.length}件の依頼報酬を受け取りました。</p></header>
         <div class="questRewardResultGridV838">${chips}</div>
@@ -139,7 +139,8 @@
     if(!result){toast("まだ受け取れません");return;}
     S.save();
     G.playSe?.("win");
-    toast(`Rank ${rank}報酬を受け取りました`);
+    if(G.showRewardPop) G.showRewardPop({eyebrow:"RANK REWARD",title:`Rank ${rank} 報酬`,detail:rankRewardText(result.reward),kind:"rank",sound:""});
+    else toast(`Rank ${rank}報酬を受け取りました`);
     openPlayerRankRewards();
   }
 
@@ -150,7 +151,8 @@
     if(!results.length){toast("受け取れるランク報酬はありません");return;}
     S.save();
     G.playSe?.("win");
-    toast(`${results.length}件のランク報酬を受け取りました`);
+    if(G.showRewardPop) G.showRewardPop({eyebrow:"RANK REWARD",title:"ランク報酬を獲得",detail:"受け取り可能な報酬をまとめて回収",amount:`${results.length}件`,kind:"rank",sound:""});
+    else toast(`${results.length}件のランク報酬を受け取りました`);
     openPlayerRankRewards();
   }
 

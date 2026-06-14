@@ -6,6 +6,7 @@
   const U = window.MonsterLinksUtils;
   const G = window.MonsterLinksGame = window.MonsterLinksGame || {};
   let toastTimer = null;
+  let rewardPopTimer = null;
   let audioCtx = null;
   let musicTimer = null;
   let musicStep = 0;
@@ -103,6 +104,61 @@
     }
     el.textContent = msg;
     toastTimer = setTimeout(()=>el.remove(),1800);
+  }
+
+  function showRewardPop(options={}){
+    const {
+      eyebrow="REWARD",
+      title="",
+      detail="",
+      amount="",
+      kind="gold",
+      sound="",
+      haptic: hapticKind="confirm",
+      duration=1500
+    } = options;
+    let pop = document.getElementById("rewardPopV846");
+    if(!pop){
+      pop = document.createElement("div");
+      pop.id = "rewardPopV846";
+      pop.setAttribute("role","status");
+      pop.setAttribute("aria-live","polite");
+
+      const aura = document.createElement("span");
+      aura.className = "rewardPopAuraV846";
+      aura.setAttribute("aria-hidden","true");
+      const copy = document.createElement("span");
+      copy.className = "rewardPopCopyV846";
+      const eyebrowEl = document.createElement("small");
+      eyebrowEl.className = "rewardPopEyebrowV846";
+      const titleEl = document.createElement("b");
+      titleEl.className = "rewardPopTitleV846";
+      const detailEl = document.createElement("span");
+      detailEl.className = "rewardPopDetailV846";
+      const amountEl = document.createElement("strong");
+      amountEl.className = "rewardPopAmountV846";
+      copy.append(eyebrowEl,titleEl,detailEl);
+      pop.append(aura,copy,amountEl);
+      document.body.appendChild(pop);
+    }
+
+    pop.className = `rewardPopV846 rewardPop-${kind || "gold"}V846`;
+    pop.querySelector(".rewardPopEyebrowV846").textContent = eyebrow;
+    pop.querySelector(".rewardPopTitleV846").textContent = title;
+    const detailEl = pop.querySelector(".rewardPopDetailV846");
+    detailEl.textContent = detail;
+    detailEl.hidden = !detail;
+    const amountEl = pop.querySelector(".rewardPopAmountV846");
+    amountEl.textContent = amount;
+    amountEl.hidden = !amount;
+
+    clearTimeout(rewardPopTimer);
+    pop.classList.remove("show");
+    void pop.offsetWidth;
+    pop.classList.add("show");
+    if(sound) playSe(sound);
+    if(hapticKind) haptic(hapticKind);
+    rewardPopTimer = setTimeout(()=>pop.classList.remove("show"),Math.max(900,duration));
   }
 
   function setView(v){
@@ -536,6 +592,6 @@
   }
 
 
-  Object.assign(G, {render, toast, delay, playSe, haptic, syncMusic, setView, saveNow, startGame, openTitle, fullHeal, startLastStage, closeModal, askConfirm, confirmYes, confirmNo, reset, createNewSlot, switchSlot, copyToSlot, deleteSlot, openBackupModal, selectBackupText, copyBackupText, openRestoreModal, restoreBackupText, toggleSetting, setSpeed, cycleBattleSpeed, setSeVolume, previewBattleSe, devAddGold, devLevelUpAll, devUnlockStages, devUnlockDex, devGetAllItems, devUnlockArena, devShowBalance});
+  Object.assign(G, {render, toast, showRewardPop, delay, playSe, haptic, syncMusic, setView, saveNow, startGame, openTitle, fullHeal, startLastStage, closeModal, askConfirm, confirmYes, confirmNo, reset, createNewSlot, switchSlot, copyToSlot, deleteSlot, openBackupModal, selectBackupText, copyBackupText, openRestoreModal, restoreBackupText, toggleSetting, setSpeed, cycleBattleSpeed, setSeVolume, previewBattleSe, devAddGold, devLevelUpAll, devUnlockStages, devUnlockDex, devGetAllItems, devUnlockArena, devShowBalance});
   window.Game = G;
 })();

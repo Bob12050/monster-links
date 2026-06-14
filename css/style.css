@@ -12879,3 +12879,173 @@ body.mlReducedMotionV817 .questRewardResultV838{animation:none}
   .battleV823 .commandsV842 .commandGroupV842 button > b{font-size:8px}
   .battleV823 .commandsV842 .commandGroupV842 button > small{font-size:5.5px;white-space:nowrap}
 }
+/* v8.6-A.46 reward and success feedback */
+.rewardPopV846 {
+  --reward-pop-accent: #f5c75b;
+  position: fixed;
+  z-index: 140;
+  top: calc(env(safe-area-inset-top, 0px) + 86px);
+  left: 50%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: min(390px, calc(100% - 24px));
+  min-height: 78px;
+  padding: 13px 16px;
+  overflow: hidden;
+  color: #fff;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -18px) scale(.96);
+  border: 1px solid color-mix(in srgb, var(--reward-pop-accent) 68%, #fff 12%);
+  border-radius: 18px;
+  background:
+    linear-gradient(112deg, color-mix(in srgb, var(--reward-pop-accent) 18%, transparent), transparent 48%),
+    linear-gradient(180deg, rgba(35, 39, 54, .98), rgba(15, 18, 28, .98));
+  box-shadow:
+    0 14px 38px rgba(0, 0, 0, .42),
+    0 0 26px color-mix(in srgb, var(--reward-pop-accent) 22%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, .16);
+}
+
+.rewardPopV846.show {
+  animation: rewardPopInV846 .28s cubic-bezier(.2, .9, .25, 1.15) forwards;
+}
+
+.rewardPopAuraV846 {
+  position: absolute;
+  inset: -70% 35% -70% -15%;
+  transform: rotate(18deg);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--reward-pop-accent) 30%, transparent), transparent);
+  animation: rewardPopSheenV846 1s ease-out both;
+}
+
+.rewardPopCopyV846 {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.rewardPopEyebrowV846 {
+  color: var(--reward-pop-accent);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+
+.rewardPopTitleV846 {
+  overflow: hidden;
+  font-size: 17px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rewardPopDetailV846 {
+  overflow: hidden;
+  color: rgba(255, 255, 255, .68);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rewardPopAmountV846 {
+  position: relative;
+  color: var(--reward-pop-accent);
+  font-size: 20px;
+  font-weight: 950;
+  letter-spacing: -.02em;
+  text-shadow: 0 2px 10px color-mix(in srgb, var(--reward-pop-accent) 45%, transparent);
+  white-space: nowrap;
+}
+
+.rewardPop-healV846 { --reward-pop-accent: #65e0a1; }
+.rewardPop-expV846 { --reward-pop-accent: #72b7ff; }
+.rewardPop-itemV846 { --reward-pop-accent: #d9a2ff; }
+.rewardPop-rankV846 { --reward-pop-accent: #ffd76b; }
+
+.rewardResultLabelV846 {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--page-accent, #f5c75b);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: .18em;
+}
+
+.rewardBoxV846 .rewardNumsV53 > div {
+  position: relative;
+  overflow: hidden;
+}
+
+.rewardBoxV846 .rewardNumsV53 > div::after {
+  position: absolute;
+  inset: auto 12px 0;
+  height: 2px;
+  content: "";
+  opacity: .72;
+  background: currentColor;
+}
+
+.rewardBoxV846 .rewardExpV846 { color: #8bc5ff; }
+.rewardBoxV846 .rewardGoldV846 { color: #ffd76b; }
+.rewardBoxV846 .rewardDropV846 { color: #d9a2ff; }
+.rewardBoxV846 .rewardLevelV846 { color: #6ee4ae; }
+
+.rewardBoxV846 .rewardNumsV53 span {
+  color: rgba(255, 255, 255, .62);
+}
+
+.rewardBoxV846 .rewardValueV846 {
+  animation: rewardValueInV846 .38s cubic-bezier(.2, .9, .25, 1.2) both;
+  text-shadow: 0 2px 12px currentColor;
+}
+
+.rewardBoxV846 .rewardNumsV53 > div:nth-child(2) .rewardValueV846 { animation-delay: .06s; }
+.rewardBoxV846 .rewardNumsV53 > div:nth-child(3) .rewardValueV846 { animation-delay: .12s; }
+.rewardBoxV846 .rewardNumsV53 > div:nth-child(4) .rewardValueV846 { animation-delay: .18s; }
+
+.rewardMomentV846 {
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, .58),
+    0 0 44px rgba(245, 199, 91, .14),
+    inset 0 1px 0 rgba(255, 255, 255, .14);
+}
+
+@keyframes rewardPopInV846 {
+  0% { opacity: 0; transform: translate(-50%, -18px) scale(.96); }
+  62% { opacity: 1; transform: translate(-50%, 3px) scale(1.015); }
+  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+@keyframes rewardPopSheenV846 {
+  from { transform: translateX(-60%) rotate(18deg); opacity: 0; }
+  30% { opacity: 1; }
+  to { transform: translateX(180%) rotate(18deg); opacity: 0; }
+}
+
+@keyframes rewardValueInV846 {
+  from { opacity: 0; transform: translateY(8px) scale(.78); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-height: 620px) {
+  .rewardPopV846 {
+    top: calc(env(safe-area-inset-top, 0px) + 58px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rewardPopV846.show,
+  .rewardPopAuraV846,
+  .rewardBoxV846 .rewardValueV846 {
+    animation: none;
+  }
+
+  .rewardPopV846.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

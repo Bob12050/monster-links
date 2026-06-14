@@ -437,12 +437,13 @@
 
     return `
     <main class="rewardPageV823">
-      <section class="rewardBox rewardBoxV53 rewardBoxV817 rewardBoxV818 rewardBoxV823 ${r.type}">
+      <section class="rewardBox rewardBoxV53 rewardBoxV817 rewardBoxV818 rewardBoxV823 rewardBoxV846 ${r.type}">
         <div class="rewardBurst" aria-hidden="true"></div>
 
         <div class="rewardHero rewardHeroV817">
           <div class="rewardBigIcon">${rewardIcon(r)}</div>
           <div>
+            <span class="rewardResultLabelV846">${r.type === "win" ? "QUEST CLEAR" : r.type === "scout" ? "SCOUT SUCCESS" : "BATTLE FAILED"}</span>
             <div class="rewardTitle rewardTitleV53">${U.esc(r.title)}</div>
             <div class="rewardSub">${U.esc(rewardSubText(r))}</div>
             ${r.stageName ? `<div class="rewardStageV817">📍 ${U.esc(r.stageName)}</div>` : ""}
@@ -460,10 +461,10 @@
         ${scoutPanel}
 
         <div class="rewardNums rewardNumsV53">
-          <div><span>EXP</span><b>${r.exp}</b></div>
-          <div><span>GOLD</span><b>${r.gold >= 0 ? "+"+r.gold : r.gold}</b></div>
-          <div><span>DROP</span><b>${dropCount}</b></div>
-          <div><span>LEVEL UP</span><b>${levelUpCount}</b></div>
+          <div class="rewardExpV846"><span>EXP</span><b class="rewardValueV846">${r.exp}</b></div>
+          <div class="rewardGoldV846"><span>GOLD</span><b class="rewardValueV846">${r.gold >= 0 ? "+"+r.gold : r.gold}</b></div>
+          <div class="rewardDropV846"><span>DROP</span><b class="rewardValueV846">${dropCount}</b></div>
+          <div class="rewardLevelV846"><span>LEVEL UP</span><b class="rewardValueV846">${levelUpCount}</b></div>
         </div>
 
         ${playerRankPanelHtml(r.playerRank)}

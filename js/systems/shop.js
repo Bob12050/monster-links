@@ -32,7 +32,8 @@
       S.fullHeal();
       S.save();
       render();
-      toast("全員回復しました");
+      if(G.showRewardPop) G.showRewardPop({eyebrow:"RECOVERY",title:"パーティ全回復",detail:"30Gを消費",kind:"heal",sound:"heal"});
+      else toast("全員回復しました");
     }
   }
 
@@ -44,7 +45,8 @@
     S.state.party.forEach(m=>lines.push(...S.gainExp(m,exp)));
     S.save();
     render();
-    toast(`修練の書を${qty}回分使いました`);
+    if(G.showRewardPop) G.showRewardPop({eyebrow:"TRAINING",title:"修練完了",detail:`${qty}回分の修練`,amount:`EXP +${exp}`,kind:"exp",sound:"tap"});
+    else toast(`修練の書を${qty}回分使いました`);
   }
 
   function buyScout(count=1){
@@ -53,7 +55,8 @@
     S.state.scoutCharm = (S.state.scoutCharm || 0) + qty;
     S.save();
     render();
-    toast(`スカウト笛を${qty}回分購入しました`);
+    if(G.showRewardPop) G.showRewardPop({eyebrow:"PURCHASE",title:"スカウト笛を購入",detail:`${50 * qty}Gを消費`,amount:`×${qty}`,kind:"item",sound:"tap"});
+    else toast(`スカウト笛を${qty}回分購入しました`);
   }
 
   function buyItem(id,count=1){
@@ -72,7 +75,8 @@
       S.addItem(id,qty);
       S.save();
       render();
-      toast(`${item.name}を${qty}個購入しました`);
+      if(G.showRewardPop) G.showRewardPop({eyebrow:"ITEM GET",title:item.name,detail:`${cost}Gを消費`,amount:`×${qty}`,kind:"item",sound:"tap"});
+      else toast(`${item.name}を${qty}個購入しました`);
     }
   }
 
