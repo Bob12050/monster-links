@@ -47,6 +47,7 @@
     const viewChanged = lastView !== null && lastView !== state.view;
     const currentGold = Number(state.gold) || 0;
     app.classList.toggle("crystalUiV822", state.view !== "title");
+    app.classList.toggle("gameFeelV845", state.view !== "title");
     app.dataset.view = state.view;
     // v8.6-A.17: 設定の「演出をひかえめ」をタイトル/ホーム/リザルト等の軽い演出にも反映する。
     document.body?.classList.toggle("mlReducedMotionV817", !!state.settings?.reducedMotion);

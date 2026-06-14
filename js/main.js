@@ -17,9 +17,15 @@
     const target = event.target.closest?.("button:not(:disabled), [role='button'], summary");
     if(!target || target.closest("input, textarea, select")) return;
     window.MonsterLinksGame.haptic?.("tap");
+    target.classList.add("gamePressedV845");
+    const clearPressed = ()=>target.classList.remove("gamePressedV845");
+    target.addEventListener("pointerup",clearPressed,{once:true});
+    target.addEventListener("pointercancel",clearPressed,{once:true});
+    target.addEventListener("pointerleave",clearPressed,{once:true});
+    setTimeout(clearPressed,260);
     if(S.state.settings?.reducedMotion) return;
     const pulse = document.createElement("span");
-    pulse.className = `pressPulseV826 ${target.classList.contains("gold") ? "gold" : ""}`;
+    pulse.className = `pressPulseV826 pressPulseV845 ${target.classList.contains("gold") ? "gold" : ""}`;
     pulse.style.left = `${event.clientX}px`;
     pulse.style.top = `${event.clientY}px`;
     document.body.appendChild(pulse);

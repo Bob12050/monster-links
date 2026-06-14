@@ -11776,6 +11776,194 @@ body.mlReducedMotionV817 .homeLandmarkV834.claimable{animation:none}
 }
 
 /* =========================================================
+   v8.6-A.45 Shared game-feel foundation
+   ========================================================= */
+.app.gameFeelV845{
+  --game-accent:54,209,255;
+  --game-accent-2:91,119,255;
+  --game-metal:240,198,92;
+  --game-surface:#07162e;
+  --game-surface-2:#0c2749;
+}
+.app.gameFeelV845[data-view="stage"]{--game-accent:103,224,158;--game-accent-2:62,154,112}
+.app.gameFeelV845[data-view="monsters"]{--game-accent:93,218,255;--game-accent-2:77,146,234}
+.app.gameFeelV845[data-view="fusion"]{--game-accent:190,133,255;--game-accent-2:87,218,255}
+.app.gameFeelV845[data-view="dex"]{--game-accent:91,219,255;--game-accent-2:76,137,232}
+.app.gameFeelV845[data-view="quest"]{--game-accent:255,205,92;--game-accent-2:96,211,255}
+.app.gameFeelV845[data-view="shop"]{--game-accent:255,201,79;--game-accent-2:85,218,255}
+.app.gameFeelV845[data-view="arena"],
+.app.gameFeelV845[data-view="battle"],
+.app.gameFeelV845[data-view="reward"]{--game-accent:255,105,119;--game-accent-2:255,196,82}
+.app.gameFeelV845[data-view="settings"],
+.app.gameFeelV845[data-view="menu"],
+.app.gameFeelV845[data-view="help"]{--game-accent:103,205,255;--game-accent-2:139,117,255}
+
+.app.gameFeelV845 > main:not(.homeV821):not(.battlePageV821){
+  background:
+    radial-gradient(circle at 8% 4%,rgba(var(--game-accent),.1),transparent 25%),
+    radial-gradient(circle at 92% 30%,rgba(var(--game-accent-2),.075),transparent 28%),
+    repeating-linear-gradient(135deg,rgba(255,255,255,.012) 0 1px,transparent 1px 9px),
+    linear-gradient(180deg,#07152d,#040b19 72%)!important;
+}
+.app.gameFeelV845 > main:not(.homeV821):not(.battlePageV821):before{
+  content:"";position:fixed;z-index:0;inset:95px 0 78px;pointer-events:none;
+  border-top:1px solid rgba(var(--game-accent),.08);
+  background:linear-gradient(90deg,transparent,rgba(var(--game-accent),.025),transparent);
+}
+.app.gameFeelV845 > main:not(.homeV821):not(.battlePageV821) > *{position:relative;z-index:1}
+
+.app.gameFeelV845 .card,
+.app.gameFeelV845 :is(.partyFormationV831,.pastureWorldV831,.questCardV817,.worldStageDetailV851,.worldMapPanelV851){
+  border-color:rgba(var(--game-accent),.31)!important;
+  border-bottom-color:rgba(var(--game-metal),.44)!important;
+  background:
+    linear-gradient(90deg,rgba(var(--game-accent),.06),transparent 18%,transparent 82%,rgba(var(--game-accent-2),.04)),
+    linear-gradient(180deg,rgba(15,42,79,.98),rgba(5,17,38,.99))!important;
+  box-shadow:
+    inset 0 1px rgba(221,246,255,.11),
+    inset 0 0 0 3px rgba(2,9,22,.3),
+    0 9px 20px rgba(0,0,0,.28)!important;
+}
+.app.gameFeelV845 .card:is(:hover,:focus-within){
+  border-color:rgba(var(--game-accent),.43)!important;
+}
+.app.gameFeelV845 :is(.card,.hero) h2{
+  text-shadow:0 2px 4px rgba(0,0,0,.55);
+}
+.app.gameFeelV845 :is(.card,.sectionTitle) h2:after{
+  width:58px;height:2px;
+  background:linear-gradient(90deg,rgba(var(--game-metal),1),rgba(var(--game-accent),.72),transparent)!important;
+  box-shadow:0 0 9px rgba(var(--game-accent),.28);
+}
+.app.gameFeelV845 .sectionTitle{
+  position:relative;padding:2px 7px 7px 11px;
+  border-left:3px solid rgb(var(--game-accent));
+}
+.app.gameFeelV845 .sectionTitle:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,rgba(var(--game-accent),.45),transparent);
+}
+
+.app.gameFeelV845 main button:not(.ghost),
+.app.gameFeelV845 main [role="button"]{
+  border-width:1px 1px 3px!important;
+  border-color:rgba(var(--game-accent),.44)!important;
+  border-bottom-color:rgba(0,0,0,.68)!important;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.045),transparent 28%,transparent 72%,rgba(var(--game-accent),.05)),
+    linear-gradient(180deg,#1a4977 0%,#0b2b53 52%,#071c3b 100%)!important;
+  box-shadow:
+    inset 0 1px rgba(222,247,255,.22),
+    inset 0 -4px 8px rgba(0,0,0,.18),
+    0 3px 0 rgba(0,0,0,.38),
+    0 6px 12px rgba(0,0,0,.2)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.7);
+}
+.app.gameFeelV845 main button.primary{
+  border-color:rgba(126,235,255,.85)!important;
+  background:linear-gradient(180deg,#32d5ff,#0788d0 55%,#07579b)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.42),0 3px 0 #043e76,0 0 16px rgba(45,202,255,.22)!important;
+}
+.app.gameFeelV845 main button.gold{
+  border-color:#fff0a7!important;color:#271900!important;
+  background:linear-gradient(180deg,#fff0a0,#e5b83f 52%,#b57a12)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.55),0 3px 0 #754707,0 0 17px rgba(255,202,76,.2)!important;
+  text-shadow:0 1px rgba(255,255,255,.36);
+}
+.app.gameFeelV845 main button.green{
+  border-color:#a1f6cf!important;
+  background:linear-gradient(180deg,#41d49d,#16815f 55%,#0c543e)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.36),0 3px 0 #063c2b!important;
+}
+.app.gameFeelV845 main button.red{
+  border-color:#ffb0b7!important;
+  background:linear-gradient(180deg,#e95c6b,#a82d42 55%,#72192b)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.3),0 3px 0 #4c0d1b!important;
+}
+.app.gameFeelV845 main button:disabled{
+  border-bottom-width:1px!important;filter:saturate(.35) brightness(.72)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.06)!important;text-shadow:none;
+}
+.app.gameFeelV845 .gamePressedV845:not(:disabled){
+  transform:translateY(3px) scale(.985)!important;
+  filter:brightness(1.16) saturate(1.08)!important;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.3),0 1px 0 rgba(0,0,0,.5)!important;
+}
+
+.app.gameFeelV845 .gameHudV821{
+  border-bottom-color:rgba(var(--game-metal),.8);
+  background:
+    radial-gradient(circle at 16% 0,rgba(var(--game-accent),.12),transparent 28%),
+    linear-gradient(180deg,#10284b,#061127 88%);
+  box-shadow:0 9px 26px rgba(0,0,0,.46),inset 0 -1px rgba(var(--game-accent),.25);
+}
+.app.gameFeelV845 .hudViewLabelV821 span{color:rgb(var(--game-accent))}
+.app.gameFeelV845 .gameDockV821{
+  border-top-color:rgba(var(--game-metal),.82)!important;
+  background:
+    radial-gradient(circle at 50% -40%,rgba(var(--game-accent),.2),transparent 48%),
+    linear-gradient(180deg,#143459,#061126 82%)!important;
+}
+.app.gameFeelV845 .gameDockV821 button.on{
+  border-color:rgba(var(--game-accent),.9)!important;
+  background:
+    linear-gradient(180deg,rgba(var(--game-accent),.66),rgba(var(--game-accent-2),.32) 48%,rgba(3,34,76,.9))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.28),0 0 19px rgba(var(--game-accent),.34)!important;
+}
+.app.gameFeelV845 .gameDockV821 button.on:before{
+  content:"";position:absolute;left:22%;right:22%;top:-7px;height:3px;border-radius:999px;
+  background:rgb(var(--game-accent));box-shadow:0 0 12px rgba(var(--game-accent),.9);
+}
+
+.pressPulseV845{
+  width:16px;height:16px;
+  border:1px solid rgba(196,244,255,.62);
+  background:radial-gradient(circle,rgba(255,255,255,.58),rgba(111,225,255,.28) 42%,transparent 70%);
+  box-shadow:0 0 20px rgba(92,213,255,.55),inset 0 0 8px rgba(255,255,255,.45);
+  animation-duration:.46s;
+}
+.pressPulseV845.gold{
+  border-color:rgba(255,240,169,.72);
+  background:radial-gradient(circle,rgba(255,255,255,.65),rgba(255,209,82,.32) 45%,transparent 72%);
+}
+.toast{
+  min-height:48px;display:grid;place-items:center;
+  border:1px solid rgba(var(--game-accent,54,209,255),.58)!important;
+  border-bottom:3px solid rgba(var(--game-metal,240,198,92),.78)!important;
+  border-radius:10px!important;
+  color:#f7fbff;
+  background:
+    linear-gradient(90deg,rgba(var(--game-accent,54,209,255),.1),transparent 30%,transparent 70%,rgba(var(--game-accent,54,209,255),.08)),
+    linear-gradient(180deg,rgba(15,43,80,.98),rgba(4,15,34,.99))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.16),0 10px 28px rgba(0,0,0,.5),0 0 18px rgba(var(--game-accent,54,209,255),.12);
+}
+.viewEnterV826{animation-duration:.24s}
+.viewEnterV826:after{
+  background:
+    linear-gradient(110deg,transparent 22%,rgba(var(--game-accent,82,213,255),.06) 40%,rgba(255,255,255,.2) 50%,rgba(var(--game-accent,82,213,255),.06) 60%,transparent 78%);
+}
+@keyframes viewEnterV826{
+  from{opacity:.18;transform:translateY(8px) scale(.992);filter:brightness(.62) saturate(.72)}
+  62%{opacity:1;filter:brightness(1.08) saturate(1.08)}
+  to{opacity:1;transform:none;filter:none}
+}
+.modalBg > .modal{
+  border-bottom-width:3px!important;
+  box-shadow:0 22px 58px rgba(0,0,0,.68),inset 0 1px rgba(210,244,255,.15),0 0 24px rgba(var(--game-accent),.1)!important;
+}
+
+@media(max-width:520px){
+  .app.gameFeelV845 main button:not(.ghost){border-radius:9px}
+  .app.gameFeelV845 .card{border-radius:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  .pressPulseV845{display:none}
+  .app.gameFeelV845 .gamePressedV845:not(:disabled){transform:none!important}
+}
+body.mlReducedMotionV817 .pressPulseV845{display:none}
+body.mlReducedMotionV817 .app.gameFeelV845 .gamePressedV845:not(:disabled){transform:none!important}
+
+/* =========================================================
    v8.6-A.36 Monster roster and profile refinement
    ========================================================= */
 .monsterBaseV836{--roster-cyan:94,220,255;--roster-green:116,240,160;--roster-gold:240,198,92;gap:10px}
