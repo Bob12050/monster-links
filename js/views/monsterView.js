@@ -89,9 +89,21 @@
     }).join("");
   }
 
+  function growthProfile(m,s){
+    const labels = {atk:"攻撃",def:"守備",spd:"速さ",wis:"賢さ"};
+    const strongest = Object.keys(labels).sort((a,b)=>(s[b] || 0) - (s[a] || 0))[0];
+    return {
+      ivRank:S.ivRank(m),
+      strongest:labels[strongest],
+      strongestValue:s[strongest] || 0,
+      equip:m.equip ? D.ITEMS[m.equip] : null
+    };
+  }
+
   function partyFormationCard(m){
     const d = S.def(m.id);
     const s = S.stats(m);
+    const growth = growthProfile(m,s);
     const isLeader = S.state.party[0]?.uid === m.uid;
     const size = S.monsterSize ? S.monsterSize(m) : 1;
     const canMove = S.state.party.length > 1;
@@ -120,6 +132,11 @@
           ${statusBar("HP",m.hp,s.hp,"hp")}
           ${statusBar("MP",m.mp,s.mp,"mp")}
         </div>
+        <div class="monsterGrowthStripV847">
+          <span><small>得意</small><b>${growth.strongest} ${growth.strongestValue}</b></span>
+          <span><small>個体</small><b>${growth.ivRank}</b></span>
+          <span><small>装備</small><b>${growth.equip ? U.esc(growth.equip.name) : "なし"}</b></span>
+        </div>
         <div class="partyCardActionsV831">
           <button class="gold" onclick="Game.openMonsterDetail('${m.uid}','party')">詳細・装備</button>
           ${isLeader ? `<button disabled>先頭メンバー</button>` : `<button onclick="Game.leader('${m.uid}')">先頭にする</button>`}
@@ -133,6 +150,7 @@
   function pastureMonsterCard(m){
     const d = S.def(m.id);
     const s = S.stats(m);
+    const growth = growthProfile(m,s);
     const size = S.monsterSize ? S.monsterSize(m) : 1;
     const remain = S.partySlotsRemaining ? S.partySlotsRemaining() : Math.max(0,D.MAX_PARTY - S.state.party.length);
     const canJoin = S.canAddToParty ? S.canAddToParty(m) : S.state.party.length < D.MAX_PARTY;
@@ -154,6 +172,9 @@
             ${m.locked ? "<span>🔒</span>" : ""}
           </span>
           <span class="pastureStatsV831">HP ${m.hp}/${s.hp}　攻 ${s.atk}　守 ${s.def}　速 ${s.spd}</span>
+          <span class="pastureGrowthV847">
+            <i>得意 ${growth.strongest}</i><i>個体 ${growth.ivRank}</i><i>${growth.equip ? `装備 ${U.esc(growth.equip.name)}` : "装備なし"}</i>
+          </span>
           <span class="pastureDetailHintV831">タップで詳細・装備を見る</span>
         </span>
       </button>

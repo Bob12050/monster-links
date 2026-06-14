@@ -16,7 +16,13 @@
     const state = S.state;
     if(state.party.length <= 1){toast("パーティは最低1体必要です");return;}
     const i = state.party.findIndex(m=>m.uid===uid);
-    if(i >= 0){state.box.push(state.party.splice(i,1)[0]);S.save();render();}
+    if(i >= 0){
+      const moved = state.party[i];
+      state.box.push(state.party.splice(i,1)[0]);
+      S.save();
+      render();
+      if(G.showRewardPop) G.showRewardPop({eyebrow:"FORMATION",title:`${moved.nickname}を牧場へ`,detail:S.partySizeText(),kind:"item",sound:"tap"});
+    }
   }
 
   function toParty(uid){
@@ -31,7 +37,8 @@
     state.party.push(state.box.splice(i,1)[0]);
     S.save();
     render();
-    toast(`パーティに加えました（${S.partySizeText()}）`);
+    if(G.showRewardPop) G.showRewardPop({eyebrow:"PARTY IN",title:`${target.nickname}が加入`,detail:S.partySizeText(),kind:"rank",sound:"win"});
+    else toast(`パーティに加えました（${S.partySizeText()}）`);
   }
 
   function recommendedExchangePick(target){
@@ -174,7 +181,8 @@
     S.save();
     if(G.closeModal) G.closeModal();
     render();
-    toast(`${targetName}をパーティへ入れ、${count}体を牧場へ戻しました（${S.partySizeText()}）`);
+    if(G.showRewardPop) G.showRewardPop({eyebrow:"FORMATION",title:`${targetName}が加入`,detail:`${count}体と交換 / ${S.partySizeText()}`,kind:"rank",sound:"win"});
+    else toast(`${targetName}をパーティへ入れ、${count}体を牧場へ戻しました（${S.partySizeText()}）`);
   }
 
   function cancelPartyExchange(ev){
@@ -192,7 +200,8 @@
       state.party.unshift(m);
       S.save();
       render();
-      toast("先頭を変更しました");
+      if(G.showRewardPop) G.showRewardPop({eyebrow:"NEW LEADER",title:`${m.nickname}を先頭に設定`,detail:"パーティ編成を更新",kind:"rank",sound:"tap"});
+      else toast("先頭を変更しました");
     }
   }
 
@@ -212,6 +221,13 @@
     const s = S.stats(m);
     const equip = m.equip ? D.ITEMS[m.equip] : null;
     const personality = S.personalityDef(m.personality);
+    const nextStats = m.level >= D.MAX_LEVEL ? null : S.stats({...m,level:m.level + 1});
+    const statLabels = {hp:"HP",mp:"MP",atk:"攻撃",def:"守備",spd:"速さ",wis:"賢さ"};
+    const strongestKey = ["atk","def","spd","wis"].sort((a,b)=>(s[b] || 0) - (s[a] || 0))[0];
+    const growthChips = nextStats ? Object.keys(statLabels).map(key=>{
+      const gain = Math.max(0,(nextStats[key] || 0) - (s[key] || 0));
+      return `<span><small>${statLabels[key]}</small><b>+${gain}</b></span>`;
+    }).join("") : `<strong>LEVEL MAX</strong>`;
     const skills = S.skills(m).filter(id=>id !== "attack").map(id=>{
       const sk = D.SKILLS[id] || {name:id,cost:0,text:""};
       return `<div class="detailSkillV78"><b>${U.esc(sk.name)}</b><span>MP${sk.cost || 0} / ${U.esc(sk.text || "")}</span></div>`;
@@ -272,6 +288,15 @@
         </nav>
 
         <div class="monsterDetailPanelV824 active" data-detail-panel="overview">
+          <div class="growthSummaryV847">
+            <div><small>個体評価</small><b>${S.ivRank(m)}</b><span>合計 ${S.ivTotal(m)}</span></div>
+            <div><small>得意能力</small><b>${statLabels[strongestKey]}</b><span>${s[strongestKey]}</span></div>
+            <div><small>現在の装備</small><b>${equip ? U.esc(equip.name) : "なし"}</b><span>${equip ? S.itemStatsText(m.equip) : "装備変更から設定"}</span></div>
+          </div>
+          <div class="nextLevelPreviewV847 ${nextStats ? "" : "max"}">
+            <header><span>NEXT LEVEL</span><b>${nextStats ? `Lv ${m.level + 1} 成長予告` : "育成完了"}</b></header>
+            <div>${growthChips}</div>
+          </div>
           <div class="detailQuickStatsV824">
             <div><span>HP</span><b>${m.hp}/${s.hp}</b></div>
             <div><span>攻撃</span><b>${s.atk}</b></div>
@@ -357,18 +382,35 @@
     if(!m) return;
     const entries = S.bagEntries().filter(x=>x.item.kind === "accessory");
     const current = m.equip ? D.ITEMS[m.equip] : null;
+    const currentStats = S.stats(m);
+    const labels = {hp:"HP",mp:"MP",atk:"攻撃",def:"守備",spd:"速さ",wis:"賢さ"};
+    const compare = id=>{
+      const preview = S.stats({...m,equip:id});
+      const changes = Object.keys(labels).map(key=>{
+        const diff = (preview[key] || 0) - (currentStats[key] || 0);
+        return diff ? `<span class="${diff > 0 ? "up" : "down"}">${labels[key]} ${diff > 0 ? "+" : ""}${diff}</span>` : "";
+      }).filter(Boolean).join("");
+      return changes || `<span class="same">能力値の変化なし</span>`;
+    };
     document.getElementById("modal").innerHTML = `
     <div class="modalBg" onclick="Game.closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()">
-        <h2>${U.esc(m.nickname)} の装備</h2>
-        <div class="notice">現在：${current ? `${current.icon} ${current.name}（${S.itemStatsText(m.equip)}）` : "なし"}</div>
-        <div class="list">
-          ${current ? `<button class="red" onclick="Game.unequip('${m.uid}')">装備を外す</button>` : ""}
-          ${entries.length ? entries.map(({id,count,item})=>`
-            <button onclick="Game.equip('${m.uid}','${id}')">
-              ${V.itemVisual(id,'miniItemIcon')} ${item.name} ×${count}<br><span class="tiny">${S.itemStatsText(id)} / ${item.desc}</span>
-            </button>`).join("") : `<div class="empty">装備できるアクセサリーを持っていません</div>`}
+      <div class="modal equipModalV847" onclick="event.stopPropagation()">
+        <header class="equipModalHeadV847">
+          <div><span>EQUIPMENT</span><h2>${U.esc(m.nickname)} の装備</h2><p>変更後の能力差を確認して装備できます。</p></div>
           <button onclick="Game.closeModal()">閉じる</button>
+        </header>
+        <div class="equipCurrentV847">
+          ${current ? V.itemVisual(m.equip,"equipCurrentIconV847") : ""}
+          <span><small>現在の装備</small><b>${current ? U.esc(current.name) : "装備なし"}</b><em>${current ? S.itemStatsText(m.equip) : "アクセサリーを選択してください"}</em></span>
+          ${current ? `<button class="red" onclick="Game.unequip('${m.uid}')">外す</button>` : ""}
+        </div>
+        <div class="modal-body equipChoiceListV847">
+          ${entries.length ? entries.map(({id,count,item})=>`
+            <button class="equipChoiceV847" onclick="Game.equip('${m.uid}','${id}')">
+              ${V.itemVisual(id,"equipChoiceIconV847")}
+              <span class="equipChoiceCopyV847"><small>所持 ${count}</small><b>${U.esc(item.name)}</b><em>${S.itemStatsText(id)} / ${U.esc(item.desc || "")}</em><i>${compare(id)}</i></span>
+              <strong>装備</strong>
+            </button>`).join("") : `<div class="empty">装備できるアクセサリーを持っていません</div>`}
         </div>
       </div>
     </div>`;
@@ -379,7 +421,10 @@
       S.recordEquip();
       S.save();
       render();
-      toast("装備しました");
+      const m = S.owned().find(x=>x.uid===uid);
+      const item = D.ITEMS[itemId];
+      if(G.showRewardPop) G.showRewardPop({eyebrow:"EQUIPPED",title:item?.name || "装備変更",detail:m ? `${m.nickname}の能力を更新` : "装備を更新",kind:"exp",sound:"tap"});
+      else toast("装備しました");
     }else toast("装備できません");
   }
 
@@ -387,7 +432,8 @@
     if(S.unequipItem(uid)){
       S.save();
       render();
-      toast("装備を外しました");
+      if(G.showRewardPop) G.showRewardPop({eyebrow:"EQUIPMENT",title:"装備を外しました",detail:"アクセサリーを道具袋へ戻しました",kind:"item",sound:"tap"});
+      else toast("装備を外しました");
     }
   }
 
