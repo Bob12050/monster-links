@@ -12373,3 +12373,111 @@ body.mlReducedMotionV817 .questRewardResultV838{animation:none}
 @media(prefers-reduced-motion:reduce){
   .arenaNavV840 a{scroll-behavior:auto}
 }
+
+/* =========================================================
+   v8.6-A.41 Beginner guide and help screen refinement
+   ========================================================= */
+.guideHubV841{--guide-cyan:94,220,255;--guide-gold:240,198,92;--guide-green:116,240,160;gap:10px}
+.guideHeroV841{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,.65fr);gap:14px;align-items:center;
+  border-color:rgba(var(--guide-cyan),.34);
+  background:
+    radial-gradient(circle at 86% 0,rgba(var(--guide-gold),.12),transparent 32%),
+    radial-gradient(circle at 8% 20%,rgba(var(--guide-cyan),.12),transparent 32%),
+    linear-gradient(145deg,#142e50,#07162e);
+}
+.guideHeroCopyV841 > span{color:#69e0ff;font-size:8px;font-weight:1000;letter-spacing:.18em}
+.guideHeroCopyV841 h1{margin:4px 0 5px;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:28px}
+.guideHeroCopyV841 p{max-width:500px;margin:0;color:#b6c8d9;font-size:10px;line-height:1.65}
+.guideProgressV841{display:grid;gap:6px;padding:11px;border:1px solid rgba(var(--guide-gold),.28);border-radius:12px;background:rgba(2,13,29,.58)}
+.guideProgressV841 > div:first-child{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.guideProgressV841 > div:first-child span{color:#b8c9da;font-size:8px;font-weight:900}
+.guideProgressV841 > div:first-child b{color:#ffe078;font-size:14px}
+.guideProgressV841 > i{height:6px;display:block;overflow:hidden;border-radius:999px;background:rgba(0,0,0,.38)}
+.guideProgressV841 > i > b{height:100%;display:block;border-radius:inherit;background:linear-gradient(90deg,#3b9dc9,#75e4ff)}
+.guideProgressV841 > small{margin-top:4px;color:#ffe078;font-size:6px;font-weight:1000;letter-spacing:.14em}
+.guideProgressV841 > strong{color:#fff;font-size:11px}
+.guideProgressV841 > p{margin:0;color:#91a8bf;font-size:7px;line-height:1.45}
+.guideProgressV841 > button{width:100%;min-height:38px}
+.guideQuestProgressV841{position:relative;height:18px;overflow:hidden;border-radius:6px;background:rgba(0,0,0,.35)}
+.guideQuestProgressV841 > i{height:100%;display:block;background:linear-gradient(90deg,rgba(var(--guide-gold),.35),rgba(var(--guide-gold),.7))}
+.guideQuestProgressV841 > span{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:7px;font-weight:1000}
+.guideQuickNavV841{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:5px;border:1px solid rgba(var(--guide-cyan),.15);border-radius:11px;background:#06142b}
+.guideQuickNavV841 a{min-height:38px;display:grid;place-items:center;padding:6px;border:1px solid transparent;border-radius:8px;color:#aac1d6;background:rgba(255,255,255,.035);font-size:8px;font-weight:900;text-align:center;text-decoration:none}
+.guideQuickNavV841 a:active{transform:scale(.98);border-color:rgba(var(--guide-cyan),.38)}
+.guideStartV841,.guideDetailsPanelV841,.guideTroubleV841{scroll-margin-top:10px}
+.guideSectionHeadV841{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:11px}
+.guideSectionHeadV841 span{color:#62dcff;font-size:7px;font-weight:1000;letter-spacing:.15em}
+.guideSectionHeadV841 h2{margin:2px 0 0}
+.guideSectionHeadV841 > p{margin:0;color:#8fa6bc;font-size:8px}
+.guideCoreFlowV841{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.guideCoreStepV841{
+  position:relative;min-width:0;display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px;padding:11px;
+  border:1px solid rgba(var(--guide-cyan),.18);border-radius:11px;
+  background:linear-gradient(180deg,rgba(16,39,69,.96),rgba(5,17,36,.98));
+}
+.guideCoreStepV841:after{content:"";position:absolute;right:-8px;top:50%;width:9px;height:1px;background:rgba(var(--guide-cyan),.35)}
+.guideCoreStepV841:last-child:after{display:none}
+.guideCoreNumberV841{position:absolute;right:8px;top:6px;color:rgba(255,255,255,.11);font-size:28px;font-weight:1000}
+.guideCoreIconV841{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(var(--guide-cyan),.28);border-radius:10px;color:#70e3ff;background:#09213c}
+.guideIconSvgV841{width:23px;height:23px}
+.guideCoreStepV841 h3{position:relative;margin:2px 0 3px;color:#fff;font-size:12px}
+.guideCoreStepV841 p{position:relative;min-height:45px;margin:0;color:#96abc0;font-size:7px;line-height:1.55}
+.guideCoreStepV841 button{grid-column:1/3;width:100%;min-height:36px;margin-top:3px}
+.guideShortcutGridV841{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.guideShortcutGridV841 button{min-width:0;min-height:58px;display:grid;grid-template-columns:28px minmax(0,1fr);gap:7px;align-items:center;padding:8px;text-align:left}
+.guideShortcutIconV841{width:25px;height:25px;color:#65ddff}
+.guideShortcutGridV841 span{min-width:0;display:grid;gap:2px}
+.guideShortcutGridV841 b{color:#fff;font-size:9px}
+.guideShortcutGridV841 small{overflow:hidden;color:#8fa6bc;font-size:6px;text-overflow:ellipsis;white-space:nowrap}
+.guideDetailListV841{display:grid;gap:6px}
+.guideDetailV841{overflow:hidden;border:1px solid rgba(var(--guide-cyan),.14);border-radius:10px;background:#07182f}
+.guideDetailV841 > summary{min-height:55px;display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:9px;align-items:center;padding:9px 11px;cursor:pointer;list-style:none}
+.guideDetailV841 > summary::-webkit-details-marker{display:none}
+.guideDetailIconV841{width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(var(--guide-cyan),.22);border-radius:9px;color:#6be0ff;background:#0a223d}
+.guideDetailV841 > summary > span:nth-child(2){min-width:0;display:grid;gap:2px}
+.guideDetailV841 > summary b{color:#edf6ff;font-size:11px}
+.guideDetailV841 > summary small{overflow:hidden;color:#8fa6bc;font-size:7px;text-overflow:ellipsis;white-space:nowrap}
+.guideDetailV841 > summary em{color:#67ddff;font-size:8px;font-style:normal;font-weight:900}
+.guideDetailV841[open] > summary{border-bottom:1px solid rgba(var(--guide-cyan),.12)}
+.guideDetailV841[open] > summary em:after{content:" / 閉じる"}
+.guideDetailBodyV841{padding:10px}
+.guideRuleGridV841{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.guideRuleGridV841 > div{padding:9px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:rgba(255,255,255,.035)}
+.guideRuleGridV841 b,.guideRuleGridV841 span{display:block}
+.guideRuleGridV841 b{margin-bottom:3px;color:#dff7ff;font-size:9px}
+.guideRuleGridV841 span{color:#95abc0;font-size:7px;line-height:1.55}
+.guideDetailBodyV841 > .actions{margin-top:8px}
+.guideGlossaryV841{grid-template-columns:1fr 1fr}
+.guideGlossaryV841 div{grid-template-columns:90px 1fr;border-radius:9px}
+.guideGlossaryV841 b{font-size:8px}
+.guideGlossaryV841 span{font-size:7px}
+.guideTroubleV841{border-color:rgba(var(--guide-gold),.25);background:radial-gradient(circle at 100% 0,rgba(var(--guide-gold),.08),transparent 32%),var(--card)}
+.guideTroubleStepsV841{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:9px}
+.guideTroubleStepsV841 > div{display:grid;grid-template-columns:28px minmax(0,1fr);gap:7px;align-items:center;padding:9px;border:1px solid rgba(var(--guide-gold),.16);border-radius:9px;background:rgba(0,0,0,.15)}
+.guideTroubleStepsV841 > div > b{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;color:#2a1a00;background:linear-gradient(180deg,#ffe795,#d79d2b);font-size:10px}
+.guideTroubleStepsV841 span{min-width:0;display:grid;gap:2px}
+.guideTroubleStepsV841 strong{color:#fff;font-size:8px}
+.guideTroubleStepsV841 small{color:#8fa6bc;font-size:6px}
+
+@media(max-width:700px){
+  .guideHeroV841{grid-template-columns:1fr}
+  .guideCoreFlowV841{grid-template-columns:1fr}
+  .guideCoreStepV841{grid-template-columns:42px minmax(0,1fr) auto;align-items:center}
+  .guideCoreStepV841:after{display:none}
+  .guideCoreStepV841 p{min-height:0}
+  .guideCoreStepV841 button{grid-column:3;grid-row:1;min-width:78px}
+  .guideShortcutGridV841{grid-template-columns:1fr 1fr}
+}
+@media(max-width:430px){
+  .guideHeroCopyV841 h1{font-size:23px}
+  .guideSectionHeadV841 > p{display:none}
+  .guideCoreStepV841{grid-template-columns:38px minmax(0,1fr)}
+  .guideCoreIconV841{width:38px;height:38px}
+  .guideCoreStepV841 button{grid-column:1/3;grid-row:auto}
+  .guideRuleGridV841,.guideGlossaryV841,.guideTroubleStepsV841{grid-template-columns:1fr}
+  .guideGlossaryV841 div{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .guideQuickNavV841 a{scroll-behavior:auto}
+}
