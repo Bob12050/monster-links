@@ -12178,7 +12178,7 @@ body.mlReducedMotionV817 .questRewardResultV838{animation:none}
 .settingsAdvancedBodyV839 .balanceMini{margin:0}
 .settingsAdvancedBodyV839 .assetPanel{padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(0,0,0,.16)}
 .settingsAdvancedBodyV839 .assetPanel h3{margin-top:0}
-.backupModalV839{overflow:hidden;border-color:rgba(var(--settings-cyan),.34);background:linear-gradient(180deg,#122b49,#06152c)}
+.backupModalV839{overflow-x:hidden;overflow-y:auto;border-color:rgba(var(--settings-cyan),.34);background:linear-gradient(180deg,#122b49,#06152c)}
 .backupModalHeadV839{padding-bottom:10px;border-bottom:1px solid rgba(var(--settings-cyan),.16)}
 .backupModalStepV839,.restoreWarningV839{display:grid;gap:2px;margin-top:10px;padding:9px 10px;border-radius:9px;background:rgba(94,220,255,.07)}
 .backupModalStepV839 b,.restoreWarningV839 b{font-size:10px}
@@ -12186,6 +12186,9 @@ body.mlReducedMotionV817 .questRewardResultV838{animation:none}
 .restoreWarningV839{border:1px solid rgba(var(--settings-red),.3);background:rgba(87,24,34,.35)}
 .restoreWarningV839 b{color:#ff9ba4}
 .backupModalV839 .backupTextarea{max-height:36dvh;resize:none}
+@media(max-height:700px){
+  .backupModalV839 .backupTextarea{min-height:150px;max-height:28dvh}
+}
 
 .menuHeroV839{border-color:rgba(94,220,255,.27);background:linear-gradient(145deg,#132a49,#07152c)}
 .menuDataShortcutV839{

@@ -21,6 +21,12 @@
       main.classList.add("rewardEnterV826");
       window.MonsterLinksGame.haptic?.("reward");
     }
+    const clearTransitionClass = () => {
+      main.classList.remove("viewEnterV826","rewardEnterV826");
+    };
+    main.addEventListener("animationend",clearTransitionClass,{once:true});
+    // Keep fixed-position modals independent even if animation events are suppressed.
+    setTimeout(clearTransitionClass,500);
   }
 
   function showGoldDelta(app,gold){
