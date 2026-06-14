@@ -27,10 +27,23 @@
     const strategy = window.MonsterLinksGame.strategyInfo?.() || {name:"バランス",short:"BALANCE"};
     const mutationTitle = enemy.mutation ? S.mutationTitleName(enemy) : "";
     const stageTheme = String(b.stage?.id || "default").replace(/[^a-z0-9_-]/gi,"");
+    const allyStats = S.stats(ally);
+    const learnedSkills = S.skills(ally).filter(id=>id !== "attack");
+    const affordableSkills = learnedSkills.filter(id=>ally.mp >= (D.SKILLS[id]?.cost || 0));
+    const switchableAllies = S.state.party.filter((monster,index)=>index !== b.active && S.alive(monster));
+    const skillDisabled = b.lock || learnedSkills.length === 0 || affordableSkills.length === 0;
+    const switchDisabled = b.lock || switchableAllies.length === 0;
+    const lockReason = b.lock ? "行動処理中" : "";
+    const skillText = lockReason || (learnedSkills.length === 0 ? "特技を未習得" : affordableSkills.length === 0 ? "MPが足りない" : `${affordableSkills.length}個 使用可能`);
+    const switchText = lockReason || (switchableAllies.length === 0 ? "交代できる仲間なし" : `${switchableAllies.length}体と交代可能`);
+    const guardText = lockReason || "次の被害を軽減";
+    const escapeText = lockReason || (b.isArena ? "大会を棄権する" : b.isBoss ? "成功率は低め" : "戦闘から離脱");
+    const scoutStateClass = scoutDisabled ? "unavailable" : "available";
+    const affinity = affinityInfo(ally,enemy);
 
     return `
     <main class="battlePageV821 battlePageV823">
-      <section class="battle battleV821 battleV823 battleV833 battleStage-${U.esc(stageTheme)} battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
+      <section class="battle battleV821 battleV823 battleV833 battleV842 battleStage-${U.esc(stageTheme)} battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
         ${b.mutationIntro ? `<div class="mutationEncounterV1" aria-label="突然変異個体が出現"><span>RARE ENCOUNTER</span><b>${U.esc(mutationTitle)}突然変異個体 出現</b><small>色違いで能力補正を持つ珍しいモンスターです</small></div>` : ""}
         <div class="battleHeaderV821">
           <div>
@@ -40,13 +53,22 @@
           </div>
           <div class="battleHeaderRightV821">
             <span>${U.esc(modeText)}</span>
-            <div class="battleHeaderControlsV84">
+            <div class="battleHeaderControlsV84 battleHeaderControlsV842">
               <button class="battleSpeedButtonV84" onclick="Game.cycleBattleSpeed()"><small>速度</small><b>${U.esc(speedLabel)}</b></button>
               <button class="battleSoundButtonV84 ${settings.sound ? "on" : ""}" onclick="Game.toggleSetting('sound')" aria-label="効果音切替">${settings.sound ? "🔊" : "🔇"}</button>
               <div class="battleModeV821 ${b.isBoss ? "bossMode" : ""} ${b.isArena ? "arenaMode" : ""}">${modeLabel}</div>
             </div>
           </div>
         </div>
+        ${b.isArena ? `
+          <div class="arenaRoundTrackerV842">
+            <span>TOURNAMENT PROGRESS</span>
+            <div>${Array.from({length:b.arenaTotal},(_,index)=>{
+              const round = index + 1;
+              const cls = round < b.arenaRound ? "cleared" : round === b.arenaRound ? "current" : "";
+              return `<i class="${cls}"><b>${round}</b><small>${round === b.arenaTotal ? "FINAL" : `ROUND ${round}`}</small></i>`;
+            }).join("")}</div>
+          </div>` : ""}
 
         <div class="battleArenaV821">
           <div class="battleLightV821"></div>
@@ -115,24 +137,51 @@
         <div class="battleMessageV821 ${b.lock ? "waiting" : ""} ${autoOn ? "autoV841" : ""}">
           <span>${autoOn ? `AUTO ${U.esc(strategy.short)}` : b.lock ? "NOW ACTION" : "COMMAND"}</span>
           <b>${U.esc(latestLog)}</b>
-          <small>${autoOn ? `作戦「${U.esc(strategy.name)}」で行動中・手動コマンドで解除` : U.esc(turnText)}・${V.affinityHint(ally,enemy)}</small>
+          <small>${autoOn ? `作戦「${U.esc(strategy.name)}」で行動中・手動コマンドで解除` : U.esc(turnText)}</small>
         </div>
 
-        <div class="battleCommandDeckV821">
-          <div class="commandHeadingV821">
-            <div><span>PLAYER COMMAND</span><b>行動を選ぶ</b></div>
-            <div class="battleAutoControlV841">
+        <div class="battleTacticalBarV842">
+          <div class="battleAffinityV842 ${affinity.attackClass}">
+            <span>攻撃相性</span><b>${U.esc(affinity.attack)}</b><small>${U.esc(D.TYPES[ad.type])} → ${U.esc(D.TYPES[ed.type])}</small>
+          </div>
+          <div class="battleAffinityV842 ${affinity.defenseClass}">
+            <span>防御相性</span><b>${U.esc(affinity.defense)}</b><small>${U.esc(D.TYPES[ed.type])} → ${U.esc(D.TYPES[ad.type])}</small>
+          </div>
+          <div class="battleScoutStateV842 ${scoutStateClass}">
+            <span>SCOUT</span><b>${U.esc(scoutText)}</b>
+          </div>
+        </div>
+
+        <div class="battleCommandDeckV821 battleCommandDeckV842">
+          <div class="commandHeadingV821 commandHeadingV842">
+            <div><span>PLAYER COMMAND</span><b>${b.lock ? "行動処理中" : "行動を選ぶ"}</b></div>
+            <div class="battleAutoControlV841 battleAutoControlV842">
               <button class="battleStrategyButtonV1" onclick="Game.cycleBattleStrategy()"><b>${U.esc(strategy.name)}</b><small>作戦を変更</small></button>
               <button class="${autoOn ? "on" : ""}" onclick="Game.toggleBattleAuto()"><b>${autoOn ? "AUTO ON" : "AUTO OFF"}</b><small>${autoOn ? "解除する" : "作戦行動を開始"}</small></button>
             </div>
           </div>
-          <div class="commandsV821">
-            <button class="attackCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.act('attack')"><span>⚔️</span><b>攻撃</b><small>通常攻撃</small></button>
-            <button class="skillCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.skillModal()"><span>✨</span><b>とくぎ</b><small>MP ${ally.mp}/${S.stats(ally).mp}</small></button>
-            <button class="scoutCommandV821" ${scoutDisabled ? "disabled" : ""} onclick="Game.act('scout')"><span>🤝</span><b>スカウト</b><small>${scoutText}</small></button>
-            <button class="guardCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.act('guard')"><span>🛡️</span><b>防御</b><small>被害を軽減</small></button>
-            <button class="switchCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.switchModal()"><span>🔁</span><b>交代</b><small>仲間と交代</small></button>
-            <button class="escapeCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.escape()"><span>${b.isArena ? "🏳️" : "🏃"}</span><b>${b.isArena ? "棄権" : "逃げる"}</b><small>${b.isArena ? "試合を終了" : "戦闘を離脱"}</small></button>
+          <div class="commandsV821 commandsV842">
+            <section class="commandGroupV842 primaryCommandsV842">
+              <div class="commandGroupLabelV842"><span>MAIN ACTION</span><b>攻撃コマンド</b></div>
+              <div>
+                <button class="attackCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.act('attack')"><span>⚔️</span><b>攻撃</b><small>${lockReason || "MPを使わない基本攻撃"}</small></button>
+                <button class="skillCommandV821" ${skillDisabled ? "disabled" : ""} onclick="Game.skillModal()"><span>✨</span><b>とくぎ</b><small>${U.esc(skillText)} / MP ${ally.mp}/${allyStats.mp}</small></button>
+              </div>
+            </section>
+            <section class="commandGroupV842 tacticalCommandsV842">
+              <div class="commandGroupLabelV842"><span>TACTICS</span><b>戦術コマンド</b></div>
+              <div>
+                <button class="scoutCommandV821" ${scoutDisabled ? "disabled" : ""} onclick="Game.act('scout')"><span>🤝</span><b>スカウト</b><small>${U.esc(scoutText)}</small></button>
+                <button class="guardCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.act('guard')"><span>🛡️</span><b>防御</b><small>${U.esc(guardText)}</small></button>
+              </div>
+            </section>
+            <section class="commandGroupV842 utilityCommandsV842">
+              <div class="commandGroupLabelV842"><span>PARTY / EXIT</span><b>補助操作</b></div>
+              <div>
+                <button class="switchCommandV821" ${switchDisabled ? "disabled" : ""} onclick="Game.switchModal()"><span>🔁</span><b>交代</b><small>${U.esc(switchText)}</small></button>
+                <button class="escapeCommandV821" ${b.lock ? "disabled" : ""} onclick="Game.escape()"><span>${b.isArena ? "🏳️" : "🏃"}</span><b>${b.isArena ? "棄権" : "逃げる"}</b><small>${U.esc(escapeText)}</small></button>
+              </div>
+            </section>
           </div>
         </div>
 
@@ -190,12 +239,18 @@
   }
 
   function affinityHint(ally,enemy){
+    const info = affinityInfo(ally,enemy);
+    return `相性：攻撃 ${info.attack} / 防御 ${info.defense}`;
+  }
+
+  function affinityInfo(ally,enemy){
     const aType = S.def(ally.id).type;
     const eType = S.def(enemy.id).type;
     const atk = D.TYPE_CHART?.[aType]?.[eType] || 1;
     const def = D.TYPE_CHART?.[eType]?.[aType] || 1;
     const label = n => n >= 1.3 ? "弱点を突ける" : n >= 1.15 ? "やや有利" : n <= .75 ? "かなり不利" : n < 1 ? "やや不利" : "等倍";
-    return `相性：攻撃 ${label(atk)} / 防御 ${label(def)}`;
+    const cls = n => n >= 1.15 ? "good" : n < 1 ? "bad" : "neutral";
+    return {attack:label(atk),defense:label(def),attackClass:cls(atk),defenseClass:cls(def)};
   }
 
   function battleBars(m){

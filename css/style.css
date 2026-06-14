@@ -12481,3 +12481,89 @@ body.mlReducedMotionV817 .questRewardResultV838{animation:none}
 @media(prefers-reduced-motion:reduce){
   .guideQuickNavV841 a{scroll-behavior:auto}
 }
+
+/* =========================================================
+   v8.6-A.42 Battle command and information refinement
+   ========================================================= */
+.battleV842{--command-cyan:94,220,255;--command-gold:240,198,92;--command-red:255,105,120;--command-green:116,240,160}
+.battleHeaderControlsV842{gap:5px}
+.arenaRoundTrackerV842{
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;padding:6px 10px;
+  border-bottom:1px solid rgba(var(--command-gold),.24);background:linear-gradient(90deg,rgba(69,48,13,.88),rgba(6,19,40,.96));
+}
+.arenaRoundTrackerV842 > span{color:#ffe078;font-size:6px;font-weight:1000;letter-spacing:.14em}
+.arenaRoundTrackerV842 > div{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.arenaRoundTrackerV842 i{min-height:27px;display:grid;grid-template-columns:20px minmax(0,1fr);gap:4px;align-items:center;padding:3px 5px;border:1px solid rgba(255,255,255,.1);border-radius:7px;background:rgba(0,0,0,.2);font-style:normal}
+.arenaRoundTrackerV842 i b{width:20px;height:20px;display:grid;place-items:center;border-radius:50%;color:#7890a8;background:#14243b;font-size:7px}
+.arenaRoundTrackerV842 i small{color:#71879d;font-size:6px;font-weight:900}
+.arenaRoundTrackerV842 i.current{border-color:rgba(var(--command-gold),.5);background:rgba(106,75,17,.35)}
+.arenaRoundTrackerV842 i.current b{color:#271900;background:#ffe078}
+.arenaRoundTrackerV842 i.current small{color:#ffe49b}
+.arenaRoundTrackerV842 i.cleared{border-color:rgba(var(--command-green),.28)}
+.arenaRoundTrackerV842 i.cleared b{color:#062619;background:#78e9a4}
+.arenaRoundTrackerV842 i.cleared small{color:#8cebb0}
+.battleTacticalBarV842{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:5px;padding:6px 8px;border-bottom:1px solid rgba(var(--command-cyan),.15);background:#041126}
+.battleAffinityV842,.battleScoutStateV842{min-width:0;display:grid;gap:1px;padding:6px 7px;border:1px solid rgba(var(--command-cyan),.13);border-radius:8px;background:rgba(255,255,255,.035)}
+.battleAffinityV842 span,.battleScoutStateV842 span{color:#718aa2;font-size:6px;font-weight:1000;letter-spacing:.08em}
+.battleAffinityV842 b,.battleScoutStateV842 b{overflow:hidden;color:#dce8f4;font-size:8px;text-overflow:ellipsis;white-space:nowrap}
+.battleAffinityV842 small{overflow:hidden;color:#718aa2;font-size:6px;text-overflow:ellipsis;white-space:nowrap}
+.battleAffinityV842.good{border-color:rgba(var(--command-green),.25)}
+.battleAffinityV842.good b{color:#8df1b2}
+.battleAffinityV842.bad{border-color:rgba(var(--command-red),.25)}
+.battleAffinityV842.bad b{color:#ff9ca7}
+.battleScoutStateV842.available{border-color:rgba(var(--command-green),.27);background:rgba(20,85,61,.22)}
+.battleScoutStateV842.available span,.battleScoutStateV842.available b{color:#8ff2b5}
+.battleScoutStateV842.unavailable{border-color:rgba(var(--command-red),.18)}
+.battleScoutStateV842.unavailable b{color:#a8b4c3}
+.battleCommandDeckV842{padding:8px!important}
+.commandHeadingV842{display:grid!important;grid-template-columns:minmax(110px,.6fr) minmax(0,1.4fr);gap:8px;margin-bottom:6px!important}
+.battleAutoControlV842{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.battleAutoControlV842 > button{min-width:0!important;width:100%;min-height:38px!important}
+.commandsV842{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+.commandGroupV842{min-width:0;display:grid;grid-template-rows:auto 1fr;gap:4px;padding:5px;border:1px solid rgba(var(--command-cyan),.12);border-radius:10px;background:rgba(1,9,21,.44)}
+.commandGroupLabelV842{display:flex;align-items:center;justify-content:space-between;gap:4px;padding:0 2px}
+.commandGroupLabelV842 span{color:#68dcff;font-size:5px;font-weight:1000;letter-spacing:.09em}
+.commandGroupLabelV842 b{color:#91a8be;font-size:6px}
+.commandGroupV842 > div:last-child{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.battleV823 .commandsV842 .commandGroupV842 button{
+  min-width:0;min-height:60px;display:grid;grid-template-columns:25px minmax(0,1fr);grid-template-rows:auto auto;gap:1px 5px;align-content:center;padding:6px 7px;text-align:left;
+}
+.battleV823 .commandsV842 .commandGroupV842 button > span{grid-row:1/3;align-self:center;font-size:18px}
+.battleV823 .commandsV842 .commandGroupV842 button > b{align-self:end;font-size:9px}
+.battleV823 .commandsV842 .commandGroupV842 button > small{align-self:start;overflow:hidden;color:#aab8c8;font-size:6px;line-height:1.25;text-overflow:ellipsis}
+.battleV823 .commandsV842 .commandGroupV842 button:disabled{filter:saturate(.35);opacity:.48;box-shadow:none}
+.battleV823 .commandsV842 .commandGroupV842 button:disabled > small{color:#d1a8ae}
+.primaryCommandsV842{border-color:rgba(var(--command-gold),.19)}
+.primaryCommandsV842 .commandGroupLabelV842 span{color:#ffe078}
+.tacticalCommandsV842{border-color:rgba(var(--command-green),.15)}
+.tacticalCommandsV842 .commandGroupLabelV842 span{color:#84edaa}
+.utilityCommandsV842{border-color:rgba(191,152,255,.15)}
+.utilityCommandsV842 .commandGroupLabelV842 span{color:#c8a9ff}
+
+@media(max-width:620px){
+  .arenaRoundTrackerV842{grid-template-columns:1fr;gap:4px}
+  .arenaRoundTrackerV842 > span{display:none}
+  .battleTacticalBarV842{grid-template-columns:1fr 1fr 1.15fr}
+  .commandHeadingV842{grid-template-columns:94px minmax(0,1fr)}
+  .commandHeadingV842 > div:first-child b{font-size:9px}
+  .battleV823 .commandsV842 .commandGroupV842 button{min-height:58px;padding:5px}
+}
+@media(max-width:430px){
+  .battleTacticalBarV842{padding:5px;gap:3px}
+  .battleAffinityV842,.battleScoutStateV842{padding:5px}
+  .battleAffinityV842 small{display:none}
+  .commandHeadingV842{grid-template-columns:76px minmax(0,1fr)}
+  .commandHeadingV842 > div:first-child span{font-size:6px!important}
+  .commandHeadingV842 > div:first-child b{font-size:8px}
+  .battleAutoControlV842 > button{min-height:36px!important;padding:3px!important}
+  .commandsV842{gap:3px!important}
+  .commandGroupV842{gap:3px;padding:3px}
+  .commandGroupLabelV842 b{display:none}
+  .commandGroupV842 > div:last-child{grid-template-columns:1fr;gap:3px}
+  .battleV823 .commandsV842 .commandGroupV842 button{
+    min-height:46px;grid-template-columns:20px minmax(0,1fr);padding:4px 5px;
+  }
+  .battleV823 .commandsV842 .commandGroupV842 button > span{font-size:15px}
+  .battleV823 .commandsV842 .commandGroupV842 button > b{font-size:8px}
+  .battleV823 .commandsV842 .commandGroupV842 button > small{font-size:5.5px;white-space:nowrap}
+}
