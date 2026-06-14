@@ -12,6 +12,21 @@
     const activeInfo = S.slotSummary(activeSlot);
     return `
     <main class="settingsHubV839">
+      ${V.facilityHeader?.({
+        variant:"settings",
+        kicker:"SYSTEM",
+        title:"Settings & Backup",
+        subtitle:"Tune play comfort, manage save slots, and protect backup data.",
+        stats:[
+          {label:"ACTIVE",value:`SLOT ${activeSlot}`},
+          {label:"SOUND",value:settings.sound ? "ON" : "OFF"},
+          {label:"SPEED",value:settings.speed || "normal"}
+        ],
+        actions:[
+          {cls:"primary",eyebrow:"PLAY",label:"Settings",onclick:"document.getElementById('settingsPlayV839')?.scrollIntoView({behavior:'smooth',block:'start'})"},
+          {cls:"gold",eyebrow:"BACKUP",label:"Data",onclick:"document.getElementById('settingsBackupV839')?.scrollIntoView({behavior:'smooth',block:'start'})"}
+        ]
+      }) || ""}
       <section class="hero settingsHeroV839">
         <div>
           <span class="settingsEyebrowV839">SYSTEM & DATA</span>

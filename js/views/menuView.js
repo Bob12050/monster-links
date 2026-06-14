@@ -10,6 +10,21 @@
     const bagCount = Object.values(S.state.bag || {}).reduce((a,n)=>a+n,0);
     return `
     <main class="menuHubV824 menuHubV839">
+      ${V.facilityHeader?.({
+        variant:"menu",
+        kicker:"COMMAND CENTER",
+        title:"Main Menu",
+        subtitle:"Jump to major facilities, records, system settings, and current goals.",
+        stats:[
+          {label:"DEX",value:`${dex.discovered}/${dex.total}`,view:"dex"},
+          {label:"REWARD",value:quest.claimable,view:"quest"},
+          {label:"BAG",value:bagCount,view:"shop"}
+        ],
+        actions:[
+          {cls:"primary",eyebrow:"NEXT",label:"Goal",onclick:"document.querySelector('.menuPrimaryV824')?.scrollIntoView({behavior:'smooth',block:'start'})"},
+          {cls:"gold",eyebrow:"SYSTEM",label:"Settings",onclick:"Game.setView('settings')"}
+        ]
+      }) || ""}
       <section class="hero heroCompact menuHeroV28 menuHeroV56 menuHeroV839">
         <h1>メニュー</h1>
         <p>ゲームを進める機能を先頭に、記録と管理を分けて表示します。</p>

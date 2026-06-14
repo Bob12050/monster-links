@@ -36,6 +36,21 @@
     const pct = counts.total ? Math.floor(counts.claimed / counts.total * 100) : 0;
     return `
     <main class="questBoardV842 questHubV825 questHubV838">
+      ${V.facilityHeader?.({
+        variant:"quest",
+        kicker:"GUILD BOARD",
+        title:"Mission Guild",
+        subtitle:"Collect rewards, follow starter goals, and track long-term achievements.",
+        stats:[
+          {label:"CLAIM",value:counts.claimable},
+          {label:"ACTIVE",value:activeCount},
+          {label:"CLEAR",value:`${pct}%`}
+        ],
+        actions:[
+          {cls:"gold",eyebrow:"REWARD",label:counts.claimable ? "Claim All" : "No Rewards",disabled:!counts.claimable,onclick:"Game.claimAllQuests()"},
+          {cls:"primary",eyebrow:"GUIDE",label:"Starter",onclick:"document.querySelector('.questSectionV838.tutorial')?.scrollIntoView({behavior:'smooth',block:'start'})"}
+        ]
+      }) || ""}
       <section class="questBoardHeroV842 questBoardHeroV838">
         <div>
           <span>LINKS GUILD BOARD</span>

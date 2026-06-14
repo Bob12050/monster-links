@@ -1,5 +1,13 @@
 # バージョン履歴
 
+## v8.6-A.50 Social RPG facility UI foundation
+- Added a shared social RPG facility header component for major screens.
+- Applied facility identity headers to Party Camp, Link Lab, Market, Archive, Mission Guild, Arena, Menu, and Settings.
+- Added a v8.6-A.50 social UI theme layer with navy glass panels, gold trim, glow accents, and stronger game HUD/dock styling.
+- Kept existing screen flows and buttons functional while making each screen feel more like an in-game facility.
+- Updated PWA/cache version to v8.6-A.50.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
+
 ## v8.6-A.49 Adventure quest gate and mobile home cleanup
 - Added a social-game style Quest Gate panel to the adventure screen.
 - Consolidated current area, recommended level, boss progress, unlocked areas, and boss clear count at the top of adventure.

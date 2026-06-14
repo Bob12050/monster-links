@@ -13,8 +13,25 @@
     const pick = window.MonsterLinksGame.fusionPick;
     const ready = pick.length === 2;
     const prev = ready ? window.MonsterLinksGame.fusionPreview(pick[0],pick[1]) : null;
+    const recipeTotal = (D.RECIPE_LIST || Object.keys(D.RECIPES || {})).length;
+    const completedRecipes = Object.keys(S.state.records?.completedRecipes || {}).filter(key=>S.state.records.completedRecipes[key]).length;
     return `
     <main class="fusionFlowV824 fusionFlowV835">
+      ${V.facilityHeader?.({
+        variant:"fusion",
+        kicker:"LINK LAB",
+        title:"Fusion Research Lab",
+        subtitle:"Select two monsters, preview the result, and create a new ally.",
+        stats:[
+          {label:"SELECTED",value:`${pick.length}/2`},
+          {label:"RECIPES",value:`${completedRecipes}/${recipeTotal}`},
+          {label:"FUSIONS",value:S.state.records?.fusions || 0}
+        ],
+        actions:[
+          {cls:"gold",eyebrow:"WORKBENCH",label:ready ? "Check Result" : "Pick Parents",onclick:"document.getElementById('fusionMainCard')?.scrollIntoView({behavior:'smooth',block:'start'})"},
+          {cls:"primary",eyebrow:"ARCHIVE",label:"Recipe List",onclick:"document.getElementById('fusionRecipeArchive')?.scrollIntoView({behavior:'smooth',block:'start'})"}
+        ]
+      }) || ""}
       <section class="hero fusionHeroV34 fusionHeroV835">
         <h1>モンスター配合</h1>
         <p>配合リストに登録された親2体から新しい仲間を生み出します。指定された系譜を重ねる4体配合にも対応しています。</p>

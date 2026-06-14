@@ -16,6 +16,21 @@
     const clearRate = ranks.length ? Math.round(cleared / ranks.length * 100) : 0;
     return `
     <main class="arenaHubV840">
+      ${V.facilityHeader?.({
+        variant:"arena",
+        kicker:"GRAND ARENA",
+        title:"Rank Battle Arena",
+        subtitle:"Challenge tournament cups and prove your trained party.",
+        stats:[
+          {label:"CLEAR",value:`${cleared}/${ranks.length}`},
+          {label:"UNLOCK",value:S.state.arena?.unlocked || 1},
+          {label:"TEAM LV",value:S.highestLv()}
+        ],
+        actions:[
+          {cls:"red",eyebrow:"NEXT CUP",label:nextArena ? U.esc(nextArena.rank) : "Arena",disabled:!(nextArena && nextState?.ready),onclick:nextArena ? `Game.startArenaCup('${nextArena.id}')` : ""},
+          {cls:"primary",eyebrow:"LIST",label:"Cup Board",onclick:"document.getElementById('arenaNormalV840')?.scrollIntoView({behavior:'smooth',block:'start'})"}
+        ]
+      }) || ""}
       <section class="hero arenaHero arenaHeroV840">
         <div class="arenaHeroCopyV840">
           <span>GRAND ARENA</span>

@@ -130,6 +130,34 @@
     </div>`;
   }
 
+  function facilityHeader(opt={}){
+    const stats = Array.isArray(opt.stats) ? opt.stats : [];
+    const actions = Array.isArray(opt.actions) ? opt.actions : [];
+    const variant = opt.variant || "base";
+    const title = opt.title || "MONSTER LINKS";
+    const kicker = opt.kicker || "FACILITY";
+    const subtitle = opt.subtitle || "";
+    const art = opt.art || "";
+    return `<section class="facilityHeaderV850 ${U.esc(variant)}">
+      <div class="facilityAuraV850" aria-hidden="true"></div>
+      <div class="facilityCopyV850">
+        <span>${U.esc(kicker)}</span>
+        <h1>${U.esc(title)}</h1>
+        ${subtitle ? `<p>${U.esc(subtitle)}</p>` : ""}
+      </div>
+      ${art ? `<div class="facilityArtV850">${art}</div>` : ""}
+      ${stats.length ? `<div class="facilityStatsV850">${stats.map(item=>`
+        <button ${item.view ? `onclick="Game.setView('${U.esc(item.view)}')"` : ""}>
+          <small>${U.esc(item.label || "")}</small>
+          <b>${U.esc(String(item.value ?? ""))}</b>
+        </button>`).join("")}</div>` : ""}
+      ${actions.length ? `<div class="facilityActionsV850">${actions.map(action=>`
+        <button class="${U.esc(action.cls || "")}" ${action.disabled ? "disabled" : ""} onclick="${U.esc(action.onclick || "")}">
+          <small>${U.esc(action.eyebrow || "")}</small>
+          <b>${U.esc(action.label || "")}</b>
+        </button>`).join("")}</div>` : ""}
+    </section>`;
+  }
 
   function sectionTitle(title,sub=""){
     return `<div class="sectionTitle"><h2>${U.esc(title)}</h2>${sub ? `<span>${U.esc(sub)}</span>` : ""}</div>`;
@@ -140,6 +168,7 @@
     nextGoalPanel,
     dashboardHtml,
     quickActionsHtml,
+    facilityHeader,
     sectionTitle
   });
 })();

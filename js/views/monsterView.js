@@ -204,6 +204,22 @@
 
     return `
     <main class="monsterBaseV831 monsterBaseV836">
+      ${V.facilityHeader?.({
+        variant:"monsters",
+        kicker:"PARTY CAMP",
+        title:"Monster Base Camp",
+        subtitle:"Manage your active party, pasture, equipment, and training route.",
+        art: leader ? V.monsterVisual(leader,"facilityMonsterV850") : "",
+        stats:[
+          {label:"ALLY",value:total},
+          {label:"PARTY",value:`${partyUsed}/${partyLimit}`},
+          {label:"BEST LV",value:S.highestLv()}
+        ],
+        actions:[
+          {cls:"green",eyebrow:"RECOVER",label:"Full Heal",onclick:"Game.fullHeal(true)"},
+          {cls:"gold",eyebrow:"LAB",label:"Fusion",onclick:"Game.setView('fusion')"}
+        ]
+      }) || ""}
       <section class="monsterCampV831 monsterCampV836">
         <div class="monsterCampBackdropV831"></div>
         <div class="monsterCampCopyV831">
