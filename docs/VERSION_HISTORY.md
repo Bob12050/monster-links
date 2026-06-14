@@ -1,5 +1,13 @@
 # バージョン履歴
 
+## v8.6-A.54 Reference-phone QUEST GATE adventure rebuild
+- Rebuilt the adventure lobby HTML around the provided QUEST GATE reference image while preserving existing stage data and battle entry functions.
+- Added a phone-canvas quest gate composition with a central portal, gold title treatment, side shortcut rails, selected quest panel, boss progress, reward strip, and START QUEST / CHALLENGE actions.
+- Kept board/map switching and compacted the quest board cards for the vertical social RPG layout.
+- Updated PWA/cache version to v8.6-A.54.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or balance.
+
+
 ## v8.6-A.53 Reference-phone HOME BASE rebuild
 - Rebuilt the home screen around the provided HOME BASE reference image.
 - Made the home view render as a centered vertical phone canvas on wide PC screens.

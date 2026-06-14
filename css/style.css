@@ -15132,3 +15132,349 @@ body.mlReducedMotionV817 .facilityAuraV850{animation:none}
 }
 body.mlReducedMotionV817 .homeLeaderAuraV853,
 body.mlReducedMotionV817 .homeLeaderArtV853{animation:none}
+
+/* =========================================================
+   v8.6-A.54 Reference-phone QUEST GATE rebuild
+   ========================================================= */
+.app.socialUiV854[data-view="stage"]{
+  width:min(448px,100%);
+}
+.app.socialUiV854[data-view="stage"] > main.stageGatePageV854{
+  --gate-cyan:70,220,255;
+  --gate-gold:239,190,96;
+  --gate-red:255,109,74;
+  gap:8px;
+  padding:0 8px 10px;
+  scrollbar-gutter:auto!important;
+  scrollbar-width:none;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(var(--gate-cyan),.17),transparent 240px),
+    linear-gradient(180deg,#051429,#010711 78%);
+}
+.app.socialUiV854[data-view="stage"] > main.stageGatePageV854::-webkit-scrollbar{display:none}
+.stageGateV854{
+  min-height:640px;
+  border:1px solid rgba(var(--gate-gold),.58);
+  border-bottom-width:2px;
+  border-radius:0 0 24px 24px;
+  box-shadow:
+    inset 0 0 0 1px rgba(145,237,255,.13),
+    inset 0 -110px 80px rgba(2,7,18,.92),
+    0 18px 38px rgba(0,0,0,.38),
+    0 0 30px rgba(var(--gate-cyan),.1);
+  background:#061326;
+}
+.stageGateV854.stageLobbyV849:before{display:none}
+.stageGateV854 .stageLobbyBackdropV849{
+  opacity:.92;
+  filter:saturate(1.22) contrast(1.08) brightness(.84);
+}
+.stageGateWashV854{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 39%,rgba(var(--gate-cyan),.32),transparent 90px),
+    radial-gradient(circle at 50% 42%,rgba(var(--gate-cyan),.16),transparent 185px),
+    linear-gradient(90deg,rgba(1,5,14,.82),rgba(2,11,28,.22) 33%,rgba(2,11,28,.18) 66%,rgba(1,5,14,.82)),
+    linear-gradient(180deg,rgba(1,5,14,.06),rgba(1,5,14,.36) 52%,rgba(1,5,14,.94) 100%);
+}
+.stageGateTitleV854,
+.stageGateRailV854,
+.stageGatePortalV854,
+.stageGateInfoV854{position:absolute;z-index:3}
+.stageGateTitleV854{
+  top:66px;
+  left:42px;
+  right:42px;
+  text-align:center;
+}
+.stageGateTitleV854:before,
+.stageGateTitleV854:after{
+  content:"";
+  position:absolute;
+  top:34px;
+  width:56px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(var(--gate-gold),.78),transparent);
+}
+.stageGateTitleV854:before{left:-18px}
+.stageGateTitleV854:after{right:-18px}
+.stageGateTitleV854 span{
+  display:block;
+  color:#8ff0ff;
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:.18em;
+}
+.stageGateTitleV854 h1{
+  margin:2px 0 0;
+  color:#f8d486;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:36px;
+  letter-spacing:.03em;
+  text-shadow:0 3px 0 rgba(42,25,6,.7),0 0 18px rgba(var(--gate-cyan),.24);
+}
+.stageGateTitleV854 small{
+  display:inline-block;
+  margin-top:2px;
+  padding:2px 9px;
+  border:1px solid rgba(var(--gate-cyan),.35);
+  border-radius:999px;
+  color:#d8f9ff;
+  background:rgba(3,16,37,.7);
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.stageGatePortalV854{
+  left:50%;
+  top:166px;
+  width:214px;
+  height:214px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.stageGatePortalV854 .ring,
+.stageGatePortalV854 .core{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+}
+.stageGatePortalV854 .ring.one{
+  border:5px solid rgba(143,237,255,.5);
+  box-shadow:0 0 28px rgba(var(--gate-cyan),.55),inset 0 0 32px rgba(var(--gate-cyan),.35);
+  background:radial-gradient(circle,rgba(183,251,255,.14),rgba(17,134,209,.18) 40%,transparent 66%);
+  animation:stageGateSpinV854 14s linear infinite;
+}
+.stageGatePortalV854 .ring.two{
+  inset:22px;
+  border:2px dashed rgba(255,230,151,.5);
+  box-shadow:0 0 18px rgba(var(--gate-gold),.22);
+  animation:stageGateSpinV854 9s linear infinite reverse;
+}
+.stageGatePortalV854 .core{
+  inset:42px;
+  background:
+    radial-gradient(circle,#eaffff 0 7%,rgba(139,239,255,.88) 8% 23%,rgba(36,146,233,.52) 24% 52%,rgba(14,65,148,.22) 53%,transparent 70%),
+    conic-gradient(from 30deg,rgba(76,221,255,.65),rgba(30,85,214,.08),rgba(128,242,255,.58),rgba(27,96,230,.1),rgba(76,221,255,.65));
+  filter:blur(.2px);
+  box-shadow:0 0 48px rgba(var(--gate-cyan),.68);
+}
+.stageGateRailV854{
+  top:184px;
+  display:grid;
+  gap:9px;
+}
+.stageGateRailV854.left{left:14px}
+.stageGateRailV854.right{right:14px}
+.stageGateRailV854 button{
+  width:58px;
+  min-height:58px;
+  display:grid;
+  place-items:center;
+  gap:2px;
+  padding:6px 4px;
+  border:1px solid rgba(var(--gate-gold),.42);
+  border-radius:14px;
+  color:#fff4bd;
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,255,255,.18),transparent 48%),
+    linear-gradient(180deg,rgba(16,50,89,.96),rgba(4,16,37,.98));
+  box-shadow:inset 0 1px rgba(255,255,255,.12),0 10px 18px rgba(0,0,0,.34);
+}
+.stageGateRailV854 button.claimable{
+  border-color:rgba(255,217,99,.85);
+  box-shadow:0 0 18px rgba(255,202,55,.28),inset 0 1px rgba(255,255,255,.16);
+}
+.stageGateRailV854 span{display:grid;place-items:center;width:28px;height:28px;color:#83eeff}
+.stageGateRailV854 .mlIcon{width:24px;height:24px}
+.stageGateRailV854 b{
+  color:#f6e6b4;
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.04em;
+}
+.stageGateInfoV854{
+  left:13px;
+  right:13px;
+  bottom:12px;
+  display:grid;
+  gap:8px;
+}
+.stageGateAreaV854,
+.stageGateBossV854,
+.stageGateRewardV854{
+  border:1px solid rgba(var(--gate-gold),.36);
+  border-radius:14px;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.04),transparent 35%,rgba(var(--gate-cyan),.05)),
+    linear-gradient(180deg,rgba(9,36,67,.9),rgba(3,13,31,.96));
+  box-shadow:inset 0 1px rgba(255,255,255,.1),0 8px 18px rgba(0,0,0,.26);
+}
+.stageGateAreaV854{
+  min-height:76px;
+  display:grid;
+  align-content:center;
+  padding:11px 92px 11px 14px;
+  background:
+    linear-gradient(90deg,rgba(5,26,45,.7),rgba(5,18,38,.92)),
+    var(--stage-bg) center/cover;
+}
+.stageGateAreaV854 span{
+  color:#a8f5ff;
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.14em;
+}
+.stageGateAreaV854 b{
+  margin-top:3px;
+  color:#ffe8a7;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;
+  text-shadow:0 2px 4px rgba(0,0,0,.7);
+}
+.stageGateAreaV854 small{
+  margin-top:2px;
+  color:#f8f1d8;
+  font-size:10px;
+  font-weight:800;
+}
+.stageGateStatsV854{
+  position:absolute;
+  top:10px;
+  right:10px;
+  display:grid;
+  grid-template-columns:repeat(3,42px);
+  gap:4px;
+}
+.stageGateStatsV854 div{
+  padding:4px;
+  border:1px solid rgba(var(--gate-cyan),.25);
+  border-radius:9px;
+  text-align:center;
+  background:rgba(3,14,34,.72);
+}
+.stageGateStatsV854 small{display:block;color:#80eaff;font-size:5px;font-weight:1000;letter-spacing:.08em}
+.stageGateStatsV854 b{display:block;margin-top:1px;color:#fff3b6;font-size:9px}
+.stageGateBossV854{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  padding:7px 9px;
+  border-color:rgba(var(--gate-red),.42);
+  background:linear-gradient(145deg,rgba(70,22,21,.9),rgba(4,14,32,.96));
+}
+.stageGateBossV854 .stageLobbyBossFaceV849{width:42px;height:42px;border-radius:11px}
+.stageGateBossV854 span{color:#ffb59b;font-size:7px;font-weight:1000;letter-spacing:.13em}
+.stageGateBossV854 b{display:block;color:#fff;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stageGateBossV854 small{color:#ffd4c5}
+.stageGateBossV854 i{display:block;height:5px;margin-top:5px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.13)}
+.stageGateBossV854 em{display:block;height:100%;background:linear-gradient(90deg,#ffd37a,#ff795c)}
+.stageGateBossV854 strong{color:#ffd9c9;font-size:11px}
+.stageGateRewardV854{
+  display:grid;
+  grid-template-columns:72px minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+  padding:8px 10px;
+}
+.stageGateRewardV854 > span{color:#ffe1a0;font-size:9px;font-weight:1000;letter-spacing:.16em}
+.stageGateRewardV854 .stageDropList{justify-content:flex-end}
+.stageGateRewardV854 .stageDrop{
+  min-height:28px;
+  padding:4px 7px;
+  border-radius:9px;
+  background:rgba(255,255,255,.07);
+}
+.stageGateRewardV854 .miniItemIcon{width:22px;height:22px;flex-basis:22px}
+.stageGateActionsV854{
+  display:grid;
+  grid-template-columns:1.25fr .95fr;
+  gap:8px;
+}
+.stageGateActionsV854 button{
+  min-height:60px;
+  display:grid;
+  align-content:center;
+  padding:8px 12px;
+  border-radius:13px;
+  text-align:center;
+  text-transform:uppercase;
+}
+.stageGateActionsV854 small{
+  color:rgba(255,255,255,.72);
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.14em;
+}
+.stageGateActionsV854 b{
+  color:#fff;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;
+  letter-spacing:.02em;
+}
+.stageGateActionsV854 .primary{
+  border-color:rgba(var(--gate-cyan),.76);
+  border-bottom-color:rgba(var(--gate-gold),.7);
+  background:linear-gradient(180deg,#1cb7ff,#0a63ab 58%,#053c78);
+}
+.stageGateActionsV854 .red{
+  border-color:rgba(255,143,111,.74);
+  background:linear-gradient(180deg,#c46a28,#8b2d20 64%,#461315);
+}
+.app.socialUiV854 .stageModeBarV817{
+  position:relative;
+  top:auto;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  padding:8px 9px;
+  border-radius:14px;
+}
+.app.socialUiV854 .stageModeCopyV817 b{font-size:13px}
+.app.socialUiV854 .stageModeCopyV817 small{font-size:9px}
+.app.socialUiV854 .stageModeSwitchV817 button{min-height:34px;padding:6px 9px;font-size:11px}
+.app.socialUiV854 .questBoardGridV817{
+  display:grid;
+  gap:8px;
+}
+.app.socialUiV854 .questCardV817{
+  grid-template-columns:104px minmax(0,1fr);
+  gap:8px;
+  padding:7px;
+  border-radius:15px;
+}
+.app.socialUiV854 .questCardThumbV817{min-height:116px;border-radius:12px}
+.app.socialUiV854 .questCardTitleV817 b{font-size:13px}
+.app.socialUiV854 .questCardMetaV817{gap:4px}
+.app.socialUiV854 .qcLvV817,
+.app.socialUiV854 .qcDangerV817{font-size:8px;padding:1px 6px}
+.app.socialUiV854 .questCardRowV817{display:none}
+.app.socialUiV854 .questCardBossV817{grid-template-columns:28px minmax(0,1fr);gap:6px;padding:6px}
+.app.socialUiV854 .questCardBossFaceV817{width:28px;height:28px;border-radius:8px}
+.app.socialUiV854 .questCardBossV817 b{font-size:10px}
+.app.socialUiV854 .questCardActionsV817{gap:5px}
+.app.socialUiV854 .questCardActionsV817 button{min-height:38px;padding:7px 4px;font-size:10px}
+
+@keyframes stageGateSpinV854{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+@media(max-width:380px){
+  .stageGateV854{min-height:610px}
+  .stageGateTitleV854{top:58px}
+  .stageGateTitleV854 h1{font-size:31px}
+  .stageGatePortalV854{top:154px;width:188px;height:188px}
+  .stageGateRailV854{top:174px}
+  .stageGateRailV854 button{width:50px;min-height:52px}
+  .stageGateAreaV854 b{font-size:17px}
+  .stageGateActionsV854 b{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .stageGatePortalV854 .ring{animation:none}
+}
+body.mlReducedMotionV817 .stageGatePortalV854 .ring{animation:none}
