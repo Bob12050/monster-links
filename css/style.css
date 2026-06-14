@@ -11653,3 +11653,139 @@ body.mlReducedMotionV817 .homeLandmarkV834.claimable{animation:none}
   .shopQuickNavV835 button,.shopItemV835,.fusionExecuteBarV835 button{transition:none}
   :is(.shopQuickNavV835,.fusionStepsV835){scroll-behavior:auto}
 }
+
+/* =========================================================
+   v8.6-A.36 Monster roster and profile refinement
+   ========================================================= */
+.monsterBaseV836{--roster-cyan:94,220,255;--roster-green:116,240,160;--roster-gold:240,198,92;gap:10px}
+.monsterCampV836{
+  border-color:rgba(var(--roster-gold),.38);
+  box-shadow:0 15px 32px rgba(0,0,0,.36),inset 0 1px rgba(255,239,175,.08);
+}
+.partyFormationV836,.pastureWorldV836{
+  border-color:rgba(var(--roster-cyan),.24);
+  box-shadow:0 11px 26px rgba(0,0,0,.25),inset 0 1px rgba(192,235,255,.05);
+}
+.partyFormationCardV836{
+  position:relative;
+  border-color:rgba(var(--roster-cyan),.22);
+  box-shadow:0 8px 18px rgba(0,0,0,.22);
+  transition:transform .12s ease,border-color .12s ease;
+}
+.partyFormationCardV836:active{transform:scale(.99)}
+.partyFormationCardV836.equipped{border-bottom-color:rgba(var(--roster-gold),.55)}
+.partyFormationCardV836.locked{border-right-color:rgba(120,186,255,.48)}
+.monsterStateFlagsV836{
+  position:absolute;z-index:2;left:8px;bottom:8px;display:flex;flex-wrap:wrap;gap:3px;
+  pointer-events:none;
+}
+.monsterStateFlagsV836 i{
+  padding:3px 5px;border:1px solid rgba(255,255,255,.16);border-radius:999px;
+  color:#ddecff;background:rgba(3,12,27,.78);font-size:7px;font-style:normal;font-weight:1000;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+.partyFormationCardV836 .monsterStateFlagsV836{left:9px;bottom:9px}
+.pastureMonsterCardV836{
+  position:relative;border-color:rgba(var(--roster-cyan),.2);
+  box-shadow:0 7px 17px rgba(0,0,0,.2);
+  transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease;
+}
+.pastureMonsterCardV836:active{transform:scale(.99)}
+.pastureMonsterCardV836.equipped{border-bottom-color:rgba(var(--roster-gold),.52)}
+.pastureMonsterVisualV836{position:relative;display:block;width:92px;height:92px}
+.pastureMonsterVisualV836 .pastureMonsterFaceV831{width:100%;height:100%}
+.pastureMonsterVisualV836 .monsterStateFlagsV836{left:4px;bottom:4px}
+.pastureMonsterVisualV836 .monsterStateFlagsV836 i{padding:2px 4px;font-size:6px}
+.monsterFilterDetailsV836{
+  position:sticky;top:0;z-index:4;
+  border-color:rgba(var(--roster-cyan),.22);
+  background:rgba(5,20,29,.94);
+  box-shadow:0 7px 18px rgba(0,0,0,.24);
+  backdrop-filter:blur(10px);
+}
+.monsterFilterDetailsV836[open]{position:relative}
+.monsterFilterDetailsV836 .filterGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.monsterFilterDetailsV836 .filterGrid label:first-child{grid-column:span 2}
+.monsterFilterDetailsV836 .filterGrid select,
+.monsterFilterDetailsV836 .filterGrid input{min-height:42px}
+
+.monsterDetailModalV836{
+  width:min(720px,calc(100vw - 18px));
+  border-color:rgba(var(--roster-cyan),.3);
+  background:
+    radial-gradient(circle at 18% 12%,rgba(var(--roster-cyan),.08),transparent 32%),
+    linear-gradient(180deg,#0b2343,#06152e 45%,#040f23);
+  box-shadow:0 22px 55px rgba(0,0,0,.58),inset 0 1px rgba(213,241,255,.08);
+}
+.monsterDetailTopV836{align-items:center}
+.monsterDetailTopV836 > div > span{
+  color:#65dfff;font-size:8px;font-weight:1000;letter-spacing:.16em;
+}
+.monsterDetailTopV836 h2{margin:2px 0;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;color:#fff2bb}
+.monsterDetailHeroV836{
+  min-height:184px;display:grid!important;grid-template-columns:190px minmax(0,1fr);gap:14px;
+  padding:10px;border:1px solid rgba(var(--roster-cyan),.2);border-radius:14px;
+  background:
+    radial-gradient(circle at 15% 70%,rgba(var(--roster-green),.13),transparent 30%),
+    linear-gradient(145deg,rgba(21,56,94,.82),rgba(5,17,39,.9));
+}
+.monsterDetailModalV836 .detailFaceV78{
+  width:180px;height:164px;border-radius:13px;
+  box-shadow:inset 0 0 24px rgba(var(--roster-cyan),.08),0 8px 18px rgba(0,0,0,.28);
+}
+.monsterDetailIdentityV836{min-width:0;align-self:center}
+.monsterDetailIdentityV836 > .name{font-size:20px;line-height:1.5}
+.monsterDetailLevelV836{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin:9px 0 7px;
+}
+.monsterDetailLevelV836 strong{color:#fff0a7;font-size:18px}
+.monsterDetailLevelV836 span{color:#9fb2c8;font-size:8px}
+.monsterDetailVitalsV836{display:grid;gap:6px}
+.monsterDetailVitalsV836 > div{
+  display:grid;grid-template-columns:27px minmax(0,1fr) 68px;gap:6px;align-items:center;
+  color:#c5d4e5;font-size:8px;
+}
+.monsterDetailVitalsV836 span{font-weight:1000}
+.monsterDetailVitalsV836 i{height:9px;overflow:hidden;border-radius:999px;background:rgba(0,0,0,.34)}
+.monsterDetailVitalsV836 i b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#36b76c,#72ed9e)}
+.monsterDetailVitalsV836 .mp i b{background:linear-gradient(90deg,#3883d0,#76caff)}
+.monsterDetailVitalsV836 .exp i b{background:linear-gradient(90deg,#bc8f2d,#ffe57d)}
+.monsterDetailVitalsV836 em{color:#aebed0;font-size:7px;font-style:normal;text-align:right}
+.monsterDetailModalV836 .monsterDetailTabsV824{border-color:rgba(var(--roster-cyan),.28)}
+.monsterDetailModalV836 .monsterDetailTabsV824 button{min-height:44px;font-weight:900}
+.monsterDetailModalV836 .detailQuickStatsV824 > div{border-color:rgba(var(--roster-cyan),.25)}
+.monsterDetailModalV836 .detailActionsV78{
+  position:sticky;bottom:0;z-index:3;
+  margin:8px -12px -12px;padding:9px 12px calc(9px + env(safe-area-inset-bottom));
+  border-radius:0 0 12px 12px;background:rgba(4,15,35,.96);
+  box-shadow:0 -8px 20px rgba(0,0,0,.28);backdrop-filter:blur(10px);
+}
+.monsterDetailModalV836 .detailActionsV78 button{min-height:42px}
+
+@media(max-width:680px){
+  .monsterFilterDetailsV836 .filterGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .monsterDetailHeroV836{grid-template-columns:150px minmax(0,1fr);min-height:158px}
+  .monsterDetailModalV836 .detailFaceV78{width:144px;height:138px}
+}
+@media(max-width:520px){
+  .monsterFilterDetailsV836 .filterGrid label:first-child{grid-column:1/-1}
+  .monsterDetailHeroV836{grid-template-columns:112px minmax(0,1fr);gap:9px;min-height:132px;padding:7px}
+  .monsterDetailModalV836 .detailFaceV78{width:108px;height:116px}
+  .monsterDetailIdentityV836 > .name{font-size:14px}
+  .monsterDetailLevelV836{margin:5px 0}
+  .monsterDetailLevelV836 strong{font-size:14px}
+  .monsterDetailLevelV836 span{font-size:6px}
+  .monsterDetailVitalsV836{gap:4px}
+  .monsterDetailVitalsV836 > div{grid-template-columns:23px minmax(0,1fr) 54px;gap:4px}
+  .monsterDetailModalV836 .detailActionsV78{margin-left:-9px;margin-right:-9px;margin-bottom:-9px;padding-left:9px;padding-right:9px}
+}
+@media(max-width:360px){
+  .monsterFilterDetailsV836 .filterGrid{grid-template-columns:1fr}
+  .monsterFilterDetailsV836 .filterGrid label:first-child{grid-column:auto}
+  .monsterDetailHeroV836{grid-template-columns:90px minmax(0,1fr)}
+  .monsterDetailModalV836 .detailFaceV78{width:86px;height:102px}
+  .monsterDetailLevelV836 span{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .partyFormationCardV836,.pastureMonsterCardV836{transition:none}
+}

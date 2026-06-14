@@ -241,24 +241,25 @@
 
     modal.innerHTML = `
     <div class="modalBg" onclick="Game.closeModal(event)">
-      <div class="modal monsterDetailModalV78 monsterDetailModalV824" onclick="event.stopPropagation()">
-        <div class="stageTop">
+      <div class="modal monsterDetailModalV78 monsterDetailModalV824 monsterDetailModalV836" onclick="event.stopPropagation()">
+        <div class="stageTop monsterDetailTopV836">
           <div>
+            <span>MONSTER PROFILE</span>
             <h2>${U.esc(m.nickname)}</h2>
-            <p class="tiny">${U.esc(d.name)} / ${d.rank} / ${D.TYPES[d.type]} / ${S.monsterSize(m)}枠</p>
+            <p class="tiny">${inParty ? "パーティ編成中" : "牧場で待機中"} / ${U.esc(d.name)}</p>
           </div>
           <button onclick="Game.closeModal()">閉じる</button>
         </div>
 
-        <div class="monsterDetailHeadV78">
+        <div class="monsterDetailHeadV78 monsterDetailHeroV836">
           ${V.monsterVisual(m,"detailFaceV78")}
-          <div class="detailMetaV78">
+          <div class="detailMetaV78 monsterDetailIdentityV836">
             <div class="name">${U.esc(m.nickname)} <span class="tag">${d.rank}</span><span class="type">${D.TYPES[d.type]}</span>${sizeBadge}${m.mutation ? `<span class="mutationBadge">${U.esc(S.mutationTitleName(m))}突然変異</span>` : ""}${m.locked ? `<span class="lockBadge">🔒 保護中</span>` : ""}</div>
-            <div class="tiny">Lv ${m.level} / ${m.level >= D.MAX_LEVEL ? "MAX" : `EXP ${m.exp}/${S.expNext(m.level)}`}</div>
-            <div class="bars">
-              <div class="bar"><i style="width:${S.hpPct(m)}%"></i></div>
-              <div class="bar mp"><i style="width:${S.mpPct(m)}%"></i></div>
-              <div class="bar exp"><i style="width:${S.expPct(m)}%"></i></div>
+            <div class="monsterDetailLevelV836"><strong>Lv ${m.level}</strong><span>${m.level >= D.MAX_LEVEL ? "LEVEL MAX" : `次のLvまで ${Math.max(0,S.expNext(m.level) - m.exp)} EXP`}</span></div>
+            <div class="monsterDetailVitalsV836">
+              <div><span>HP</span><i><b style="width:${S.hpPct(m)}%"></b></i><em>${m.hp}/${s.hp}</em></div>
+              <div class="mp"><span>MP</span><i><b style="width:${S.mpPct(m)}%"></b></i><em>${m.mp}/${s.mp}</em></div>
+              <div class="exp"><span>EXP</span><i><b style="width:${S.expPct(m)}%"></b></i><em>${m.level >= D.MAX_LEVEL ? "MAX" : `${m.exp}/${S.expNext(m.level)}`}</em></div>
             </div>
           </div>
         </div>

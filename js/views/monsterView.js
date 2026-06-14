@@ -13,8 +13,8 @@
   function monsterFilterControls(f,total,shown){
     const ranks = Object.keys(D.RANK || {}).sort((a,b)=>D.RANK[a]-D.RANK[b]);
     const types = Object.keys(D.TYPES || {});
-    const active = !!(f.q || f.rank !== "all" || f.type !== "all" || (f.size || "all") !== "all" || f.place !== "all");
-    return `<details class="monsterFilterDetailsV831" ${active ? "open" : ""}>
+    const active = !!(f.q || f.rank !== "all" || f.type !== "all" || (f.size || "all") !== "all" || f.place !== "all" || (f.status || "all") !== "all");
+    return `<details class="monsterFilterDetailsV831 monsterFilterDetailsV836" ${active ? "open" : ""}>
       <summary>
         <span><b>仲間を検索・絞り込み</b><small>${shown}/${total}体を表示中</small></span>
         <span class="monsterFilterToggleV831">${active ? "条件あり" : "開く"}</span>
@@ -43,9 +43,34 @@
             ${opt("party","パーティ",f.place)}
             ${opt("box","牧場",f.place)}
           </select></label>
+          <label><span>状態</span><select onchange="Game.setListFilter('monsters','status',this.value)">
+            ${opt("all","すべて",f.status || "all")}
+            ${opt("locked","保護中",f.status || "all")}
+            ${opt("equipped","装備中",f.status || "all")}
+            ${opt("mutation","突然変異",f.status || "all")}
+          </select></label>
+          <label><span>並び替え</span><select onchange="Game.setListFilter('monsters','sort',this.value)">
+            ${opt("levelDesc","レベルが高い順",f.sort || "levelDesc")}
+            ${opt("rankDesc","ランクが高い順",f.sort || "levelDesc")}
+            ${opt("nameAsc","名前順",f.sort || "levelDesc")}
+            ${opt("recent","入手順",f.sort || "levelDesc")}
+          </select></label>
         </div>
       </div>
     </details>`;
+  }
+
+  function sortOwnedMonsters(list,sort){
+    const indexed = list.map((monster,index)=>({monster,index}));
+    indexed.sort((a,b)=>{
+      const ad = S.def(a.monster.id);
+      const bd = S.def(b.monster.id);
+      if(sort === "rankDesc") return (D.RANK[bd.rank] || 0) - (D.RANK[ad.rank] || 0) || (b.monster.level || 1) - (a.monster.level || 1) || a.index - b.index;
+      if(sort === "nameAsc") return String(a.monster.nickname || ad.name).localeCompare(String(b.monster.nickname || bd.name),"ja") || a.index - b.index;
+      if(sort === "recent") return b.index - a.index;
+      return (b.monster.level || 1) - (a.monster.level || 1) || (D.RANK[bd.rank] || 0) - (D.RANK[ad.rank] || 0) || a.index - b.index;
+    });
+    return indexed.map(entry=>entry.monster);
   }
 
   function statusBar(label,current,max,kind){
@@ -70,11 +95,12 @@
     const isLeader = S.state.party[0]?.uid === m.uid;
     const size = S.monsterSize ? S.monsterSize(m) : 1;
     const canMove = S.state.party.length > 1;
-    return `<article class="partyFormationCardV831 ${isLeader ? "leader" : ""}">
+    return `<article class="partyFormationCardV831 partyFormationCardV836 ${isLeader ? "leader" : ""} ${m.locked ? "locked" : ""} ${m.equip ? "equipped" : ""}">
       <div class="partyFormationArtV831">
         ${V.monsterVisual(m,"partyFormationFaceV831")}
         <span class="partyPositionV831">${isLeader ? "LEADER" : "MEMBER"}</span>
         <span class="partySizeFlagV831">${size}枠</span>
+        <span class="monsterStateFlagsV836">${m.locked ? "<i>保護</i>" : ""}${m.equip ? "<i>装備</i>" : ""}</span>
       </div>
       <div class="partyFormationInfoV831">
         <div class="monsterCardTitleV831">
@@ -111,9 +137,12 @@
     const remain = S.partySlotsRemaining ? S.partySlotsRemaining() : Math.max(0,D.MAX_PARTY - S.state.party.length);
     const canJoin = S.canAddToParty ? S.canAddToParty(m) : S.state.party.length < D.MAX_PARTY;
     const joinAction = canJoin ? `Game.toParty('${m.uid}')` : `Game.openPartyExchange('${m.uid}')`;
-    return `<article class="pastureMonsterCardV831 ${m.locked ? "locked" : ""}">
+    return `<article class="pastureMonsterCardV831 pastureMonsterCardV836 ${m.locked ? "locked" : ""} ${m.equip ? "equipped" : ""}">
       <button class="pastureMonsterMainV831" onclick="Game.openMonsterDetail('${m.uid}','box')">
-        ${V.monsterVisual(m,"pastureMonsterFaceV831")}
+        <span class="pastureMonsterVisualV836">
+          ${V.monsterVisual(m,"pastureMonsterFaceV831")}
+          <span class="monsterStateFlagsV836">${m.locked ? "<i>保護</i>" : ""}${m.equip ? "<i>装備</i>" : ""}${m.mutation ? "<i>変異</i>" : ""}</span>
+        </span>
         <span class="pastureMonsterCopyV831">
           <span class="monsterCardTitleV831">
             <span><small>${U.esc(d.name)}</small><b>${U.esc(m.nickname)}</b></span>
@@ -139,9 +168,9 @@
 
   function monstersHtml(){
     const state = S.state;
-    const filter = window.MonsterLinksGame.listFilter ? window.MonsterLinksGame.listFilter("monsters") : {q:"",rank:"all",type:"all",size:"all",place:"all"};
+    const filter = window.MonsterLinksGame.listFilter ? window.MonsterLinksGame.listFilter("monsters") : {q:"",rank:"all",type:"all",size:"all",place:"all",status:"all",sort:"levelDesc"};
     const party = state.party.filter(m=>window.MonsterLinksGame.matchOwnedMonster ? window.MonsterLinksGame.matchOwnedMonster(m,"party") : true);
-    const box = state.box.filter(m=>window.MonsterLinksGame.matchOwnedMonster ? window.MonsterLinksGame.matchOwnedMonster(m,"box") : true);
+    const box = sortOwnedMonsters(state.box.filter(m=>window.MonsterLinksGame.matchOwnedMonster ? window.MonsterLinksGame.matchOwnedMonster(m,"box") : true),filter.sort);
     const total = state.party.length + state.box.length;
     const shown = party.length + box.length;
     const partyUsed = S.partySizeUsed ? S.partySizeUsed() : state.party.length;
@@ -153,8 +182,8 @@
     const sizeSummary = `1枠×${slotInfo.sizes[1] || 0}　2枠×${slotInfo.sizes[2] || 0}　3枠×${slotInfo.sizes[3] || 0}`;
 
     return `
-    <main class="monsterBaseV831">
-      <section class="monsterCampV831">
+    <main class="monsterBaseV831 monsterBaseV836">
+      <section class="monsterCampV831 monsterCampV836">
         <div class="monsterCampBackdropV831"></div>
         <div class="monsterCampCopyV831">
           <span class="monsterEyebrowV831">MONSTER CAMP</span>
@@ -176,7 +205,7 @@
         </div>` : ""}
       </section>
 
-      <section class="partyFormationV831">
+      <section class="partyFormationV831 partyFormationV836">
         <div class="partyFormationHeadV831">
           <div>
             <span class="sectionEyebrowV831">ACTIVE PARTY</span>
@@ -198,7 +227,7 @@
         </div>
       </section>
 
-      <section class="pastureWorldV831">
+      <section class="pastureWorldV831 pastureWorldV836">
         <div class="pastureHeadV831">
           <div>
             <span class="sectionEyebrowV831">MONSTER PASTURE</span>

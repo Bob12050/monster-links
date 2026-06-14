@@ -7,7 +7,7 @@
 
   const defaults = {
     dex:{q:"",rank:"all",type:"all",size:"all",status:"all"},
-    monsters:{q:"",rank:"all",type:"all",size:"all",place:"all"}
+    monsters:{q:"",rank:"all",type:"all",size:"all",place:"all",status:"all",sort:"levelDesc"}
   };
 
   const filters = JSON.parse(JSON.stringify(defaults));
@@ -73,6 +73,9 @@
     if(f.rank !== "all" && d.rank !== f.rank) return false;
     if(f.type !== "all" && d.type !== f.type) return false;
     if((f.size || "all") !== "all" && String(S.monsterSize ? S.monsterSize(m) : (d.size || 1)) !== String(f.size)) return false;
+    if((f.status || "all") === "locked" && !m.locked) return false;
+    if((f.status || "all") === "equipped" && !m.equip) return false;
+    if((f.status || "all") === "mutation" && !m.mutation) return false;
 
     return textMatch(f.q,[m.nickname,d.name,m.id,d.rank,(D.TYPES?.[d.type] || d.type || ""),`${S.monsterSize ? S.monsterSize(m) : (d.size || 1)}枠`,m.level]);
   }
