@@ -357,6 +357,7 @@
         render();
         return;
       }
+      S.recordScoutAttempt?.();
       const chance = scoutChance();
       if(U.rand(1,100) <= chance){
         const joined = S.makeMonster(e.id,e.level,{mutation:e.mutation,mutationTitle:e.mutationTitle});

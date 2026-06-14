@@ -2,6 +2,13 @@
   "use strict";
   const P = window.MonsterLinksParts = window.MonsterLinksParts || {};
   P.QUESTS = [
+    // v8.6-A.30: 初回プレイヤー向けの短いガイド任務。
+    {id:"tut_meadow_first",group:"tutorial",title:"草原で腕ならし",desc:"はじまり草原の通常探索で1回勝利する",type:"winStage",stage:"meadow",amount:1,view:"stage",action:"草原へ",reward:{gold:40,exp:15}},
+    {id:"tut_scout_try",group:"tutorial",title:"スカウトを試そう",desc:"戦闘中にスカウトを1回試す。成功しなくても達成。",type:"scoutAttemptTotal",amount:1,view:"stage",action:"冒険へ",reward:{gold:50,item:"life_drop",count:1}},
+    {id:"tut_equip_first",group:"tutorial",title:"装備を付けよう",desc:"アクセサリーを1回装備する",type:"equipTotal",amount:1,view:"monsters",action:"仲間へ",reward:{gold:60,exp:20}},
+    {id:"tut_boss_pressure",group:"tutorial",title:"ボスの気配を探ろう",desc:"はじまり草原で通常探索に2回勝利してボスの気配をためる",type:"bossPressure",stage:"meadow",amount:2,view:"stage",action:"草原へ",reward:{gold:80,scoutCharm:1}},
+    {id:"tut_meadow_boss",group:"tutorial",title:"草原ボスに挑もう",desc:"モスキングを倒す、またはスカウトする",type:"bossClear",stage:"meadow",amount:1,view:"stage",action:"ボスへ",reward:{gold:100,exp:50,item:"force_ring",count:1}},
+    {id:"tut_fusion_list",group:"tutorial",title:"配合リストを見てみよう",desc:"配合所を開いて、配合リストを確認する",type:"viewVisited",view:"fusion",amount:1,action:"配合所へ",reward:{gold:80,item:"mage_charm",count:1}},
     {id:"q_first_win",group:"main",title:"はじめての勝利",desc:"通常探索で1回勝利する",type:"winTotal",amount:1,reward:{gold:50,exp:20}},
     {id:"q_meadow_patrol",group:"main",title:"草原を調査",desc:"はじまり草原で通常探索に2回勝利する",type:"winStage",stage:"meadow",amount:2,reward:{gold:80,item:"life_drop",count:1}},
     {id:"q_first_scout",group:"main",title:"仲間を増やそう",desc:"モンスターを1体スカウトする",type:"scoutTotal",amount:1,reward:{gold:70,item:"force_ring",count:1}},

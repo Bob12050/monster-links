@@ -19,6 +19,18 @@
       };
     }
 
+    const guideQuest = D.QUESTS.find(q=>q.group === "tutorial" && !S.questClaimed(q.id));
+    if(guideQuest){
+      return {
+        icon:"🧭",
+        title:`はじめてガイド：${guideQuest.title}`,
+        text:guideQuest.desc,
+        button:guideQuest.action || "進める",
+        view:guideQuest.view || (guideQuest.stage ? "stage" : guideQuest.arena ? "arena" : "quest"),
+        cls:"primary"
+      };
+    }
+
     const readyBoss = D.STAGES.find(st=>{
       if(!st.boss) return false;
       const open = st.unlock <= S.state.stageUnlocked;

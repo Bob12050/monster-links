@@ -10906,3 +10906,15 @@ body.mlReducedMotionV817 .fusionBirthSealV827,
 body.mlReducedMotionV817 .fusionBirthFlashV827{display:none}
 body.mlReducedMotionV817 .fusionBirthParticlesV827{opacity:.55}
 body.mlReducedMotionV817 .fusionBirthResultV827{opacity:1;transform:none}
+
+/* v8.6-A.30: first-play guide quests */
+.questSectionV825.tutorial{
+  border-color:rgba(116,240,160,.34);
+  background:
+    radial-gradient(circle at 4% 0%,rgba(116,240,160,.10),transparent 28%),
+    linear-gradient(180deg,rgba(9,44,43,.97),rgba(4,17,34,.98));
+}
+.tutorial .questProgressV842 i{background:linear-gradient(90deg,#4ec98a,#9bf0c0)}
+.tutorial .questCardV825{
+  background:linear-gradient(155deg,rgba(12,57,62,.92),rgba(5,19,40,.97));
+}

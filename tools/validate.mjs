@@ -146,6 +146,8 @@ function loadGameData(scriptRefs){
   if(!state.records?.completedRecipes || typeof state.records.completedRecipes !== "object"){
     fail("旧セーブに空の配合済みレシピ履歴が補完されませんでした");
   }
+  if(!Number.isFinite(state.records?.scoutAttempts)) fail("旧セーブにスカウト試行回数が補完されませんでした");
+  if(!state.records?.views || typeof state.records.views !== "object") fail("旧セーブに画面訪問記録が補完されませんでした");
   if(!state.dex?.mutated || typeof state.dex.mutated !== "object") fail("旧セーブに突然変異図鑑記録が補完されませんでした");
   if(state.settings?.speed !== "normal" || state.settings?.seVolume !== 2 || state.settings?.reducedMotion !== false){
     fail("旧セーブにv8.4の戦闘設定が正しく補完されませんでした");
@@ -782,6 +784,15 @@ function loadGameData(scriptRefs){
       if(!questById(id)) fail(`配合目標連携任務がありません: ${id}`);
       if(!context.MonsterLinksState.questProgress(questById(id)).done) fail(`配合目標連携任務の進捗判定に失敗しました: ${id}`);
     }
+    for(const id of ["tut_meadow_first","tut_scout_try","tut_equip_first","tut_boss_pressure","tut_meadow_boss","tut_fusion_list"]){
+      if(!questById(id)) fail(`はじめてガイド任務がありません: ${id}`);
+    }
+    context.MonsterLinksState.state.records.scoutAttempts = 1;
+    if(!context.MonsterLinksState.questProgress(questById("tut_scout_try")).done) fail("スカウト試行任務の進捗判定に失敗しました");
+    context.MonsterLinksState.state.stageWins.meadow = 2;
+    if(!context.MonsterLinksState.questProgress(questById("tut_boss_pressure")).done) fail("ボス気配ガイド任務の進捗判定に失敗しました");
+    context.MonsterLinksState.recordView("fusion");
+    if(!context.MonsterLinksState.questProgress(questById("tut_fusion_list")).done) fail("配合リスト確認任務の進捗判定に失敗しました");
     const goalQuestStats = context.MonsterLinksState.fusionGoalQuestStats();
     if(goalQuestStats.count !== 1 || goalQuestStats.materialsReady !== 1 || goalQuestStats.parentLevel < 10 || goalQuestStats.completed !== 1){
       fail("配合目標連携任務の集計値が正しくありません");
@@ -793,6 +804,7 @@ function loadGameData(scriptRefs){
     vm.runInContext(fs.readFileSync(questViewFile,"utf8"),context,{filename:"js/views/questView.js"});
     const questHtml = context.MonsterLinksViews.questHtml();
     if(!questHtml.includes("questBoardHeroV842")) fail("任務画面に掲示板UIがありません");
+    if(!questHtml.includes("はじめてガイド")) fail("任務画面に初回ガイドカテゴリがありません");
     if(!questHtml.includes("配合研究依頼")) fail("任務画面に配合研究カテゴリがありません");
     if(!questHtml.includes("Game.claimAllQuests()")) fail("任務画面に一括受取がありません");
     if(!questHtml.includes("Game.openQuestTarget('fg_collect_materials')")) fail("配合研究任務に進行先への導線がありません");
@@ -823,7 +835,7 @@ function loadGameData(scriptRefs){
     if(data.STAGES.length !== 13) fail("v8.5のステージ数が13件ではありません");
     if(data.RECIPE_LIST.length !== 83) fail("4体配合追加後の配合数が83件ではありません");
     if(Object.keys(data.ITEMS).length !== 28) fail("v8.5の装備数が28件ではありません");
-    if(data.QUESTS.length !== 54) fail("v8.5の任務数が54件ではありません");
+    if(data.QUESTS.length !== 60) fail("v8.6-A.30の任務数が60件ではありません");
 
     const skyMonsterIds = [
       "cloudplim","sunhare","galegryph","skywarden","stormdjinn",

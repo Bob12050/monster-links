@@ -348,7 +348,7 @@
       dex:{discovered:{},scouted:{},mutated:{}},
       fusionGoals:[],
       bag:{force_ring:1},
-      records:{scouts:0,fusions:0,specialFusions:0,equips:0,bossWins:0,bossScouts:0,items:{},completedRecipes:{}},
+      records:{scouts:0,scoutAttempts:0,fusions:0,specialFusions:0,equips:0,bossWins:0,bossScouts:0,items:{},completedRecipes:{},views:{}},
       quests:{claimed:{}},
       arena:{unlocked:1,cleared:{},wins:0},
       settings:defaultSettings()
@@ -425,6 +425,7 @@
       : [];
     data.records = data.records && typeof data.records === "object" ? data.records : {};
     data.records.scouts = Number.isFinite(data.records.scouts) ? data.records.scouts : Math.max(0,Object.keys(data.dex.scouted).filter(id=>data.dex.scouted[id]).length - data.party.length - data.box.length + data.party.length + data.box.length);
+    data.records.scoutAttempts = Number.isFinite(data.records.scoutAttempts) ? Math.max(0,Math.floor(data.records.scoutAttempts)) : data.records.scouts;
     data.records.fusions = Number.isFinite(data.records.fusions) ? data.records.fusions : 0;
     data.records.specialFusions = Number.isFinite(data.records.specialFusions) ? data.records.specialFusions : 0;
     data.records.equips = Number.isFinite(data.records.equips) ? data.records.equips : 0;
@@ -441,6 +442,11 @@
     Object.keys(data.records.completedRecipes).forEach(key=>{
       if(!data.records.completedRecipes[key]) delete data.records.completedRecipes[key];
       else data.records.completedRecipes[key] = true;
+    });
+    data.records.views = data.records.views && typeof data.records.views === "object" ? data.records.views : {};
+    Object.keys(data.records.views).forEach(view=>{
+      if(!data.records.views[view]) delete data.records.views[view];
+      else data.records.views[view] = true;
     });
     data.quests = data.quests && typeof data.quests === "object" ? data.quests : {};
     data.quests.claimed = data.quests.claimed && typeof data.quests.claimed === "object" ? data.quests.claimed : {};
@@ -859,7 +865,18 @@
 
   function recordScout(isBoss=false){
     state.records.scouts = (state.records.scouts || 0) + 1;
+    state.records.scoutAttempts = Math.max(state.records.scoutAttempts || 0,state.records.scouts || 0);
     if(isBoss) state.records.bossScouts = (state.records.bossScouts || 0) + 1;
+  }
+
+  function recordScoutAttempt(){
+    state.records.scoutAttempts = (state.records.scoutAttempts || 0) + 1;
+  }
+
+  function recordView(view){
+    if(!view) return;
+    state.records.views = state.records.views && typeof state.records.views === "object" ? state.records.views : {};
+    state.records.views[String(view)] = true;
   }
 
   function recordFusion(isSpecial=false,recipeKey=""){
@@ -913,6 +930,7 @@
     if(q.type === "winTotal") current = state.wins || 0;
     if(q.type === "winStage") current = state.stageWins[q.stage] || 0;
     if(q.type === "scoutTotal") current = state.records.scouts || 0;
+    if(q.type === "scoutAttemptTotal") current = state.records.scoutAttempts || 0;
     if(q.type === "fusionTotal") current = state.records.fusions || 0;
     if(q.type === "specialFusion") current = state.records.specialFusions || 0;
     if(q.type === "equipTotal") current = state.records.equips || 0;
@@ -926,6 +944,12 @@
     if(q.type === "personalityKinds") current = personalityKinds();
     if(q.type === "itemTotal") current = itemTotal();
     if(q.type === "collectItem") current = state.records.items?.[q.item] || 0;
+    if(q.type === "bossPressure"){
+      const stage = D.STAGES.find(st=>st.id === q.stage);
+      const target = q.amount || stage?.boss?.unlockWins || 1;
+      current = Math.min(state.stageWins[q.stage] || 0,target);
+    }
+    if(q.type === "viewVisited") current = state.records.views?.[q.view || q.targetView] ? 1 : 0;
     const goalStats = fusionGoalQuestStats();
     if(q.type === "fusionGoalCount") current = goalStats.count;
     if(q.type === "fusionGoalMaterials") current = goalStats.materialsReady;
@@ -1051,6 +1075,8 @@
     itemStatsText,
     fusionGoalQuestStats,
     recordScout,
+    recordScoutAttempt,
+    recordView,
     recordFusion,
     recordEquip,
     recordBossWin,

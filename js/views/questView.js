@@ -15,9 +15,9 @@
   function questSection(title,sub,list,kind){
     const counts = groupSummary(list);
     const sorted = [...list].sort((a,b)=>Number(S.questClaimable(b))-Number(S.questClaimable(a)) || Number(S.questClaimed(a))-Number(S.questClaimed(b)));
-    return `<details class="questSectionV825 ${kind}" ${counts.claimable || kind === "main" ? "open" : ""}>
+    return `<details class="questSectionV825 ${kind}" ${counts.claimable || kind === "tutorial" || kind === "main" ? "open" : ""}>
       <summary class="questBoardSectionHeadV842">
-        <div><span>${kind === "main" ? "STORY QUEST" : kind === "fusion" ? "FUSION RESEARCH" : "SUB MISSION"}</span><h2>${title}</h2><p>${sub}</p></div>
+        <div><span>${kind === "tutorial" ? "STARTER GUIDE" : kind === "main" ? "STORY QUEST" : kind === "fusion" ? "FUSION RESEARCH" : "SUB MISSION"}</span><h2>${title}</h2><p>${sub}</p></div>
         <div class="questBoardCountV842"><b>${counts.claimed}</b><small>/${counts.total}達成</small>${counts.claimable ? `<em>${counts.claimable}件受取</em>` : ""}</div>
       </summary>
       <div class="questListV842">${sorted.map(V.questCard).join("")}</div>
@@ -26,6 +26,7 @@
 
   function questHtml(){
     const counts = S.questCounts();
+    const tutorial = D.QUESTS.filter(q=>q.group === "tutorial");
     const main = D.QUESTS.filter(q=>q.group === "main");
     const fusionGoals = D.QUESTS.filter(q=>q.group === "fusionGoal");
     const missions = D.QUESTS.filter(q=>q.group === "mission");
@@ -62,6 +63,7 @@
         <div class="questListV842">${claimableQuests.map(V.questCard).join("")}</div>
       </section>` : ""}
 
+      ${questSection("はじめてガイド","冒険・スカウト・装備・ボス・配合を順番に覚える短い導線です。",tutorial,"tutorial")}
       ${questSection("配合研究依頼","登録中の配合目標と手持ち素材から進捗を自動計算します。",fusionGoals,"fusion")}
       ${questSection("メインクエスト","地域を攻略して次の冒険へ進むための依頼です。",main,"main")}
       ${questSection("サブミッション","収集・育成・闘技場など長期的な達成目標です。",missions,"mission")}
@@ -77,7 +79,7 @@
       <div class="questPinV842"></div>
       <div class="questCardTopV842">
         <div>
-          <span>${q.group === "main" ? "MAIN" : q.group === "fusionGoal" ? "FUSION" : "MISSION"}</span>
+          <span>${q.group === "tutorial" ? "GUIDE" : q.group === "main" ? "MAIN" : q.group === "fusionGoal" ? "FUSION" : "MISSION"}</span>
           <h3>${U.esc(q.title)}</h3>
           <p>${U.esc(q.desc)}</p>
         </div>

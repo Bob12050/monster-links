@@ -110,6 +110,7 @@
     if(state.battle && v !== "battle") state.battle = null;
     if(v !== "reward") state.reward = null;
     state.view = v;
+    S.recordView?.(v);
     if(G._clearFusionPickNoRender) G._clearFusionPickNoRender();
     S.save();
     playSe("tap");
