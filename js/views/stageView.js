@@ -198,6 +198,57 @@
       </section>`;
   }
 
+  function stageLobbyHtml(st){
+    const open = st.unlock <= S.state.stageUnlocked;
+    const enough = S.highestLv() >= st.req;
+    const cleared = !!S.state.bossCleared[st.id];
+    const ready = G.bossReady?.(st) || cleared;
+    const wins = S.state.stageWins[st.id] || 0;
+    const progressPct = U.clamp(wins / st.boss.unlockWins * 100,0,100);
+    const unlocked = U.clamp(Number(S.state.stageUnlocked) || 1,1,D.STAGES.length);
+    const bossClears = D.STAGES.filter(stage=>S.state.bossCleared[stage.id]).length;
+    const index = D.STAGES.findIndex(stage=>stage.id === st.id);
+    const status = stageStatus(st);
+    return `
+      <section class="stageLobbyV849 stageArt ${status.key}" ${V.stageStyle(st)} aria-label="Quest gate">
+        <div class="stageLobbyBackdropV849">${V.stageThumb(st,"stageLobbyImageV849")}</div>
+        <div class="stageLobbyContentV849">
+          <div class="stageLobbyKickerV849">
+            <span>QUEST GATE</span>
+            <strong class="${status.key}">${status.label}</strong>
+          </div>
+          <div class="stageLobbyTitleV849">
+            <span>AREA ${String(index + 1).padStart(2,"0")}</span>
+            <h1>${st.icon} ${U.esc(st.name)}</h1>
+            <p>${U.esc(st.desc)}</p>
+          </div>
+          <div class="stageLobbyStatsV849">
+            <div><small>OPEN</small><b>${unlocked}/${D.STAGES.length}</b></div>
+            <div><small>BOSS</small><b>${bossClears}</b></div>
+            <div><small>REQ</small><b>Lv ${st.req}</b></div>
+            <div><small>BEST</small><b>Lv ${S.highestLv()}</b></div>
+          </div>
+          <div class="stageLobbyBossV849">
+            ${V.monsterInline(st.boss.id,"stageLobbyBossFaceV849")}
+            <div>
+              <span>AREA BOSS</span>
+              <b>${U.esc(S.def(st.boss.id).name)} <small>Lv ${st.boss.level}</small></b>
+              <i><em style="width:${progressPct}%"></em></i>
+            </div>
+            <strong>${Math.min(wins,st.boss.unlockWins)}/${st.boss.unlockWins}</strong>
+          </div>
+          <div class="stageLobbyActionsV849">
+            <button class="primary" ${(!open || !enough) ? "disabled" : ""} onclick="Game.startBattle('${st.id}')">
+              <small>NORMAL</small><b>Start Quest</b>
+            </button>
+            <button class="red" ${(!open || !enough || !ready) ? "disabled" : ""} onclick="Game.startBossBattle('${st.id}')">
+              <small>${ready ? "READY" : "CHARGE"}</small><b>Boss Battle</b>
+            </button>
+          </div>
+        </div>
+      </section>`;
+  }
+
   // v8.6-A.17: 冒険画面の表示モード（クエストボード ⇄ ワールドマップ）。
   // セッション内のみ保持し、セーブ形式には保存しない。
   let stageViewMode = "board";
@@ -306,7 +357,8 @@
     }
     // ワールドマップは検証・既存機能のため常に出力し、ボード表示中はCSSで隠す。
     return `
-      <main class="worldAdventureV851 stageViewMode-${stageViewMode}">
+      <main class="worldAdventureV851 worldAdventureV849 stageViewMode-${stageViewMode}">
+        ${stageLobbyHtml(current)}
         ${stageModeToggleHtml()}
         ${questBoardHtml(current)}
         ${worldMapHtml(current)}

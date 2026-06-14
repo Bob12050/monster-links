@@ -1,3 +1,16 @@
+v8.6-A.49 Adventure quest gate and mobile home cleanup
+GAME_VERSION to 8.6-A.49
+
+Main changes:
+- Added a social-game style Quest Gate panel to the adventure screen.
+- Consolidated current area, recommended level, boss progress, unlocked areas, and boss clear count at the top of adventure.
+- Polished quest board cards into more banner-like quest entries with stronger selected/current feedback.
+- Kept Board/Map switching intact and did not change stage data.
+- Reduced mobile home clutter by changing the campaign deck to a horizontal swipe strip.
+- Updated PWA/cache version to v8.6-A.49.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
+---
+
 v8.6-A.48 ソシャゲ風ホームロビー化
 
 GAME_VERSIONを8.6-A.48へ更新

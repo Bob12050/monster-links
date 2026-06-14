@@ -1,12 +1,22 @@
-# モンスターリンクス v8.6-A.48
+# モンスターリンクス v8.6-A.49
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
 
 ## 現在の安定版
 
 ```text
-v8.6-A.48 ソシャゲ風ホームロビー化
+v8.6-A.49 Adventure quest gate and mobile home cleanup
 ```
+
+## v8.6-A.49 update
+
+- Added a social-game style Quest Gate panel to the adventure screen.
+- Consolidated current area, recommended level, boss progress, unlocked areas, and boss clear count at the top of adventure.
+- Polished quest board cards into more banner-like quest entries with stronger selected/current feedback.
+- Kept Board/Map switching intact and did not change stage data.
+- Reduced mobile home clutter by changing the campaign deck to a horizontal swipe strip.
+- Updated PWA/cache version to v8.6-A.49.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
 
 ## v8.6-A.48の主な変更
 
