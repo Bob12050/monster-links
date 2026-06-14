@@ -26,10 +26,11 @@
     const autoOn = !!window.MonsterLinksGame.isBattleAuto?.();
     const strategy = window.MonsterLinksGame.strategyInfo?.() || {name:"バランス",short:"BALANCE"};
     const mutationTitle = enemy.mutation ? S.mutationTitleName(enemy) : "";
+    const stageTheme = String(b.stage?.id || "default").replace(/[^a-z0-9_-]/gi,"");
 
     return `
     <main class="battlePageV821 battlePageV823">
-      <section class="battle battleV821 battleV823 battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
+      <section class="battle battleV821 battleV823 battleV833 battleStage-${U.esc(stageTheme)} battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
         ${b.mutationIntro ? `<div class="mutationEncounterV1" aria-label="突然変異個体が出現"><span>RARE ENCOUNTER</span><b>${U.esc(mutationTitle)}突然変異個体 出現</b><small>色違いで能力補正を持つ珍しいモンスターです</small></div>` : ""}
         <div class="battleHeaderV821">
           <div>
@@ -49,6 +50,12 @@
 
         <div class="battleArenaV821">
           <div class="battleLightV821"></div>
+          <div class="battleWorldV833" aria-hidden="true">
+            <i class="battleAtmosphereV833"></i>
+            <i class="battleHorizonV833"></i>
+            <i class="battleFrontMistV833"></i>
+          </div>
+          ${b.isBoss ? `<div class="bossAtmosphereV833" aria-hidden="true"><i></i><i></i></div>` : ""}
           <div class="battleUnitV821 enemyUnitV821 ${V.fxClass("enemy")} ${V.fxSourceClass("enemy")}">
             <div class="battleHudV821 enemyHudV821">
               <div class="fighterNameV821">
@@ -61,6 +68,7 @@
             </div>
             <div class="battleActorV821 enemyActorV821">
               <div class="battleGroundV821"></div>
+              <div class="battleContactV833"></div>
               ${V.monsterVisual(enemy,"battleSpriteV821 enemySpriteV821")}
               <div class="hitBurstV821"></div>
               ${V.fxBadge("enemy")}
@@ -76,6 +84,7 @@
           <div class="battleUnitV821 allyUnitV821 ${V.fxClass("ally")} ${V.fxSourceClass("ally")}">
             <div class="battleActorV821 allyActorV821">
               <div class="battleGroundV821"></div>
+              <div class="battleContactV833"></div>
               ${V.monsterVisual(ally,"battleSpriteV821 allySpriteV821")}
               <div class="hitBurstV821"></div>
               ${V.fxBadge("ally")}
