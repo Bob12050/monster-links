@@ -1,3 +1,11 @@
+v8.6-A.55 Mobile home Japanese labels and viewport cleanup
+GAME_VERSION to 8.6-A.55
+
+- Localized the reference-phone HOME BASE labels and primary actions from English to Japanese.
+- Removed the mobile HOME BASE bottom blank area risk by letting the home app shell fill the dynamic viewport height and adding a dark page background fallback.
+- Updated PWA/cache version to v8.6-A.55.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or balance.
+
 v8.6-A.54 Reference-phone QUEST GATE adventure rebuild
 GAME_VERSION to 8.6-A.54
 

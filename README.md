@@ -1,11 +1,18 @@
-# Monster Links v8.6-A.52
+# Monster Links v8.6-A.55
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.55 update
+
+- Localized the reference-phone HOME BASE labels and primary actions from English to Japanese.
+- Removed the mobile HOME BASE bottom blank area risk by letting the home app shell fill the dynamic viewport height and adding a dark page background fallback.
+- Updated PWA/cache version to v8.6-A.55.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or balance.
 
 ## 現在の安定版
 
 ```text
-v8.6-A.52 Phone-canvas social RPG home composition
+v8.6-A.55 Mobile home Japanese labels and viewport cleanup
 ```
 
 ## v8.6-A.52 update

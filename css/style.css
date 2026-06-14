@@ -14495,11 +14495,16 @@ body.mlReducedMotionV817 .facilityAuraV850{animation:none}
   --home-green:122,231,126;
   --home-red:244,84,72;
   width:min(var(--home-phone-w),100%);
-  height:min(var(--app-height),var(--home-phone-h));
+  height:var(--app-height);
+  min-height:100svh;
   grid-template-rows:minmax(0,1fr) auto;
   border-radius:0;
   background:#020817;
   box-shadow:0 26px 72px rgba(0,0,0,.58);
+}
+html:has(.app[data-view="home"]),
+body:has(.app[data-view="home"]){
+  background:#020817!important;
 }
 .app[data-view="home"] > .top{display:none}
 .app[data-view="home"] > main.homeV853{
