@@ -8,10 +8,9 @@
     const dex = S.dexCounts();
     const quest = S.questCounts();
     const bagCount = Object.values(S.state.bag || {}).reduce((a,n)=>a+n,0);
-    const currentSlot = S.activeSlot ? S.activeSlot() : 1;
     return `
-    <main class="menuHubV824">
-      <section class="hero heroCompact menuHeroV28 menuHeroV56">
+    <main class="menuHubV824 menuHubV839">
+      <section class="hero heroCompact menuHeroV28 menuHeroV56 menuHeroV839">
         <h1>メニュー</h1>
         <p>ゲームを進める機能を先頭に、記録と管理を分けて表示します。</p>
       </section>
@@ -41,12 +40,16 @@
         </div>
       </section>
 
-      <details class="menuManagementV824">
-        <summary><span><b>設定・データ管理</b><small>音、速度、セーブスロット、タイトル</small></span><em>開く</em></summary>
+      <section class="menuDataShortcutV839">
+        <div><span>DATA & SYSTEM</span><b>設定・バックアップ</b><small>音・速度・セーブデータを安全に管理</small></div>
+        <button onclick="Game.setView('settings')">設定を開く</button>
+      </section>
+
+      <details class="menuManagementV824 menuManagementV839">
+        <summary><span><b>その他の管理メニュー</b><small>タイトル、現在の状況、開発者機能</small></span><em>開く</em></summary>
         <div class="menuManagementBodyV824">
           <div class="menu compactMenu">
             ${S.state.settings?.devMode ? `<button class="red" onclick="Game.setView('devtools')"><b>開発者モード</b><span>検証・テスト操作</span></button>` : ""}
-            <button onclick="Game.setView('settings')"><b>設定・セーブ</b><span>スロット${currentSlot} / 音・速度・データ管理</span></button>
             <button onclick="Game.openTitle()"><b>タイトルへ</b><span>タイトル画面を開く</span></button>
           </div>
           <div class="menuStatusV824">

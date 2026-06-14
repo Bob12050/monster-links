@@ -287,8 +287,8 @@
     const info = S.slotSummary(S.activeSlot());
     m.innerHTML = `
       <div class="modalBg" onclick="Game.closeModal(event)">
-        <div class="modal backupModal" onclick="event.stopPropagation()">
-          <div class="stageTop">
+        <div class="modal backupModal backupModalV839" onclick="event.stopPropagation()">
+          <div class="stageTop backupModalHeadV839">
             <div>
               <h2>セーブバックアップ</h2>
               <p class="tiny">現在のスロット${S.activeSlot()}を書き出します。コピーしてメモ帳などに保存してください。</p>
@@ -301,6 +301,7 @@
             <span>最高Lv ${info.highest}</span>
             <span>発見 ${info.dex}</span>
           </div>
+          <div class="backupModalStepV839"><b>保管用データ</b><span>下の文字列をすべてコピーし、メモアプリなどへ保存してください。</span></div>
           <textarea id="backupText" class="backupTextarea" spellcheck="false">${U.esc(text)}</textarea>
           <div class="actions">
             <button class="primary" onclick="Game.copyBackupText()">バックアップをコピー</button>
@@ -349,14 +350,15 @@
     }
     m.innerHTML = `
       <div class="modalBg" onclick="Game.closeModal(event)">
-        <div class="modal backupModal" onclick="event.stopPropagation()">
-          <div class="stageTop">
+        <div class="modal backupModal backupModalV839 restoreModalV839" onclick="event.stopPropagation()">
+          <div class="stageTop backupModalHeadV839">
             <div>
               <h2>セーブ復元</h2>
               <p class="tiny">バックアップ文字列を貼り付けると、現在のスロット${S.activeSlot()}へ復元します。</p>
             </div>
             <button onclick="Game.closeModal()">閉じる</button>
           </div>
+          <div class="restoreWarningV839"><b>現在のスロット${S.activeSlot()}を上書きします</b><span>心配な場合は、先に現在データのバックアップを書き出してください。</span></div>
           <textarea id="restoreText" class="backupTextarea" spellcheck="false" placeholder="ここにバックアップ文字列を貼り付け"></textarea>
           <div class="actions">
             <button class="red" onclick="Game.restoreBackupText()">現在スロットへ復元</button>
