@@ -32,7 +32,7 @@
     const scoutCharm = state.scoutCharm || 0;
 
     return `
-    <main class="homeV82 homeV817 homeV821 homeV834 homeV848">
+    <main class="homeV82 homeV817 homeV821 homeV834 homeV848 homeV851">
       <section class="homeHeroV821 homeHeroV834 homeHeroV848" style="--home-bg:url('${U.esc(backgroundAssetUrl(baseCampBackground))}')">
         <div class="homeHeroShadeV821"></div>
         <div class="homeHeroLightV821"></div>
@@ -40,6 +40,12 @@
           <i class="homeCampGlowV834"></i>
           <i class="homeCampMistV834"></i>
           <i class="homeCampPennantsV834"></i>
+        </div>
+
+        <div class="homeSocialPlateV851">
+          <span>HOME BASE</span>
+          <b>Monster Links Lobby</b>
+          <small>RANK ${state.playerRank || 1} / GOLD ${state.gold.toLocaleString()}G / PARTY ${partySlots}</small>
         </div>
 
         <div class="homeHeroHeadingV821">

@@ -1,5 +1,14 @@
 # バージョン履歴
 
+## v8.6-A.51 Mockup-close social RPG UI pass
+- Pushed the UI closer to the generated social RPG mockup with stronger navy glass, gold trim, glow accents, and panel depth.
+- Added a HOME BASE lobby plate and tightened the mobile home composition so it reads more like an app game lobby.
+- Made the shared facility headers the primary visual layer and suppressed duplicate legacy hero sections on major screens.
+- Strengthened bottom dock, buttons, cards, and facility panels while keeping existing controls and flows functional.
+- Updated PWA/cache version to v8.6-A.51.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
+
+
 ## v8.6-A.50 Social RPG facility UI foundation
 - Added a shared social RPG facility header component for major screens.
 - Applied facility identity headers to Party Camp, Link Lab, Market, Archive, Mission Guild, Arena, Menu, and Settings.

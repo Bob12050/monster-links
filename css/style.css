@@ -14027,3 +14027,229 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
   .facilityAuraV850{animation:none}
 }
 body.mlReducedMotionV817 .facilityAuraV850{animation:none}
+
+/* =========================================================
+   v8.6-A.51 Mockup-close social RPG pass
+   ========================================================= */
+.app.socialUiV851{
+  --mock-cyan:88,232,255;
+  --mock-gold:255,220,104;
+  --mock-ink:2,8,24;
+}
+.app.socialUiV851 > main:not(.homeV821):not(.battlePageV821):not(.rewardPageV823){
+  padding-inline:10px;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(var(--game-accent),.18),transparent 260px),
+    radial-gradient(circle at 10% 105%,rgba(var(--mock-gold),.08),transparent 260px),
+    linear-gradient(180deg,#06152f,#020713 74%)!important;
+}
+.app.socialUiV851 .facilityHeaderV850{
+  min-height:258px;
+  border-width:1px 1px 3px;
+  border-radius:27px;
+  background:
+    radial-gradient(circle at 78% 8%,rgba(255,255,255,.22),transparent 25%),
+    radial-gradient(circle at 18% 92%,rgba(var(--game-accent),.22),transparent 36%),
+    linear-gradient(120deg,rgba(14,68,128,.98),rgba(5,18,45,.98) 54%,rgba(2,7,24,.99))!important;
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.18),
+    inset 0 0 0 4px rgba(0,0,0,.22),
+    0 20px 40px rgba(0,0,0,.38),
+    0 0 30px rgba(var(--game-accent),.12);
+}
+.app.socialUiV851 .facilityHeaderV850 + :is(
+  .fusionHeroV835,
+  .shopHeroV835,
+  .dexHeroV837,
+  .questBoardHeroV838,
+  .monsterCampV836,
+  .arenaHeroV840,
+  .settingsHeroV839,
+  .menuHeroV839
+){
+  display:none!important;
+}
+.app.socialUiV851 .facilityCopyV850 span{
+  border-color:rgba(var(--mock-gold),.58);
+  color:#fff0a8;
+  background:linear-gradient(180deg,rgba(95,72,18,.72),rgba(10,26,56,.82));
+}
+.app.socialUiV851 .facilityCopyV850 h1{
+  font-size:clamp(30px,5.4vw,48px);
+  letter-spacing:.02em;
+}
+.app.socialUiV851 .facilityCopyV850 p{
+  color:rgba(235,247,255,.86);
+  font-size:13px;
+}
+.app.socialUiV851 .facilityStatsV850 button,
+.app.socialUiV851 .facilityActionsV850 button{
+  border-color:rgba(var(--mock-cyan),.35)!important;
+  border-bottom-color:rgba(var(--mock-gold),.46)!important;
+  background:
+    linear-gradient(110deg,rgba(255,255,255,.07),transparent 30%,rgba(var(--mock-cyan),.06)),
+    linear-gradient(180deg,rgba(13,58,105,.96),rgba(3,16,39,.98))!important;
+}
+.app.socialUiV851 .facilityActionsV850 button.gold{
+  border-color:rgba(var(--mock-gold),.76)!important;
+  background:linear-gradient(180deg,#d19b2f,#80500e 62%,#4c2d06)!important;
+}
+.app.socialUiV851 .facilityActionsV850 button.primary{
+  border-color:rgba(var(--mock-cyan),.85)!important;
+  background:linear-gradient(180deg,#46dcff,#087fc3 58%,#064b83)!important;
+}
+.app.socialUiV851 .facilityActionsV850 button.green{
+  border-color:rgba(126,245,180,.72)!important;
+  background:linear-gradient(180deg,#30c989,#08705e)!important;
+}
+.app.socialUiV851 .facilityActionsV850 button.red{
+  border-color:rgba(255,142,119,.72)!important;
+  background:linear-gradient(180deg,#ff7c58,#9b2b35)!important;
+}
+.app.socialUiV851 :is(
+  .partyFormationV831,
+  .pastureWorldV831,
+  .shopSectionV835,
+  .shopBagV835,
+  .dexCollectionBoardV837,
+  .dexRankCardV837,
+  .questOverviewV838,
+  .questReadyV838,
+  .questSectionV838,
+  .arenaSummaryV840,
+  .arenaNavV840,
+  .arenaSectionV840,
+  .settingsQuickNavV839,
+  .settingsPanelV839,
+  .menuPrimaryV824,
+  .menuMainSectionV824,
+  .menuSubSectionV824,
+  .menuDataShortcutV839,
+  .fusionStepsV835,
+  .fusionWorkbenchV835,
+  .fusionParentPickerV844,
+  .fusionResearchCardV844
+){
+  border-radius:18px!important;
+  border-color:rgba(var(--game-accent),.24)!important;
+  border-bottom-color:rgba(var(--mock-gold),.32)!important;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.035),transparent 38%,rgba(var(--game-accent),.045)),
+    linear-gradient(180deg,rgba(9,34,70,.88),rgba(3,14,34,.94))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.08),0 10px 22px rgba(0,0,0,.24)!important;
+}
+.app.socialUiV851 .gameDockV821{
+  min-height:84px!important;
+  padding:8px 9px max(8px,env(safe-area-inset-bottom));
+  border-radius:22px 22px 0 0;
+}
+.app.socialUiV851 .gameDockV821 button{
+  border-radius:16px!important;
+}
+.app.socialUiV851 .gameDockV821 button.on{
+  transform:translateY(-2px);
+  border-color:rgba(var(--mock-gold),.58)!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(var(--mock-gold),.2),transparent 45%),
+    linear-gradient(180deg,rgba(21,74,130,.98),rgba(5,22,50,.98))!important;
+}
+.homeSocialPlateV851{
+  position:absolute;
+  z-index:9;
+  left:10px;
+  top:10px;
+  width:min(44%,220px);
+  padding:8px 10px;
+  border:1px solid rgba(var(--mock-gold),.5);
+  border-bottom-color:rgba(var(--mock-cyan),.42);
+  border-radius:14px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 90% 0,rgba(255,255,255,.16),transparent 36%),
+    linear-gradient(145deg,rgba(12,54,98,.9),rgba(3,15,38,.94));
+  box-shadow:0 10px 22px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.12);
+}
+.homeSocialPlateV851 span{
+  display:block;
+  color:#ffe89c;
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:.16em;
+}
+.homeSocialPlateV851 b{
+  display:block;
+  margin-top:2px;
+  overflow:hidden;
+  font-size:14px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.homeSocialPlateV851 small{
+  display:block;
+  margin-top:2px;
+  overflow:hidden;
+  color:#8cecff;
+  font-size:7px;
+  font-weight:900;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.app.socialUiV851 .homeHeroV848{
+  border-radius:24px;
+  border-color:rgba(var(--mock-gold),.48);
+  box-shadow:0 18px 42px rgba(0,0,0,.34),0 0 24px rgba(var(--mock-cyan),.1);
+}
+.app.socialUiV851 .homeCampaignDeckV848 button,
+.app.socialUiV851 .homeDailyPanelV848 button,
+.app.socialUiV851 .homeLandmarkV834{
+  border-bottom-color:rgba(var(--mock-gold),.58)!important;
+  border-radius:15px!important;
+}
+
+@media(max-width:620px){
+  .app.socialUiV851 .facilityHeaderV850{min-height:294px}
+  .app.socialUiV851 .facilityHeaderV850.monsters{min-height:368px}
+  .app.socialUiV851 .facilityCopyV850 h1{font-size:27px}
+  .app.socialUiV851 .facilityHeaderV850 + :is(
+    .fusionHeroV835,
+    .shopHeroV835,
+    .dexHeroV837,
+    .questBoardHeroV838,
+    .monsterCampV836,
+    .arenaHeroV840,
+    .settingsHeroV839,
+    .menuHeroV839
+  ){display:none!important}
+  .app.socialUiV851 .homeHeroV848{min-height:650px}
+  .homeSocialPlateV851{
+    left:8px;
+    right:8px;
+    top:8px;
+    width:auto;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:2px 8px;
+  }
+  .homeSocialPlateV851 span,
+  .homeSocialPlateV851 b{grid-column:1}
+  .homeSocialPlateV851 small{
+    grid-column:2;
+    grid-row:1/3;
+    align-self:center;
+    max-width:118px;
+    text-align:right;
+    white-space:normal;
+  }
+  .app.socialUiV851 .homeLobbyStatusV848{top:78px}
+  .app.socialUiV851 .homeCampaignDeckV848{top:123px}
+  .app.socialUiV851 .homeHeroV848 .homeLandmarksV834{inset:199px 7px auto}
+  .app.socialUiV851 .homeHeroV848 .homeLeaderStageV834{inset:254px 0 146px}
+}
+
+@media(max-width:360px){
+  .app.socialUiV851 .homeHeroV848{min-height:632px}
+  .app.socialUiV851 .homeLobbyStatusV848{top:76px}
+  .app.socialUiV851 .homeCampaignDeckV848{top:120px}
+  .app.socialUiV851 .homeHeroV848 .homeLandmarksV834{inset:194px 6px auto}
+  .app.socialUiV851 .homeHeroV848 .homeLeaderStageV834{inset:246px 0 138px}
+}

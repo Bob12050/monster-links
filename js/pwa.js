@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const VERSION = "8.6-A.50";
+  const VERSION = "8.6-A.51";
   const MIN_UPDATE_INTERVAL = 60 * 1000;
   let lastUpdateCheck = 0;
 
