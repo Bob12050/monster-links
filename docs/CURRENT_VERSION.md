@@ -1,3 +1,19 @@
+v8.6-A.29 アート管理正式化・公開ZIP軽量化
+
+GAME_VERSIONを8.6-A.29へ更新
+
+主な変更:
+- 全84体のモンスターアートを正式PNG扱いへ整理
+- `cloudplim` と `skywarden` の参照を `.svg` から `.png` へ統一
+- アート監査結果を正式PNG 84体 / 仮PNG 0体 / 仮SVG 0体 / 欠損 0件へ更新
+- `docs/ART_ASSET_MANIFEST.md` / `.csv` / `assets/images/art_manifest.json` を再生成
+- `tools/art-audit.mjs` の正式IDと制作波管理を現状に合わせて更新
+- 公開用ZIPでは `docs`、`tools`、`data`、開発補助フォルダ、`assets/images/monsters/legacy` を除外
+- PWAキャッシュをv8.6-A.29へ更新
+- モンスターID、rank、能力値、配合レシピ、ステージ構成、報酬、セーブ形式、ゲームバランスは変更なし
+
+---
+
 v8.6-A.28 序盤3ステージ背景刷新
 
 GAME_VERSIONを8.6-A.28へ更新

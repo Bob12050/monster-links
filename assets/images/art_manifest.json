@@ -106,9 +106,9 @@
     "emoji": "❄️",
     "current_image": "assets/images/monsters/frostpup.png",
     "target_png": "assets/images/monsters/frostpup.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -176,9 +176,9 @@
     "emoji": "🐱",
     "current_image": "assets/images/monsters/snowcat.png",
     "target_png": "assets/images/monsters/snowcat.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -246,9 +246,9 @@
     "emoji": "🐢",
     "current_image": "assets/images/monsters/icetortoise.png",
     "target_png": "assets/images/monsters/icetortoise.png",
-    "priority": "P3",
-    "wave": "v8.6-C",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -260,9 +260,9 @@
     "emoji": "🦾",
     "current_image": "assets/images/monsters/ironmantis.png",
     "target_png": "assets/images/monsters/ironmantis.png",
-    "priority": "P3",
-    "wave": "v8.6-C",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -470,9 +470,9 @@
     "emoji": "☣️",
     "current_image": "assets/images/monsters/poisonplim.png",
     "target_png": "assets/images/monsters/poisonplim.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -484,9 +484,9 @@
     "emoji": "🍄",
     "current_image": "assets/images/monsters/toxicshroom.png",
     "target_png": "assets/images/monsters/toxicshroom.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -498,9 +498,9 @@
     "emoji": "🦎",
     "current_image": "assets/images/monsters/sludgecko.png",
     "target_png": "assets/images/monsters/sludgecko.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -540,9 +540,9 @@
     "emoji": "⚙️",
     "current_image": "assets/images/monsters/gearslime.png",
     "target_png": "assets/images/monsters/gearslime.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -554,9 +554,9 @@
     "emoji": "🐞",
     "current_image": "assets/images/monsters/steelbug.png",
     "target_png": "assets/images/monsters/steelbug.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -568,9 +568,9 @@
     "emoji": "🛸",
     "current_image": "assets/images/monsters/thunderdrone.png",
     "target_png": "assets/images/monsters/thunderdrone.png",
-    "priority": "P5",
-    "wave": "v8.6-E",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -596,9 +596,9 @@
     "emoji": "🤖",
     "current_image": "assets/images/monsters/arkmachine.png",
     "target_png": "assets/images/monsters/arkmachine.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -652,9 +652,9 @@
     "emoji": "🐟",
     "current_image": "assets/images/monsters/abyssfin.png",
     "target_png": "assets/images/monsters/abyssfin.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -666,9 +666,9 @@
     "emoji": "🐚",
     "current_image": "assets/images/monsters/shellgolem.png",
     "target_png": "assets/images/monsters/shellgolem.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -792,9 +792,9 @@
     "emoji": "🌷",
     "current_image": "assets/images/monsters/budbunny.png",
     "target_png": "assets/images/monsters/budbunny.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -848,9 +848,9 @@
     "emoji": "🪽",
     "current_image": "assets/images/monsters/reefowl.png",
     "target_png": "assets/images/monsters/reefowl.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -862,9 +862,9 @@
     "emoji": "🐸",
     "current_image": "assets/images/monsters/miretoad.png",
     "target_png": "assets/images/monsters/miretoad.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -876,9 +876,9 @@
     "emoji": "🐱",
     "current_image": "assets/images/monsters/gearcat.png",
     "target_png": "assets/images/monsters/gearcat.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -890,9 +890,9 @@
     "emoji": "❄️",
     "current_image": "assets/images/monsters/snowfairy.png",
     "target_png": "assets/images/monsters/snowfairy.png",
-    "priority": "P4",
-    "wave": "v8.6-D",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -946,9 +946,9 @@
     "emoji": "🪼",
     "current_image": "assets/images/monsters/abyssjelly.png",
     "target_png": "assets/images/monsters/abyssjelly.png",
-    "priority": "P3",
-    "wave": "v8.6-C",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -988,9 +988,9 @@
     "emoji": "🏭",
     "current_image": "assets/images/monsters/forgegolem.png",
     "target_png": "assets/images/monsters/forgegolem.png",
-    "priority": "P3",
-    "wave": "v8.6-C",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1044,9 +1044,9 @@
     "emoji": "🫧",
     "current_image": "assets/images/monsters/titanplim.png",
     "target_png": "assets/images/monsters/titanplim.png",
-    "priority": "P2",
-    "wave": "v8.6-B",
-    "status": "placeholder_png",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1056,11 +1056,11 @@
     "rank": "C",
     "type": "slime",
     "emoji": "☁️",
-    "current_image": "assets/images/monsters/cloudplim.svg",
+    "current_image": "assets/images/monsters/cloudplim.png",
     "target_png": "assets/images/monsters/cloudplim.png",
-    "priority": "P6",
-    "wave": "v8.6-F",
-    "status": "placeholder_svg",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {
@@ -1098,11 +1098,11 @@
     "rank": "B",
     "type": "machine",
     "emoji": "🛡️",
-    "current_image": "assets/images/monsters/skywarden.svg",
+    "current_image": "assets/images/monsters/skywarden.png",
     "target_png": "assets/images/monsters/skywarden.png",
-    "priority": "P6",
-    "wave": "v8.6-F",
-    "status": "placeholder_svg",
+    "priority": "-",
+    "wave": "complete",
+    "status": "formal_png",
     "spec": "1024x1024 / PNG / transparent / RPG deformed monster"
   },
   {

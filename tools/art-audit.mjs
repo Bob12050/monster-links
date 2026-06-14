@@ -7,68 +7,26 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const writeFiles = process.argv.includes("--write");
 
 const formalIds = new Set([
-  "abysslevia", "aethergolem", "aquan", "arcautomaton", "ashimp",
-  "astralwyrm", "auroracat", "cavemole", "cindrake", "cinderhorn",
-  "corewalker", "cragbear", "crystagon", "demonlord", "doomgazer", "duskwolf",
-  "embercub", "frostlevia", "gearbit", "gloomoth", "hellknight",
-  "galegryph", "heavenscale", "impfang",
-  "kingplim", "leafling", "lumenowl", "luminel", "mossking", "orelord",
-  "pearlseraph", "pebblon",
-  "plim", "prismdragon", "puffbat", "thornhog", "tidalseraph",
-  "venomhydra", "venomqueen", "venomwing", "voiddragon", "volcazard",
-  "phoenixdrake", "celestiseraph", "corallume", "seraphalcon", "sparkbug", "stormdjinn",
-  "sunhare", "thunderlion", "voltfox", "zenithdragon",
-  "venomchimera", "omegaframe", "chaoswyrm", "eclipsewolf",
-  "gigacore", "glacierfang", "solarwyrm", "nightmarestag", "dewplim"
+  "plim", "leafling", "puffbat", "pebblon", "embercub",
+  "aquan", "thornhog", "frostpup", "mossking", "cindrake",
+  "gearbit", "gloomoth", "snowcat", "voltfox", "orelord",
+  "luminel", "crystagon", "icetortoise", "ironmantis", "tidalseraph",
+  "volcazard", "duskwolf", "frostlevia", "arcautomaton", "astralwyrm",
+  "kingplim", "auroracat", "eclipsewolf", "gigacore", "phoenixdrake",
+  "celestiseraph", "voiddragon", "prismdragon", "poisonplim", "toxicshroom",
+  "sludgecko", "venomwing", "venomhydra", "gearslime", "steelbug",
+  "thunderdrone", "corewalker", "arkmachine", "venomchimera", "omegaframe",
+  "corallume", "abyssfin", "shellgolem", "pearlseraph", "abysslevia",
+  "impfang", "hellknight", "doomgazer", "chaoswyrm", "demonlord",
+  "dewplim", "budbunny", "cavemole", "sparkbug", "ashimp",
+  "reefowl", "miretoad", "gearcat", "snowfairy", "cinderhorn",
+  "cragbear", "lumenowl", "abyssjelly", "venomqueen", "thunderlion",
+  "forgegolem", "glacierfang", "solarwyrm", "nightmarestag", "titanplim",
+  "cloudplim", "sunhare", "galegryph", "skywarden", "stormdjinn",
+  "aethergolem", "seraphalcon", "heavenscale", "zenithdragon"
 ]);
 
-const productionWaves = [
-  {
-    id: "v8.6-A",
-    label: "既存の主役級・最上位",
-    ids: []
-  },
-  {
-    id: "v8.6-B",
-    label: "既存の終盤・ボス級",
-    ids: [
-      "arkmachine", "abyssfin",
-      "shellgolem", "titanplim"
-    ]
-  },
-  {
-    id: "v8.6-C",
-    label: "既存の中盤・上位",
-    ids: [
-      "forgegolem", "abyssjelly", "icetortoise",
-      "ironmantis"
-    ]
-  },
-  {
-    id: "v8.6-D",
-    label: "既存の序盤・追加通常種",
-    ids: [
-      "budbunny",
-      "reefowl", "miretoad", "gearcat", "snowfairy", "frostpup"
-    ]
-  },
-  {
-    id: "v8.6-E",
-    label: "既存の残り通常種",
-    ids: [
-      "snowcat", "poisonplim", "toxicshroom",
-      "sludgecko", "gearslime", "steelbug",
-      "thunderdrone"
-    ]
-  },
-  {
-    id: "v8.6-F",
-    label: "天空遺跡",
-    ids: [
-      "cloudplim", "skywarden"
-    ]
-  }
-];
+const productionWaves = [];
 
 function relative(file){
   return path.relative(root, file).replaceAll("\\", "/");
@@ -174,19 +132,21 @@ if(writeFiles){
   const rows = monsterRecords.map(record=>
     `|${record.status}|${record.wave}|${record.id}|${record.name}|${record.rank}|${record.type}|${record.current_image}|`
   );
-  const waveSections = productionWaves.flatMap(wave=>[
-    `### ${wave.id} ${wave.label} (${wave.ids.length}体)`,
-    "",
-    wave.ids.map(id=>{
-      const record = monsterRecords.find(candidate=>candidate.id === id);
-      return `${record.name} (\`${id}\`)`;
-    }).join(" / "),
-    ""
-  ]);
+  const waveSections = productionWaves.length
+    ? productionWaves.flatMap(wave=>[
+        `### ${wave.id} ${wave.label} (${wave.ids.length}体)`,
+        "",
+        wave.ids.map(id=>{
+          const record = monsterRecords.find(candidate=>candidate.id === id);
+          return `${record.name} (\`${id}\`)`;
+        }).join(" / "),
+        ""
+      ])
+    : ["未完了の制作波はありません。", ""];
   const markdown = [
     "# モンスターアート管理表",
     "",
-    "ゲーム本体の `js/core/monsters.js` を基準に、全モンスターの画像状態を管理します。",
+    "ゲーム本体の `js/core/monsters.js` を基準に、全モンスターの画像状態を管理します。v8.6-A.29で全84体を正式PNG扱いへ整理しました。",
     "",
     "## 集計",
     "",
@@ -223,7 +183,7 @@ if(writeFiles){
     "node tools/art-audit.mjs --write",
     "```",
     "",
-    "正式イラストへ差し替えたIDは `tools/art-audit.mjs` の `formalIds` に追加し、制作波から外します。",
+    "新規モンスターや仮アートを追加した場合は `tools/art-audit.mjs` の `formalIds` と必要に応じて制作波を更新します。",
     ""
   ].join("\n");
   fs.writeFileSync(path.join(root, "docs/ART_ASSET_MANIFEST.md"), markdown, "utf8");
