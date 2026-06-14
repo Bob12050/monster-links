@@ -1,3 +1,14 @@
+v8.6-A.53 Reference-phone HOME BASE rebuild
+GAME_VERSION to 8.6-A.53
+
+Main changes:
+- Rebuilt the home screen HTML around the provided HOME BASE reference image.
+- Made the home view render as a centered vertical phone canvas on wide PC screens, while staying full-screen on mobile.
+- Added an in-scene home HUD, left/right shortcut rails, central leader monster stage, party strip, mission/event banner, and start quest button.
+- Preserved existing navigation and interactions without changing monster IDs, rank, stats, fusion recipes, stage data, save schema, owned data, rewards, images, or balance.
+- Updated PWA/cache version to v8.6-A.53.
+---
+
 v8.6-A.52 Phone-canvas social RPG home composition
 GAME_VERSION to 8.6-A.52
 

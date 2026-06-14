@@ -1,5 +1,12 @@
 # バージョン履歴
 
+## v8.6-A.53 Reference-phone HOME BASE rebuild
+- Rebuilt the home screen around the provided HOME BASE reference image.
+- Made the home view render as a centered vertical phone canvas on wide PC screens.
+- Added in-scene HUD, shortcut rails, leader stage, party strip, mission/event banner, and start quest CTA.
+- Updated PWA/cache version to v8.6-A.53.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or balance.
+
 ## v8.6-A.52 Phone-canvas social RPG home composition
 - Forced the non-title game shell into a phone-canvas width on wide desktop browsers so the home screen reads like the selected mobile mockup instead of a stretched web page.
 - Rebuilt the home layout overrides so the lobby uses the mobile composition at all viewport widths: HOME BASE plate, compact status chips, vertical campaign cards, landmark row, centered leader stage, and stronger adventure CTA.
@@ -7,7 +14,6 @@
 - Strengthened the bottom dock and phone-frame presentation for a more native social RPG feel.
 - Updated PWA/cache version to v8.6-A.52.
 - No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
-
 
 ## v8.6-A.51 Mockup-close social RPG UI pass
 - Pushed the UI closer to the generated social RPG mockup with stronger navy glass, gold trim, glow accents, and panel depth.
