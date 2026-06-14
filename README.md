@@ -1,46 +1,12 @@
-# Monster Links v8.6-A.55
+# モンスターリンクス v8.6-A.49
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
-
-## v8.6-A.55 update
-
-- Localized the reference-phone HOME BASE labels and primary actions from English to Japanese.
-- Removed the mobile HOME BASE bottom blank area risk by letting the home app shell fill the dynamic viewport height and adding a dark page background fallback.
-- Updated PWA/cache version to v8.6-A.55.
-- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or balance.
 
 ## 現在の安定版
 
 ```text
-v8.6-A.55 Mobile home Japanese labels and viewport cleanup
+v8.6-A.49 Adventure quest gate and mobile home cleanup
 ```
-
-## v8.6-A.52 update
-
-- Forced the non-title game shell into a phone-canvas width on wide desktop browsers so the home screen reads like the selected mobile mockup instead of a stretched web page.
-- Rebuilt the home layout overrides so the lobby uses the mobile composition at all viewport widths: HOME BASE plate, compact status chips, vertical campaign cards, landmark row, centered leader stage, and stronger adventure CTA.
-- Removed the visible desktop-width home clutter by tightening below-hero panels and hiding the internal scrollbar chrome in the game shell.
-- Strengthened the bottom dock and phone-frame presentation for a more native social RPG feel.
-- Updated PWA/cache version to v8.6-A.52.
-- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
-
-## v8.6-A.51 update
-
-- Pushed the UI closer to the generated social RPG mockup with stronger navy glass, gold trim, glow accents, and panel depth.
-- Added a HOME BASE lobby plate and tightened the mobile home composition so it reads more like an app game lobby.
-- Made the shared facility headers the primary visual layer and suppressed duplicate legacy hero sections on major screens.
-- Strengthened bottom dock, buttons, cards, and facility panels while keeping existing controls and flows functional.
-- Updated PWA/cache version to v8.6-A.51.
-- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
-
-## v8.6-A.50 update
-
-- Added a shared social RPG facility header component for major screens.
-- Applied facility identity headers to Party Camp, Link Lab, Market, Archive, Mission Guild, Arena, Menu, and Settings.
-- Added a v8.6-A.50 social UI theme layer with navy glass panels, gold trim, glow accents, and stronger game HUD/dock styling.
-- Kept existing screen flows and buttons functional while making each screen feel more like an in-game facility.
-- Updated PWA/cache version to v8.6-A.50.
-- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
 
 ## v8.6-A.49 update
 

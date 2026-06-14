@@ -105,21 +105,6 @@
     }).join("");
     return `
     <main class="dexHubV825 dexHubV837">
-      ${V.facilityHeader?.({
-        variant:"dex",
-        kicker:"ARCHIVE",
-        title:"Monster Archive",
-        subtitle:"Track discoveries, scout records, ranks, and fusion routes.",
-        stats:[
-          {label:"DISCOVERED",value:`${counts.discovered}/${counts.total}`},
-          {label:"SCOUTED",value:`${counts.scouted}/${counts.total}`},
-          {label:"MUTATION",value:mutationCount}
-        ],
-        actions:[
-          {cls:"primary",eyebrow:"SEARCH",label:"Filter Archive",onclick:"document.querySelector('.compactFilterV8615 summary')?.click()"},
-          {cls:"gold",eyebrow:"RANK",label:firstVisibleRank ? `Rank ${firstVisibleRank}` : "Rank List",onclick:"document.querySelector('.dexRankSections')?.scrollIntoView({behavior:'smooth',block:'start'})"}
-        ]
-      }) || ""}
       <section class="dexHeroV825 dexHeroV837">
         <div class="dexHeroTitleV825">
           <span>MONSTER ENCYCLOPEDIA</span>

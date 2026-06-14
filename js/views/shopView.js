@@ -11,21 +11,6 @@
     const affordable = D.SHOP_ITEMS.filter(id=>S.state.gold >= D.ITEMS[id].price).length;
     return `
     <main class="shopHubV825 shopHubV835">
-      ${V.facilityHeader?.({
-        variant:"shop",
-        kicker:"MARKET",
-        title:"Links Item Market",
-        subtitle:"Prepare for quests with recovery, training, scout support, and accessories.",
-        stats:[
-          {label:"GOLD",value:`${S.state.gold.toLocaleString()}G`,view:"shop"},
-          {label:"BAG",value:bagCount},
-          {label:"BUYABLE",value:`${affordable}/${D.SHOP_ITEMS.length}`}
-        ],
-        actions:[
-          {cls:"gold",eyebrow:"EQUIP",label:"Accessories",onclick:"document.getElementById('shopEquipmentV835')?.scrollIntoView({behavior:'smooth',block:'start'})"},
-          {cls:"primary",eyebrow:"SUPPORT",label:"Quest Prep",onclick:"document.getElementById('shopSupportV835')?.scrollIntoView({behavior:'smooth',block:'start'})"}
-        ]
-      }) || ""}
       <section class="shopHeroV825 shopHeroV835">
         <div class="shopHeroTitleV825">
           <span>LINKS ITEM SHOP</span>

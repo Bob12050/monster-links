@@ -209,77 +209,40 @@
     const bossClears = D.STAGES.filter(stage=>S.state.bossCleared[stage.id]).length;
     const index = D.STAGES.findIndex(stage=>stage.id === st.id);
     const status = stageStatus(st);
-    const normalDisabled = (!open || !enough) ? "disabled" : "";
-    const bossDisabled = (!open || !enough || !ready) ? "disabled" : "";
     return `
-      <section class="stageLobbyV849 stageGateV854 stageArt ${status.key}" ${V.stageStyle(st)} aria-label="Quest gate">
+      <section class="stageLobbyV849 stageArt ${status.key}" ${V.stageStyle(st)} aria-label="Quest gate">
         <div class="stageLobbyBackdropV849">${V.stageThumb(st,"stageLobbyImageV849")}</div>
-        <div class="stageGateWashV854" aria-hidden="true"></div>
-
-        <div class="stageGateTitleV854">
-          <span>ADVENTURE PORTAL</span>
-          <h1>QUEST GATE</h1>
-          <small>AREA ${String(index + 1).padStart(2,"0")} / ${status.label}</small>
-        </div>
-
-        <div class="stageGateRailV854 left" aria-label="Quest shortcuts">
-          <button class="${S.questCounts().claimable ? "claimable" : ""}" onclick="Game.setView('quest')">
-            <span>${V.icon ? V.icon("scroll","mlIcon") : ""}</span><b>DAILY</b>
-          </button>
-          <button onclick="Game.setStageViewMode('map')">
-            <span>${V.icon ? V.icon("map","mlIcon") : ""}</span><b>MAP</b>
-          </button>
-        </div>
-
-        <div class="stageGateRailV854 right" aria-label="Quest side menu">
-          <button onclick="Game.setView('arena')">
-            <span>${V.icon ? V.icon("swords","mlIcon") : ""}</span><b>RANKING</b>
-          </button>
-          <button onclick="Game.setView('shop')">
-            <span>${V.icon ? V.icon("coin","mlIcon") : ""}</span><b>EXCHANGE</b>
-          </button>
-        </div>
-
-        <div class="stageGatePortalV854" aria-hidden="true">
-          <i class="ring one"></i>
-          <i class="ring two"></i>
-          <i class="core"></i>
-        </div>
-
-        <div class="stageGateInfoV854">
-          <div class="stageGateAreaV854">
-            <span>${st.icon} SELECTED QUEST</span>
-            <b>${U.esc(st.name)}</b>
-            <small>Recommended Lv. ${st.req} / Enemy Lv. ${st.min}-${st.max}</small>
+        <div class="stageLobbyContentV849">
+          <div class="stageLobbyKickerV849">
+            <span>QUEST GATE</span>
+            <strong class="${status.key}">${status.label}</strong>
           </div>
-
-          <div class="stageGateStatsV854">
+          <div class="stageLobbyTitleV849">
+            <span>AREA ${String(index + 1).padStart(2,"0")}</span>
+            <h1>${st.icon} ${U.esc(st.name)}</h1>
+            <p>${U.esc(st.desc)}</p>
+          </div>
+          <div class="stageLobbyStatsV849">
             <div><small>OPEN</small><b>${unlocked}/${D.STAGES.length}</b></div>
             <div><small>BOSS</small><b>${bossClears}</b></div>
+            <div><small>REQ</small><b>Lv ${st.req}</b></div>
             <div><small>BEST</small><b>Lv ${S.highestLv()}</b></div>
           </div>
-
-          <div class="stageGateBossV854">
+          <div class="stageLobbyBossV849">
             ${V.monsterInline(st.boss.id,"stageLobbyBossFaceV849")}
             <div>
-              <span>BOSS</span>
+              <span>AREA BOSS</span>
               <b>${U.esc(S.def(st.boss.id).name)} <small>Lv ${st.boss.level}</small></b>
               <i><em style="width:${progressPct}%"></em></i>
             </div>
             <strong>${Math.min(wins,st.boss.unlockWins)}/${st.boss.unlockWins}</strong>
           </div>
-
-          <div class="stageGateRewardV854">
-            <span>REWARD</span>
-            <div>${V.stageDropList(st) || `<small>探索報酬</small>`}</div>
-          </div>
-
-          <div class="stageGateActionsV854">
-            <button class="primary" ${normalDisabled} onclick="Game.startBattle('${st.id}')">
-              <small>NORMAL</small><b>START QUEST</b>
+          <div class="stageLobbyActionsV849">
+            <button class="primary" ${(!open || !enough) ? "disabled" : ""} onclick="Game.startBattle('${st.id}')">
+              <small>NORMAL</small><b>Start Quest</b>
             </button>
-            <button class="red" ${bossDisabled} onclick="Game.startBossBattle('${st.id}')">
-              <small>${ready ? "READY" : "CHARGE"}</small><b>CHALLENGE</b>
+            <button class="red" ${(!open || !enough || !ready) ? "disabled" : ""} onclick="Game.startBossBattle('${st.id}')">
+              <small>${ready ? "READY" : "CHARGE"}</small><b>Boss Battle</b>
             </button>
           </div>
         </div>
@@ -394,7 +357,7 @@
     }
     // ワールドマップは検証・既存機能のため常に出力し、ボード表示中はCSSで隠す。
     return `
-      <main class="worldAdventureV851 worldAdventureV849 stageGatePageV854 stageViewMode-${stageViewMode}">
+      <main class="worldAdventureV851 worldAdventureV849 stageViewMode-${stageViewMode}">
         ${stageLobbyHtml(current)}
         ${stageModeToggleHtml()}
         ${questBoardHtml(current)}
