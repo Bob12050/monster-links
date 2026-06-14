@@ -12221,3 +12221,155 @@ body.mlReducedMotionV817 .questRewardResultV838{animation:none}
 @media(prefers-reduced-motion:reduce){
   .settingsQuickNavV839 a{scroll-behavior:auto}
 }
+
+/* =========================================================
+   v8.6-A.40 Arena lobby and tournament card refinement
+   ========================================================= */
+.arenaHubV840{--arena-gold:240,198,92;--arena-red:255,92,112;--arena-cyan:94,220,255;gap:10px}
+.arenaHeroV840{
+  position:relative;overflow:hidden;min-height:190px;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.62fr);gap:14px;align-items:center;
+  border-color:rgba(var(--arena-gold),.42);
+  background:
+    linear-gradient(90deg,rgba(5,13,31,.94),rgba(13,21,43,.75)),
+    url("../assets/images/stages/arena.svg") center 38%/cover;
+  box-shadow:0 17px 38px rgba(0,0,0,.36),inset 0 1px rgba(255,238,177,.1);
+}
+.arenaHeroV840:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 82% 12%,rgba(var(--arena-gold),.18),transparent 31%),
+    linear-gradient(115deg,transparent 54%,rgba(255,255,255,.035) 54.5%,transparent 55%);
+}
+.arenaHeroV840 > *{position:relative;z-index:1}
+.arenaHeroCopyV840 > span{color:#ffe17e;font-size:8px;font-weight:1000;letter-spacing:.2em}
+.arenaHeroCopyV840 h1{margin:4px 0 5px;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:28px}
+.arenaHeroCopyV840 p{max-width:470px;margin:0;color:#b8c9da;font-size:10px}
+.arenaClearProgressV840{max-width:380px;margin-top:15px}
+.arenaClearProgressV840 > div{display:flex;justify-content:space-between;gap:10px;margin-bottom:5px}
+.arenaClearProgressV840 b,.arenaClearProgressV840 span{font-size:8px}
+.arenaClearProgressV840 span{color:#ffe078;font-weight:1000}
+.arenaClearProgressV840 > i{height:7px;display:block;overflow:hidden;border:1px solid rgba(var(--arena-gold),.2);border-radius:999px;background:rgba(0,0,0,.45)}
+.arenaClearProgressV840 > i b{height:100%;display:block;border-radius:inherit;background:linear-gradient(90deg,#9f6f18,#ffe17b);box-shadow:0 0 12px rgba(var(--arena-gold),.45)}
+.arenaNextCupV840{
+  display:grid;gap:8px;padding:12px;border:1px solid rgba(255,255,255,.16);border-radius:12px;
+  background:linear-gradient(155deg,rgba(16,34,62,.93),rgba(4,12,27,.96));box-shadow:0 12px 27px rgba(0,0,0,.32);
+}
+.arenaNextCupV840.ready{border-color:rgba(var(--arena-gold),.52);box-shadow:0 0 0 1px rgba(var(--arena-gold),.08),0 12px 27px rgba(0,0,0,.32)}
+.arenaNextCupV840 > span{color:#ffe078;font-size:7px;font-weight:1000;letter-spacing:.17em}
+.arenaNextCupV840 > div{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;align-items:center}
+.arenaNextCupV840 > div strong{width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(var(--arena-gold),.42);border-radius:10px;color:#2b1b00;background:linear-gradient(180deg,#fff0aa,#d59728);font-size:18px}
+.arenaNextCupV840 > div b{color:#fff;font-size:12px;line-height:1.25}
+.arenaNextCupV840 > small{color:#9fb3c8;font-size:8px;line-height:1.45}
+.arenaNextCupV840 button{width:100%;min-height:40px}
+.arenaSummaryV840{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.arenaSummaryV840 > div{
+  min-width:0;display:grid;gap:1px;padding:10px;
+  border:1px solid rgba(var(--arena-cyan),.15);border-radius:10px;background:linear-gradient(180deg,#102746,#07162e);
+}
+.arenaSummaryV840 span{overflow:hidden;color:#63dbff;font-size:6px;font-weight:1000;letter-spacing:.1em;text-overflow:ellipsis;white-space:nowrap}
+.arenaSummaryV840 b{color:#fff;font-size:18px}
+.arenaSummaryV840 b em{color:#7f98b1;font-size:9px;font-style:normal}
+.arenaSummaryV840 small{color:#8fa6bc;font-size:7px}
+.arenaNavV840{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.arenaNavV840 a{
+  min-height:58px;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;gap:1px 8px;padding:10px;
+  border:1px solid rgba(var(--arena-cyan),.16);border-radius:10px;color:inherit;
+  background:linear-gradient(145deg,#102744,#07152c);text-decoration:none;
+}
+.arenaNavV840 a span{grid-column:1;color:#61dcff;font-size:6px;font-weight:1000;letter-spacing:.13em}
+.arenaNavV840 a b{grid-column:1;color:#fff;font-size:11px}
+.arenaNavV840 a small{grid-column:2;grid-row:1/3;align-self:center;color:#90a8c0;font-size:8px}
+.arenaNavV840 a:active{transform:scale(.985);border-color:rgba(var(--arena-gold),.42)}
+.arenaSectionV840{scroll-margin-top:10px}
+.arenaSectionHeadV840{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
+.arenaSectionHeadV840 > div > span{color:#63dcff;font-size:7px;font-weight:1000;letter-spacing:.15em}
+.arenaSectionHeadV840 h2{margin:2px 0}
+.arenaSectionHeadV840 p{margin:0;color:#8fa6bc;font-size:8px}
+.arenaSectionHeadV840 > b{min-width:50px;padding:7px;border:1px solid rgba(var(--arena-gold),.28);border-radius:9px;color:#ffe078;background:rgba(0,0,0,.2);font-size:13px;text-align:center}
+.arenaGridV840{gap:8px}
+.arenaCardV840{
+  position:relative;overflow:hidden;padding:11px;
+  border:1px solid rgba(var(--arena-cyan),.16);border-radius:12px;
+  background:linear-gradient(180deg,rgba(17,38,67,.98),rgba(5,16,34,.99));
+  box-shadow:0 9px 22px rgba(0,0,0,.23);
+}
+.arenaCardV840:before{display:none}
+.arenaCardV840.ready{border-color:rgba(var(--arena-gold),.46);box-shadow:0 0 0 1px rgba(var(--arena-gold),.08),0 10px 25px rgba(0,0,0,.28)}
+.arenaCardV840.cleared{outline:0;border-color:rgba(116,240,160,.4)}
+.arenaCardV840.locked{filter:saturate(.7);opacity:.67}
+.arenaCardV840.levelLocked,.arenaCardV840.ruleLocked{border-color:rgba(var(--arena-red),.22)}
+.arenaCardHeadV840{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:9px;align-items:center}
+.arenaCardHeadV840 .arenaRankBadge{
+  position:static;width:46px;height:46px;border-radius:11px;box-shadow:0 6px 14px rgba(0,0,0,.25);font-size:18px;
+}
+.arenaCardHeadV840 > div:nth-child(2){min-width:0}
+.arenaCardHeadV840 > div > span{display:block;color:#6cdaff;font-size:6px;font-weight:1000;letter-spacing:.12em}
+.arenaCardHeadV840 h3{overflow:hidden;margin:2px 0 1px;color:#fff;font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+.arenaCardHeadV840 p{margin:0;color:#91a8bf;font-size:7px}
+.arenaCardHeadV840 > strong{padding:5px 7px;border:1px solid rgba(255,255,255,.13);border-radius:999px;color:#9db1c6;background:rgba(0,0,0,.22);font-size:6px;white-space:nowrap}
+.arenaCardV840.ready .arenaCardHeadV840 > strong{border-color:rgba(var(--arena-gold),.4);color:#ffe078}
+.arenaCardV840.cleared .arenaCardHeadV840 > strong{border-color:rgba(116,240,160,.35);color:#8df4b2}
+.arenaLimitV840{display:block;margin:9px 0 0;border-radius:8px;font-size:8px}
+.arenaDescV840{min-height:31px;margin:8px 0;color:#a8bbcd;font-size:8px;line-height:1.55}
+.arenaRoundsV840{gap:4px;margin:8px 0}
+.arenaRoundsV840 > div{
+  position:relative;grid-template-columns:46px 38px minmax(0,1fr) auto;gap:7px;min-height:48px;padding:5px 7px;
+  border-color:rgba(var(--arena-cyan),.1);border-radius:9px;background:rgba(2,13,29,.55);
+}
+.arenaRoundsV840 > div.final{border-color:rgba(var(--arena-gold),.25);background:rgba(55,40,12,.32)}
+.arenaRoundsV840 > div > b{width:auto;height:auto;display:block;border-radius:0;color:#67dcff;background:none;font-size:6px;white-space:nowrap}
+.arenaRoundsV840 > div.final > b{color:#ffe078}
+.arenaEnemyFaceV840{width:36px;height:36px;display:grid;place-items:center}
+.arenaEnemyFaceV840 img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.4))}
+.arenaRoundsV840 > div > span{min-width:0;display:grid;gap:1px}
+.arenaRoundsV840 > div > span strong{overflow:hidden;color:#f3f7fb;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.arenaRoundsV840 > div > span small{overflow:hidden;color:#859db5;font-size:6px;text-overflow:ellipsis;white-space:nowrap}
+.arenaRoundsV840 > div > em{color:#cbd9e7;font-size:8px;font-style:normal;font-weight:900}
+.arenaRewardV840{padding:8px;border:1px solid rgba(var(--arena-gold),.16);border-radius:9px;background:rgba(0,0,0,.18)}
+.arenaRewardHeadV840{display:flex;justify-content:space-between;gap:8px;margin-bottom:6px}
+.arenaRewardHeadV840 span{color:#ffe078;font-size:6px;font-weight:1000;letter-spacing:.1em}
+.arenaRewardHeadV840 small{color:#8299b1;font-size:6px}
+.arenaRewardV840 > div:last-child{display:flex;flex-wrap:wrap;gap:4px}
+.arenaRewardV840 > div:last-child > span{min-height:27px;display:flex;align-items:center;gap:4px;padding:4px 6px;border:1px solid rgba(255,255,255,.09);border-radius:7px;background:rgba(255,255,255,.035)}
+.arenaRewardV840 i{color:#68ddff;font-size:6px;font-style:normal;font-weight:1000}
+.arenaRewardV840 b{color:#eaf2fb;font-size:8px}
+.arenaRewardV840 .item{flex:1 1 140px}
+.arenaRewardIconV840{width:20px;height:20px;flex:0 0 auto}
+.arenaRewardIconV840 img{width:100%;height:100%;object-fit:contain}
+.arenaEntryV840{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;margin-top:8px}
+.arenaEntryStateV840{min-width:0;display:grid;gap:1px}
+.arenaEntryStateV840 span{color:#62dbff;font-size:6px;font-weight:1000;letter-spacing:.1em}
+.arenaEntryStateV840 b{overflow:hidden;color:#a6b8ca;font-size:7px;text-overflow:ellipsis;white-space:nowrap}
+.arenaCardV840.ready .arenaEntryStateV840 span{color:#ffe078}
+.arenaEntryV840 button{min-width:118px;min-height:39px;padding:6px 9px;font-size:8px}
+.arenaSpecialSectionV840{background:linear-gradient(180deg,rgba(31,37,73,.98),rgba(9,17,38,.98))}
+.arenaSpecialSectionV840 .arenaCardHeadV840 .arenaRankBadge{background:linear-gradient(180deg,#ffd778,#a76320)}
+
+@media(max-width:700px){
+  .arenaHeroV840{grid-template-columns:1fr;min-height:0}
+  .arenaNextCupV840{grid-template-columns:minmax(0,1fr) auto;align-items:center}
+  .arenaNextCupV840 > span,.arenaNextCupV840 > small{grid-column:1}
+  .arenaNextCupV840 > div{grid-column:1}
+  .arenaNextCupV840 > button{grid-column:2;grid-row:1/4;width:auto}
+}
+@media(max-width:430px){
+  .arenaHeroV840{padding:13px;background-position:center top}
+  .arenaHeroCopyV840 h1{font-size:23px}
+  .arenaNextCupV840{grid-template-columns:1fr}
+  .arenaNextCupV840 > button{grid-column:1;grid-row:auto;width:100%}
+  .arenaSummaryV840{grid-template-columns:1fr 1fr}
+  .arenaNavV840 a{grid-template-columns:1fr}
+  .arenaNavV840 a small{grid-column:1;grid-row:auto}
+  .arenaSectionHeadV840 p{display:none}
+  .arenaCardHeadV840{grid-template-columns:42px minmax(0,1fr)}
+  .arenaCardHeadV840 .arenaRankBadge{width:42px;height:42px}
+  .arenaCardHeadV840 > strong{grid-column:1/3;justify-self:start}
+  .arenaRoundsV840 > div{grid-template-columns:42px 34px minmax(0,1fr) auto}
+  .arenaEnemyFaceV840{width:32px;height:32px}
+  .arenaEntryV840{grid-template-columns:1fr}
+  .arenaEntryV840 button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .arenaNavV840 a{scroll-behavior:auto}
+}
