@@ -5,9 +5,48 @@
   const U = window.MonsterLinksUtils;
   const S = window.MonsterLinksState;
   const G = window.MonsterLinksGame;
+  const V = window.MonsterLinksViews = window.MonsterLinksViews || {};
 
   function render(){G.render();}
   function toast(msg){G.toast(msg);}
+
+  function rewardSummary(rewards){
+    return rewards.reduce((total,q)=>{
+      const r = q.reward || {};
+      total.gold += Number(r.gold || 0);
+      total.exp += Number(r.exp || 0);
+      if(r.item) total.items[r.item] = (total.items[r.item] || 0) + Number(r.count || 1);
+      if(r.scoutCharm) total.scoutCharm = true;
+      return total;
+    },{gold:0,exp:0,items:{},scoutCharm:false});
+  }
+
+  function openQuestRewardResult(quests){
+    const list = Array.isArray(quests) ? quests.filter(Boolean) : [];
+    if(!list.length) return;
+    const total = rewardSummary(list);
+    let modal = document.getElementById("modal");
+    if(!modal){
+      modal = document.createElement("div");
+      modal.id = "modal";
+      document.body.appendChild(modal);
+    }
+    const chips = [
+      total.gold ? `<div class="questRewardResultItemV838 gold"><span>GOLD</span><b>${total.gold.toLocaleString()} G</b></div>` : "",
+      total.exp ? `<div class="questRewardResultItemV838 exp"><span>PARTY EXP</span><b>全員 +${total.exp}</b></div>` : "",
+      ...Object.entries(total.items).map(([id,count])=>`<div class="questRewardResultItemV838 item">${V.itemVisual ? V.itemVisual(id,"questRewardResultIconV838") : ""}<span>ITEM</span><b>${U.esc(D.ITEMS[id]?.name || id)} ×${count}</b></div>`),
+      total.scoutCharm ? `<div class="questRewardResultItemV838 scout"><span>SCOUT</span><b>次の戦闘で効果発動</b></div>` : ""
+    ].filter(Boolean).join("");
+    modal.innerHTML = `<div class="modalBg questRewardBackdropV838" onclick="Game.closeModal(event)">
+      <section class="modal questRewardResultV838" onclick="event.stopPropagation()" role="dialog" aria-modal="true">
+        <div class="questRewardGlowV838" aria-hidden="true"></div>
+        <header><span>MISSION COMPLETE</span><h2>任務報酬を獲得</h2><p>${list.length}件の依頼報酬を受け取りました。</p></header>
+        <div class="questRewardResultGridV838">${chips}</div>
+        <div class="questRewardCompletedV838">${list.map(q=>`<span>${U.esc(q.title)}</span>`).join("")}</div>
+        <button class="gold" onclick="Game.closeModal()">報酬を確認しました</button>
+      </section>
+    </div>`;
+  }
 
   function claimQuest(id){
     const q = D.QUESTS.find(x=>x.id===id);
@@ -15,11 +54,13 @@
     if(!res){toast("まだ受け取れません");return;}
     S.save();
     render();
-    toast(`${q.title} 達成報酬を受け取りました`);
+    G.playSe?.("win");
+    openQuestRewardResult([q]);
   }
 
   function claimAllQuests(){
     const rewards = [];
+    const quests = [];
     const handled = new Set();
     while(true){
       const claimable = D.QUESTS.filter(q=>!handled.has(q.id) && S.questClaimable(q));
@@ -27,14 +68,14 @@
       claimable.forEach(q=>{
         handled.add(q.id);
         const reward = S.grantQuestReward(q);
-        if(reward) rewards.push(reward);
+        if(reward){rewards.push(reward);quests.push(q);}
       });
     }
     if(!rewards.length){toast("受け取れる任務報酬はありません");return;}
     S.save();
     render();
     G.playSe?.("win");
-    toast(`${rewards.length}件の任務報酬をまとめて受け取りました`);
+    openQuestRewardResult(quests);
   }
 
   function openQuestTarget(id){
@@ -116,6 +157,7 @@
   Object.assign(G, {
     claimQuest,
     claimAllQuests,
+    openQuestRewardResult,
     openQuestTarget,
     openPlayerRankRewards,
     claimPlayerRankReward,

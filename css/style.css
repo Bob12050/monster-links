@@ -11937,3 +11937,151 @@ body.mlReducedMotionV817 .homeLandmarkV834.claimable{animation:none}
 @media(prefers-reduced-motion:reduce){
   .dexCardV837{transition:none}
 }
+
+/* =========================================================
+   v8.6-A.38 Quest reward presentation refinement
+   ========================================================= */
+.questHubV838{--quest-gold:240,198,92;--quest-cyan:94,220,255;--quest-green:116,240,160;gap:10px}
+.questBoardHeroV838{
+  position:relative;overflow:hidden;
+  border-color:rgba(var(--quest-gold),.4);
+  background:
+    radial-gradient(circle at 8% 10%,rgba(var(--quest-gold),.16),transparent 31%),
+    radial-gradient(circle at 84% 0,rgba(var(--quest-cyan),.1),transparent 34%),
+    linear-gradient(145deg,rgba(72,53,41,.96),rgba(17,27,48,.98));
+  box-shadow:0 15px 34px rgba(0,0,0,.34),inset 0 1px rgba(255,237,174,.08);
+}
+.questBoardHeroV838:after{
+  content:"";position:absolute;right:-45px;bottom:-80px;width:150px;height:150px;
+  border:1px solid rgba(var(--quest-gold),.16);border-radius:50%;
+  box-shadow:0 0 0 20px rgba(var(--quest-gold),.035);pointer-events:none;
+}
+.questBoardHeroV838 > *{position:relative;z-index:1}
+.questBoardHeroV838 .questClaimAllV842:not(:disabled){
+  color:#271a00;background:linear-gradient(180deg,#ffe795,#dca633);
+  box-shadow:0 4px 0 #865b13,0 0 18px rgba(var(--quest-gold),.14);
+}
+.questOverviewV838 > div{box-shadow:0 7px 16px rgba(0,0,0,.2)}
+.questOverviewV838 > div.ready{
+  border-color:rgba(var(--quest-gold),.58);
+  background:linear-gradient(180deg,rgba(102,75,25,.95),rgba(34,24,8,.98));
+  box-shadow:0 0 18px rgba(var(--quest-gold),.09);
+}
+.questOverviewV838 > div.ready b{color:#ffe279}
+.questReadyV838{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 92% 0,rgba(var(--quest-gold),.14),transparent 32%),
+    linear-gradient(180deg,rgba(66,49,20,.96),rgba(24,20,12,.98));
+}
+.questReadyV838:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(110deg,transparent 30%,rgba(255,238,172,.05) 48%,transparent 66%);
+}
+.questReadyV838 > *{position:relative}
+.questReadyHeadV838{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.questReadyHeadV838 > strong{
+  padding:6px 9px;border:1px solid rgba(var(--quest-gold),.35);border-radius:999px;
+  color:#ffe49a;background:rgba(0,0,0,.2);font-size:8px;letter-spacing:.08em;
+}
+.questSectionV838{box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.questSectionProgressV838{min-width:150px;display:grid;grid-template-columns:minmax(80px,1fr) auto;gap:9px;align-items:center}
+.questSectionProgressV838 > i{
+  height:7px;overflow:hidden;border-radius:999px;background:rgba(0,0,0,.3);
+}
+.questSectionProgressV838 > i b{
+  display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#3e8fc3,#72dcff);
+}
+.questSectionV838.tutorial .questSectionProgressV838 > i b{background:linear-gradient(90deg,#40aa70,#8ce9ad)}
+.questSectionV838.fusion .questSectionProgressV838 > i b{background:linear-gradient(90deg,#8054c2,#cda0ff)}
+.questCardV838{
+  overflow:hidden;border-color:rgba(var(--quest-cyan),.18);
+  box-shadow:0 7px 17px rgba(0,0,0,.2);
+}
+.questCardV838.claimable{
+  border-color:rgba(var(--quest-gold),.72);
+  box-shadow:0 0 0 1px rgba(var(--quest-gold),.11),0 9px 22px rgba(0,0,0,.26);
+  animation:questReadyPulseV838 2.6s ease-in-out infinite;
+}
+.questCardV838.claimed{opacity:.54}
+.questProgressLineV838{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;margin-top:10px}
+.questProgressLineV838 .questProgressV842{margin:0}
+.questProgressLineV838 > span{color:#9fb2c8;font-size:7px;font-weight:900}
+.questRewardAreaV838{min-width:0}
+.questRewardChipsV838{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.questRewardChipsV838 > span{
+  min-height:25px;display:inline-flex;align-items:center;gap:4px;padding:3px 6px;
+  border:1px solid rgba(255,255,255,.1);border-radius:8px;
+  color:#dce8f4;background:rgba(3,13,29,.55);font-size:7px;
+}
+.questRewardChipsV838 > span i{
+  min-width:20px;color:#7cdfff;font-size:6px;font-style:normal;font-weight:1000;text-align:center;
+}
+.questRewardChipsV838 > span b{font-size:7px;white-space:nowrap}
+.questRewardChipsV838 > span.gold{border-color:rgba(var(--quest-gold),.25);color:#ffe49a}
+.questRewardChipsV838 > span.gold i{color:#ffe078}
+.questRewardChipsV838 > span.exp{border-color:rgba(var(--quest-cyan),.22)}
+.questRewardChipsV838 > span.item{border-color:rgba(var(--quest-green),.22)}
+.questRewardIconV838{width:20px;height:20px;flex:0 0 auto}
+.questRewardIconV838 img{width:100%;height:100%;object-fit:contain}
+.questCardV838 .questCardActionsV842 .gold:not(:disabled){
+  color:#261900;background:linear-gradient(180deg,#ffe58e,#dca533);
+  box-shadow:0 3px 0 #805612;font-weight:1000;
+}
+
+.questRewardBackdropV838{background:rgba(1,6,17,.86);backdrop-filter:blur(9px)}
+.questRewardResultV838{
+  position:relative;overflow:hidden;width:min(540px,calc(100vw - 20px));max-height:calc(100dvh - 24px);
+  padding:22px;border-color:rgba(var(--quest-gold),.52);
+  background:
+    radial-gradient(circle at 50% 0,rgba(var(--quest-gold),.18),transparent 39%),
+    radial-gradient(circle at 20% 76%,rgba(var(--quest-cyan),.09),transparent 32%),
+    linear-gradient(180deg,#172c4a,#07162f 65%,#040e20);
+  box-shadow:0 26px 70px rgba(0,0,0,.66),inset 0 1px rgba(255,240,184,.1);
+  text-align:center;
+  animation:questRewardInV838 .28s ease-out both;
+}
+.questRewardGlowV838{
+  position:absolute;left:50%;top:-115px;width:270px;height:270px;transform:translateX(-50%);
+  border:1px solid rgba(var(--quest-gold),.24);border-radius:50%;
+  box-shadow:0 0 0 26px rgba(var(--quest-gold),.035),0 0 0 54px rgba(var(--quest-cyan),.025);
+  pointer-events:none;
+}
+.questRewardResultV838 > *:not(.questRewardGlowV838){position:relative}
+.questRewardResultV838 header > span{color:#ffe078;font-size:9px;font-weight:1000;letter-spacing:.2em}
+.questRewardResultV838 h2{margin:5px 0 3px;color:#fff1b3;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:26px}
+.questRewardResultV838 header p{margin:0;color:#9fb3c9;font-size:9px}
+.questRewardResultGridV838{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:17px 0 10px;
+}
+.questRewardResultItemV838{
+  min-width:0;min-height:68px;display:grid;align-content:center;gap:3px;padding:9px;
+  border:1px solid rgba(var(--quest-cyan),.2);border-radius:11px;
+  background:rgba(4,15,34,.66);
+}
+.questRewardResultItemV838 > span{color:#75dfff;font-size:7px;font-weight:1000;letter-spacing:.1em}
+.questRewardResultItemV838 > b{color:#edf6ff;font-size:12px}
+.questRewardResultItemV838.gold{border-color:rgba(var(--quest-gold),.32)}
+.questRewardResultItemV838.gold > span,.questRewardResultItemV838.gold > b{color:#ffe28b}
+.questRewardResultItemV838.item{grid-template-columns:42px minmax(0,1fr);text-align:left}
+.questRewardResultItemV838.item > :not(.questRewardResultIconV838){grid-column:2}
+.questRewardResultIconV838{grid-row:1/3;width:42px;height:42px}
+.questRewardCompletedV838{max-height:90px;display:flex;flex-wrap:wrap;gap:4px;overflow-y:auto;margin:0 0 12px;padding:8px;border-radius:9px;background:rgba(0,0,0,.16)}
+.questRewardCompletedV838 span{padding:3px 6px;border-radius:999px;color:#aac0d5;background:rgba(255,255,255,.06);font-size:7px}
+.questRewardResultV838 > button{width:100%;min-height:46px}
+@keyframes questReadyPulseV838{0%,100%{filter:brightness(1)}50%{filter:brightness(1.1)}}
+@keyframes questRewardInV838{from{opacity:0;transform:translateY(12px) scale(.975)}to{opacity:1;transform:none}}
+
+@media(max-width:520px){
+  .questSectionProgressV838{min-width:105px}
+  .questSectionProgressV838 > i{display:none}
+  .questRewardResultV838{padding:18px 13px}
+  .questRewardResultV838 h2{font-size:22px}
+  .questRewardResultGridV838{grid-template-columns:1fr}
+  .questRewardResultItemV838{min-height:56px}
+}
+@media(prefers-reduced-motion:reduce){
+  .questCardV838.claimable,.questRewardResultV838{animation:none}
+}
+body.mlReducedMotionV817 .questCardV838.claimable,
+body.mlReducedMotionV817 .questRewardResultV838{animation:none}

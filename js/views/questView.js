@@ -15,10 +15,11 @@
   function questSection(title,sub,list,kind){
     const counts = groupSummary(list);
     const sorted = [...list].sort((a,b)=>Number(S.questClaimable(b))-Number(S.questClaimable(a)) || Number(S.questClaimed(a))-Number(S.questClaimed(b)));
-    return `<details class="questSectionV825 ${kind}" ${counts.claimable || kind === "tutorial" || kind === "main" ? "open" : ""}>
+    const pct = counts.total ? Math.floor(counts.claimed / counts.total * 100) : 0;
+    return `<details class="questSectionV825 questSectionV838 ${kind}" ${counts.claimable || kind === "tutorial" || kind === "main" ? "open" : ""}>
       <summary class="questBoardSectionHeadV842">
         <div><span>${kind === "tutorial" ? "STARTER GUIDE" : kind === "main" ? "STORY QUEST" : kind === "fusion" ? "FUSION RESEARCH" : "SUB MISSION"}</span><h2>${title}</h2><p>${sub}</p></div>
-        <div class="questBoardCountV842"><b>${counts.claimed}</b><small>/${counts.total}達成</small>${counts.claimable ? `<em>${counts.claimable}件受取</em>` : ""}</div>
+        <div class="questSectionProgressV838"><i><b style="width:${pct}%"></b></i><div class="questBoardCountV842"><b>${counts.claimed}</b><small>/${counts.total}達成</small>${counts.claimable ? `<em>${counts.claimable}件受取</em>` : ""}</div></div>
       </summary>
       <div class="questListV842">${sorted.map(V.questCard).join("")}</div>
     </details>`;
@@ -34,8 +35,8 @@
     const activeCount = D.QUESTS.filter(q=>!S.questClaimed(q.id) && !S.questClaimable(q)).length;
     const pct = counts.total ? Math.floor(counts.claimed / counts.total * 100) : 0;
     return `
-    <main class="questBoardV842 questHubV825">
-      <section class="questBoardHeroV842">
+    <main class="questBoardV842 questHubV825 questHubV838">
+      <section class="questBoardHeroV842 questBoardHeroV838">
         <div>
           <span>LINKS GUILD BOARD</span>
           <h1>任務掲示板</h1>
@@ -52,14 +53,14 @@
         </button>
       </section>
 
-      <section class="questOverviewV825">
-        <div><span>受取可能</span><b>${counts.claimable}</b><small>達成済みの依頼</small></div>
+      <section class="questOverviewV825 questOverviewV838">
+        <div class="${counts.claimable ? "ready" : ""}"><span>受取可能</span><b>${counts.claimable}</b><small>達成済みの依頼</small></div>
         <div><span>進行中</span><b>${activeCount}</b><small>未達成の依頼</small></div>
         <div><span>達成率</span><b>${pct}%</b><small>${counts.claimed}/${counts.total}件</small></div>
       </section>
 
-      ${claimableQuests.length ? `<section class="questReadyV825">
-        <div class="questReadyHeadV825"><span>REWARD READY</span><h2>報酬を受け取れます</h2></div>
+      ${claimableQuests.length ? `<section class="questReadyV825 questReadyV838">
+        <div class="questReadyHeadV825 questReadyHeadV838"><div><span>REWARD READY</span><h2>報酬を受け取れます</h2></div><strong>${claimableQuests.length} CLAIMS</strong></div>
         <div class="questListV842">${claimableQuests.map(V.questCard).join("")}</div>
       </section>` : ""}
 
@@ -75,7 +76,7 @@
     const claimed = S.questClaimed(q.id);
     const claimable = S.questClaimable(q);
     const actionLabel = q.action || (q.stage ? "冒険へ" : q.arena ? "闘技場へ" : "進める");
-    return `<article class="questCardV842 questCardV825 ${claimed ? "claimed" : claimable ? "claimable" : ""}">
+    return `<article class="questCardV842 questCardV825 questCardV838 ${claimed ? "claimed" : claimable ? "claimable" : ""}">
       <div class="questPinV842"></div>
       <div class="questCardTopV842">
         <div>
@@ -85,9 +86,9 @@
         </div>
         <strong>${claimed ? "受取済" : claimable ? "達成" : `${Math.min(p.current,p.target)}/${p.target}`}</strong>
       </div>
-      <div class="questProgressV842"><i style="width:${p.pct}%"></i></div>
+      <div class="questProgressLineV838"><div class="questProgressV842"><i style="width:${p.pct}%"></i></div><span>${Math.min(p.current,p.target)} / ${p.target}</span></div>
       <div class="questCardBottomV842">
-        <div><span>REWARD</span><b>${V.questRewardText(q.reward)}</b></div>
+        <div class="questRewardAreaV838"><span>REWARD</span><div class="questRewardChipsV838">${V.questRewardChips(q.reward)}</div></div>
         <div class="questCardActionsV842">
           ${!claimed ? `<button onclick="Game.openQuestTarget('${q.id}')">${U.esc(actionLabel)}</button>` : ""}
           <button class="gold" ${claimable ? "" : "disabled"} onclick="Game.claimQuest('${q.id}')">報酬受取</button>
@@ -105,10 +106,22 @@
     return parts.join(" / ") || "なし";
   }
 
+  function questRewardChips(r={}){
+    const parts = [];
+    if(r.gold) parts.push(`<span class="gold"><i>G</i><b>${r.gold.toLocaleString()}</b></span>`);
+    if(r.exp) parts.push(`<span class="exp"><i>EXP</i><b>全員 +${r.exp}</b></span>`);
+    if(r.item && D.ITEMS[r.item]){
+      parts.push(`<span class="item">${V.itemVisual ? V.itemVisual(r.item,"questRewardIconV838") : ""}<b>${U.esc(D.ITEMS[r.item].name)} ×${r.count || 1}</b></span>`);
+    }
+    if(r.scoutCharm) parts.push(`<span class="scout"><i>SCOUT</i><b>次戦闘</b></span>`);
+    return parts.join("") || `<span><b>報酬なし</b></span>`;
+  }
+
   Object.assign(V, {
     questHtml,
     questCard,
-    questRewardText
+    questRewardText,
+    questRewardChips
   });
 
 })();
