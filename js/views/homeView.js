@@ -27,10 +27,13 @@
     const rankRewards = S.playerRankRewardInfo ? S.playerRankRewardInfo() : {claimable:0};
     const ico = name => V.icon ? V.icon(name,"mlIcon") : "";
     const campMembers = state.party.slice(1,3);
+    const partySlots = S.partySizeText ? S.partySizeText() : `${state.party.length}体`;
+    const bagCount = Object.values(state.bag || {}).reduce((a,n)=>a + Number(n || 0),0);
+    const scoutCharm = state.scoutCharm || 0;
 
     return `
-    <main class="homeV82 homeV817 homeV821 homeV834">
-      <section class="homeHeroV821 homeHeroV834" style="--home-bg:url('${U.esc(backgroundAssetUrl(baseCampBackground))}')">
+    <main class="homeV82 homeV817 homeV821 homeV834 homeV848">
+      <section class="homeHeroV821 homeHeroV834 homeHeroV848" style="--home-bg:url('${U.esc(backgroundAssetUrl(baseCampBackground))}')">
         <div class="homeHeroShadeV821"></div>
         <div class="homeHeroLightV821"></div>
         <div class="homeCampAtmosphereV834" aria-hidden="true">
@@ -42,6 +45,24 @@
         <div class="homeHeroHeadingV821">
           <span>MONSTER LINKS BASE CAMP</span>
           <b>リンクスの拠点</b>
+        </div>
+
+        <div class="homeLobbyStatusV848" aria-label="拠点ステータス">
+          <button onclick="Game.openPlayerRankRewards()" class="${rankRewards.claimable ? "claimable" : ""}"><small>RANK</small><b>${state.playerRank || 1}</b></button>
+          <button onclick="Game.setView('shop')"><small>GOLD</small><b>${state.gold.toLocaleString()}G</b></button>
+          <button onclick="Game.setView('monsters')"><small>PARTY</small><b>${partySlots}</b></button>
+        </div>
+
+        <div class="homeCampaignDeckV848" aria-label="おすすめ導線">
+          <button class="primary" onclick="Game.setView('stage')">
+            <span>QUEST BOOST</span><b>${U.esc(lastStage?.name || "冒険地")}へ出発</b><small>EXP / GOLD / SCOUT</small>
+          </button>
+          <button class="gold ${quest.claimable ? "claimable" : ""}" onclick="Game.setView('quest')">
+            <span>MISSION BOARD</span><b>${quest.claimable ? `${quest.claimable}件の報酬` : "任務を確認"}</b><small>DAILY ROUTE</small>
+          </button>
+          <button class="violet" onclick="Game.setView('fusion')">
+            <span>LINK LAB</span><b>配合研究</b><small>${recipeDone}/${recipeTotal} RECIPES</small>
+          </button>
         </div>
 
         <div class="homeLandmarksV834">
@@ -57,6 +78,7 @@
         </div>
 
         <div class="homeLeaderStageV821 homeLeaderStageV834">
+          <div class="homeLeaderHaloV848" aria-hidden="true"></div>
           <div class="homeCampGroundV834" aria-hidden="true"></div>
           <div class="homeCampMembersV834">
             ${campMembers.map((monster,index)=>`
@@ -70,6 +92,11 @@
             <small>LEADER</small>
             <b>${lead ? U.esc(lead.nickname || leadDef.name) : "仲間がいません"}</b>
             ${lead ? `<span>Lv ${lead.level} / ${U.esc(D.TYPES[leadDef.type])}</span>` : ""}
+          </div>
+          <div class="homeLeaderStatsV848">
+            <span><small>最高Lv</small><b>${S.highestLv()}</b></span>
+            <span><small>図鑑</small><b>${dex.discovered}/${dex.total}</b></span>
+            <span><small>笛</small><b>${scoutCharm}</b></span>
           </div>
         </div>
 
@@ -87,6 +114,18 @@
             <span>${ico("scroll")}</span><b>任務</b><small>${fusionQuestClaimable ? `${fusionQuestClaimable}件 研究報酬` : quest.claimable ? `${quest.claimable}件受取` : "確認"}</small>
           </button>
         </div>
+      </section>
+
+      <section class="homeDailyPanelV848">
+        <button class="${quest.claimable ? "claimable" : ""}" onclick="Game.setView('quest')">
+          <span>${ico("scroll")}</span><small>REWARD</small><b>${quest.claimable ? `${quest.claimable}件受取可能` : "任務ボード"}</b>
+        </button>
+        <button onclick="Game.setView('monsters')">
+          <span>${ico("camp")}</span><small>TRAINING</small><b>${state.party.length + state.box.length}体育成中</b>
+        </button>
+        <button onclick="Game.setView('shop')">
+          <span>${ico("bag")}</span><small>ITEMS</small><b>${bagCount}個所持</b>
+        </button>
       </section>
 
       <button class="homeMissionRibbonV821 homeMissionRibbonV834" onclick="Game.setView('${goal.view}')">
