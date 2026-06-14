@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "8.6-A.31";
+const VERSION = "8.6-A.32";
 const CACHE_PREFIX = "monster-links-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const VERSION_QUERY = `v=${VERSION}`;
@@ -21,6 +21,12 @@ const CORE_FILES = [
   "./assets/images/stages/tower_v831.jpg",
   "./assets/images/stages/snowfield_v831.jpg",
   "./assets/images/stages/thunder_ruins_v831.jpg",
+  "./assets/images/stages/prism_sanctuary_v832.jpg",
+  "./assets/images/stages/poison_bog_v832.jpg",
+  "./assets/images/stages/machine_city_v832.jpg",
+  "./assets/images/stages/deep_sea_temple_v832.jpg",
+  "./assets/images/stages/demon_gate_v832.jpg",
+  "./assets/images/stages/sky_ruins_v832.jpg",
   "./js/core/config.js",
   "./js/core/balance.js",
   "./js/core/skills.js",
