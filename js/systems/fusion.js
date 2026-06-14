@@ -18,6 +18,21 @@
     },80);
   }
 
+  function scrollFusionParentSoon(){
+    setTimeout(()=>{
+      const panel = document.getElementById("fusionParentPicker");
+      if(!panel) return;
+      panel.open = true;
+      if(typeof panel.scrollIntoView === "function"){
+        panel.scrollIntoView({behavior:"auto",block:"start"});
+      }
+    },80);
+  }
+
+  function openFusionParentPicker(){
+    scrollFusionParentSoon();
+  }
+
   let fusionPick = [];
   let fusionSkillPick = [];
   let fusionForcedRecipeKey = "";
@@ -389,6 +404,7 @@
     }
     render();
     if(fusionPick.length === 2) scrollFusionPreviewSoon();
+    else scrollFusionParentSoon();
   }
 
   function setFusionPair(uidA,uidB){
@@ -418,6 +434,7 @@
     fusionSkillPick = [];
     fusionForcedRecipeKey = "";
     render();
+    if(fusionPick.length === 1) scrollFusionParentSoon();
   }
 
   function toggleFusionSkill(id){
@@ -868,6 +885,7 @@
 
   Object.assign(G, {
     pickFusion,
+    openFusionParentPicker,
     setFusionPair,
     clearFusion,
     removeFusionParent,

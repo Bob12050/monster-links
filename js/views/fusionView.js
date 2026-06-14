@@ -30,20 +30,10 @@
         <span class="${ready && prev?.available && !prev.locked ? "active" : ""}"><b>3</b>配合実行</span>
       </div>
 
-      <details class="fusionParentListV824 fusionParentListV835" ${ready ? "" : "open"}>
-        <summary>
-          <span><b>STEP 1　親モンスターを選ぶ</b><small>${ready ? "2体選択済み。変更する場合に開いてください" : `あと${2 - pick.length}体選んでください`}</small></span>
-          <em>${all.length}体</em>
-        </summary>
-        <section class="grid two fusionMonsterGridV824">
-          ${all.map(m=>V.monsterCard(m,{mode:"fusion",pick:pick.includes(m.uid)})).join("") || `<div class="empty">仲間がいません</div>`}
-        </section>
-      </details>
-
-      <section id="fusionMainCard" class="card fusionMainCard fusionWorkbenchV835">
+      <section id="fusionMainCard" class="card fusionMainCard fusionWorkbenchV835 fusionWorkbenchV844">
         <div id="fusionPreviewAnchor"></div>
         <div class="fusionWorkbenchHeadV835">
-          <div><span>STEP 2 / 3</span><h2>配合結果プレビュー</h2><p>${ready ? "結果と引き継ぎ内容を確認してください" : "親2体を選ぶと結果が表示されます"}</p></div>
+          <div><span>FUSION WORKBENCH</span><h2>${ready ? "配合結果を確認" : "親モンスターを選択"}</h2><p>${ready ? "結果と引き継ぎ内容を確認してください" : `あと${2 - pick.length}体選ぶと結果が表示されます`}</p></div>
           <strong class="${ready ? "ready" : ""}">${pick.length}/2 SELECTED</strong>
         </div>
         ${selectedParentsPanel(pick,prev)}
@@ -54,17 +44,32 @@
         </div>
       </section>
 
-      <details class="fusionOptionalV824">
+      <details id="fusionParentPicker" class="fusionParentListV824 fusionParentListV835 fusionParentPickerV844" ${pick.length === 1 ? "open" : ""}>
+        <summary>
+          <span><b>親モンスター選択</b><small>${ready ? "2体選択済み。入れ替える場合に開いてください" : `あと${2 - pick.length}体選んでください`}</small></span>
+          <em>${all.length}体から選ぶ</em>
+        </summary>
+        <section class="grid two fusionMonsterGridV824 fusionParentScrollV844">
+          ${all.map(m=>fusionParentCardHtml(m,pick.includes(m.uid))).join("") || `<div class="empty">仲間がいません</div>`}
+        </section>
+      </details>
+
+      <div class="fusionResearchHeadV844">
+        <div><span>FUSION ARCHIVE</span><h2>配合研究メニュー</h2></div>
+        <small>候補・目標・全レシピ</small>
+      </div>
+
+      <details id="fusionRecommended" class="fusionOptionalV824 fusionResearchCardV844">
         <summary><span><b>おすすめ配合</b><small>今の手持ちから作れる候補</small></span><em>候補を見る</em></summary>
         ${recommendedFusionHtml()}
       </details>
 
-      <details class="fusionOptionalV824 fusionGoalsFoldV824">
+      <details id="fusionGoals" class="fusionOptionalV824 fusionGoalsFoldV824 fusionResearchCardV844">
         <summary><span><b>配合目標</b><small>登録した目標と素材の進捗</small></span><em>確認する</em></summary>
         ${V.fusionGoalsPanelHtml ? V.fusionGoalsPanelHtml() : ""}
       </details>
 
-      <section class="card recipeSummary">
+      <section id="fusionRecipeArchive" class="card recipeSummary fusionResearchCardV844">
         <details class="recipeDetails">
           <summary>
             <span>
@@ -80,6 +85,26 @@
       </section>
 
     </main>`;
+  }
+
+  function fusionParentCardHtml(m,selected){
+    const d = S.def(m.id);
+    const size = V.sizeLabel ? V.sizeLabel(d) : `${d.size || 1}枠`;
+    const displayName = m.nickname && m.nickname !== d.name
+      ? `${U.esc(m.nickname)}<small>${U.esc(d.name)}</small>`
+      : U.esc(d.name);
+    return `<article class="fusionParentCardV844 ${selected ? "selected" : ""} ${m.locked ? "locked" : ""}">
+      <button class="fusionParentSelectV844" onclick="Game.pickFusion('${m.uid}')" ${m.locked ? "disabled" : ""} aria-label="${U.esc(d.name)}を配合の親に選ぶ">
+        ${V.monsterInline(m,"fusionParentFaceV844")}
+        <span class="fusionParentIdentityV844">
+          <b>${displayName}</b>
+          <span><i>${d.rank}</i>${U.esc(D.TYPES[d.type] || d.type)}・${size}</span>
+          <em>Lv ${m.level}</em>
+        </span>
+        <strong>${selected ? "選択中" : m.locked ? "保護中" : "選ぶ"}</strong>
+      </button>
+      <button class="fusionParentLockV844 ${m.locked ? "on" : ""}" onclick="Game.toggleMonsterLock('${m.uid}')" aria-label="${U.esc(d.name)}の保護を${m.locked ? "解除" : "設定"}">${m.locked ? "保護解除" : "保護"}</button>
+    </article>`;
   }
 
   function selectedParentsPanel(pick,prev){
@@ -129,7 +154,9 @@
           </div>
         </div>
       </div>
-      ${pick.length === 2 ? `<div class="actions"><button onclick="document.getElementById('fusionPreviewAnchor')?.scrollIntoView({behavior:'smooth',block:'start'})">プレビューへ移動</button><button onclick="Game.clearFusion()">選択解除</button></div>` : `<div class="notice">仲間カードの「配合に選ぶ」を押すと、ここに親が表示されます。</div>`}
+      ${pick.length === 2
+        ? `<div class="actions fusionParentActionsV844"><button onclick="document.getElementById('fusionPreviewAnchor')?.scrollIntoView({behavior:'smooth',block:'start'})">結果を確認</button><button onclick="Game.openFusionParentPicker()">親を入れ替える</button></div>`
+        : `<div class="actions fusionParentActionsV844"><button class="gold" onclick="Game.openFusionParentPicker()">親を選ぶ（あと${2 - pick.length}体）</button>${pick.length ? `<button onclick="Game.clearFusion()">選択解除</button>` : ""}</div>`}
     </div>`;
   }
 

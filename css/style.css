@@ -11655,6 +11655,127 @@ body.mlReducedMotionV817 .homeLandmarkV834.claimable{animation:none}
 }
 
 /* =========================================================
+   v8.6-A.44 Fusion flow and information hierarchy
+   ========================================================= */
+.fusionWorkbenchV844{order:0}
+.fusionParentPickerV844{order:1;scroll-margin-top:58px}
+.fusionResearchHeadV844{order:2}
+.fusionResearchCardV844{order:3}
+.fusionParentPickerV844 > summary{
+  min-height:54px;
+  background:
+    linear-gradient(90deg,rgba(var(--fusion-cyan),.08),transparent 55%),
+    rgba(5,18,39,.96);
+}
+.fusionParentPickerV844 > summary em{
+  padding:6px 8px;border:1px solid rgba(var(--fusion-cyan),.28);border-radius:999px;
+  background:rgba(4,14,31,.68);
+}
+.fusionParentPickerV844[open] > summary{
+  background:rgba(5,18,39,.98);box-shadow:0 7px 16px rgba(0,0,0,.28);
+}
+.fusionParentScrollV844{
+  max-height:min(56dvh,520px);overflow-y:auto;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;scrollbar-gutter:stable;
+  background:linear-gradient(180deg,rgba(7,25,52,.78),rgba(3,12,28,.92));
+}
+.fusionParentScrollV844 > *{
+  content-visibility:auto;
+  contain-intrinsic-size:112px;
+}
+.fusionParentScrollV844{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+.fusionParentCardV844{
+  min-width:0;overflow:hidden;border:1px solid rgba(var(--fusion-cyan),.2);border-radius:11px;
+  background:linear-gradient(155deg,rgba(14,39,72,.96),rgba(4,15,34,.98));
+  box-shadow:0 5px 12px rgba(0,0,0,.2);
+}
+.fusionParentCardV844.selected{
+  border-color:rgba(var(--fusion-gold),.72);
+  box-shadow:0 0 0 1px rgba(var(--fusion-gold),.16),0 6px 15px rgba(0,0,0,.25);
+}
+.fusionParentCardV844.locked{border-color:rgba(113,151,194,.22);filter:saturate(.72)}
+.fusionParentSelectV844{
+  width:100%;min-height:82px;display:grid;grid-template-columns:48px minmax(0,1fr);gap:6px;
+  align-items:center;padding:7px;border:0;border-radius:0;background:transparent;text-align:left;
+}
+.fusionParentSelectV844:disabled{opacity:.72}
+.fusionParentFaceV844{width:48px;height:58px;border-radius:8px}
+.fusionParentIdentityV844{min-width:0;display:grid;gap:2px}
+.fusionParentIdentityV844 b{
+  min-width:0;overflow:hidden;color:#f5f8ff;font-size:10px;text-overflow:ellipsis;white-space:nowrap;
+}
+.fusionParentIdentityV844 b small{
+  display:block;overflow:hidden;color:#849bb5;font-size:6px;text-overflow:ellipsis;white-space:nowrap;
+}
+.fusionParentIdentityV844 span{color:#9fb7cf;font-size:7px;white-space:nowrap}
+.fusionParentIdentityV844 span i{
+  display:inline-grid;place-items:center;min-width:18px;height:18px;margin-right:4px;border-radius:5px;
+  color:#1a1000;background:linear-gradient(180deg,#ffe792,#d8a22e);font-style:normal;font-weight:1000;
+}
+.fusionParentIdentityV844 em{color:#d9e8f8;font-size:8px;font-style:normal;font-weight:900}
+.fusionParentSelectV844 > strong{
+  grid-column:1/-1;min-height:24px;display:grid;place-items:center;border-radius:6px;
+  color:#d6f6ff;background:rgba(var(--fusion-cyan),.1);font-size:8px;
+}
+.fusionParentCardV844.selected .fusionParentSelectV844 > strong{
+  color:#2b1b00;background:linear-gradient(180deg,#ffe99b,#d9a32d);
+}
+.fusionParentLockV844{
+  width:100%;min-height:32px;border-width:1px 0 0;border-radius:0;
+  color:#8ea5bd;background:rgba(3,12,28,.62);font-size:7px;
+}
+.fusionParentLockV844.on{color:#b9d9ff;background:rgba(49,92,144,.2)}
+.fusionParentSelectV844:active:not(:disabled){transform:scale(.985);filter:brightness(1.1)}
+}
+.fusionParentActionsV844{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:9px;
+}
+.fusionParentActionsV844:has(> button:only-child){grid-template-columns:1fr}
+.fusionParentActionsV844 button{min-height:44px}
+.fusionResearchHeadV844{
+  display:flex;align-items:end;justify-content:space-between;gap:10px;
+  margin:5px 2px -1px;padding:8px 5px 6px;border-bottom:1px solid rgba(var(--fusion-violet),.2);
+}
+.fusionResearchHeadV844 div{min-width:0}
+.fusionResearchHeadV844 span{
+  display:block;color:#a985ef;font-size:7px;font-weight:1000;letter-spacing:.17em;
+}
+.fusionResearchHeadV844 h2{margin:2px 0 0;color:#f2eaff;font-size:14px}
+.fusionResearchHeadV844 small{color:#8298b1;font-size:8px;white-space:nowrap}
+.fusionResearchCardV844{
+  border-color:rgba(var(--fusion-violet),.24)!important;
+  box-shadow:0 7px 18px rgba(0,0,0,.2);
+}
+.fusionResearchCardV844 > summary,
+.fusionResearchCardV844 > .recipeDetails > summary{
+  background:
+    linear-gradient(90deg,rgba(var(--fusion-violet),.07),transparent 65%),
+    rgba(5,17,38,.92);
+}
+.fusionResearchCardV844 > summary:active,
+.fusionResearchCardV844 > .recipeDetails > summary:active{filter:brightness(1.12)}
+
+@media(max-width:520px){
+  .fusionHeroV835{min-height:92px;padding:10px}
+  .fusionHeroV835 p{margin:4px 0 7px;font-size:8px;line-height:1.5}
+  .fusionHeroV835 .actions button{min-height:36px}
+  .fusionParentScrollV844{max-height:52dvh;padding:7px}
+  .fusionResearchHeadV844{padding-top:6px}
+}
+
+@media(max-width:340px){
+  .fusionParentScrollV844{grid-template-columns:1fr!important}
+}
+
+@media(max-height:700px){
+  .fusionHeroV835{min-height:0}
+  .fusionParentScrollV844{max-height:46dvh}
+}
+
+/* =========================================================
    v8.6-A.36 Monster roster and profile refinement
    ========================================================= */
 .monsterBaseV836{--roster-cyan:94,220,255;--roster-green:116,240,160;--roster-gold:240,198,92;gap:10px}
