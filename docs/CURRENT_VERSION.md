@@ -1,3 +1,15 @@
+v8.6-A.52 Phone-canvas social RPG home composition
+GAME_VERSION to 8.6-A.52
+
+Main changes:
+- Forced the non-title game shell into a phone-canvas width on wide desktop browsers so the home screen reads like the selected mobile mockup instead of a stretched web page.
+- Rebuilt the home layout overrides so the lobby uses the mobile composition at all viewport widths: HOME BASE plate, compact status chips, vertical campaign cards, landmark row, centered leader stage, and stronger adventure CTA.
+- Removed the visible desktop-width home clutter by tightening below-hero panels and hiding the internal scrollbar chrome in the game shell.
+- Strengthened the bottom dock and phone-frame presentation for a more native social RPG feel.
+- Updated PWA/cache version to v8.6-A.52.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, or balance.
+---
+
 v8.6-A.51 Mockup-close social RPG UI pass
 GAME_VERSION to 8.6-A.51
 
