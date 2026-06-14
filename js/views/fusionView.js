@@ -14,8 +14,8 @@
     const ready = pick.length === 2;
     const prev = ready ? window.MonsterLinksGame.fusionPreview(pick[0],pick[1]) : null;
     return `
-    <main class="fusionFlowV824">
-      <section class="hero fusionHeroV34">
+    <main class="fusionFlowV824 fusionFlowV835">
+      <section class="hero fusionHeroV34 fusionHeroV835">
         <h1>モンスター配合</h1>
         <p>配合リストに登録された親2体から新しい仲間を生み出します。指定された系譜を重ねる4体配合にも対応しています。</p>
         <div class="actions fusionBackActions">
@@ -24,23 +24,31 @@
         </div>
       </section>
 
-      <div class="fusionStepsV824" aria-label="配合の流れ">
+      <div class="fusionStepsV824 fusionStepsV835" aria-label="配合の流れ">
         <span class="${pick.length < 2 ? "active" : "done"}"><b>1</b>親を選ぶ</span>
         <span class="${pick.length === 2 ? "active" : ""}"><b>2</b>結果確認</span>
         <span class="${ready && prev?.available && !prev.locked ? "active" : ""}"><b>3</b>配合実行</span>
       </div>
 
-      <details class="fusionOptionalV824 fusionGoalsFoldV824">
-        <summary><span><b>配合目標</b><small>登録した目標と素材の進捗</small></span><em>確認する</em></summary>
-        ${V.fusionGoalsPanelHtml ? V.fusionGoalsPanelHtml() : ""}
+      <details class="fusionParentListV824 fusionParentListV835" ${ready ? "" : "open"}>
+        <summary>
+          <span><b>STEP 1　親モンスターを選ぶ</b><small>${ready ? "2体選択済み。変更する場合に開いてください" : `あと${2 - pick.length}体選んでください`}</small></span>
+          <em>${all.length}体</em>
+        </summary>
+        <section class="grid two fusionMonsterGridV824">
+          ${all.map(m=>V.monsterCard(m,{mode:"fusion",pick:pick.includes(m.uid)})).join("") || `<div class="empty">仲間がいません</div>`}
+        </section>
       </details>
 
-      <section id="fusionMainCard" class="card fusionMainCard">
+      <section id="fusionMainCard" class="card fusionMainCard fusionWorkbenchV835">
         <div id="fusionPreviewAnchor"></div>
-        ${V.sectionTitle ? V.sectionTitle(`選択中：${pick.length}/2`, "親2体を選ぶと詳細プレビューが出ます") : `<h2>選択中：${pick.length}/2</h2>`}
+        <div class="fusionWorkbenchHeadV835">
+          <div><span>STEP 2 / 3</span><h2>配合結果プレビュー</h2><p>${ready ? "結果と引き継ぎ内容を確認してください" : "親2体を選ぶと結果が表示されます"}</p></div>
+          <strong class="${ready ? "ready" : ""}">${pick.length}/2 SELECTED</strong>
+        </div>
         ${selectedParentsPanel(pick,prev)}
         ${fusionPreviewPanel(prev)}
-        <div class="actions stickyActions">
+        <div class="actions stickyActions fusionExecuteBarV835">
           <button class="gold" ${(ready && prev?.available && !prev.locked) ? "" : "disabled"} onclick="Game.doFusion()">この2体で配合</button>
           <button onclick="Game.clearFusion()">選択解除</button>
         </div>
@@ -49,6 +57,11 @@
       <details class="fusionOptionalV824">
         <summary><span><b>おすすめ配合</b><small>今の手持ちから作れる候補</small></span><em>候補を見る</em></summary>
         ${recommendedFusionHtml()}
+      </details>
+
+      <details class="fusionOptionalV824 fusionGoalsFoldV824">
+        <summary><span><b>配合目標</b><small>登録した目標と素材の進捗</small></span><em>確認する</em></summary>
+        ${V.fusionGoalsPanelHtml ? V.fusionGoalsPanelHtml() : ""}
       </details>
 
       <section class="card recipeSummary">
@@ -66,15 +79,6 @@
         </details>
       </section>
 
-      <details class="fusionParentListV824" ${ready ? "" : "open"}>
-        <summary>
-          <span><b>親モンスターを選ぶ</b><small>${ready ? "2体選択済み。変更する場合に開いてください" : `あと${2 - pick.length}体選んでください`}</small></span>
-          <em>${all.length}体</em>
-        </summary>
-        <section class="grid two fusionMonsterGridV824">
-          ${all.map(m=>V.monsterCard(m,{mode:"fusion",pick:pick.includes(m.uid)})).join("") || `<div class="empty">仲間がいません</div>`}
-        </section>
-      </details>
     </main>`;
   }
 
@@ -107,7 +111,7 @@
     const a = parent(pick[0]);
     const b = parent(pick[1]);
     const result = prev?.available ? S.def(prev.id) : null;
-    return `<div class="selectedParentsPanelV728 ${pick.length === 2 ? "ready" : ""}">
+    return `<div class="selectedParentsPanelV728 selectedParentsPanelV835 ${pick.length === 2 ? "ready" : ""}">
       <div class="selectedParentsTitle">
         <b>現在選択中の親</b>
         <span class="tag">${pick.length}/2</span>

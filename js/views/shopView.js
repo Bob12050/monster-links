@@ -10,8 +10,8 @@
     const bagCount = S.bagEntries().reduce((sum,entry)=>sum + entry.count,0);
     const affordable = D.SHOP_ITEMS.filter(id=>S.state.gold >= D.ITEMS[id].price).length;
     return `
-    <main class="shopHubV825">
-      <section class="shopHeroV825">
+    <main class="shopHubV825 shopHubV835">
+      <section class="shopHeroV825 shopHeroV835">
         <div class="shopHeroTitleV825">
           <span>LINKS ITEM SHOP</span>
           <h1>どうぐ屋</h1>
@@ -24,23 +24,29 @@
         </div>
       </section>
 
-      <section class="shopSectionV825">
+      <nav class="shopQuickNavV835" aria-label="売り場案内">
+        <button onclick="document.getElementById('shopSupportV835')?.scrollIntoView({behavior:'smooth',block:'start'})"><b>冒険支援</b><small>回復・育成</small></button>
+        <button onclick="document.getElementById('shopEquipmentV835')?.scrollIntoView({behavior:'smooth',block:'start'})"><b>装備販売</b><small>アクセサリー</small></button>
+        <button onclick="document.getElementById('shopBagV835')?.scrollIntoView({behavior:'smooth',block:'start'})"><b>道具袋</b><small>所持品確認</small></button>
+      </nav>
+
+      <section id="shopSupportV835" class="shopSectionV825 shopSectionV835">
         <div class="shopSectionHeadV825">
           <div><span>ADVENTURE SUPPORT</span><h2>冒険サポート</h2></div>
           <small>購入するとすぐに効果が発生します</small>
         </div>
         <div class="shopServiceGridV825">
-          <article class="shopServiceV825 heal">
+          <article class="shopServiceV825 shopServiceV835 heal">
             <div class="shopServiceTopV825"><span>RECOVERY</span><b>キャンプセット</b><strong>30G</strong></div>
             <p>仲間全員のHPとMPをその場で全回復します。</p>
             <button class="green" ${S.state.gold < 30 ? "disabled" : ""} onclick="Game.buyHeal()">全員を回復</button>
           </article>
-          <article class="shopServiceV825 training">
+          <article class="shopServiceV825 shopServiceV835 training">
             <div class="shopServiceTopV825"><span>TRAINING</span><b>修練の書</b><strong>60G</strong></div>
             <p>パーティ全員に1回につき40EXPを与えます。</p>
             ${V.serviceBuyButtons ? V.serviceBuyButtons("buyTraining",60) : ""}
           </article>
-          <article class="shopServiceV825 scout">
+          <article class="shopServiceV825 shopServiceV835 scout">
             <div class="shopServiceTopV825"><span>SCOUT</span><b>スカウト笛</b><strong>50G</strong></div>
             <p>次の戦闘からスカウト率が上昇。残り効果は${S.state.scoutCharm || 0}回です。</p>
             ${V.serviceBuyButtons ? V.serviceBuyButtons("buyScout",50) : ""}
@@ -48,7 +54,7 @@
         </div>
       </section>
 
-      <section class="shopSectionV825">
+      <section id="shopEquipmentV835" class="shopSectionV825 shopSectionV835">
         <div class="shopSectionHeadV825">
           <div><span>EQUIPMENT</span><h2>アクセサリー販売</h2></div>
           <small>所持数と効果を確認して1個ずつ購入</small>
@@ -56,7 +62,7 @@
         <div class="shopItemGridV825">${D.SHOP_ITEMS.map(id=>V.shopItemCard(id)).join("")}</div>
       </section>
 
-      <details class="shopBagV825">
+      <details id="shopBagV835" class="shopBagV825 shopBagV835">
         <summary>
           <span><b>道具袋</b><small>入手済みの装備と道具を確認</small></span>
           <em>${bagCount}個</em>
@@ -84,7 +90,7 @@
     const item = D.ITEMS[id];
     const owned = S.state.bag?.[id] || 0;
     const disabled = S.state.gold < item.price ? "disabled" : "";
-    return `<article class="shopItemV825 ${disabled ? "unaffordable" : "affordable"}">
+    return `<article class="shopItemV825 shopItemV835 ${disabled ? "unaffordable" : "affordable"}">
       <div class="shopItemVisualV825">${V.itemVisual(id,'itemIcon')}</div>
       <div class="shopItemBodyV825">
         <div class="shopItemHeadV825">
