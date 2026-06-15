@@ -13767,6 +13767,7 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
 /* ===== v8.6-A.49.1 battle party staging and PC canvas ===== */
 .battlePageV849{
   width:100%;
+  overflow:hidden;
 }
 .battleV849{
   --battle-cyan:90,225,255;
@@ -13918,13 +13919,13 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
 
 @media(min-width:900px){
   .battlePageV849{
-    padding:10px;
+    padding:0 10px;
   }
   .battleV849{
-    max-width:1180px;
+    max-width:1120px;
     margin:0 auto;
     display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(330px,360px);
+    grid-template-columns:minmax(0,1fr) minmax(315px,350px);
     grid-template-areas:
       "head head"
       "arena deck"
@@ -13939,8 +13940,8 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
   .battleV849 .battleHeaderV821{grid-area:head}
   .battleV849 .battleArenaV821{
     grid-area:arena;
-    height:min(58vh,560px);
-    min-height:470px;
+    height:min(40vh,400px);
+    min-height:282px;
   }
   .battleV849 .battlePartyRailV821{grid-area:party}
   .battleV849 .battleMessageV821{grid-area:msg}
@@ -13949,7 +13950,8 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
     grid-area:deck;
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
+    justify-content:flex-start;
+    gap:12px;
     border-left:1px solid rgba(var(--battle-cyan),.16);
     background:
       radial-gradient(circle at 50% 0,rgba(var(--battle-cyan),.16),transparent 38%),
@@ -13962,21 +13964,24 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
   .battleV849 .commandsV821{
     display:grid;
     grid-template-columns:1fr;
-    gap:10px;
-  }
-  .battleV849 .commandsV842 > section > div:last-child{
-    grid-template-columns:1fr;
+    gap:8px;
   }
   .battleV849 .commandsV821 button{
-    min-height:82px;
+    min-height:64px;
+    padding:7px;
   }
   .battleV849 .enemyActorV821{
     right:10%;
-    top:92px;
+    top:72px;
   }
   .battleV849 .allyActorV821{
-    left:8%;
-    bottom:40px;
+    left:6%;
+    bottom:28px;
+  }
+  .battleSupportFieldV849{
+    left:30%;
+    right:12%;
+    bottom:46px;
   }
 }
 

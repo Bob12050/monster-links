@@ -1,3 +1,14 @@
+v8.6-A.49.2 Battle PC layout cleanup
+GAME_VERSION to 8.6-A.49.2
+
+Main changes:
+- Tightened the PC battle command panel so controls sit near the top instead of leaving a large blank area.
+- Reduced the PC battle arena height to avoid unnecessary vertical scrolling.
+- Moved reserve party support chips so they overlap less with the active monster and HUD.
+- Updated PWA/cache version to v8.6-A.49.2.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+---
+
 v8.6-A.49.1 Battle party staging and PC canvas
 GAME_VERSION to 8.6-A.49.1
 
