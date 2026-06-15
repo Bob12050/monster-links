@@ -13918,6 +13918,9 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
 }
 
 @media(min-width:900px){
+  .app.crystalUiV822[data-view="battle"] > main.battlePageV849{
+    overflow:hidden;
+  }
   .battlePageV849{
     padding:0 10px;
   }
@@ -13951,7 +13954,7 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
     display:flex;
     flex-direction:column;
     justify-content:flex-start;
-    gap:12px;
+    gap:8px;
     border-left:1px solid rgba(var(--battle-cyan),.16);
     background:
       radial-gradient(circle at 50% 0,rgba(var(--battle-cyan),.16),transparent 38%),
@@ -13963,10 +13966,26 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
   }
   .battleV849 .commandsV821{
     display:grid;
-    grid-template-columns:1fr;
+    grid-template-columns:1fr!important;
     gap:8px;
   }
+  .battleV849 .commandHeadingV842{
+    grid-template-columns:1fr!important;
+    gap:6px;
+  }
+  .battleV849 .battleAutoControlV842 > button{
+    min-height:36px!important;
+  }
+  .battleV849 .commandGroupV842{
+    gap:5px;
+    padding:7px;
+  }
+  .battleV849 .commandGroupV842 > div:last-child{
+    grid-template-columns:1fr 1fr!important;
+    gap:6px;
+  }
   .battleV849 .commandsV821 button{
+    width:auto;
     min-height:64px;
     padding:7px;
   }
@@ -13979,9 +13998,7 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
     bottom:28px;
   }
   .battleSupportFieldV849{
-    left:30%;
-    right:12%;
-    bottom:46px;
+    display:none;
   }
 }
 

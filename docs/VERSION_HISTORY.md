@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.49.3 Battle command readability fix
+
+- Fixed the PC battle command panel so command buttons no longer collapse into narrow vertical strips.
+- Stacked command groups in the right panel and restored readable two-button rows inside each group.
+- Hid reserve support chips on PC to avoid overlapping the battle field; party members remain visible in the party rail.
+- Updated PWA/cache version to v8.6-A.49.3.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+
 ## v8.6-A.49.2 Battle PC layout cleanup
 
 - Tightened the PC battle command panel so controls sit near the top instead of leaving a large blank area.
