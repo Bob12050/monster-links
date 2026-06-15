@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.49.4 Battle PC visual tuning
+
+- Tuned the PC battle screen so enemy, ally, and VS elements have more breathing room.
+- Widened and polished the right command panel for better readability and stronger button feel.
+- Added a darker battle log surface and tightened PC battle overflow.
+- Updated PWA/cache version to v8.6-A.49.4.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+
 ## v8.6-A.49.3 Battle command readability fix
 
 - Fixed the PC battle command panel so command buttons no longer collapse into narrow vertical strips.

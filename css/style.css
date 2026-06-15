@@ -13925,10 +13925,10 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
     padding:0 10px;
   }
   .battleV849{
-    max-width:1120px;
+    max-width:1180px;
     margin:0 auto;
     display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(315px,350px);
+    grid-template-columns:minmax(0,1fr) minmax(350px,390px);
     grid-template-areas:
       "head head"
       "arena deck"
@@ -13944,7 +13944,7 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
   .battleV849 .battleArenaV821{
     grid-area:arena;
     height:min(40vh,400px);
-    min-height:282px;
+    min-height:288px;
   }
   .battleV849 .battlePartyRailV821{grid-area:party}
   .battleV849 .battleMessageV821{grid-area:msg}
@@ -13954,7 +13954,8 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
     display:flex;
     flex-direction:column;
     justify-content:flex-start;
-    gap:8px;
+    gap:9px;
+    padding:12px 10px;
     border-left:1px solid rgba(var(--battle-cyan),.16);
     background:
       radial-gradient(circle at 50% 0,rgba(var(--battle-cyan),.16),transparent 38%),
@@ -13963,6 +13964,9 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
   .battleV849 .battleLogDetailsV821{
     grid-area:log;
     border-left:1px solid rgba(255,255,255,.08);
+    background:
+      radial-gradient(circle at 100% 0,rgba(var(--battle-gold),.08),transparent 36%),
+      linear-gradient(180deg,rgba(3,8,18,.98),rgba(1,5,13,.98));
   }
   .battleV849 .commandsV821{
     display:grid;
@@ -13974,28 +13978,73 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
     gap:6px;
   }
   .battleV849 .battleAutoControlV842 > button{
-    min-height:36px!important;
+    min-height:42px!important;
   }
   .battleV849 .commandGroupV842{
-    gap:5px;
-    padding:7px;
+    gap:7px;
+    padding:9px;
+    border-color:rgba(var(--battle-cyan),.2);
+    border-radius:14px;
+    background:
+      radial-gradient(circle at 12% 0,rgba(var(--battle-cyan),.12),transparent 34%),
+      linear-gradient(180deg,rgba(4,18,39,.72),rgba(2,8,22,.86));
   }
   .battleV849 .commandGroupV842 > div:last-child{
     grid-template-columns:1fr 1fr!important;
-    gap:6px;
+    gap:8px;
   }
   .battleV849 .commandsV821 button{
     width:auto;
-    min-height:64px;
-    padding:7px;
+    min-height:66px;
+    padding:8px;
+    border-color:rgba(var(--battle-cyan),.28);
+    border-radius:13px;
+    background:
+      radial-gradient(circle at 24% 0,rgba(var(--battle-cyan),.16),transparent 34%),
+      linear-gradient(180deg,rgba(27,75,124,.88),rgba(8,26,61,.95));
+    box-shadow:inset 0 1px rgba(255,255,255,.1),0 8px 16px rgba(0,0,0,.24);
+  }
+  .battleV849 .commandsV842 .commandGroupV842 button > span{
+    font-size:20px;
+  }
+  .battleV849 .commandsV842 .commandGroupV842 button > b{
+    font-size:11px;
+  }
+  .battleV849 .commandsV842 .commandGroupV842 button > small{
+    font-size:7px;
+    line-height:1.25;
+  }
+  .battleV849 .battleClashV821{
+    left:48%;
+    top:51%;
+    width:78px!important;
+    height:78px!important;
+  }
+  .battleV849 .battleClashV821:before,
+  .battleV849 .battleClashV821:after{
+    width:128px;
   }
   .battleV849 .enemyActorV821{
-    right:10%;
-    top:72px;
+    right:5%;
+    top:58px;
+    width:255px;
+    height:245px;
   }
   .battleV849 .allyActorV821{
-    left:6%;
-    bottom:28px;
+    left:4%;
+    bottom:18px;
+    width:270px;
+    height:260px;
+  }
+  .battleV849 .enemyHudV821{
+    left:20px;
+    top:18px;
+    width:min(360px,46%);
+  }
+  .battleV849 .allyHudV821{
+    right:18px;
+    bottom:20px;
+    width:min(360px,44%);
   }
   .battleSupportFieldV849{
     display:none;
