@@ -1,3 +1,14 @@
+v8.6-A.49.6 Safari viewport and PWA display correction
+GAME_VERSION to 8.6-A.49.6
+
+Main changes:
+- Added visualViewport-based app height correction for iPhone Safari browser UI changes.
+- Versioned the web manifest link and service worker manifest cache path.
+- Tuned PWA display mode toward fullscreen while keeping standalone fallback.
+- Updated PWA/cache version to v8.6-A.49.6.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+---
+
 v8.6-A.49.5 Battle mobile fit tuning
 GAME_VERSION to 8.6-A.49.5
 

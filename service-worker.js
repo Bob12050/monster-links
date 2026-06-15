@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "8.6-A.49.5";
+const VERSION = "8.6-A.49.6";
 const CACHE_PREFIX = "monster-links-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const VERSION_QUERY = `v=${VERSION}`;
@@ -76,7 +76,7 @@ const CORE_FILES = [
 
 function versionedUrl(file){
   const url = new URL(file,self.registration.scope);
-  if(/\.(?:css|js)$/i.test(url.pathname)) url.search = VERSION_QUERY;
+  if(/\.(?:css|js|webmanifest)$/i.test(url.pathname)) url.search = VERSION_QUERY;
   return url.href;
 }
 

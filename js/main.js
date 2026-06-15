@@ -1,6 +1,32 @@
 (() => {
   "use strict";
   const S = window.MonsterLinksState;
+  const root = document.documentElement;
+  let viewportTimer = null;
+
+  function applyViewportHeight(){
+    const viewport = window.visualViewport;
+    const height = Math.max(320,Math.round(viewport?.height || window.innerHeight || root.clientHeight || 0));
+    const width = Math.max(320,Math.round(viewport?.width || window.innerWidth || root.clientWidth || 0));
+    const top = Math.max(0,Math.round(viewport?.offsetTop || 0));
+    root.style.setProperty("--app-height",`${height}px`);
+    root.style.setProperty("--app-visual-width",`${width}px`);
+    root.style.setProperty("--app-visual-top",`${top}px`);
+  }
+
+  function scheduleViewportHeight(){
+    applyViewportHeight();
+    clearTimeout(viewportTimer);
+    viewportTimer = setTimeout(applyViewportHeight,120);
+  }
+
+  applyViewportHeight();
+  window.addEventListener("resize",scheduleViewportHeight,{passive:true});
+  window.addEventListener("orientationchange",scheduleViewportHeight,{passive:true});
+  window.addEventListener("pageshow",scheduleViewportHeight,{passive:true});
+  window.visualViewport?.addEventListener("resize",scheduleViewportHeight,{passive:true});
+  window.visualViewport?.addEventListener("scroll",scheduleViewportHeight,{passive:true});
+
   S.fullHeal(false);
   if(!sessionStorage.getItem("monster_links_title_seen")){
     S.state.view = "title";
