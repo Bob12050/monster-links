@@ -1,6 +1,14 @@
-# モンスターリンクス v8.6-A.49
+# Monster Links v8.6-A.49.1
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.49.1 update
+
+- Kept the battle system as one active frontline monster with two reserve party members.
+- Added reserve party members into the battle field as visible support units that can be tapped for switching.
+- Improved the battle screen layout for both mobile portrait and PC wide screens.
+- Updated PWA/cache version to v8.6-A.49.1.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
 
 ## 現在の安定版
 

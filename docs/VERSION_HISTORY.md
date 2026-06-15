@@ -1,6 +1,16 @@
+# ???????
+
+## v8.6-A.49.1 Battle party staging and PC canvas
+
+- Kept the battle system as one active frontline monster with two reserve party members.
+- Added reserve party members into the battle field as visible support units that can be tapped for switching.
+- Improved the battle screen layout for both mobile portrait and PC wide screens.
+- Updated PWA/cache version to v8.6-A.49.1.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+
 # バージョン履歴
 
-## v8.6-A.49 Adventure quest gate and mobile home cleanup
+## v8.6-.49 Adventure quest gate and mobile home cleanup
 - Added a social-game style Quest Gate panel to the adventure screen.
 - Consolidated current area, recommended level, boss progress, unlocked areas, and boss clear count at the top of adventure.
 - Polished quest board cards into more banner-like quest entries with stronger selected/current feedback.

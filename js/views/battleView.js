@@ -42,8 +42,8 @@
     const affinity = affinityInfo(ally,enemy);
 
     return `
-    <main class="battlePageV821 battlePageV823">
-      <section class="battle battleV821 battleV823 battleV833 battleV842 battleStage-${U.esc(stageTheme)} battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
+    <main class="battlePageV821 battlePageV823 battlePageV849">
+      <section class="battle battleV821 battleV823 battleV833 battleV842 battleV849 battleStage-${U.esc(stageTheme)} battleSpeed${U.esc(settings.speed)}V84 ${settings.reducedMotion ? "reducedMotionV84" : ""} ${b.isBoss ? "bossBattle" : ""} ${enemy.mutation ? "mutationBattle" : ""} ${b.mutationIntro ? "mutationIntro" : ""} stageBattleBg" ${V.stageStyle(b.stage)}>
         ${b.mutationIntro ? `<div class="mutationEncounterV1" aria-label="突然変異個体が出現"><span>RARE ENCOUNTER</span><b>${U.esc(mutationTitle)}突然変異個体 出現</b><small>色違いで能力補正を持つ珍しいモンスターです</small></div>` : ""}
         <div class="battleHeaderV821">
           <div>
@@ -111,6 +111,7 @@
               <div class="hitBurstV821"></div>
               ${V.fxBadge("ally")}
             </div>
+            ${V.battleSupportField(b)}
             <div class="battleHudV821 allyHudV821">
               <div class="fighterNameV821">
                 <span class="fighterLabelV821 allyLabelV821">ALLY</span>
@@ -241,6 +242,22 @@
   function affinityHint(ally,enemy){
     const info = affinityInfo(ally,enemy);
     return `相性：攻撃 ${info.attack} / 防御 ${info.defense}`;
+  }
+
+  function battleSupportField(b){
+    const party = S.state.party || [];
+    const support = party.map((monster,index)=>{
+      if(index === b.active) return "";
+      const stats = S.stats(monster);
+      const down = monster.hp <= 0;
+      const disabled = b.lock || down;
+      const status = down ? "&#25126;&#38360;&#19981;&#33021;" : "&#20132;&#20195;&#21487;";
+      return `<button class="${down ? "down" : ""}" ${disabled ? "disabled" : ""} onclick="Game.switchAlly(${index})" aria-label="${U.esc(monster.nickname)} &#12395;&#20132;&#20195;">
+        ${V.monsterInline(monster,"battleSupportFaceV849")}
+        <span><b>${U.esc(monster.nickname)}</b><small>${status}</small><i><em style="width:${S.hpPct(monster)}%"></em></i></span>
+      </button>`;
+    }).join("");
+    return `<div class="battleSupportFieldV849" aria-label="&#25511;&#12360;&#12513;&#12531;&#12496;&#12540;"><strong>&#25511;&#12360;</strong>${support}</div>`;
   }
 
   function affinityInfo(ally,enemy){
@@ -487,6 +504,7 @@
   Object.assign(V, {
     battleHtml,
     fxClass,
+    battleSupportField,
     fxSourceClass,
     fxBadge,
     bossCutin,

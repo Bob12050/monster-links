@@ -1,3 +1,14 @@
+v8.6-A.49.1 Battle party staging and PC canvas
+GAME_VERSION to 8.6-A.49.1
+
+Main changes:
+- Kept the battle system as one active frontline monster with two reserve party members.
+- Added reserve party members into the battle field as visible support units that can be tapped for switching.
+- Improved the battle screen layout for both mobile portrait and PC wide screens.
+- Updated PWA/cache version to v8.6-A.49.1.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+---
+
 v8.6-A.49 Adventure quest gate and mobile home cleanup
 GAME_VERSION to 8.6-A.49
 
