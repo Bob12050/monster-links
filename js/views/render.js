@@ -59,7 +59,7 @@
       lastGold = currentGold;
       return;
     }
-    let html = V.topHtml();
+    let html = state.view === "battle" ? "" : V.topHtml();
     if(state.view === "home") html += V.homeHtml();
     if(state.view === "stage") html += V.stageHtml();
     if(state.view === "monsters") html += V.monstersHtml();

@@ -1,3 +1,14 @@
+v8.6-A.49.7 Dedicated battle screen
+GAME_VERSION to 8.6-A.49.7
+
+Main changes:
+- Converted battle into a dedicated full-screen stage screen without the shared top HUD or bottom navigation.
+- Rebalanced the PC battle canvas so the field, command deck, party rail, message, tactics, and log fit as one board.
+- Rebalanced the mobile battle rows to avoid page scrolling while keeping the battlefield and command deck readable.
+- Updated PWA/cache version to v8.6-A.49.7.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+---
+
 v8.6-A.49.6 Safari viewport and PWA display correction
 GAME_VERSION to 8.6-A.49.6
 
