@@ -14102,111 +14102,155 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
 @media(max-width:560px){
   .app.crystalUiV822[data-view="battle"] > main.battlePageV849{
     height:100%;
-    padding:4px;
+    padding:3px;
     overflow:hidden;
   }
   .battlePageV849 .battleV849{
     height:100%;
     min-height:0;
     display:grid;
-    grid-template-rows:auto minmax(0,1.35fr) auto auto auto minmax(174px,.82fr) auto;
+    grid-template-rows:48px minmax(0,1fr) 40px 40px 24px 148px 28px;
     overflow:hidden;
+    border-radius:16px;
   }
   .battleV849 .battleHeaderV821{
-    min-height:52px;
-    padding:6px 9px;
+    height:48px;
+    min-height:0;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    gap:6px;
+    padding:5px 7px;
+  }
+  .battleV849 .battleAreaLabelV821{
+    display:none;
   }
   .battleV849 .battlePlaceV821{
-    font-size:13px;
+    overflow:hidden;
+    margin:0;
+    font-size:12px;
+    line-height:1.1;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
   .battleV849 .battleStageTraitsV821{
-    gap:4px;
+    flex-wrap:nowrap;
+    gap:3px;
+    margin-top:3px;
+    overflow:hidden;
   }
   .battleV849 .battleStageTraitsV821 span:not(.stageStars){
-    padding:2px 5px;
-    font-size:7px;
+    flex:0 0 auto;
+    padding:1px 4px;
+    font-size:6px;
+  }
+  .battleV849 .battleStageTraitsV821 .stageStars{
+    overflow:hidden;
+    font-size:10px;
+    letter-spacing:-.04em;
+    white-space:nowrap;
   }
   .battleV849 .battleHeaderRightV821 > span{
     display:none;
   }
+  .battleV849 .battleHeaderRightV821{
+    gap:5px;
+  }
   .battleV849 .battleHeaderControlsV84{
-    gap:4px;
+    gap:5px;
   }
   .battleV849 .battleSpeedButtonV84{
-    min-width:58px;
-    min-height:34px;
-    padding:4px 7px;
+    min-width:50px;
+    min-height:30px;
+    padding:3px 6px;
+    border-radius:10px;
+  }
+  .battleV849 .battleSpeedButtonV84 small{
+    font-size:7px;
+  }
+  .battleV849 .battleSpeedButtonV84 b{
+    font-size:10px;
   }
   .battleV849 .battleSoundButtonV84{
     display:none;
   }
   .battleV849 .battleModeV821{
-    min-height:34px;
-    padding:0 10px;
+    min-height:30px;
+    padding:0 9px;
+    border-radius:14px;
+    font-size:8px;
   }
   .battleV849 .battleArenaV821{
-    height:auto;
+    height:auto!important;
     min-height:0;
+    align-self:stretch;
   }
   .battleV849 .battleHudV821{
-    width:min(230px,63%);
-    padding:7px 8px;
-    border-radius:13px;
+    width:min(196px,57%);
+    gap:4px 6px;
+    padding:6px 7px;
+    border-radius:12px;
   }
   .battleV849 .fighterNameV821 b{
-    font-size:12px;
+    font-size:10px;
   }
   .battleV849 .fighterNameV821 small{
-    font-size:8px;
+    font-size:7px;
   }
   .battleV849 .fighterLabelV821{
     padding:1px 5px;
-    font-size:7px;
+    font-size:6px;
   }
   .battleV849 .rankBadgeV821{
-    width:30px;
-    height:30px;
-    border-radius:10px;
-    font-size:14px;
+    width:28px;
+    height:28px;
+    border-radius:9px;
+    font-size:13px;
+  }
+  .battleV849 .battleBarsV821{
+    gap:3px;
   }
   .battleV849 .battleBarRowV821{
-    grid-template-columns:22px minmax(0,1fr) 54px;
-    gap:5px;
+    grid-template-columns:18px minmax(0,1fr) 48px;
+    gap:4px;
+  }
+  .battleV849 .battleBarRowV821 > span{
+    font-size:7px;
   }
   .battleV849 .battleBarRowV821 > div{
-    height:7px;
+    height:6px;
   }
   .battleV849 .battleBarRowV821 > b{
-    font-size:9px;
+    font-size:8px;
   }
   .battleV849 .enemyHudV821{
-    left:8px;
-    top:8px;
+    left:7px;
+    top:7px;
   }
   .battleV849 .allyHudV821{
-    right:8px;
-    bottom:46px;
+    right:7px;
+    bottom:9px;
   }
   .battleV849 .enemyActorV821{
-    right:-18%;
-    top:76px;
-    width:184px;
-    height:176px;
+    right:-2%;
+    top:72px;
+    width:144px;
+    height:138px;
   }
   .battleV849 .allyActorV821{
-    left:-15%;
-    bottom:50px;
-    width:174px;
-    height:166px;
+    left:-1%;
+    bottom:20px;
+    width:150px;
+    height:144px;
   }
   .battleV849 .battleClashV821{
-    width:56px!important;
-    height:56px!important;
-    left:47%;
-    top:52%;
+    width:48px!important;
+    height:48px!important;
+    left:50%;
+    top:53%;
   }
   .battleV849 .battleClashV821 span{
-    font-size:18px;
+    font-size:16px;
   }
   .battleV849 .battleClashV821 small{
     display:none;
@@ -14235,49 +14279,59 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
   }
   .battleV849 .battlePartyRailV821{
     grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:5px;
-    padding:5px;
+    gap:4px;
+    min-height:0;
+    padding:4px;
   }
   .battleV849 .partyRailLabelV821{
     display:none;
   }
   .battleV849 .battlePartyRailV821 button{
-    min-height:40px;
-    grid-template-columns:28px minmax(0,1fr);
-    gap:5px;
-    padding:4px;
+    min-height:32px;
+    grid-template-columns:24px minmax(0,1fr);
+    gap:4px;
+    padding:3px 4px;
     border-radius:10px;
   }
   .battleV849 .partyRailFaceV821{
-    width:28px;
-    height:28px;
+    width:24px;
+    height:24px;
   }
-  .battleV849 .battlePartyRailV821 button b{
-    font-size:9px;
-  }
+  .battleV849 .battlePartyRailV821 button b,
   .battleV849 .battlePartyRailV821 button small{
-    font-size:8px;
+    font-size:7px;
+  }
+  .battleV849 .battlePartyRailV821 button i{
+    height:3px;
+    margin-top:2px;
   }
   .battleV849 .battleMessageV821{
-    min-height:48px;
-    grid-template-columns:70px minmax(0,1fr);
-    padding:7px 9px;
+    min-height:0;
+    grid-template-columns:58px minmax(0,1fr);
+    gap:0 7px;
+    padding:5px 8px;
+  }
+  .battleV849 .battleMessageV821 > span{
+    font-size:7px;
+    letter-spacing:.09em;
   }
   .battleV849 .battleMessageV821 > b{
-    font-size:12px;
+    font-size:11px;
   }
   .battleV849 .battleMessageV821 > small{
-    font-size:8px;
+    font-size:7px;
   }
   .battleV849 .battleTacticalBarV842{
     grid-template-columns:1fr 1fr 1.1fr;
     gap:3px;
-    padding:4px;
+    min-height:0;
+    padding:3px 4px;
   }
   .battleV849 .battleAffinityV842,
   .battleV849 .battleScoutStateV842{
-    padding:4px 5px;
-    border-radius:7px;
+    min-height:0;
+    padding:3px 5px;
+    border-radius:8px;
   }
   .battleV849 .battleAffinityV842 b,
   .battleV849 .battleScoutStateV842 b{
@@ -14291,58 +14345,82 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
   .battleV849 .battleCommandDeckV821{
     min-height:0;
     overflow:hidden;
-    padding:6px!important;
+    display:grid;
+    grid-template-rows:30px minmax(0,1fr);
+    gap:4px;
+    padding:5px!important;
   }
   .battleV849 .commandHeadingV842{
-    grid-template-columns:72px minmax(0,1fr);
-    gap:6px;
-    margin-bottom:5px!important;
+    grid-template-columns:62px minmax(0,1fr);
+    gap:5px;
+    margin-bottom:0!important;
   }
   .battleV849 .commandHeadingV842 > div:first-child span{
-    font-size:6px!important;
+    font-size:5px!important;
   }
   .battleV849 .commandHeadingV842 > div:first-child b{
-    font-size:8px;
+    font-size:7px;
+  }
+  .battleV849 .battleAutoControlV842{
+    gap:5px;
   }
   .battleV849 .battleAutoControlV842 > button{
-    min-height:34px!important;
-    padding:3px!important;
+    min-height:28px!important;
+    padding:2px 3px!important;
+    border-radius:9px;
+  }
+  .battleV849 .battleAutoControlV842 > button b{
+    font-size:9px;
+  }
+  .battleV849 .battleAutoControlV842 > button small{
+    font-size:6px;
   }
   .battleV849 .commandsV821{
+    height:100%;
+    min-height:0;
     gap:4px!important;
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
   }
   .battleV849 .commandGroupV842{
+    min-height:0;
+    grid-template-rows:1fr;
     gap:3px;
-    padding:3px;
+    padding:2px;
     border-radius:8px;
+    overflow:hidden;
+  }
+  .battleV849 .commandGroupLabelV842{
+    display:none;
   }
   .battleV849 .commandsV821 button{
-    min-height:50px!important;
-    grid-template-columns:20px minmax(0,1fr)!important;
-    padding:4px 5px;
-    border-radius:9px;
+    height:100%;
+    min-height:0!important;
+    grid-template-columns:17px minmax(0,1fr)!important;
+    padding:3px 4px;
+    border-radius:8px;
   }
   .battleV849 .commandsV842 .commandGroupV842 button > span{
-    font-size:15px;
+    font-size:13px;
   }
   .battleV849 .commandsV842 .commandGroupV842 button > b{
     font-size:8px;
   }
   .battleV849 .commandsV842 .commandGroupV842 button > small{
-    font-size:5.5px;
-    white-space:nowrap;
+    display:none;
   }
   .battleV849 .commandsV842 > section > div:last-child{
     grid-template-columns:1fr;
+    grid-template-rows:1fr 1fr;
     gap:3px;
+    height:100%;
   }
   .battleV849 .battleLogDetailsV821{
-    min-height:34px;
+    min-height:0;
     overflow:hidden;
   }
   .battleV849 .battleLogDetailsV821 summary{
-    padding:7px 12px;
+    min-height:28px;
+    padding:5px 10px;
   }
   .battleV849 .battleLogDetailsV821 .battleLogV23{
     display:none;

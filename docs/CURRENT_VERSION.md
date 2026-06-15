@@ -1,3 +1,14 @@
+v8.6-A.49.8 Mobile battle screen hierarchy
+GAME_VERSION to 8.6-A.49.8
+
+Main changes:
+- Reworked the mobile dedicated battle screen layout around Safari-height constraints.
+- Compressed the battle header, command deck, tactical strip, party rail, and battle log for a cleaner game-screen hierarchy.
+- Repositioned mobile battle HUDs and monsters to reduce overlap and avoid accidental cropping.
+- Updated PWA/cache version to v8.6-A.49.8.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+---
+
 v8.6-A.49.7 Dedicated battle screen
 GAME_VERSION to 8.6-A.49.7
 
