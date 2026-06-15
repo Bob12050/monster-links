@@ -1,6 +1,14 @@
-# Monster Links v8.6-A.49.4
+# Monster Links v8.6-A.49.5
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.49.5 update
+
+- Tuned the mobile battle screen to reduce required scrolling.
+- Compacted the mobile battle arena, HUDs, party rail, tactical bar, command deck, and battle log.
+- Removed the mobile support chips from the field to avoid overlap with monsters and HUD panels.
+- Updated PWA/cache version to v8.6-A.49.5.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
 
 ## v8.6-A.49.4 update
 

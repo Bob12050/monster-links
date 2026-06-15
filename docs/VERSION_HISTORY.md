@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.49.5 Battle mobile fit tuning
+
+- Tuned the mobile battle screen to reduce required scrolling.
+- Compacted the mobile battle arena, HUDs, party rail, tactical bar, command deck, and battle log.
+- Removed the mobile support chips from the field to avoid overlap with monsters and HUD panels.
+- Updated PWA/cache version to v8.6-A.49.5.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+
 ## v8.6-A.49.4 Battle PC visual tuning
 
 - Tuned the PC battle screen so enemy, ally, and VS elements have more breathing room.
