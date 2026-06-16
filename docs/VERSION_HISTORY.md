@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.49.9 Title screen renewal
+
+- Renewed the title screen with a stronger fantasy mobile-game launch layout.
+- Reused existing stage and monster assets for the title background and showcase; no new image assets were added.
+- Added a polished start panel, leader summary, record strip, and responsive mobile/PC title layout.
+- Updated PWA/cache version to v8.6-A.49.9.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+
 ## v8.6-A.49.8 Mobile battle screen hierarchy
 
 - Reworked the mobile dedicated battle screen layout around Safari-height constraints.
