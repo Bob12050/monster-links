@@ -1,5 +1,14 @@
 # Version History
 
+## v8.6-A.49.10 Poster-style title screen
+
+- Rebuilt the title screen into a poster-style mobile launch screen inspired by classic monster puzzle RPG title layouts.
+- Added stacked update/news banners, a large colorful logo treatment, a monster showcase, and a single prominent start button.
+- Kept the title screen full-screen on mobile and PC with no page-level scrolling.
+- Reused existing stage and monster assets; no new image assets were added.
+- Updated PWA/cache version to v8.6-A.49.10.
+- No changes to monster IDs, rank, stats, fusion recipes, stage structure, save schema, owned data, rewards, images, or battle balance.
+
 ## v8.6-A.49.9 Title screen renewal
 
 - Renewed the title screen with a stronger fantasy mobile-game launch layout.

@@ -15,82 +15,83 @@
     }
   }
 
+  function titleMonsterList(){
+    const state = S.state;
+    const picks = [];
+    const add = monster => {
+      const id = typeof monster === "string" ? monster : monster?.id;
+      if(!id || !D.MONSTERS?.[id] || picks.some(item=>item.id === id)) return;
+      picks.push(typeof monster === "string" ? {id} : monster);
+    };
+    state.party.slice(0,3).forEach(add);
+    ["prismdragon","zenithdragon","cindrake","frostpup","plim"].forEach(add);
+    return picks.slice(0,3);
+  }
+
   function titleHtml(){
     const state = S.state;
     const dex = S.dexCounts();
     const quest = S.questCounts();
-    const lead = state.party[0];
-    const leadDef = lead ? S.def(lead.id) : null;
     const lastStage = D.STAGES.find(stage => stage.id === state.lastStage) || D.STAGES[0];
     const pr = S.playerRankInfo ? S.playerRankInfo() : null;
     const hasProgress = dex.discovered > 1 ||
       (state.lastStage && state.lastStage !== D.STAGES[0]?.id) ||
       (state.wins || 0) > 0 ||
       state.party.length > 1;
-    const showcase = state.party.slice(0, 3);
-    for(const id of ["plim", "leafling", "puffbat"]){
-      if(showcase.length >= 3) break;
-      if(!showcase.some(monster => monster.id === id)) showcase.push({id});
-    }
-    const startMain = hasProgress ? "つづきから" : "冒険をはじめる";
-    const startSub = hasProgress && lastStage
-      ? `${U.esc(lastStage.name)}のつづきから`
-      : "仲間とリンクして世界へ出発";
-    const leadName = lead ? U.esc(lead.nickname || leadDef.name) : "まだ見ぬ仲間";
+    const showcase = titleMonsterList();
     const titleBg = backgroundAssetUrl(lastStage?.image || "assets/images/backgrounds/base_camp_v827.jpg");
+    const startMain = hasProgress ? "スタート" : "はじめる";
+    const noticeText = quest.claimable > 0 ? `受け取れる任務報酬 ${quest.claimable}件` : "冒険の準備はできています";
 
     return `
-    <main class="titleScreenV82 titleScreenV817 titleScreenV8499" style="--title-bg:url('${U.esc(titleBg)}')">
-      <div class="titleAuraV8499" aria-hidden="true"></div>
-      <div class="titleGateV8499" aria-hidden="true"></div>
-      <section class="titleWorldV82 titleWorldV8499">
-        <div class="titleShowcaseV82 titleShowcaseV8499" aria-label="現在の仲間">
-          <div class="titleSunV82 titleCoreV8499"></div>
+    <main class="titleScreenV82 titleScreenV817 titleScreenV8499 titleScreenV8500" style="--title-bg:url('${U.esc(titleBg)}')">
+      <div class="titleSkylineV8500" aria-hidden="true"></div>
+      <div class="titleTopBannersV8500" aria-label="お知らせ">
+        <button class="titleBannerV8500 update" onclick="Game.startGame()">
+          <b>Ver.${U.esc(D.GAME_VERSION)}</b><span>アップデート</span>
+        </button>
+        <button class="titleBannerV8500 news" onclick="Game.setView('quest')">
+          <b>${U.esc(noticeText)}</b><span>任務ボードへ</span>
+        </button>
+      </div>
+
+      <section class="titleHeroV8500" aria-label="タイトル">
+        <div class="titleLogoV8500">
+          <small>MONSTER TRAINING RPG</small>
+          <h1>
+            <span class="titleLogoMainV8500">MONSTER</span>
+            <span class="titleLogoAmpV8500">&amp;</span>
+            <span class="titleLogoSubV8500">LINKS</span>
+          </h1>
+          <p>仲間とリンクして、まだ見ぬ冒険地へ。</p>
+        </div>
+
+        <div class="titleShowcaseV82 titleShowcaseV8499 titleShowcaseV8500" aria-label="タイトルモンスター">
           ${showcase.map((monster, index) => {
             const def = S.def(monster.id);
             return `
-            <div class="titleMonsterSlotV82 titleMonsterSlotV8499 slot${index + 1}">
-              ${V.monsterVisual(monster, `titleMonsterArtV82 titleMonsterArtV8499 art${index + 1}`)}
+            <div class="titleMonsterSlotV82 titleMonsterSlotV8499 titleMonsterSlotV8500 slot${index + 1}">
+              ${V.monsterVisual(monster, `titleMonsterArtV82 titleMonsterArtV8499 titleMonsterArtV8500 art${index + 1}`)}
               <span>${U.esc(def.name)}</span>
             </div>`;
           }).join("")}
-          <div class="titleGroundV82 titleGroundV8499"></div>
-        </div>
-
-        <div class="titleCopyV82 titleCopyV8499">
-          <div class="titleBrandV82 titleBrandV8499">
-            <img src="assets/images/ui/logo_mark.svg" alt="" class="titleMarkV82 titleMarkV8499" draggable="false">
-            <div>
-              <span>MONSTER TRAINING RPG</span>
-              <h1><small>モンスター</small>リンクス</h1>
-            </div>
-          </div>
-          <p class="titleCatchV82 titleCatchV8499">仲間とリンクして、まだ見ぬ冒険地へ。</p>
-          <div class="titleLeadV82 titleLeadV8499">
-            <span>LEADER</span>
-            <b>${leadName}${lead ? ` <i>Lv ${lead.level}</i>` : ""}</b>
-            <small>${lastStage ? `前回の冒険地：${U.esc(lastStage.name)} / 図鑑 ${dex.discovered}/${dex.total}` : "冒険の準備をしよう"}</small>
-          </div>
-          <div class="titleActionsV82 titleActionsV8499">
-            <button class="primary titleStartV82 titleStartV8499" onclick="Game.startGame()">
-              <span>${startMain}</span>
-              <small>${startSub}</small>
-              <em>TAP TO START</em>
-            </button>
-            <button onclick="Game.setView('stage')"><b>冒険地</b><small>ステージ選択</small></button>
-            <button class="gold" onclick="Game.setView('help')"><b>遊び方</b><small>基本ガイド</small></button>
-            <button class="ghost" onclick="Game.setView('settings')"><b>設定</b><small>セーブ/バックアップ</small></button>
-          </div>
+          <div class="titleGroundV82 titleGroundV8499 titleGroundV8500"></div>
         </div>
       </section>
 
-      <section class="titleRecordV82 titleRecordV8499">
-        ${pr ? `<div><span>RANK</span><b>${pr.rank}${pr.isMax ? "<small> MAX</small>" : ""}</b></div>` : ""}
-        <div><span>GOLD</span><b>${state.gold}<small> G</small></b></div>
-        <div><span>図鑑</span><b>${dex.discovered}<small> / ${dex.total}</small></b></div>
-        <div><span>任務</span><b>${quest.claimed}<small> / ${quest.total}</small></b></div>
+      <section class="titleStartAreaV8500">
+        <button class="titleStartV82 titleStartV8499 titleStartV8500" onclick="Game.startGame()">
+          <span>${startMain}</span>
+          <small>${hasProgress && lastStage ? `${U.esc(lastStage.name)}から続き` : "タップして冒険へ"}</small>
+        </button>
+        <div class="titleMiniStatusV8500">
+          ${pr ? `<span>RANK <b>${pr.rank}</b></span>` : ""}
+          <span>GOLD <b>${state.gold}</b></span>
+          <span>図鑑 <b>${dex.discovered}/${dex.total}</b></span>
+        </div>
       </section>
-      <div class="titleVersionV82 titleVersionV8499">MONSTER LINKS v${D.GAME_VERSION}</div>
+
+      <div class="titleVersionV82 titleVersionV8499 titleVersionV8500">Ver.${D.GAME_VERSION} / Monster Links</div>
     </main>`;
   }
 
