@@ -15233,3 +15233,611 @@ body.mlReducedMotionV817 .homeLeaderHaloV848{animation:none}
     display:none;
   }
 }
+
+/* =========================================================
+   v8.6-A.55 Bright adventure-atlas HOME rebuild
+   ========================================================= */
+.app[data-view="home"] > .top{display:none}
+.app[data-view="home"]{
+  --atlas-ink:#294c73;
+  --atlas-blue:#2677ca;
+  --atlas-blue-dark:#15549d;
+  --atlas-coral:#ef654e;
+  --atlas-paper:#fffdf7;
+  --atlas-line:#e4ded3;
+  width:min(430px,100%);
+  height:min(var(--app-height),932px);
+  grid-template-rows:minmax(0,1fr) auto;
+  border-radius:0;
+  color:var(--atlas-ink);
+  background:#f6f1e8;
+  box-shadow:0 24px 66px rgba(26,74,112,.28);
+}
+.app[data-view="home"] > main.homeV855{
+  grid-row:1;
+  min-height:0;
+  padding:0;
+  overflow:hidden;
+  background:#6fc3ef;
+}
+.homeAtlasV855{
+  position:relative;
+  height:100%;
+  min-height:0;
+  overflow:hidden;
+  isolation:isolate;
+  color:var(--atlas-ink);
+  background:#6fc3ef;
+}
+.homeAtlasV855:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.06),transparent 24%),
+    linear-gradient(180deg,transparent 60%,rgba(23,83,71,.10) 78%,rgba(22,69,61,.24));
+}
+.homeAtlasV855:after{display:none}
+.homeAtlasSceneV855{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:var(--home-atlas) center/cover no-repeat;
+}
+.homeAtlasHudV855,
+.homeAtlasQuestV855,
+.homeAtlasCompanionV855,
+.homeAtlasBottomV855{
+  position:absolute;
+  z-index:5;
+}
+.homeAtlasHudV855{
+  left:18px;
+  right:18px;
+  top:12px;
+  height:70px;
+  display:grid;
+  grid-template-columns:1.08fr .94fr 1.08fr;
+  align-items:stretch;
+  overflow:visible;
+  border:1px solid rgba(255,255,255,.94);
+  border-radius:25px;
+  background:rgba(255,253,247,.96);
+  box-shadow:0 9px 22px rgba(31,77,106,.24),inset 0 -1px rgba(171,160,143,.18);
+  backdrop-filter:blur(8px);
+}
+.homeAtlasHudV855 button{
+  position:relative;
+  min-width:0;
+  min-height:68px;
+  display:grid;
+  align-items:center;
+  gap:6px;
+  margin:0;
+  padding:7px 8px!important;
+  border:0!important;
+  border-left:1px solid var(--atlas-line)!important;
+  border-radius:0!important;
+  color:var(--atlas-ink)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  text-align:left;
+}
+.homeAtlasHudV855 button:first-child{border-left:0!important}
+.homeAtlasRankV855{grid-template-columns:52px minmax(0,1fr)}
+.homeAtlasRankV855 > span:last-of-type,
+.homeAtlasStatV855 > span:last-child{
+  min-width:0;
+  display:grid;
+  align-content:center;
+}
+.homeAtlasHudV855 small{
+  display:block;
+  color:#60728a;
+  font-size:10px;
+  font-weight:900;
+  line-height:1.15;
+  white-space:nowrap;
+}
+.homeAtlasHudV855 b{
+  display:block;
+  overflow:hidden;
+  color:#1f4a79;
+  font-family:inherit;
+  font-size:23px;
+  font-weight:1000;
+  line-height:1.05;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.homeAtlasAvatarV855{
+  width:56px;
+  height:56px;
+  display:grid;
+  place-items:center;
+  margin-left:-5px;
+  padding:3px;
+  overflow:hidden;
+  border:2px solid #fff;
+  border-radius:50%;
+  color:#2585d7;
+  background:radial-gradient(circle at 38% 28%,#fff,#e5f5ff 64%,#b7d8e9);
+  box-shadow:0 3px 9px rgba(36,82,109,.24),inset 0 0 0 1px rgba(72,112,135,.18);
+}
+.homeAtlasAvatarMonsterV855,
+.homeAtlasAvatarMonsterV855 img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+.homeAtlasRankV855 em{
+  position:absolute;
+  left:42px;
+  top:-5px;
+  min-width:18px;
+  height:18px;
+  display:grid;
+  place-items:center;
+  padding:0 4px;
+  border:2px solid #fff;
+  border-radius:999px;
+  color:#fff;
+  background:#ef654e;
+  font-size:9px;
+  font-style:normal;
+  font-weight:1000;
+  box-shadow:0 2px 6px rgba(116,49,38,.28);
+}
+.homeAtlasStatV855{grid-template-columns:32px minmax(0,1fr)}
+.homeAtlasStatIconV855{
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#fff;
+  background:linear-gradient(145deg,#68caff,#1679c8);
+  box-shadow:inset 0 1px rgba(255,255,255,.7),0 3px 6px rgba(42,91,121,.24);
+}
+.homeAtlasStatIconV855.gold{
+  color:#fff8c9;
+  background:linear-gradient(145deg,#ffe978,#e1a510 62%,#bb7500);
+}
+.homeAtlasStatIconV855 .mlIcon{width:19px;height:19px}
+
+.homeAtlasQuestV855{
+  left:84px;
+  right:16px;
+  top:40.5%;
+  height:146px;
+  min-height:0;
+  display:grid;
+  grid-template-rows:33px 25px 1fr;
+  align-content:start;
+  gap:1px;
+  margin:0;
+  padding:28px 13px 10px 84px!important;
+  overflow:visible;
+  border:1px solid rgba(197,187,171,.78)!important;
+  border-radius:19px!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:0 10px 25px rgba(42,75,83,.28),inset 0 1px #fff!important;
+  text-align:center;
+}
+.homeAtlasQuestV855:active{transform:translateY(2px)!important}
+.homeAtlasAreaV855{
+  position:absolute;
+  left:75px;
+  right:14px;
+  top:-16px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border:1px solid #155eaa;
+  border-radius:3px;
+  color:#fff;
+  background:linear-gradient(180deg,#398ce0,#1768bd);
+  box-shadow:0 3px 8px rgba(22,83,139,.32),inset 0 1px rgba(255,255,255,.38);
+  font-size:14px;
+  font-weight:1000;
+  letter-spacing:.06em;
+}
+.homeAtlasQuestNameV855{
+  overflow:hidden;
+  color:#244f7e;
+  font-size:21px;
+  font-weight:1000;
+  line-height:1.25;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.homeAtlasQuestLevelV855{
+  color:#5b6e84;
+  font-size:13px;
+  font-weight:900;
+}
+.homeAtlasQuestCtaV855{
+  align-self:end;
+  min-height:48px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  place-items:center;
+  padding:0 15px 0 25px;
+  border:1px solid #d94f39;
+  border-radius:24px;
+  color:#fff;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#d84a36);
+  box-shadow:inset 0 2px rgba(255,255,255,.44),0 4px 8px rgba(144,68,51,.25);
+  font-size:19px;
+  font-weight:1000;
+  letter-spacing:.04em;
+}
+.homeAtlasQuestCtaV855 b{
+  color:#fff;
+  font-size:30px;
+  font-weight:700;
+  line-height:1;
+}
+.homeAtlasPinV855{
+  position:absolute;
+  left:-70px;
+  top:8px;
+  width:118px;
+  height:129px;
+  display:block;
+  filter:drop-shadow(0 7px 8px rgba(29,78,105,.28));
+}
+.homeAtlasPinV855:after{
+  content:"";
+  position:absolute;
+  left:39px;
+  bottom:8px;
+  width:36px;
+  height:36px;
+  transform:rotate(45deg);
+  border-right:7px solid #fff;
+  border-bottom:7px solid #fff;
+  border-radius:4px;
+  background:#38a9ed;
+}
+.homeAtlasPinV855 > span{
+  position:absolute;
+  z-index:2;
+  left:6px;
+  top:0;
+  width:106px;
+  height:106px;
+  display:grid;
+  place-items:center;
+  padding:7px;
+  overflow:hidden;
+  border:7px solid #fff;
+  border-radius:50%;
+  background:#2d9fe5;
+  box-shadow:inset 0 0 0 3px #126db8,0 0 0 2px #287fc1;
+}
+.homeAtlasPinV855 img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.homeAtlasCompanionV855{
+  left:16px;
+  bottom:91px;
+  width:142px;
+  height:142px;
+  min-height:0;
+  display:grid;
+  place-items:end center;
+  margin:0;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  color:#2b82c6;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 10px 8px rgba(32,61,53,.30));
+}
+.homeAtlasLeaderArtV855{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:end center;
+}
+.homeAtlasLeaderArtV855 img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center bottom;
+}
+.homeAtlasLeaderEmptyV855{
+  width:94px;
+  height:94px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(255,255,255,.84);
+}
+.homeAtlasLeaderEmptyV855 .mlIcon{width:56px;height:56px}
+
+.homeAtlasBottomV855{
+  left:10px;
+  right:10px;
+  bottom:10px;
+  height:105px;
+  display:grid;
+  grid-template-columns:1.16fr .72fr 1.11fr;
+  gap:6px;
+}
+.homeAtlasBottomV855 > button{
+  position:relative;
+  min-width:0;
+  min-height:0;
+  margin:0;
+  padding:10px 8px!important;
+  border:1px solid rgba(207,199,186,.82)!important;
+  border-radius:17px!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.96)!important;
+  box-shadow:0 7px 16px rgba(41,73,78,.23),inset 0 1px #fff!important;
+}
+.homeAtlasBottomV855 > button:active{transform:translateY(2px)!important}
+.homeAtlasMessageV855{
+  display:grid;
+  place-items:center start;
+  text-align:left;
+}
+.homeAtlasMessageV855:before{
+  content:"";
+  position:absolute;
+  left:63px;
+  top:-10px;
+  width:21px;
+  height:21px;
+  transform:rotate(45deg);
+  border-left:1px solid rgba(207,199,186,.82);
+  border-top:1px solid rgba(207,199,186,.82);
+  background:var(--atlas-paper);
+}
+.homeAtlasMessageV855 span{
+  position:relative;
+  z-index:1;
+  color:#31547a;
+  font-size:12px;
+  font-weight:900;
+  line-height:1.65;
+}
+.homeAtlasProgressV855{
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  place-items:center;
+  text-align:center;
+}
+.homeAtlasBottomV855 small{
+  color:#516984;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.homeAtlasProgressV855 b{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  color:#284f7d;
+  font-size:13px;
+  font-weight:1000;
+  white-space:nowrap;
+}
+.homeAtlasProgressV855 b span{display:grid;place-items:center;color:#2877bf}
+.homeAtlasProgressV855 b .mlIcon{width:17px;height:17px}
+.homeAtlasProgressV855 em{
+  color:#61738a;
+  font-size:9px;
+  font-style:normal;
+  font-weight:900;
+}
+.homeAtlasPartyV855{
+  display:grid;
+  grid-template-rows:auto 1fr;
+  gap:6px;
+  text-align:center;
+}
+.homeAtlasPartySlotsV855{
+  min-width:0;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:4px;
+}
+.homeAtlasPartySlotsV855 > i{
+  grid-column:span var(--party-size,1);
+  min-width:0;
+  display:grid;
+  grid-template-rows:minmax(0,1fr) 11px;
+  place-items:center;
+  padding:2px;
+  overflow:hidden;
+  border:1px solid #d9d3c8;
+  border-radius:10px;
+  background:#f7f4ed;
+  font-style:normal;
+}
+.homeAtlasPartySlotsV855 > i.empty{
+  grid-column:span 1;
+  display:grid;
+  grid-template-rows:1fr;
+  place-items:center;
+  color:#c8c5bc;
+  border-style:dashed;
+  background:rgba(247,244,237,.64);
+}
+.homeAtlasPartySlotsV855 > i.empty .mlIcon{width:22px;height:22px}
+.homeAtlasPartyIconV855,
+.homeAtlasPartyIconV855 img{
+  width:38px;
+  max-width:100%;
+  height:38px;
+  object-fit:contain;
+}
+.homeAtlasPartySlotsV855 > i b{
+  color:#31557b;
+  font-size:9px;
+  line-height:1;
+  white-space:nowrap;
+}
+.homeAtlasV855 .homeMetaV853{
+  position:absolute;
+  left:-9999px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+
+.app[data-view="home"] > .gameDockV821{
+  grid-row:2;
+  min-height:82px!important;
+  padding:6px 8px max(6px,var(--app-safe-bottom))!important;
+  border:0!important;
+  border-top:1px solid #ddd7cc!important;
+  border-radius:20px 20px 0 0!important;
+  background:rgba(255,253,247,.98)!important;
+  box-shadow:0 -8px 24px rgba(38,73,77,.20),inset 0 1px #fff!important;
+}
+.app[data-view="home"] > .gameDockV821 button{
+  min-height:62px!important;
+  border:0!important;
+  border-left:1px solid #e6e0d6!important;
+  border-radius:0!important;
+  color:#4c6480!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.app[data-view="home"] > .gameDockV821 button:first-child{border-left:0!important}
+.app[data-view="home"] > .gameDockV821 button.on{
+  margin-top:-9px;
+  min-height:70px!important;
+  border:1px solid #1765b3!important;
+  border-radius:16px!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#4a9ae8,#1b6dc2 66%,#1458a2)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.45),0 5px 10px rgba(35,89,135,.28)!important;
+}
+.app[data-view="home"] > .gameDockV821 .dockIconV821 .mlIcon{
+  filter:none;
+}
+.app[data-view="home"] > .gameDockV821 button.on .dockIconV821{
+  color:#fff;
+  filter:none;
+}
+.app[data-view="home"] > .gameDockV821 button.on:before{display:none!important}
+.app[data-view="home"] > .gameDockV821 .dockLabelV821{
+  font-size:11px;
+  font-weight:1000;
+}
+.homeAtlasHudV855 button:focus-visible,
+.homeAtlasQuestV855:focus-visible,
+.homeAtlasCompanionV855:focus-visible,
+.homeAtlasBottomV855 button:focus-visible,
+.app[data-view="home"] > .gameDockV821 button:focus-visible{
+  outline:3px solid #ffca42;
+  outline-offset:2px;
+}
+
+@media(min-width:560px){
+  body:has(.app[data-view="home"]){
+    background:
+      radial-gradient(circle at 50% 8%,rgba(255,255,255,.9),transparent 30%),
+      linear-gradient(180deg,#9ed9f5,#d8eee7 70%,#c8ded5);
+  }
+  .app[data-view="home"]{
+    height:min(calc(var(--app-height) - 24px),932px);
+    border:6px solid rgba(255,255,255,.94);
+    border-radius:34px;
+    box-shadow:0 0 0 2px rgba(38,85,111,.20),0 28px 74px rgba(41,81,103,.38);
+  }
+  .app[data-view="home"]:before{display:none}
+  .app[data-view="home"] > .gameDockV821{border-radius:0 0 28px 28px!important}
+}
+
+@media(max-height:760px){
+  .homeAtlasHudV855{top:8px;height:60px}
+  .homeAtlasHudV855 button{min-height:58px;padding-top:4px!important;padding-bottom:4px!important}
+  .homeAtlasAvatarV855{width:49px;height:49px}
+  .homeAtlasRankV855{grid-template-columns:47px minmax(0,1fr)}
+  .homeAtlasHudV855 b{font-size:20px}
+  .homeAtlasQuestV855{top:35%;height:130px;padding-top:24px!important;grid-template-rows:29px 21px 1fr}
+  .homeAtlasQuestNameV855{font-size:18px}
+  .homeAtlasQuestCtaV855{min-height:42px;font-size:17px}
+  .homeAtlasPinV855{transform:scale(.88);transform-origin:left center}
+  .homeAtlasCompanionV855{bottom:78px;width:120px;height:120px}
+  .homeAtlasBottomV855{bottom:7px;height:88px}
+  .homeAtlasMessageV855 span{font-size:10px;line-height:1.5}
+  .homeAtlasPartyIconV855,.homeAtlasPartyIconV855 img{width:30px;height:30px}
+  .homeAtlasBottomV855 > button{padding:7px 5px!important}
+  .app[data-view="home"] > .gameDockV821{min-height:74px!important}
+  .app[data-view="home"] > .gameDockV821 button{min-height:54px!important;grid-template-rows:29px 16px}
+  .app[data-view="home"] > .gameDockV821 button.on{min-height:62px!important}
+}
+
+@media(max-width:380px){
+  .homeAtlasHudV855{left:10px;right:10px;grid-template-columns:1.06fr .92fr 1.1fr}
+  .homeAtlasHudV855 button{gap:4px;padding-left:5px!important;padding-right:5px!important}
+  .homeAtlasHudV855 small{font-size:9px}
+  .homeAtlasHudV855 b{font-size:20px}
+  .homeAtlasStatV855{grid-template-columns:27px minmax(0,1fr)}
+  .homeAtlasStatIconV855{width:27px;height:27px}
+  .homeAtlasQuestV855{left:76px;right:10px;padding-left:76px!important}
+  .homeAtlasAreaV855{left:67px;right:10px}
+  .homeAtlasPinV855{left:-65px;transform:scale(.9);transform-origin:left center}
+  .homeAtlasBottomV855{left:6px;right:6px;gap:4px;grid-template-columns:1.14fr .72fr 1.12fr}
+  .homeAtlasBottomV855 > button{padding-left:5px!important;padding-right:5px!important}
+  .homeAtlasMessageV855 span{font-size:10.5px}
+  .homeAtlasProgressV855 b{font-size:11px;gap:2px}
+  .homeAtlasPartySlotsV855{gap:2px}
+  .app[data-view="home"] > .gameDockV821{padding-left:4px!important;padding-right:4px!important}
+  .app[data-view="home"] > .gameDockV821 .dockLabelV821{font-size:10px}
+}
+
+/* Keep the atlas surfaces above the earlier global game-button skin. */
+.app.gameFeelV845[data-view="home"] > main.homeV855 .homeAtlasHudV855 button{
+  border-width:0!important;
+  border-color:transparent!important;
+  border-bottom-color:transparent!important;
+  border-left:1px solid var(--atlas-line)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+}
+.app.gameFeelV845[data-view="home"] > main.homeV855 .homeAtlasHudV855 button:first-child{
+  border-left:0!important;
+}
+.app.gameFeelV845[data-view="home"] > main.homeV855 .homeAtlasQuestV855{
+  border-width:1px!important;
+  border-color:rgba(197,187,171,.78)!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:0 10px 25px rgba(42,75,83,.28),inset 0 1px #fff!important;
+  text-shadow:none!important;
+}
+.app.gameFeelV845[data-view="home"] > main.homeV855 .homeAtlasCompanionV855{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+}
+.app.gameFeelV845[data-view="home"] > main.homeV855 .homeAtlasBottomV855 > button{
+  border-width:1px!important;
+  border-color:rgba(207,199,186,.82)!important;
+  background:rgba(255,253,247,.96)!important;
+  box-shadow:0 7px 16px rgba(41,73,78,.23),inset 0 1px #fff!important;
+  text-shadow:none!important;
+}
+.app.crystalUiV822[data-view="home"] > main.homeV855 .homeAtlasPartySlotsV855 > i.empty{
+  border-color:#d9d3c8!important;
+  color:#c8c5bc!important;
+  background:rgba(247,244,237,.64)!important;
+}

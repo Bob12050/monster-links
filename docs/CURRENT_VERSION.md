@@ -1,3 +1,13 @@
+v8.6-A.55 Bright adventure atlas HOME
+GAME_VERSION to 8.6-A.55
+
+Main changes:
+- Rebuilt HOME as a bright, full-height adventure atlas based on the selected concept.
+- Added a dedicated route-marked atlas asset and connected live Rank, Gold, party, stage, leader, and progress data.
+- Kept existing navigation, title, battle, save compatibility, content IDs, recipes, rewards, and balance intact.
+- Verified the primary mobile journey, responsive layouts, PWA cache list, and full validator.
+---
+
 v8.6-A.49.10 Poster-style title screen
 GAME_VERSION to 8.6-A.49.10
 

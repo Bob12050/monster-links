@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.55 Bright adventure atlas HOME
+
+- Rebuilt HOME as a bright, full-height adventure atlas based on the selected concept.
+- Added a dedicated route-marked atlas asset and connected live Rank, Gold, party, stage, leader, and progress data.
+- Kept existing navigation, title, battle, save compatibility, content IDs, recipes, rewards, and balance intact.
+- Verified the primary mobile journey, responsive layouts, PWA cache list, and full validator.
+- Updated PWA/cache version to v8.6-A.55.
+
 ## v8.6-A.49.10 Poster-style title screen
 
 - Rebuilt the title screen into a poster-style mobile launch screen inspired by classic monster puzzle RPG title layouts.

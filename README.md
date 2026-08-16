@@ -1,6 +1,14 @@
-# Monster Links v8.6-A.49.10
+# Monster Links v8.6-A.55
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.55 update
+
+- Rebuilt HOME as a bright, full-height adventure atlas based on the selected concept.
+- Added a dedicated route-marked atlas asset and connected live Rank, Gold, party, stage, leader, and progress data.
+- Kept existing navigation, title, battle, save compatibility, content IDs, recipes, rewards, and balance intact.
+- Verified the primary mobile journey at 360, 390, and 430 px widths, plus tablet layout and PWA caching.
+- Updated PWA/cache version to v8.6-A.55.
 
 ## v8.6-A.49.10 update
 
@@ -86,7 +94,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.49 Adventure quest gate and mobile home cleanup
+v8.6-A.55 Bright adventure atlas HOME
 ```
 
 ## v8.6-A.49 update
