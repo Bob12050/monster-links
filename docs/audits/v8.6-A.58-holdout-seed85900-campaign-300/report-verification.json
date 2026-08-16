@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "html": "docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/report.html",
+  "stages": {
+    "validation": "passed",
+    "package": "passed",
+    "verification": "passed"
+  },
+  "counts": {
+    "blocks": 15,
+    "charts": 1,
+    "html": 0,
+    "metrics": 1,
+    "tables": 0
+  },
+  "sourceDialog": "passed",
+  "sourceInteraction": "keyboard_menu_semantic_click",
+  "viewports": [
+    1440,
+    390
+  ],
+  "timings": {
+    "validateAndPackageMs": 2531.9,
+    "staticChartExtractionMs": 2433,
+    "browserRunMs": 1517.4,
+    "readerReadyMs": 252.8,
+    "contentChecksMs": 32,
+    "sourceDialogMs": 32,
+    "responsiveChecksMs": 32,
+    "verificationMs": 1539.2,
+    "totalMs": 4086.4
+  }
+}

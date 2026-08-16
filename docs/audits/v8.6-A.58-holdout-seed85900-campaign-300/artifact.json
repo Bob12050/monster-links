@@ -1,0 +1,3726 @@
+{
+  "surface": "report",
+  "priorityFixVerification": {
+    "schema": "monster-links.priority-fixes-verification",
+    "schemaVersion": 1,
+    "testVersion": "1.0.0",
+    "gameVersion": "8.6-A.58",
+    "sourceHash": "78cf4bf1dca27ad779f2917f33fc2336f24e1ca106db9f9a0f299c578a971b77",
+    "status": "passed",
+    "passed": true,
+    "counts": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "tests": [
+      {
+        "id": "scout-charm-reward-adds",
+        "status": "passed"
+      },
+      {
+        "id": "equipment-return-record-integrity",
+        "status": "passed"
+      },
+      {
+        "id": "fusion-neutral-inheritance",
+        "status": "passed"
+      },
+      {
+        "id": "fusion-equipment-return-record-integrity",
+        "status": "passed"
+      },
+      {
+        "id": "auto-guard-consecutive-limit",
+        "status": "passed"
+      }
+    ]
+  },
+  "scenario": {
+    "schemaVersion": 1,
+    "id": "sky_ruins-boss-boost",
+    "label": "8.6-A.58 対照 HP+45%",
+    "mode": "explicit_control",
+    "simulationOnly": true,
+    "hash": "b686d6019b0ce4ad854628bb934eb3157a4707ff7b8b8279b2ef7e9d30ddc695",
+    "identity": {
+      "schemaVersion": 1,
+      "stageId": "sky_ruins",
+      "bossId": "zenithdragon",
+      "effectiveBossBoost": {
+        "hp": 0.45,
+        "mp": 0.2,
+        "atk": 0.12,
+        "def": 0.12,
+        "wis": 0.12
+      }
+    },
+    "target": {
+      "stageId": "sky_ruins",
+      "bossId": "zenithdragon"
+    },
+    "requested": {
+      "option": "--sky-boss-hp-boost",
+      "value": "control"
+    },
+    "before": {
+      "bossBoost": {
+        "hp": 0.45,
+        "mp": 0.2,
+        "atk": 0.12,
+        "def": 0.12,
+        "wis": 0.12
+      }
+    },
+    "effective": {
+      "bossBoost": {
+        "hp": 0.45,
+        "mp": 0.2,
+        "atk": 0.12,
+        "def": 0.12,
+        "wis": 0.12
+      }
+    },
+    "changedPaths": []
+  },
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Monster Links 8.6-A.58 対照 HP+45% 300周キャンペーン監査",
+    "description": "8.6-A.58 対照 HP+45%をヘッドレス実行した300キャンペーンと、仕様契約の静的監査。",
+    "generatedAt": "2026-08-16T22:16:41.159Z",
+    "cards": [
+      {
+        "id": "overview_card",
+        "description": "300周全体の主要指標。",
+        "dataset": "overview",
+        "sourceId": "overview_source",
+        "metrics": [
+          {
+            "label": "監査上限内完走率",
+            "field": "completion_rate",
+            "format": "percent"
+          },
+          {
+            "label": "戦闘数 P50",
+            "field": "median_battles",
+            "format": "number"
+          },
+          {
+            "label": "戦闘数 P90",
+            "field": "p90_battles",
+            "format": "number"
+          },
+          {
+            "label": "重大/高",
+            "field": "high_findings",
+            "format": "number"
+          }
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "id": "battle_quantiles",
+        "title": "完走・停止までの戦闘数",
+        "subtitle": "全300周の中央値と90パーセンタイル。",
+        "type": "bar",
+        "dataset": "battle_quantiles",
+        "sourceId": "overview_source",
+        "valueFormat": "number",
+        "encodings": {
+          "x": {
+            "field": "percentile",
+            "type": "nominal",
+            "label": "分位"
+          },
+          "y": {
+            "field": "battles",
+            "type": "quantitative",
+            "label": "戦闘数"
+          },
+          "tooltip": [
+            {
+              "field": "battles",
+              "type": "quantitative",
+              "label": "戦闘数"
+            }
+          ]
+        }
+      }
+    ],
+    "tables": [],
+    "sources": [
+      {
+        "id": "overview_source",
+        "label": "主要指標CSV投影",
+        "path": "docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/queries/overview_source.sql"
+      },
+      {
+        "id": "profiles_source",
+        "label": "方針別CSV投影",
+        "path": "docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/queries/profiles_source.sql"
+      },
+      {
+        "id": "stages_source",
+        "label": "地域別CSV投影",
+        "path": "docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/queries/stages_source.sql"
+      },
+      {
+        "id": "findings_source",
+        "label": "問題一覧CSV投影",
+        "path": "docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/queries/findings_source.sql"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title_summary",
+        "type": "markdown",
+        "sourceId": "overview_source",
+        "body": "# Monster Links 8.6-A.58 対照 HP+45% 300周キャンペーン監査\n\n## 技術サマリー\n\n新規セーブから天空遺跡ボス初回制覇までを1周と定義し、実際の本体IIFE・戦闘・報酬・スカウト・成長・配合APIをシード付き乱数と仮想タイマーで300周実行しました。監査上限内完走率は **33%**（95% Wilson CI 27.9–38.5%）、戦闘数中央値は **651.5**、P90は **980.3** です。これは未定義の目標値に対する合否ではありません。"
+      },
+      {
+        "id": "metrics",
+        "type": "metric-strip",
+        "cardIds": [
+          "overview_card"
+        ]
+      },
+      {
+        "id": "scenario_scope",
+        "type": "markdown",
+        "body": "## 検証シナリオ\n\nこれは **8.6-A.58 対照 HP+45%** のシミュレーション専用シナリオです。本体ファイルは変更せず、実行時の変更対象は `なし（明示対照）` です。天空遺跡ボスの補正は HP 0.45 → 0.45、MP 0.2、ATK 0.12、DEF 0.12、WIS 0.12 で、HP以外の実効値は維持しています。\n\nscenario hash: `b686d6019b0ce4ad854628bb934eb3157a4707ff7b8b8279b2ef7e9d30ddc695`"
+      },
+      {
+        "id": "priority_fix_verification",
+        "type": "markdown",
+        "sourceId": "findings_source",
+        "body": "## 優先修正の検証\n\n専用回帰試験は **5/5件成功**し、本監査とGAME_VERSION・sourceHashが一致しています。未解消の重大/高優先指摘は **6件**、証拠付きで解消扱いにした指摘は **0件**です。難易度値は目標を定義してから1変数ずつ判断します。"
+      },
+      {
+        "id": "key_findings",
+        "type": "markdown",
+        "sourceId": "findings_source",
+        "body": "## 主な発見\n\n- **CAMPAIGN_BOUNDED_COMPLETION**（未解消）— 明示した監査上限内で99/300周（33%）が天空遺跡まで完走した。\n- **PLAYSTYLE_COMPLETION_GAP**（未解消）— 監査上限内完走率が収集・配合と速攻で51pt開いた。"
+      },
+      {
+        "id": "profile_context",
+        "type": "markdown",
+        "sourceId": "profiles_source",
+        "body": "## 現行シナリオの方針差\n\n速攻 0%（0/100、95% CI 0–3.7%）、バランス 48%（48/100、95% CI 38.5–57.7%）、収集・配合 51%（51/100、95% CI 41.3–60.6%）。各方針の周回数と95%信頼区間を併記し、小差ではなく区間も含めて方針差を判断します。"
+      },
+      {
+        "id": "battle_quantiles_context",
+        "type": "markdown",
+        "sourceId": "overview_source",
+        "body": "## 戦闘数分布\n\n完走または停止までの戦闘数はP50が651.5戦、P90が980.3戦です。P90は1周上限1000戦の98%に達し、残りは19.7戦です。上位10%を読む際は、この打ち切り上限への近さを感度指標として併記します。"
+      },
+      {
+        "id": "battle_quantiles_chart",
+        "type": "chart",
+        "chartId": "battle_quantiles"
+      },
+      {
+        "id": "boss_context",
+        "type": "markdown",
+        "sourceId": "stages_source",
+        "body": "## ボス難易度\n\n平均挑戦回数が最大なのは **虹晶聖域**（平均43.25回）です。一方、到達後の未突破数が最多なのは **天空遺跡**（60/159周が未突破、突破率62.3%）で、再挑戦の重さと進行停止は分けて判断します。突破率95%以上の地域では **深海神殿** が平均38.22回で最大ですが、これはHIGHの進行壁ではなくMEDIUMの再挑戦負荷として分類します。ボス値だけでなく、直前地域の経験値とオートAIの長期化を同時に確認してください。"
+      },
+      {
+        "id": "grind_context",
+        "type": "markdown",
+        "sourceId": "stages_source",
+        "body": "## 育成周回\n\n追加育成が最大なのは **虹晶聖域**（ボス解放条件を超えて平均91.86勝）。収集方針では通常スカウト成功が報酬0のため、勝数だけ進んでレベルと資金が遅れます。"
+      },
+      {
+        "id": "scope_method",
+        "type": "markdown",
+        "body": "## 対象・データ・定義\n\n- 対象: GAME_VERSION 8.6-A.58、本編13地域、モンスター84種、固定配合83件。\n- シナリオ: 8.6-A.58 対照 HP+45%、scenario hash b686d6019b0ce4ad…、simulation-only yes。\n- 1周: 初期ぷるミン/80Gから、全13ボス初回制覇まで。闘技場EXと図鑑100%は本編完走と分離。\n- 監査上限: 1周1000戦、1戦400ターン、各ボス敗北80回。上限到達は未完走として停止理由を記録。\n- 実装共有: VM内で本体のState/Game APIを直接実行。ダメージ、敵AI、報酬テーブル、ドロップ、スカウト、Lv/ランク成長、配合条件は本体コード。\n- 自動行動: 方針ドライバの全行動を本体APIへ `fromAuto=true` で渡し、本番の「自動防御は2手連続不可」を共有。手動防御は本監査の対象外で、制限しない。\n- プレイヤー判断: 速攻・バランス・収集配合の3方針を明示。全方針が現仕様上の無料キャンプ回復、到達時の任務/ランク報酬、3枠内の自動編成を利用。\n- 再現性: seed 85900、source hash 78cf4bf1dca27ad7…、run signature ab9363c83dde72a6…。"
+      },
+      {
+        "id": "detail_files",
+        "type": "markdown",
+        "body": "## 詳細データ\n\n方針別の信頼区間・地域別の全指標・全問題と個別修正案は、同じ監査フォルダの `profile-metrics.csv`、`stage-metrics.csv`、`findings.csv` に保存しています。優先修正の機械可読レシートは `priority-fixes-verification.json`、全300周の再集計元は `campaigns.csv` と `campaign-stage-runs.csv` です。"
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## 制約・頑健性\n\nこれは実ユーザーの完走率や実ユーザーテレメトリではなく、明示したボット方針を、1周1000戦・1戦400ターン・各ボス敗北80回で打ち切る監査モデルです。したがって完走率は必ず「監査上限内完走率」として解釈します。Wilson 95%信頼区間は固定ボット方針におけるseed間変動を表し、実ユーザー母集団への推定区間ではありません。編成選択とスカウト準備攻撃はプレイヤー判断の近似ですが、戦闘結果・報酬テーブル・成長は本体処理です。方針差は各95%信頼区間と停止理由を確認してください。既存progression-auditの理論閉包は配合Lv1化・親消費を無視するため、本レポートのキャンペーン結論には使用していません。"
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## 推奨する次の手順\n\n1. 解消扱いの優先修正を専用回帰試験で固定し、取得記録・笛在庫・配合継承・自動防御を再発させない。\n2. 方針別の停止理由と重点4地域のpaired明細を使い、残る壁がボス値・経験値・方針AIのどこにあるか分離する。\n3. 地域別boss.boost・EXP・修練価格は1変数ずつ変更し、監査上限内完走率だけでなくP90戦闘数と方針差もガードレールにする。\n4. スカウト笛の早期消費と通常スカウト報酬0は収集方針へ直接効くため、ボス数値とは別変更で検証する。\n5. 素早さ、敵回復、長期経済、冒険者ランクは全戦闘へ波及するため、今回の優先修正と分けて仕様を決める。"
+      },
+      {
+        "id": "questions",
+        "type": "markdown",
+        "body": "## 追加で確認したい問い\n\n- 本編の目標プレイ時間と、1地域あたり許容する通常戦数はどれくらいか。\n- 無料キャンプ回復は正式仕様か、一時的な救済か。\n- 「推奨Lv」は警告か必須条件か。\n- 収集・配合プレイを速攻と同程度に完走可能にするか、意図的に長くするか。"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-16T22:16:41.159Z",
+    "status": "ready",
+    "datasets": {
+      "overview": [
+        {
+          "campaigns": 300,
+          "completed": 99,
+          "completion_rate": 0.33,
+          "completion_ci_low": 0.2792344636154957,
+          "completion_ci_high": 0.3850641466008499,
+          "median_battles": 651.5,
+          "p90_battles": 980.3,
+          "median_turns": 8253,
+          "p90_turns": 34561.2,
+          "avg_losses": 228.58,
+          "avg_scouts": 13.72,
+          "avg_fusions": 0.49,
+          "boss_loss_cap_stops": 160,
+          "stalled_campaigns": 18,
+          "guard_loop_campaign_rate": 0,
+          "median_final_level": 97,
+          "high_findings": 6
+        }
+      ],
+      "battle_quantiles": [
+        {
+          "percentile": "P50",
+          "battles": 651.5
+        },
+        {
+          "percentile": "P90",
+          "battles": 980.3
+        }
+      ],
+      "profiles": [
+        {
+          "profile": "rush",
+          "profile_label": "速攻",
+          "campaigns": 100,
+          "completed": 0,
+          "completion_rate": 0,
+          "completion_ci_low": 3.469446951953614e-18,
+          "completion_ci_high": 0.03699349820698568,
+          "median_battles": 368.5,
+          "p90_battles": 551.1,
+          "median_turns": 1331,
+          "p90_turns": 2002.4,
+          "avg_losses": 182.73,
+          "avg_scouts": 2,
+          "avg_fusions": 0,
+          "avg_guard_loop_battles": 0,
+          "avg_charm_waste_rate": 1,
+          "avg_gold_sink_rate": 0.9908,
+          "median_final_level": 42,
+          "median_final_gold": 354,
+          "median_first_b": null,
+          "median_first_a": null,
+          "median_first_s": null,
+          "description": "攻撃優先。序盤の3枠確保後は収集を抑え、修練の書を積極利用する。"
+        },
+        {
+          "profile": "balanced",
+          "profile_label": "バランス",
+          "campaigns": 100,
+          "completed": 48,
+          "completion_rate": 0.48,
+          "completion_ci_low": 0.384645517580519,
+          "completion_ci_high": 0.5768342223477603,
+          "median_battles": 734.5,
+          "p90_battles": 957.2,
+          "median_turns": 11425,
+          "p90_turns": 26215.6,
+          "avg_losses": 242.71,
+          "avg_scouts": 13.02,
+          "avg_fusions": 0.11,
+          "avg_guard_loop_battles": 0,
+          "avg_charm_waste_rate": 1,
+          "avg_gold_sink_rate": 0.9466,
+          "median_final_level": 100,
+          "median_final_gold": 21837,
+          "median_first_b": 218,
+          "median_first_a": 519,
+          "median_first_s": 471,
+          "description": "本体のバランスオート（HP48%回復・HP22%防御）を使い、各地域で1回スカウトを狙う。"
+        },
+        {
+          "profile": "collector",
+          "profile_label": "収集・配合",
+          "campaigns": 100,
+          "completed": 51,
+          "completion_rate": 0.51,
+          "completion_ci_low": 0.4134801193402717,
+          "completion_ci_high": 0.6057800106955886,
+          "median_battles": 807,
+          "p90_battles": 1000,
+          "median_turns": 20541.5,
+          "p90_turns": 54655.4,
+          "avg_losses": 260.31,
+          "avg_scouts": 26.14,
+          "avg_fusions": 1.36,
+          "avg_guard_loop_battles": 0,
+          "avg_charm_waste_rate": 0.8586,
+          "avg_gold_sink_rate": 0.957,
+          "median_final_level": 100,
+          "median_final_gold": 21557,
+          "median_first_b": 207,
+          "median_first_a": 532,
+          "median_first_s": null,
+          "description": "本体の回復優先オート（HP72%回復）を使い、未入手種・笛・成立済み配合を優先する。"
+        }
+      ],
+      "stages": [
+        {
+          "stage_index": 1,
+          "stage_id": "meadow",
+          "stage_name": "はじまり草原",
+          "req_level": 1,
+          "boss_level": 4,
+          "unlock_wins": 2,
+          "campaigns_reached": 300,
+          "stage_clears": 300,
+          "clear_rate": 1,
+          "boss_attempts": 1153,
+          "boss_win_rate": 0.26019080659150046,
+          "first_try_rate": 0,
+          "avg_boss_attempts": 3.84,
+          "avg_boss_turns": 8.35,
+          "median_boss_start_level": 3,
+          "p90_boss_start_level": 3,
+          "avg_normal_battles": 8.79,
+          "avg_normal_wins": 7.27,
+          "avg_extra_normal_wins": 5.27,
+          "normal_loss_rate": 0.17292377701934017,
+          "scout_win_share": 0.15818431911966988,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 4.55,
+          "avg_fusions": 0
+        },
+        {
+          "stage_index": 2,
+          "stage_id": "cave",
+          "stage_name": "こだま洞くつ",
+          "req_level": 3,
+          "boss_level": 7,
+          "unlock_wins": 2,
+          "campaigns_reached": 300,
+          "stage_clears": 300,
+          "clear_rate": 1,
+          "boss_attempts": 1520,
+          "boss_win_rate": 0.19736842105263158,
+          "first_try_rate": 0,
+          "avg_boss_attempts": 5.07,
+          "avg_boss_turns": 9.98,
+          "median_boss_start_level": 7,
+          "p90_boss_start_level": 9,
+          "avg_normal_battles": 8.58,
+          "avg_normal_wins": 8.4,
+          "avg_extra_normal_wins": 6.4,
+          "normal_loss_rate": 0.020209871745044693,
+          "scout_win_share": 0.12574375247917494,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 15.51,
+          "avg_fusions": 0
+        },
+        {
+          "stage_index": 3,
+          "stage_id": "brook",
+          "stage_name": "しずく湖畔",
+          "req_level": 5,
+          "boss_level": 10,
+          "unlock_wins": 3,
+          "campaigns_reached": 300,
+          "stage_clears": 300,
+          "clear_rate": 1,
+          "boss_attempts": 1250,
+          "boss_win_rate": 0.24,
+          "first_try_rate": 0.07666666666666666,
+          "avg_boss_attempts": 4.17,
+          "avg_boss_turns": 6.16,
+          "median_boss_start_level": 11,
+          "p90_boss_start_level": 13,
+          "avg_normal_battles": 9.09,
+          "avg_normal_wins": 9.08,
+          "avg_extra_normal_wins": 6.08,
+          "normal_loss_rate": 0.00036683785766691124,
+          "scout_win_share": 0.11596330275229358,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 18.99,
+          "avg_fusions": 0
+        },
+        {
+          "stage_index": 4,
+          "stage_id": "volcano",
+          "stage_name": "ほむら火山",
+          "req_level": 8,
+          "boss_level": 14,
+          "unlock_wins": 4,
+          "campaigns_reached": 300,
+          "stage_clears": 300,
+          "clear_rate": 1,
+          "boss_attempts": 3289,
+          "boss_win_rate": 0.09121313469139557,
+          "first_try_rate": 0.056666666666666664,
+          "avg_boss_attempts": 10.96,
+          "avg_boss_turns": 6.43,
+          "median_boss_start_level": 14,
+          "p90_boss_start_level": 15,
+          "avg_normal_battles": 18.19,
+          "avg_normal_wins": 18.03,
+          "avg_extra_normal_wins": 14.03,
+          "normal_loss_rate": 0.009160864785635764,
+          "scout_win_share": 0.0643491124260355,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 39.07,
+          "avg_fusions": 0.01
+        },
+        {
+          "stage_index": 5,
+          "stage_id": "tower",
+          "stage_name": "星晶の塔",
+          "req_level": 12,
+          "boss_level": 20,
+          "unlock_wins": 5,
+          "campaigns_reached": 300,
+          "stage_clears": 259,
+          "clear_rate": 0.8633333333333333,
+          "boss_attempts": 8979,
+          "boss_win_rate": 0.02884508297137766,
+          "first_try_rate": 0.0033333333333333335,
+          "avg_boss_attempts": 29.93,
+          "avg_boss_turns": 5.46,
+          "median_boss_start_level": 18,
+          "p90_boss_start_level": 22,
+          "avg_normal_battles": 45.2,
+          "avg_normal_wins": 44.34,
+          "avg_extra_normal_wins": 39.34,
+          "normal_loss_rate": 0.01888044841064975,
+          "scout_win_share": 0.021348567992182214,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.0018507359903589568,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 94.82,
+          "avg_fusions": 0
+        },
+        {
+          "stage_index": 6,
+          "stage_id": "snowfield",
+          "stage_name": "霜降り雪原",
+          "req_level": 16,
+          "boss_level": 25,
+          "unlock_wins": 4,
+          "campaigns_reached": 259,
+          "stage_clears": 243,
+          "clear_rate": 0.9382239382239382,
+          "boss_attempts": 4847,
+          "boss_win_rate": 0.050134103569218075,
+          "first_try_rate": 0.011583011583011582,
+          "avg_boss_attempts": 18.71,
+          "avg_boss_turns": 12.07,
+          "median_boss_start_level": 24,
+          "p90_boss_start_level": 31,
+          "avg_normal_battles": 30.03,
+          "avg_normal_wins": 29.88,
+          "avg_extra_normal_wins": 25.88,
+          "normal_loss_rate": 0.0050141424530727695,
+          "scout_win_share": 0.03579273807985528,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.020337711069418386,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 119.13,
+          "avg_fusions": 0.07
+        },
+        {
+          "stage_index": 7,
+          "stage_id": "thunder_ruins",
+          "stage_name": "雷鳴遺跡",
+          "req_level": 21,
+          "boss_level": 31,
+          "unlock_wins": 5,
+          "campaigns_reached": 243,
+          "stage_clears": 222,
+          "clear_rate": 0.9135802469135802,
+          "boss_attempts": 4573,
+          "boss_win_rate": 0.04854581237699541,
+          "first_try_rate": 0.053497942386831275,
+          "avg_boss_attempts": 18.82,
+          "avg_boss_turns": 12.95,
+          "median_boss_start_level": 30,
+          "p90_boss_start_level": 38,
+          "avg_normal_battles": 32.07,
+          "avg_normal_wins": 31.98,
+          "avg_extra_normal_wins": 26.98,
+          "normal_loss_rate": 0.002694726036186321,
+          "scout_win_share": 0.033453422542460115,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.020151712512451153,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 129.16,
+          "avg_fusions": 0.06
+        },
+        {
+          "stage_index": 8,
+          "stage_id": "prism_sanctuary",
+          "stage_name": "虹晶聖域",
+          "req_level": 28,
+          "boss_level": 42,
+          "unlock_wins": 6,
+          "campaigns_reached": 222,
+          "stage_clears": 194,
+          "clear_rate": 0.8738738738738738,
+          "boss_attempts": 9601,
+          "boss_win_rate": 0.02020622851786272,
+          "first_try_rate": 0,
+          "avg_boss_attempts": 43.25,
+          "avg_boss_turns": 6.78,
+          "median_boss_start_level": 35,
+          "p90_boss_start_level": 42.9,
+          "avg_normal_battles": 114.25,
+          "avg_normal_wins": 97.84,
+          "avg_extra_normal_wins": 91.86,
+          "normal_loss_rate": 0.14366819113704463,
+          "scout_win_share": 0.008609576427255985,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.04614694083653603,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 530.12,
+          "avg_fusions": 0.05
+        },
+        {
+          "stage_index": 9,
+          "stage_id": "poison_bog",
+          "stage_name": "毒霧の沼地",
+          "req_level": 34,
+          "boss_level": 48,
+          "unlock_wins": 5,
+          "campaigns_reached": 194,
+          "stage_clears": 194,
+          "clear_rate": 1,
+          "boss_attempts": 917,
+          "boss_win_rate": 0.21155943293347873,
+          "first_try_rate": 0.31443298969072164,
+          "avg_boss_attempts": 4.73,
+          "avg_boss_turns": 10.7,
+          "median_boss_start_level": 53,
+          "p90_boss_start_level": 59,
+          "avg_normal_battles": 15.79,
+          "avg_normal_wins": 15.78,
+          "avg_extra_normal_wins": 10.78,
+          "normal_loss_rate": 0.000652954619653934,
+          "scout_win_share": 0.11368833714472394,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.002574002574002574,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 131.4,
+          "avg_fusions": 0.23
+        },
+        {
+          "stage_index": 10,
+          "stage_id": "machine_city",
+          "stage_name": "古代機械都市",
+          "req_level": 39,
+          "boss_level": 57,
+          "unlock_wins": 6,
+          "campaigns_reached": 194,
+          "stage_clears": 193,
+          "clear_rate": 0.9948453608247423,
+          "boss_attempts": 3698,
+          "boss_win_rate": 0.05219037317468902,
+          "first_try_rate": 0,
+          "avg_boss_attempts": 19.06,
+          "avg_boss_turns": 11.57,
+          "median_boss_start_level": 55,
+          "p90_boss_start_level": 63,
+          "avg_normal_battles": 51.5,
+          "avg_normal_wins": 50.49,
+          "avg_extra_normal_wins": 44.49,
+          "normal_loss_rate": 0.019517565809228307,
+          "scout_win_share": 0.03297264189465088,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.0336140302039112,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 503.33,
+          "avg_fusions": 0.2
+        },
+        {
+          "stage_index": 11,
+          "stage_id": "deep_sea_temple",
+          "stage_name": "深海神殿",
+          "req_level": 46,
+          "boss_level": 66,
+          "unlock_wins": 6,
+          "campaigns_reached": 193,
+          "stage_clears": 189,
+          "clear_rate": 0.9792746113989638,
+          "boss_attempts": 7376,
+          "boss_win_rate": 0.025623644251626897,
+          "first_try_rate": 0.0051813471502590676,
+          "avg_boss_attempts": 38.22,
+          "avg_boss_turns": 57.42,
+          "median_boss_start_level": 64,
+          "p90_boss_start_level": 72,
+          "avg_normal_battles": 100.42,
+          "avg_normal_wins": 96.98,
+          "avg_extra_normal_wins": 90.98,
+          "normal_loss_rate": 0.03425859044474255,
+          "scout_win_share": 0.013836948391922213,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.16031647646479746,
+          "stalled_battles": 0,
+          "stalled_battle_rate": 0,
+          "avg_training_books": 1157.37,
+          "avg_fusions": 0.03
+        },
+        {
+          "stage_index": 12,
+          "stage_id": "demon_gate",
+          "stage_name": "魔界門",
+          "req_level": 54,
+          "boss_level": 76,
+          "unlock_wins": 7,
+          "campaigns_reached": 189,
+          "stage_clears": 159,
+          "clear_rate": 0.8412698412698413,
+          "boss_attempts": 4511,
+          "boss_win_rate": 0.03524717357570384,
+          "first_try_rate": 0.07407407407407407,
+          "avg_boss_attempts": 23.87,
+          "avg_boss_turns": 180.17,
+          "median_boss_start_level": 85,
+          "p90_boss_start_level": 93,
+          "avg_normal_battles": 67.39,
+          "avg_normal_wins": 63.39,
+          "avg_extra_normal_wins": 56.39,
+          "normal_loss_rate": 0.05935929648241206,
+          "scout_win_share": 0.024040066777963272,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.4285393132130613,
+          "stalled_battles": 6,
+          "stalled_battle_rate": 0.0003372112628561794,
+          "avg_training_books": 625.42,
+          "avg_fusions": 0.05
+        },
+        {
+          "stage_index": 13,
+          "stage_id": "sky_ruins",
+          "stage_name": "天空遺跡",
+          "req_level": 68,
+          "boss_level": 86,
+          "unlock_wins": 7,
+          "campaigns_reached": 159,
+          "stage_clears": 99,
+          "clear_rate": 0.6226415094339622,
+          "boss_attempts": 5881,
+          "boss_win_rate": 0.01683387179051182,
+          "first_try_rate": 0.09433962264150944,
+          "avg_boss_attempts": 36.99,
+          "avg_boss_turns": 201.27,
+          "median_boss_start_level": 92,
+          "p90_boss_start_level": 100,
+          "avg_normal_battles": 94.86,
+          "avg_normal_wins": 92.64,
+          "avg_extra_normal_wins": 85.64,
+          "normal_loss_rate": 0.02333907969765283,
+          "scout_win_share": 0.01778682959945689,
+          "guard_loop_battle_rate": 0,
+          "battles_50_plus_rate": 0.2724500328422633,
+          "stalled_battles": 12,
+          "stalled_battle_rate": 0.0005630102280191424,
+          "avg_training_books": 486.38,
+          "avg_fusions": 0.01
+        }
+      ],
+      "findings": [
+        {
+          "severity": "MEDIUM",
+          "status": "open",
+          "code": "CAMPAIGN_BOUNDED_COMPLETION",
+          "scope": "本編全体",
+          "finding": "明示した監査上限内で99/300周（33%）が天空遺跡まで完走した。",
+          "evidence": "1周1000戦、1戦400ターン、各ボス敗北80回で打ち切り、ボス敗北上限で160周が停止。プロジェクトの目標完走率は未定義のため、この値単独を合否判定に使わない。",
+          "recommendation": "目標プレイ時間・許容戦闘数・想定方針ごとの目標を先に定義し、停止理由と上限感度を確認してから個別のボス値や経験値を調整する。",
+          "severity_rank": 2
+        },
+        {
+          "severity": "HIGH",
+          "code": "SPD_DEAD_STAT",
+          "scope": "戦闘/装備/説明",
+          "finding": "素早さは行動順・回避・逃走・スカウトに使われず、実質的に1特技の火力以外へ影響しない。",
+          "evidence": "battle.js 312-518, 878-899 / skills.js 11。プレイヤーは常に先手で、逃走率も固定。",
+          "recommendation": "spdで先制・回避・ゲージを決めるか、低リスク案として純spd装備と説明を有効な能力へ置換する。",
+          "status": "open",
+          "severity_rank": 1
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "FREE_HEAL_SHOP_CONFLICT",
+          "scope": "経済/回復",
+          "finding": "仲間画面と起動時の全回復が無料なのに、ショップは同じ全回復を30Gで販売する。",
+          "evidence": "monsterView.js 218-220 / app.js 197-202 / main.js 30 / shop.js 30-36。",
+          "recommendation": "無料回復を正式仕様にしてショップ回復を遠征バフへ置換するか、全導線のコストを統一する。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "ENEMY_HEAL_UNUSED",
+          "scope": "敵AI/地域説明",
+          "finding": "敵AIはdamage技だけを選ぶため、回復技を持つ敵・ボスも回復しない。湖畔の説明とも一致しない。",
+          "evidence": "battle.js 460-474 / stages.js 7。",
+          "recommendation": "敵HP閾値付き回復AIを追加するか、回復敵という説明を削除する。追加時は長期戦率を再計測する。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "LEVEL_GATE_ASYMMETRY",
+          "scope": "ステージ進行",
+          "finding": "「推奨Lv」は通常探索だけを拒否するハードゲートで、ボスには同じ判定がなく、最高Lv1体だけで通過できる。",
+          "evidence": "battle.js 193-200, 242-249 / state.js 629。",
+          "recommendation": "表記を必要Lvへ変えて通常/ボスを統一するか、両方を警告だけにする。判定は編成平均も比較候補。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "SCOUT_ZERO_REWARD",
+          "scope": "収集/育成/経済",
+          "finding": "通常スカウト成功はボス解放勝数を進める一方、EXP・GOLD・ドロップがすべて0で収集プレイほど育成不足になりやすい。",
+          "evidence": "battle.js 662-714。ボススカウトだけは通常報酬を得る。",
+          "recommendation": "通常スカウトにも通常勝利の50-70%EXP/GOLDを与えるか、ボス気配の進行を報酬設計と分離する。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "SCOUT_CHARM_EARLY_CONSUMPTION",
+          "scope": "スカウト笛",
+          "finding": "スカウト笛は対象確認や初回スカウト実行より前の戦闘開始時に消費されるため、スカウトへ進めない戦闘でも失う。",
+          "evidence": "battle.js 226-234, 283-291。任務報酬の在庫上書きは修正済みだが、消費タイミングは別仕様として残る。",
+          "recommendation": "笛の消費を、その戦闘で最初にスカウトを実行した時点へ移す。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "AUTO_SKILL_SELECTION",
+          "scope": "オート戦闘",
+          "finding": "オートは攻撃特技が1つでも使えると通常攻撃との実ダメージ比較なしでMP技を選ぶ。",
+          "evidence": "battle.js 69-110。選定スコアは参照能力×power×属性だけ。",
+          "recommendation": "本体と監査で共有する期待ダメージ関数を作り、通常攻撃とMP効率を同じ候補集合で比較する。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "HIGH",
+          "code": "HIGH_RANK_SCOUT_WALL",
+          "scope": "高ランク収集",
+          "finding": "同Lv・HP25%・笛ありでも火山以降の初回ボススカウトは下限3%。魔界門S素材は出現率込みでP90約79探索になる。",
+          "evidence": "battle.js 526-544。本番式の4回累積成功は下限時11.5%、魔界門対象は4体中1体。",
+          "recommendation": "必須素材へ代替配合を用意し、失敗減衰を緩和するか一定回数後のpity補正を追加する。",
+          "status": "open",
+          "severity_rank": 1
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "FUSION_RANK_SPEC_DRIFT",
+          "scope": "配合仕様",
+          "finding": "文書はB/A/S結果へ親ランク条件を定義するが、実装は親ランクを検査しない。現行レシピには文書条件に反する経路がある。",
+          "evidence": "FUSION_RANK_REQUIREMENTS_V71.md 9-17 / FUSION_SPEC_SUMMARY_V727.md 27-33 / fusion.js 214-226。",
+          "recommendation": "ゲートだけ追加すると既存レシピを壊すため、実装を正とする文書更新か、条件と違反レシピの同時改定を選ぶ。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "GOLD_SINK_COLLAPSES_TO_TRAINING",
+          "scope": "長期経済",
+          "finding": "無料回復と有限の装備購入後、繰り返し使えるGOLD用途は60G→40EXPの修練へほぼ一本化される。配合・強化・重複交換には費用がない。",
+          "evidence": "shop.js 30-80 / items.js 5-10 / fusion.js 810-848。回復30Gは無料導線と競合し、装備価格は95-125G。",
+          "recommendation": "ランク別配合研究費、装備強化、重複3個交換など選択肢を設け、修練だけへ支出が集中しないか再監査する。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "code": "PLAYER_RANK_POSTGAME_CURVE",
+          "scope": "冒険者ランク",
+          "finding": "Rank30必要EXPは181,540。危険度5通常戦だけでも約6,484戦で、本編完走規模と大きく乖離する。",
+          "evidence": "config.js 53-85 / battle.js 774-780。",
+          "recommendation": "長期postgame仕様と明記して報酬価値を合わせるか、曲線圧縮と任務・闘技場からのplayer EXP付与を検討する。",
+          "status": "open",
+          "severity_rank": 2
+        },
+        {
+          "severity": "HIGH",
+          "status": "open",
+          "code": "BOSS_WALL_PRISM_SANCTUARY",
+          "scope": "虹晶聖域",
+          "finding": "到達後突破率87.4%、初回成功率0%、平均43.25回で、監査上限内の進行停止を伴う壁になっている。",
+          "evidence": "到達222周のうち28周が未突破。ボス開始Lv中央値35、ボスLv42。",
+          "recommendation": "boss.boostのHP/ATKを5-10%刻みで下げる案と、直前地域EXPを10-15%増やす案を同一seedで比較する。",
+          "severity_rank": 1
+        },
+        {
+          "severity": "HIGH",
+          "status": "open",
+          "code": "BOSS_WALL_SKY_RUINS",
+          "scope": "天空遺跡",
+          "finding": "到達後突破率62.3%、初回成功率9.4%、平均36.99回で、監査上限内の進行停止を伴う壁になっている。",
+          "evidence": "到達159周のうち60周が未突破。ボス開始Lv中央値92、ボスLv86。",
+          "recommendation": "boss.boostのHP/ATKを5-10%刻みで下げる案と、直前地域EXPを10-15%増やす案を同一seedで比較する。",
+          "severity_rank": 1
+        },
+        {
+          "severity": "HIGH",
+          "status": "open",
+          "code": "BOSS_WALL_TOWER",
+          "scope": "星晶の塔",
+          "finding": "到達後突破率86.3%、初回成功率0.3%、平均29.93回で、監査上限内の進行停止を伴う壁になっている。",
+          "evidence": "到達300周のうち41周が未突破。ボス開始Lv中央値18、ボスLv20。",
+          "recommendation": "boss.boostのHP/ATKを5-10%刻みで下げる案と、直前地域EXPを10-15%増やす案を同一seedで比較する。",
+          "severity_rank": 1
+        },
+        {
+          "severity": "MEDIUM",
+          "status": "open",
+          "code": "BOSS_RETRY_LOAD_DEEP_SEA_TEMPLE",
+          "scope": "深海神殿",
+          "finding": "到達後突破率は97.9%だが、平均38.22回を要し、進行停止壁ではなく再挑戦負荷として大きい。",
+          "evidence": "到達193周、初回成功率0.5%、ボス平均57.42ターン。",
+          "recommendation": "高い最終突破率を保ったまま再挑戦回数を減らせるよう、敗北後育成導線・直前EXP・ボス耐久を1変数ずつ比較する。",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "status": "open",
+          "code": "BOSS_RETRY_LOAD_MACHINE_CITY",
+          "scope": "古代機械都市",
+          "finding": "到達後突破率は99.5%だが、平均19.06回を要し、進行停止壁ではなく再挑戦負荷として大きい。",
+          "evidence": "到達194周、初回成功率0%、ボス平均11.57ターン。",
+          "recommendation": "高い最終突破率を保ったまま再挑戦回数を減らせるよう、敗北後育成導線・直前EXP・ボス耐久を1変数ずつ比較する。",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "status": "open",
+          "code": "BOSS_RETRY_LOAD_VOLCANO",
+          "scope": "ほむら火山",
+          "finding": "到達後突破率は100%だが、平均10.96回を要し、進行停止壁ではなく再挑戦負荷として大きい。",
+          "evidence": "到達300周、初回成功率5.7%、ボス平均6.43ターン。",
+          "recommendation": "高い最終突破率を保ったまま再挑戦回数を減らせるよう、敗北後育成導線・直前EXP・ボス耐久を1変数ずつ比較する。",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "status": "open",
+          "code": "GRIND_SPIKE_PRISM_SANCTUARY",
+          "scope": "虹晶聖域",
+          "finding": "ボス解放に必要な6勝に加えて、平均91.86勝の追加育成が発生した。",
+          "evidence": "通常戦平均114.25回、ボス開始Lv中央値35。",
+          "recommendation": "直前/当該地域のEXP、boss Lv/boost、修練40EXP/60Gを別々の反実仮想として比較する。",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "status": "open",
+          "code": "GRIND_SPIKE_DEEP_SEA_TEMPLE",
+          "scope": "深海神殿",
+          "finding": "ボス解放に必要な6勝に加えて、平均90.98勝の追加育成が発生した。",
+          "evidence": "通常戦平均100.42回、ボス開始Lv中央値64。",
+          "recommendation": "直前/当該地域のEXP、boss Lv/boost、修練40EXP/60Gを別々の反実仮想として比較する。",
+          "severity_rank": 2
+        },
+        {
+          "severity": "MEDIUM",
+          "status": "open",
+          "code": "GRIND_SPIKE_SKY_RUINS",
+          "scope": "天空遺跡",
+          "finding": "ボス解放に必要な7勝に加えて、平均85.64勝の追加育成が発生した。",
+          "evidence": "通常戦平均94.86回、ボス開始Lv中央値92。",
+          "recommendation": "直前/当該地域のEXP、boss Lv/boost、修練40EXP/60Gを別々の反実仮想として比較する。",
+          "severity_rank": 2
+        },
+        {
+          "severity": "HIGH",
+          "status": "open",
+          "code": "PLAYSTYLE_COMPLETION_GAP",
+          "scope": "プレイスタイル差",
+          "finding": "監査上限内完走率が収集・配合と速攻で51pt開いた。",
+          "evidence": "収集・配合 51% / 速攻 0%。",
+          "recommendation": "停止理由を方針別に分解し、特に速攻側で不足する対抗手段・育成導線を調整してから、同一seed集合で再比較する。",
+          "severity_rank": 1
+        }
+      ],
+      "campaigns": [
+        {
+          "run": 1,
+          "profile": "rush",
+          "total_battles": 319,
+          "total_turns": 1297,
+          "completed": 0,
+          "losses": 150,
+          "final_level": 34
+        },
+        {
+          "run": 2,
+          "profile": "balanced",
+          "total_battles": 605,
+          "total_turns": 5674,
+          "completed": 1,
+          "losses": 193,
+          "final_level": 98
+        },
+        {
+          "run": 3,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 55037,
+          "completed": 0,
+          "losses": 297,
+          "final_level": 100
+        },
+        {
+          "run": 4,
+          "profile": "rush",
+          "total_battles": 224,
+          "total_turns": 865,
+          "completed": 0,
+          "losses": 102,
+          "final_level": 32
+        },
+        {
+          "run": 5,
+          "profile": "balanced",
+          "total_battles": 451,
+          "total_turns": 4764,
+          "completed": 1,
+          "losses": 154,
+          "final_level": 91
+        },
+        {
+          "run": 6,
+          "profile": "collector",
+          "total_battles": 836,
+          "total_turns": 21112,
+          "completed": 1,
+          "losses": 249,
+          "final_level": 100
+        },
+        {
+          "run": 7,
+          "profile": "rush",
+          "total_battles": 352,
+          "total_turns": 1279,
+          "completed": 0,
+          "losses": 168,
+          "final_level": 34
+        },
+        {
+          "run": 8,
+          "profile": "balanced",
+          "total_battles": 589,
+          "total_turns": 5908,
+          "completed": 1,
+          "losses": 193,
+          "final_level": 100
+        },
+        {
+          "run": 9,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 62066,
+          "completed": 0,
+          "losses": 304,
+          "final_level": 100
+        },
+        {
+          "run": 10,
+          "profile": "rush",
+          "total_battles": 266,
+          "total_turns": 918,
+          "completed": 0,
+          "losses": 126,
+          "final_level": 32
+        },
+        {
+          "run": 11,
+          "profile": "balanced",
+          "total_battles": 641,
+          "total_turns": 11387,
+          "completed": 1,
+          "losses": 204,
+          "final_level": 100
+        },
+        {
+          "run": 12,
+          "profile": "collector",
+          "total_battles": 894,
+          "total_turns": 29429,
+          "completed": 1,
+          "losses": 234,
+          "final_level": 100
+        },
+        {
+          "run": 13,
+          "profile": "rush",
+          "total_battles": 264,
+          "total_turns": 996,
+          "completed": 0,
+          "losses": 122,
+          "final_level": 33
+        },
+        {
+          "run": 14,
+          "profile": "balanced",
+          "total_battles": 737,
+          "total_turns": 2843,
+          "completed": 1,
+          "losses": 243,
+          "final_level": 92
+        },
+        {
+          "run": 15,
+          "profile": "collector",
+          "total_battles": 521,
+          "total_turns": 6122,
+          "completed": 1,
+          "losses": 175,
+          "final_level": 78
+        },
+        {
+          "run": 16,
+          "profile": "rush",
+          "total_battles": 305,
+          "total_turns": 1073,
+          "completed": 0,
+          "losses": 143,
+          "final_level": 39
+        },
+        {
+          "run": 17,
+          "profile": "balanced",
+          "total_battles": 843,
+          "total_turns": 3917,
+          "completed": 0,
+          "losses": 275,
+          "final_level": 100
+        },
+        {
+          "run": 18,
+          "profile": "collector",
+          "total_battles": 713,
+          "total_turns": 18735,
+          "completed": 1,
+          "losses": 226,
+          "final_level": 100
+        },
+        {
+          "run": 19,
+          "profile": "rush",
+          "total_battles": 376,
+          "total_turns": 1376,
+          "completed": 0,
+          "losses": 177,
+          "final_level": 42
+        },
+        {
+          "run": 20,
+          "profile": "balanced",
+          "total_battles": 434,
+          "total_turns": 1749,
+          "completed": 0,
+          "losses": 145,
+          "final_level": 62
+        },
+        {
+          "run": 21,
+          "profile": "collector",
+          "total_battles": 734,
+          "total_turns": 12670,
+          "completed": 1,
+          "losses": 233,
+          "final_level": 96
+        },
+        {
+          "run": 22,
+          "profile": "rush",
+          "total_battles": 543,
+          "total_turns": 1928,
+          "completed": 0,
+          "losses": 254,
+          "final_level": 60
+        },
+        {
+          "run": 23,
+          "profile": "balanced",
+          "total_battles": 749,
+          "total_turns": 11788,
+          "completed": 1,
+          "losses": 253,
+          "final_level": 99
+        },
+        {
+          "run": 24,
+          "profile": "collector",
+          "total_battles": 980,
+          "total_turns": 64473,
+          "completed": 0,
+          "losses": 291,
+          "final_level": 100
+        },
+        {
+          "run": 25,
+          "profile": "rush",
+          "total_battles": 509,
+          "total_turns": 1856,
+          "completed": 0,
+          "losses": 240,
+          "final_level": 51
+        },
+        {
+          "run": 26,
+          "profile": "balanced",
+          "total_battles": 529,
+          "total_turns": 7327,
+          "completed": 0,
+          "losses": 174,
+          "final_level": 97
+        },
+        {
+          "run": 27,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 54613,
+          "completed": 0,
+          "losses": 283,
+          "final_level": 100
+        },
+        {
+          "run": 28,
+          "profile": "rush",
+          "total_battles": 252,
+          "total_turns": 929,
+          "completed": 0,
+          "losses": 116,
+          "final_level": 32
+        },
+        {
+          "run": 29,
+          "profile": "balanced",
+          "total_battles": 993,
+          "total_turns": 21794,
+          "completed": 0,
+          "losses": 337,
+          "final_level": 100
+        },
+        {
+          "run": 30,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 5729,
+          "completed": 0,
+          "losses": 836,
+          "final_level": 35
+        },
+        {
+          "run": 31,
+          "profile": "rush",
+          "total_battles": 393,
+          "total_turns": 1427,
+          "completed": 0,
+          "losses": 188,
+          "final_level": 42
+        },
+        {
+          "run": 32,
+          "profile": "balanced",
+          "total_battles": 641,
+          "total_turns": 18069,
+          "completed": 0,
+          "losses": 215,
+          "final_level": 100
+        },
+        {
+          "run": 33,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 44494,
+          "completed": 0,
+          "losses": 302,
+          "final_level": 100
+        },
+        {
+          "run": 34,
+          "profile": "rush",
+          "total_battles": 321,
+          "total_turns": 1201,
+          "completed": 0,
+          "losses": 151,
+          "final_level": 34
+        },
+        {
+          "run": 35,
+          "profile": "balanced",
+          "total_battles": 662,
+          "total_turns": 14229,
+          "completed": 1,
+          "losses": 219,
+          "final_level": 100
+        },
+        {
+          "run": 36,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 36483,
+          "completed": 0,
+          "losses": 303,
+          "final_level": 100
+        },
+        {
+          "run": 37,
+          "profile": "rush",
+          "total_battles": 323,
+          "total_turns": 1127,
+          "completed": 0,
+          "losses": 150,
+          "final_level": 40
+        },
+        {
+          "run": 38,
+          "profile": "balanced",
+          "total_battles": 560,
+          "total_turns": 1981,
+          "completed": 1,
+          "losses": 183,
+          "final_level": 100
+        },
+        {
+          "run": 39,
+          "profile": "collector",
+          "total_battles": 709,
+          "total_turns": 15316,
+          "completed": 0,
+          "losses": 200,
+          "final_level": 98
+        },
+        {
+          "run": 40,
+          "profile": "rush",
+          "total_battles": 445,
+          "total_turns": 1583,
+          "completed": 0,
+          "losses": 209,
+          "final_level": 49
+        },
+        {
+          "run": 41,
+          "profile": "balanced",
+          "total_battles": 552,
+          "total_turns": 8865,
+          "completed": 1,
+          "losses": 183,
+          "final_level": 97
+        },
+        {
+          "run": 42,
+          "profile": "collector",
+          "total_battles": 736,
+          "total_turns": 7510,
+          "completed": 1,
+          "losses": 189,
+          "final_level": 97
+        },
+        {
+          "run": 43,
+          "profile": "rush",
+          "total_battles": 470,
+          "total_turns": 1567,
+          "completed": 0,
+          "losses": 220,
+          "final_level": 48
+        },
+        {
+          "run": 44,
+          "profile": "balanced",
+          "total_battles": 487,
+          "total_turns": 1957,
+          "completed": 0,
+          "losses": 162,
+          "final_level": 64
+        },
+        {
+          "run": 45,
+          "profile": "collector",
+          "total_battles": 704,
+          "total_turns": 16320,
+          "completed": 0,
+          "losses": 207,
+          "final_level": 100
+        },
+        {
+          "run": 46,
+          "profile": "rush",
+          "total_battles": 336,
+          "total_turns": 1184,
+          "completed": 0,
+          "losses": 158,
+          "final_level": 34
+        },
+        {
+          "run": 47,
+          "profile": "balanced",
+          "total_battles": 688,
+          "total_turns": 11455,
+          "completed": 0,
+          "losses": 220,
+          "final_level": 100
+        },
+        {
+          "run": 48,
+          "profile": "collector",
+          "total_battles": 730,
+          "total_turns": 17159,
+          "completed": 1,
+          "losses": 227,
+          "final_level": 100
+        },
+        {
+          "run": 49,
+          "profile": "rush",
+          "total_battles": 598,
+          "total_turns": 1999,
+          "completed": 0,
+          "losses": 283,
+          "final_level": 60
+        },
+        {
+          "run": 50,
+          "profile": "balanced",
+          "total_battles": 584,
+          "total_turns": 5502,
+          "completed": 1,
+          "losses": 203,
+          "final_level": 90
+        },
+        {
+          "run": 51,
+          "profile": "collector",
+          "total_battles": 565,
+          "total_turns": 9791,
+          "completed": 1,
+          "losses": 180,
+          "final_level": 100
+        },
+        {
+          "run": 52,
+          "profile": "rush",
+          "total_battles": 265,
+          "total_turns": 985,
+          "completed": 0,
+          "losses": 123,
+          "final_level": 32
+        },
+        {
+          "run": 53,
+          "profile": "balanced",
+          "total_battles": 930,
+          "total_turns": 18477,
+          "completed": 0,
+          "losses": 311,
+          "final_level": 100
+        },
+        {
+          "run": 54,
+          "profile": "collector",
+          "total_battles": 751,
+          "total_turns": 17181,
+          "completed": 1,
+          "losses": 221,
+          "final_level": 100
+        },
+        {
+          "run": 55,
+          "profile": "rush",
+          "total_battles": 561,
+          "total_turns": 1965,
+          "completed": 0,
+          "losses": 262,
+          "final_level": 59
+        },
+        {
+          "run": 56,
+          "profile": "balanced",
+          "total_battles": 877,
+          "total_turns": 11685,
+          "completed": 0,
+          "losses": 286,
+          "final_level": 100
+        },
+        {
+          "run": 57,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 31319,
+          "completed": 0,
+          "losses": 268,
+          "final_level": 100
+        },
+        {
+          "run": 58,
+          "profile": "rush",
+          "total_battles": 256,
+          "total_turns": 924,
+          "completed": 0,
+          "losses": 119,
+          "final_level": 32
+        },
+        {
+          "run": 59,
+          "profile": "balanced",
+          "total_battles": 465,
+          "total_turns": 2650,
+          "completed": 1,
+          "losses": 162,
+          "final_level": 76
+        },
+        {
+          "run": 60,
+          "profile": "collector",
+          "total_battles": 622,
+          "total_turns": 5774,
+          "completed": 1,
+          "losses": 198,
+          "final_level": 100
+        },
+        {
+          "run": 61,
+          "profile": "rush",
+          "total_battles": 239,
+          "total_turns": 865,
+          "completed": 0,
+          "losses": 110,
+          "final_level": 32
+        },
+        {
+          "run": 62,
+          "profile": "balanced",
+          "total_battles": 503,
+          "total_turns": 1917,
+          "completed": 1,
+          "losses": 162,
+          "final_level": 100
+        },
+        {
+          "run": 63,
+          "profile": "collector",
+          "total_battles": 801,
+          "total_turns": 36959,
+          "completed": 0,
+          "losses": 255,
+          "final_level": 99
+        },
+        {
+          "run": 64,
+          "profile": "rush",
+          "total_battles": 267,
+          "total_turns": 992,
+          "completed": 0,
+          "losses": 124,
+          "final_level": 33
+        },
+        {
+          "run": 65,
+          "profile": "balanced",
+          "total_battles": 491,
+          "total_turns": 1989,
+          "completed": 0,
+          "losses": 168,
+          "final_level": 64
+        },
+        {
+          "run": 66,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 14988,
+          "completed": 0,
+          "losses": 549,
+          "final_level": 80
+        },
+        {
+          "run": 67,
+          "profile": "rush",
+          "total_battles": 300,
+          "total_turns": 1155,
+          "completed": 0,
+          "losses": 142,
+          "final_level": 33
+        },
+        {
+          "run": 68,
+          "profile": "balanced",
+          "total_battles": 640,
+          "total_turns": 21277,
+          "completed": 0,
+          "losses": 212,
+          "final_level": 100
+        },
+        {
+          "run": 69,
+          "profile": "collector",
+          "total_battles": 640,
+          "total_turns": 13878,
+          "completed": 1,
+          "losses": 206,
+          "final_level": 91
+        },
+        {
+          "run": 70,
+          "profile": "rush",
+          "total_battles": 499,
+          "total_turns": 1803,
+          "completed": 0,
+          "losses": 233,
+          "final_level": 58
+        },
+        {
+          "run": 71,
+          "profile": "balanced",
+          "total_battles": 978,
+          "total_turns": 18949,
+          "completed": 0,
+          "losses": 320,
+          "final_level": 100
+        },
+        {
+          "run": 72,
+          "profile": "collector",
+          "total_battles": 704,
+          "total_turns": 13861,
+          "completed": 0,
+          "losses": 217,
+          "final_level": 100
+        },
+        {
+          "run": 73,
+          "profile": "rush",
+          "total_battles": 520,
+          "total_turns": 1971,
+          "completed": 0,
+          "losses": 245,
+          "final_level": 50
+        },
+        {
+          "run": 74,
+          "profile": "balanced",
+          "total_battles": 845,
+          "total_turns": 19787,
+          "completed": 1,
+          "losses": 275,
+          "final_level": 100
+        },
+        {
+          "run": 75,
+          "profile": "collector",
+          "total_battles": 941,
+          "total_turns": 43428,
+          "completed": 0,
+          "losses": 280,
+          "final_level": 100
+        },
+        {
+          "run": 76,
+          "profile": "rush",
+          "total_battles": 255,
+          "total_turns": 1053,
+          "completed": 0,
+          "losses": 119,
+          "final_level": 32
+        },
+        {
+          "run": 77,
+          "profile": "balanced",
+          "total_battles": 685,
+          "total_turns": 6340,
+          "completed": 1,
+          "losses": 232,
+          "final_level": 100
+        },
+        {
+          "run": 78,
+          "profile": "collector",
+          "total_battles": 983,
+          "total_turns": 69173,
+          "completed": 0,
+          "losses": 298,
+          "final_level": 100
+        },
+        {
+          "run": 79,
+          "profile": "rush",
+          "total_battles": 524,
+          "total_turns": 1736,
+          "completed": 0,
+          "losses": 245,
+          "final_level": 59
+        },
+        {
+          "run": 80,
+          "profile": "balanced",
+          "total_battles": 714,
+          "total_turns": 9353,
+          "completed": 1,
+          "losses": 231,
+          "final_level": 100
+        },
+        {
+          "run": 81,
+          "profile": "collector",
+          "total_battles": 881,
+          "total_turns": 23139,
+          "completed": 0,
+          "losses": 285,
+          "final_level": 100
+        },
+        {
+          "run": 82,
+          "profile": "rush",
+          "total_battles": 368,
+          "total_turns": 1380,
+          "completed": 0,
+          "losses": 174,
+          "final_level": 42
+        },
+        {
+          "run": 83,
+          "profile": "balanced",
+          "total_battles": 889,
+          "total_turns": 16086,
+          "completed": 0,
+          "losses": 301,
+          "final_level": 100
+        },
+        {
+          "run": 84,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 44590,
+          "completed": 0,
+          "losses": 282,
+          "final_level": 100
+        },
+        {
+          "run": 85,
+          "profile": "rush",
+          "total_battles": 627,
+          "total_turns": 2324,
+          "completed": 0,
+          "losses": 295,
+          "final_level": 61
+        },
+        {
+          "run": 86,
+          "profile": "balanced",
+          "total_battles": 748,
+          "total_turns": 22211,
+          "completed": 0,
+          "losses": 253,
+          "final_level": 100
+        },
+        {
+          "run": 87,
+          "profile": "collector",
+          "total_battles": 683,
+          "total_turns": 8367,
+          "completed": 1,
+          "losses": 207,
+          "final_level": 100
+        },
+        {
+          "run": 88,
+          "profile": "rush",
+          "total_battles": 744,
+          "total_turns": 2513,
+          "completed": 0,
+          "losses": 355,
+          "final_level": 60
+        },
+        {
+          "run": 89,
+          "profile": "balanced",
+          "total_battles": 902,
+          "total_turns": 41413,
+          "completed": 0,
+          "losses": 301,
+          "final_level": 100
+        },
+        {
+          "run": 90,
+          "profile": "collector",
+          "total_battles": 878,
+          "total_turns": 38089,
+          "completed": 0,
+          "losses": 260,
+          "final_level": 100
+        },
+        {
+          "run": 91,
+          "profile": "rush",
+          "total_battles": 488,
+          "total_turns": 1730,
+          "completed": 0,
+          "losses": 227,
+          "final_level": 58
+        },
+        {
+          "run": 92,
+          "profile": "balanced",
+          "total_battles": 959,
+          "total_turns": 3745,
+          "completed": 0,
+          "losses": 311,
+          "final_level": 100
+        },
+        {
+          "run": 93,
+          "profile": "collector",
+          "total_battles": 979,
+          "total_turns": 71860,
+          "completed": 0,
+          "losses": 268,
+          "final_level": 100
+        },
+        {
+          "run": 94,
+          "profile": "rush",
+          "total_battles": 346,
+          "total_turns": 1260,
+          "completed": 0,
+          "losses": 164,
+          "final_level": 41
+        },
+        {
+          "run": 95,
+          "profile": "balanced",
+          "total_battles": 639,
+          "total_turns": 5244,
+          "completed": 1,
+          "losses": 211,
+          "final_level": 100
+        },
+        {
+          "run": 96,
+          "profile": "collector",
+          "total_battles": 856,
+          "total_turns": 16722,
+          "completed": 1,
+          "losses": 256,
+          "final_level": 100
+        },
+        {
+          "run": 97,
+          "profile": "rush",
+          "total_battles": 405,
+          "total_turns": 1517,
+          "completed": 0,
+          "losses": 193,
+          "final_level": 43
+        },
+        {
+          "run": 98,
+          "profile": "balanced",
+          "total_battles": 800,
+          "total_turns": 31729,
+          "completed": 0,
+          "losses": 260,
+          "final_level": 100
+        },
+        {
+          "run": 99,
+          "profile": "collector",
+          "total_battles": 561,
+          "total_turns": 8561,
+          "completed": 1,
+          "losses": 172,
+          "final_level": 91
+        },
+        {
+          "run": 100,
+          "profile": "rush",
+          "total_battles": 329,
+          "total_turns": 1136,
+          "completed": 0,
+          "losses": 154,
+          "final_level": 40
+        },
+        {
+          "run": 101,
+          "profile": "balanced",
+          "total_battles": 529,
+          "total_turns": 5030,
+          "completed": 1,
+          "losses": 172,
+          "final_level": 81
+        },
+        {
+          "run": 102,
+          "profile": "collector",
+          "total_battles": 830,
+          "total_turns": 32423,
+          "completed": 0,
+          "losses": 254,
+          "final_level": 100
+        },
+        {
+          "run": 103,
+          "profile": "rush",
+          "total_battles": 427,
+          "total_turns": 1536,
+          "completed": 0,
+          "losses": 199,
+          "final_level": 48
+        },
+        {
+          "run": 104,
+          "profile": "balanced",
+          "total_battles": 653,
+          "total_turns": 17014,
+          "completed": 1,
+          "losses": 213,
+          "final_level": 100
+        },
+        {
+          "run": 105,
+          "profile": "collector",
+          "total_battles": 718,
+          "total_turns": 20569,
+          "completed": 1,
+          "losses": 230,
+          "final_level": 93
+        },
+        {
+          "run": 106,
+          "profile": "rush",
+          "total_battles": 431,
+          "total_turns": 1691,
+          "completed": 0,
+          "losses": 203,
+          "final_level": 43
+        },
+        {
+          "run": 107,
+          "profile": "balanced",
+          "total_battles": 790,
+          "total_turns": 20747,
+          "completed": 1,
+          "losses": 257,
+          "final_level": 100
+        },
+        {
+          "run": 108,
+          "profile": "collector",
+          "total_battles": 950,
+          "total_turns": 46446,
+          "completed": 0,
+          "losses": 271,
+          "final_level": 100
+        },
+        {
+          "run": 109,
+          "profile": "rush",
+          "total_battles": 580,
+          "total_turns": 2091,
+          "completed": 0,
+          "losses": 275,
+          "final_level": 60
+        },
+        {
+          "run": 110,
+          "profile": "balanced",
+          "total_battles": 657,
+          "total_turns": 5361,
+          "completed": 1,
+          "losses": 212,
+          "final_level": 100
+        },
+        {
+          "run": 111,
+          "profile": "collector",
+          "total_battles": 899,
+          "total_turns": 31564,
+          "completed": 0,
+          "losses": 267,
+          "final_level": 100
+        },
+        {
+          "run": 112,
+          "profile": "rush",
+          "total_battles": 542,
+          "total_turns": 1967,
+          "completed": 0,
+          "losses": 255,
+          "final_level": 58
+        },
+        {
+          "run": 113,
+          "profile": "balanced",
+          "total_battles": 964,
+          "total_turns": 30707,
+          "completed": 0,
+          "losses": 316,
+          "final_level": 100
+        },
+        {
+          "run": 114,
+          "profile": "collector",
+          "total_battles": 836,
+          "total_turns": 38257,
+          "completed": 0,
+          "losses": 247,
+          "final_level": 100
+        },
+        {
+          "run": 115,
+          "profile": "rush",
+          "total_battles": 473,
+          "total_turns": 1530,
+          "completed": 0,
+          "losses": 222,
+          "final_level": 56
+        },
+        {
+          "run": 116,
+          "profile": "balanced",
+          "total_battles": 640,
+          "total_turns": 13060,
+          "completed": 0,
+          "losses": 211,
+          "final_level": 100
+        },
+        {
+          "run": 117,
+          "profile": "collector",
+          "total_battles": 526,
+          "total_turns": 2982,
+          "completed": 1,
+          "losses": 169,
+          "final_level": 75
+        },
+        {
+          "run": 118,
+          "profile": "rush",
+          "total_battles": 306,
+          "total_turns": 1042,
+          "completed": 0,
+          "losses": 144,
+          "final_level": 33
+        },
+        {
+          "run": 119,
+          "profile": "balanced",
+          "total_battles": 638,
+          "total_turns": 5272,
+          "completed": 1,
+          "losses": 209,
+          "final_level": 91
+        },
+        {
+          "run": 120,
+          "profile": "collector",
+          "total_battles": 692,
+          "total_turns": 7997,
+          "completed": 1,
+          "losses": 214,
+          "final_level": 89
+        },
+        {
+          "run": 121,
+          "profile": "rush",
+          "total_battles": 253,
+          "total_turns": 933,
+          "completed": 0,
+          "losses": 119,
+          "final_level": 32
+        },
+        {
+          "run": 122,
+          "profile": "balanced",
+          "total_battles": 647,
+          "total_turns": 2328,
+          "completed": 0,
+          "losses": 210,
+          "final_level": 79
+        },
+        {
+          "run": 123,
+          "profile": "collector",
+          "total_battles": 825,
+          "total_turns": 33128,
+          "completed": 0,
+          "losses": 248,
+          "final_level": 98
+        },
+        {
+          "run": 124,
+          "profile": "rush",
+          "total_battles": 301,
+          "total_turns": 1204,
+          "completed": 0,
+          "losses": 142,
+          "final_level": 33
+        },
+        {
+          "run": 125,
+          "profile": "balanced",
+          "total_battles": 642,
+          "total_turns": 17835,
+          "completed": 1,
+          "losses": 211,
+          "final_level": 100
+        },
+        {
+          "run": 126,
+          "profile": "collector",
+          "total_battles": 747,
+          "total_turns": 13325,
+          "completed": 1,
+          "losses": 281,
+          "final_level": 93
+        },
+        {
+          "run": 127,
+          "profile": "rush",
+          "total_battles": 475,
+          "total_turns": 1531,
+          "completed": 0,
+          "losses": 219,
+          "final_level": 58
+        },
+        {
+          "run": 128,
+          "profile": "balanced",
+          "total_battles": 689,
+          "total_turns": 3818,
+          "completed": 0,
+          "losses": 223,
+          "final_level": 96
+        },
+        {
+          "run": 129,
+          "profile": "collector",
+          "total_battles": 575,
+          "total_turns": 12943,
+          "completed": 0,
+          "losses": 171,
+          "final_level": 97
+        },
+        {
+          "run": 130,
+          "profile": "rush",
+          "total_battles": 538,
+          "total_turns": 1684,
+          "completed": 0,
+          "losses": 258,
+          "final_level": 49
+        },
+        {
+          "run": 131,
+          "profile": "balanced",
+          "total_battles": 881,
+          "total_turns": 13455,
+          "completed": 1,
+          "losses": 286,
+          "final_level": 100
+        },
+        {
+          "run": 132,
+          "profile": "collector",
+          "total_battles": 986,
+          "total_turns": 34453,
+          "completed": 0,
+          "losses": 289,
+          "final_level": 100
+        },
+        {
+          "run": 133,
+          "profile": "rush",
+          "total_battles": 285,
+          "total_turns": 1071,
+          "completed": 0,
+          "losses": 135,
+          "final_level": 33
+        },
+        {
+          "run": 134,
+          "profile": "balanced",
+          "total_battles": 814,
+          "total_turns": 3227,
+          "completed": 0,
+          "losses": 268,
+          "final_level": 100
+        },
+        {
+          "run": 135,
+          "profile": "collector",
+          "total_battles": 758,
+          "total_turns": 20929,
+          "completed": 0,
+          "losses": 230,
+          "final_level": 97
+        },
+        {
+          "run": 136,
+          "profile": "rush",
+          "total_battles": 561,
+          "total_turns": 2132,
+          "completed": 0,
+          "losses": 266,
+          "final_level": 59
+        },
+        {
+          "run": 137,
+          "profile": "balanced",
+          "total_battles": 805,
+          "total_turns": 11434,
+          "completed": 0,
+          "losses": 261,
+          "final_level": 100
+        },
+        {
+          "run": 138,
+          "profile": "collector",
+          "total_battles": 810,
+          "total_turns": 25236,
+          "completed": 0,
+          "losses": 234,
+          "final_level": 100
+        },
+        {
+          "run": 139,
+          "profile": "rush",
+          "total_battles": 437,
+          "total_turns": 1694,
+          "completed": 0,
+          "losses": 205,
+          "final_level": 49
+        },
+        {
+          "run": 140,
+          "profile": "balanced",
+          "total_battles": 652,
+          "total_turns": 3244,
+          "completed": 1,
+          "losses": 221,
+          "final_level": 89
+        },
+        {
+          "run": 141,
+          "profile": "collector",
+          "total_battles": 678,
+          "total_turns": 13848,
+          "completed": 1,
+          "losses": 217,
+          "final_level": 99
+        },
+        {
+          "run": 142,
+          "profile": "rush",
+          "total_battles": 550,
+          "total_turns": 2045,
+          "completed": 0,
+          "losses": 260,
+          "final_level": 51
+        },
+        {
+          "run": 143,
+          "profile": "balanced",
+          "total_battles": 955,
+          "total_turns": 35535,
+          "completed": 0,
+          "losses": 311,
+          "final_level": 100
+        },
+        {
+          "run": 144,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 18913,
+          "completed": 0,
+          "losses": 293,
+          "final_level": 100
+        },
+        {
+          "run": 145,
+          "profile": "rush",
+          "total_battles": 345,
+          "total_turns": 1357,
+          "completed": 0,
+          "losses": 164,
+          "final_level": 41
+        },
+        {
+          "run": 146,
+          "profile": "balanced",
+          "total_battles": 513,
+          "total_turns": 9076,
+          "completed": 1,
+          "losses": 174,
+          "final_level": 94
+        },
+        {
+          "run": 147,
+          "profile": "collector",
+          "total_battles": 851,
+          "total_turns": 30719,
+          "completed": 1,
+          "losses": 270,
+          "final_level": 100
+        },
+        {
+          "run": 148,
+          "profile": "rush",
+          "total_battles": 241,
+          "total_turns": 931,
+          "completed": 0,
+          "losses": 111,
+          "final_level": 32
+        },
+        {
+          "run": 149,
+          "profile": "balanced",
+          "total_battles": 964,
+          "total_turns": 22432,
+          "completed": 0,
+          "losses": 332,
+          "final_level": 100
+        },
+        {
+          "run": 150,
+          "profile": "collector",
+          "total_battles": 700,
+          "total_turns": 11000,
+          "completed": 1,
+          "losses": 227,
+          "final_level": 100
+        },
+        {
+          "run": 151,
+          "profile": "rush",
+          "total_battles": 589,
+          "total_turns": 2211,
+          "completed": 0,
+          "losses": 279,
+          "final_level": 59
+        },
+        {
+          "run": 152,
+          "profile": "balanced",
+          "total_battles": 601,
+          "total_turns": 4663,
+          "completed": 1,
+          "losses": 198,
+          "final_level": 100
+        },
+        {
+          "run": 153,
+          "profile": "collector",
+          "total_battles": 695,
+          "total_turns": 13178,
+          "completed": 1,
+          "losses": 212,
+          "final_level": 86
+        },
+        {
+          "run": 154,
+          "profile": "rush",
+          "total_battles": 383,
+          "total_turns": 1433,
+          "completed": 0,
+          "losses": 180,
+          "final_level": 42
+        },
+        {
+          "run": 155,
+          "profile": "balanced",
+          "total_battles": 920,
+          "total_turns": 49651,
+          "completed": 0,
+          "losses": 315,
+          "final_level": 100
+        },
+        {
+          "run": 156,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 55751,
+          "completed": 0,
+          "losses": 300,
+          "final_level": 100
+        },
+        {
+          "run": 157,
+          "profile": "rush",
+          "total_battles": 264,
+          "total_turns": 1051,
+          "completed": 0,
+          "losses": 125,
+          "final_level": 32
+        },
+        {
+          "run": 158,
+          "profile": "balanced",
+          "total_battles": 420,
+          "total_turns": 2911,
+          "completed": 1,
+          "losses": 145,
+          "final_level": 79
+        },
+        {
+          "run": 159,
+          "profile": "collector",
+          "total_battles": 615,
+          "total_turns": 6184,
+          "completed": 1,
+          "losses": 183,
+          "final_level": 79
+        },
+        {
+          "run": 160,
+          "profile": "rush",
+          "total_battles": 263,
+          "total_turns": 963,
+          "completed": 0,
+          "losses": 122,
+          "final_level": 32
+        },
+        {
+          "run": 161,
+          "profile": "balanced",
+          "total_battles": 427,
+          "total_turns": 1935,
+          "completed": 0,
+          "losses": 139,
+          "final_level": 62
+        },
+        {
+          "run": 162,
+          "profile": "collector",
+          "total_battles": 612,
+          "total_turns": 4632,
+          "completed": 1,
+          "losses": 179,
+          "final_level": 100
+        },
+        {
+          "run": 163,
+          "profile": "rush",
+          "total_battles": 253,
+          "total_turns": 986,
+          "completed": 0,
+          "losses": 117,
+          "final_level": 32
+        },
+        {
+          "run": 164,
+          "profile": "balanced",
+          "total_battles": 1000,
+          "total_turns": 10247,
+          "completed": 0,
+          "losses": 333,
+          "final_level": 100
+        },
+        {
+          "run": 165,
+          "profile": "collector",
+          "total_battles": 678,
+          "total_turns": 12769,
+          "completed": 1,
+          "losses": 228,
+          "final_level": 93
+        },
+        {
+          "run": 166,
+          "profile": "rush",
+          "total_battles": 444,
+          "total_turns": 1476,
+          "completed": 0,
+          "losses": 209,
+          "final_level": 49
+        },
+        {
+          "run": 167,
+          "profile": "balanced",
+          "total_battles": 756,
+          "total_turns": 9897,
+          "completed": 1,
+          "losses": 252,
+          "final_level": 100
+        },
+        {
+          "run": 168,
+          "profile": "collector",
+          "total_battles": 760,
+          "total_turns": 16676,
+          "completed": 1,
+          "losses": 230,
+          "final_level": 100
+        },
+        {
+          "run": 169,
+          "profile": "rush",
+          "total_battles": 293,
+          "total_turns": 1108,
+          "completed": 0,
+          "losses": 137,
+          "final_level": 33
+        },
+        {
+          "run": 170,
+          "profile": "balanced",
+          "total_battles": 873,
+          "total_turns": 23254,
+          "completed": 1,
+          "losses": 304,
+          "final_level": 100
+        },
+        {
+          "run": 171,
+          "profile": "collector",
+          "total_battles": 733,
+          "total_turns": 37158,
+          "completed": 0,
+          "losses": 229,
+          "final_level": 100
+        },
+        {
+          "run": 172,
+          "profile": "rush",
+          "total_battles": 234,
+          "total_turns": 980,
+          "completed": 0,
+          "losses": 108,
+          "final_level": 32
+        },
+        {
+          "run": 173,
+          "profile": "balanced",
+          "total_battles": 731,
+          "total_turns": 12489,
+          "completed": 1,
+          "losses": 237,
+          "final_level": 100
+        },
+        {
+          "run": 174,
+          "profile": "collector",
+          "total_battles": 559,
+          "total_turns": 12292,
+          "completed": 1,
+          "losses": 179,
+          "final_level": 95
+        },
+        {
+          "run": 175,
+          "profile": "rush",
+          "total_battles": 651,
+          "total_turns": 2279,
+          "completed": 0,
+          "losses": 309,
+          "final_level": 62
+        },
+        {
+          "run": 176,
+          "profile": "balanced",
+          "total_battles": 773,
+          "total_turns": 4515,
+          "completed": 1,
+          "losses": 256,
+          "final_level": 100
+        },
+        {
+          "run": 177,
+          "profile": "collector",
+          "total_battles": 770,
+          "total_turns": 14135,
+          "completed": 1,
+          "losses": 260,
+          "final_level": 88
+        },
+        {
+          "run": 178,
+          "profile": "rush",
+          "total_battles": 357,
+          "total_turns": 1311,
+          "completed": 0,
+          "losses": 168,
+          "final_level": 41
+        },
+        {
+          "run": 179,
+          "profile": "balanced",
+          "total_battles": 980,
+          "total_turns": 26101,
+          "completed": 0,
+          "losses": 331,
+          "final_level": 100
+        },
+        {
+          "run": 180,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 46393,
+          "completed": 0,
+          "losses": 301,
+          "final_level": 100
+        },
+        {
+          "run": 181,
+          "profile": "rush",
+          "total_battles": 470,
+          "total_turns": 1775,
+          "completed": 0,
+          "losses": 221,
+          "final_level": 50
+        },
+        {
+          "run": 182,
+          "profile": "balanced",
+          "total_battles": 949,
+          "total_turns": 3709,
+          "completed": 0,
+          "losses": 309,
+          "final_level": 100
+        },
+        {
+          "run": 183,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 41573,
+          "completed": 0,
+          "losses": 284,
+          "final_level": 100
+        },
+        {
+          "run": 184,
+          "profile": "rush",
+          "total_battles": 519,
+          "total_turns": 1904,
+          "completed": 0,
+          "losses": 245,
+          "final_level": 57
+        },
+        {
+          "run": 185,
+          "profile": "balanced",
+          "total_battles": 695,
+          "total_turns": 16700,
+          "completed": 1,
+          "losses": 230,
+          "final_level": 100
+        },
+        {
+          "run": 186,
+          "profile": "collector",
+          "total_battles": 818,
+          "total_turns": 15268,
+          "completed": 1,
+          "losses": 237,
+          "final_level": 100
+        },
+        {
+          "run": 187,
+          "profile": "rush",
+          "total_battles": 400,
+          "total_turns": 1490,
+          "completed": 0,
+          "losses": 188,
+          "final_level": 42
+        },
+        {
+          "run": 188,
+          "profile": "balanced",
+          "total_battles": 888,
+          "total_turns": 26208,
+          "completed": 0,
+          "losses": 292,
+          "final_level": 100
+        },
+        {
+          "run": 189,
+          "profile": "collector",
+          "total_battles": 984,
+          "total_turns": 32995,
+          "completed": 0,
+          "losses": 271,
+          "final_level": 100
+        },
+        {
+          "run": 190,
+          "profile": "rush",
+          "total_battles": 230,
+          "total_turns": 835,
+          "completed": 0,
+          "losses": 106,
+          "final_level": 32
+        },
+        {
+          "run": 191,
+          "profile": "balanced",
+          "total_battles": 1000,
+          "total_turns": 9027,
+          "completed": 0,
+          "losses": 326,
+          "final_level": 100
+        },
+        {
+          "run": 192,
+          "profile": "collector",
+          "total_battles": 711,
+          "total_turns": 18075,
+          "completed": 1,
+          "losses": 216,
+          "final_level": 100
+        },
+        {
+          "run": 193,
+          "profile": "rush",
+          "total_battles": 235,
+          "total_turns": 877,
+          "completed": 0,
+          "losses": 109,
+          "final_level": 32
+        },
+        {
+          "run": 194,
+          "profile": "balanced",
+          "total_battles": 539,
+          "total_turns": 2098,
+          "completed": 1,
+          "losses": 174,
+          "final_level": 95
+        },
+        {
+          "run": 195,
+          "profile": "collector",
+          "total_battles": 660,
+          "total_turns": 10636,
+          "completed": 1,
+          "losses": 197,
+          "final_level": 93
+        },
+        {
+          "run": 196,
+          "profile": "rush",
+          "total_battles": 273,
+          "total_turns": 999,
+          "completed": 0,
+          "losses": 130,
+          "final_level": 33
+        },
+        {
+          "run": 197,
+          "profile": "balanced",
+          "total_battles": 542,
+          "total_turns": 3127,
+          "completed": 1,
+          "losses": 175,
+          "final_level": 78
+        },
+        {
+          "run": 198,
+          "profile": "collector",
+          "total_battles": 985,
+          "total_turns": 64052,
+          "completed": 0,
+          "losses": 284,
+          "final_level": 100
+        },
+        {
+          "run": 199,
+          "profile": "rush",
+          "total_battles": 409,
+          "total_turns": 1486,
+          "completed": 0,
+          "losses": 191,
+          "final_level": 47
+        },
+        {
+          "run": 200,
+          "profile": "balanced",
+          "total_battles": 1000,
+          "total_turns": 8139,
+          "completed": 0,
+          "losses": 329,
+          "final_level": 100
+        },
+        {
+          "run": 201,
+          "profile": "collector",
+          "total_battles": 804,
+          "total_turns": 36755,
+          "completed": 1,
+          "losses": 243,
+          "final_level": 100
+        },
+        {
+          "run": 202,
+          "profile": "rush",
+          "total_battles": 505,
+          "total_turns": 1831,
+          "completed": 0,
+          "losses": 234,
+          "final_level": 58
+        },
+        {
+          "run": 203,
+          "profile": "balanced",
+          "total_battles": 853,
+          "total_turns": 12778,
+          "completed": 0,
+          "losses": 277,
+          "final_level": 100
+        },
+        {
+          "run": 204,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 31509,
+          "completed": 0,
+          "losses": 277,
+          "final_level": 100
+        },
+        {
+          "run": 205,
+          "profile": "rush",
+          "total_battles": 238,
+          "total_turns": 844,
+          "completed": 0,
+          "losses": 111,
+          "final_level": 32
+        },
+        {
+          "run": 206,
+          "profile": "balanced",
+          "total_battles": 563,
+          "total_turns": 5498,
+          "completed": 1,
+          "losses": 184,
+          "final_level": 100
+        },
+        {
+          "run": 207,
+          "profile": "collector",
+          "total_battles": 679,
+          "total_turns": 12931,
+          "completed": 1,
+          "losses": 212,
+          "final_level": 100
+        },
+        {
+          "run": 208,
+          "profile": "rush",
+          "total_battles": 303,
+          "total_turns": 1081,
+          "completed": 0,
+          "losses": 140,
+          "final_level": 40
+        },
+        {
+          "run": 209,
+          "profile": "balanced",
+          "total_battles": 843,
+          "total_turns": 19581,
+          "completed": 1,
+          "losses": 286,
+          "final_level": 100
+        },
+        {
+          "run": 210,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 34311,
+          "completed": 0,
+          "losses": 279,
+          "final_level": 100
+        },
+        {
+          "run": 211,
+          "profile": "rush",
+          "total_battles": 436,
+          "total_turns": 1506,
+          "completed": 0,
+          "losses": 204,
+          "final_level": 49
+        },
+        {
+          "run": 212,
+          "profile": "balanced",
+          "total_battles": 838,
+          "total_turns": 17617,
+          "completed": 0,
+          "losses": 281,
+          "final_level": 100
+        },
+        {
+          "run": 213,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 20892,
+          "completed": 0,
+          "losses": 384,
+          "final_level": 100
+        },
+        {
+          "run": 214,
+          "profile": "rush",
+          "total_battles": 513,
+          "total_turns": 1948,
+          "completed": 0,
+          "losses": 242,
+          "final_level": 50
+        },
+        {
+          "run": 215,
+          "profile": "balanced",
+          "total_battles": 634,
+          "total_turns": 10531,
+          "completed": 1,
+          "losses": 207,
+          "final_level": 100
+        },
+        {
+          "run": 216,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 33324,
+          "completed": 0,
+          "losses": 306,
+          "final_level": 100
+        },
+        {
+          "run": 217,
+          "profile": "rush",
+          "total_battles": 427,
+          "total_turns": 1503,
+          "completed": 0,
+          "losses": 202,
+          "final_level": 48
+        },
+        {
+          "run": 218,
+          "profile": "balanced",
+          "total_battles": 884,
+          "total_turns": 11869,
+          "completed": 0,
+          "losses": 290,
+          "final_level": 100
+        },
+        {
+          "run": 219,
+          "profile": "collector",
+          "total_battles": 694,
+          "total_turns": 20514,
+          "completed": 1,
+          "losses": 210,
+          "final_level": 100
+        },
+        {
+          "run": 220,
+          "profile": "rush",
+          "total_battles": 254,
+          "total_turns": 897,
+          "completed": 0,
+          "losses": 117,
+          "final_level": 32
+        },
+        {
+          "run": 221,
+          "profile": "balanced",
+          "total_battles": 643,
+          "total_turns": 14975,
+          "completed": 1,
+          "losses": 213,
+          "final_level": 100
+        },
+        {
+          "run": 222,
+          "profile": "collector",
+          "total_battles": 820,
+          "total_turns": 5705,
+          "completed": 1,
+          "losses": 266,
+          "final_level": 90
+        },
+        {
+          "run": 223,
+          "profile": "rush",
+          "total_battles": 304,
+          "total_turns": 1203,
+          "completed": 0,
+          "losses": 142,
+          "final_level": 34
+        },
+        {
+          "run": 224,
+          "profile": "balanced",
+          "total_battles": 888,
+          "total_turns": 34069,
+          "completed": 0,
+          "losses": 297,
+          "final_level": 100
+        },
+        {
+          "run": 225,
+          "profile": "collector",
+          "total_battles": 733,
+          "total_turns": 11962,
+          "completed": 1,
+          "losses": 227,
+          "final_level": 100
+        },
+        {
+          "run": 226,
+          "profile": "rush",
+          "total_battles": 513,
+          "total_turns": 1765,
+          "completed": 0,
+          "losses": 243,
+          "final_level": 51
+        },
+        {
+          "run": 227,
+          "profile": "balanced",
+          "total_battles": 491,
+          "total_turns": 3550,
+          "completed": 1,
+          "losses": 169,
+          "final_level": 91
+        },
+        {
+          "run": 228,
+          "profile": "collector",
+          "total_battles": 656,
+          "total_turns": 9226,
+          "completed": 1,
+          "losses": 218,
+          "final_level": 72
+        },
+        {
+          "run": 229,
+          "profile": "rush",
+          "total_battles": 382,
+          "total_turns": 1321,
+          "completed": 0,
+          "losses": 175,
+          "final_level": 54
+        },
+        {
+          "run": 230,
+          "profile": "balanced",
+          "total_battles": 877,
+          "total_turns": 18836,
+          "completed": 0,
+          "losses": 286,
+          "final_level": 100
+        },
+        {
+          "run": 231,
+          "profile": "collector",
+          "total_battles": 946,
+          "total_turns": 20602,
+          "completed": 1,
+          "losses": 264,
+          "final_level": 100
+        },
+        {
+          "run": 232,
+          "profile": "rush",
+          "total_battles": 246,
+          "total_turns": 857,
+          "completed": 0,
+          "losses": 113,
+          "final_level": 32
+        },
+        {
+          "run": 233,
+          "profile": "balanced",
+          "total_battles": 702,
+          "total_turns": 11346,
+          "completed": 1,
+          "losses": 231,
+          "final_level": 96
+        },
+        {
+          "run": 234,
+          "profile": "collector",
+          "total_battles": 877,
+          "total_turns": 21147,
+          "completed": 1,
+          "losses": 260,
+          "final_level": 100
+        },
+        {
+          "run": 235,
+          "profile": "rush",
+          "total_battles": 314,
+          "total_turns": 1167,
+          "completed": 0,
+          "losses": 150,
+          "final_level": 34
+        },
+        {
+          "run": 236,
+          "profile": "balanced",
+          "total_battles": 733,
+          "total_turns": 16598,
+          "completed": 1,
+          "losses": 236,
+          "final_level": 100
+        },
+        {
+          "run": 237,
+          "profile": "collector",
+          "total_battles": 796,
+          "total_turns": 20207,
+          "completed": 1,
+          "losses": 251,
+          "final_level": 100
+        },
+        {
+          "run": 238,
+          "profile": "rush",
+          "total_battles": 268,
+          "total_turns": 982,
+          "completed": 0,
+          "losses": 125,
+          "final_level": 32
+        },
+        {
+          "run": 239,
+          "profile": "balanced",
+          "total_battles": 871,
+          "total_turns": 29367,
+          "completed": 0,
+          "losses": 289,
+          "final_level": 100
+        },
+        {
+          "run": 240,
+          "profile": "collector",
+          "total_battles": 603,
+          "total_turns": 9593,
+          "completed": 0,
+          "losses": 199,
+          "final_level": 86
+        },
+        {
+          "run": 241,
+          "profile": "rush",
+          "total_battles": 533,
+          "total_turns": 1944,
+          "completed": 0,
+          "losses": 250,
+          "final_level": 59
+        },
+        {
+          "run": 242,
+          "profile": "balanced",
+          "total_battles": 577,
+          "total_turns": 11416,
+          "completed": 1,
+          "losses": 185,
+          "final_level": 100
+        },
+        {
+          "run": 243,
+          "profile": "collector",
+          "total_battles": 661,
+          "total_turns": 17286,
+          "completed": 1,
+          "losses": 210,
+          "final_level": 100
+        },
+        {
+          "run": 244,
+          "profile": "rush",
+          "total_battles": 226,
+          "total_turns": 896,
+          "completed": 0,
+          "losses": 103,
+          "final_level": 32
+        },
+        {
+          "run": 245,
+          "profile": "balanced",
+          "total_battles": 968,
+          "total_turns": 26284,
+          "completed": 0,
+          "losses": 316,
+          "final_level": 100
+        },
+        {
+          "run": 246,
+          "profile": "collector",
+          "total_battles": 740,
+          "total_turns": 18898,
+          "completed": 1,
+          "losses": 227,
+          "final_level": 100
+        },
+        {
+          "run": 247,
+          "profile": "rush",
+          "total_battles": 545,
+          "total_turns": 2033,
+          "completed": 0,
+          "losses": 258,
+          "final_level": 51
+        },
+        {
+          "run": 248,
+          "profile": "balanced",
+          "total_battles": 762,
+          "total_turns": 13165,
+          "completed": 1,
+          "losses": 251,
+          "final_level": 100
+        },
+        {
+          "run": 249,
+          "profile": "collector",
+          "total_battles": 709,
+          "total_turns": 9516,
+          "completed": 1,
+          "losses": 220,
+          "final_level": 92
+        },
+        {
+          "run": 250,
+          "profile": "rush",
+          "total_battles": 487,
+          "total_turns": 1560,
+          "completed": 0,
+          "losses": 226,
+          "final_level": 56
+        },
+        {
+          "run": 251,
+          "profile": "balanced",
+          "total_battles": 874,
+          "total_turns": 22590,
+          "completed": 0,
+          "losses": 286,
+          "final_level": 100
+        },
+        {
+          "run": 252,
+          "profile": "collector",
+          "total_battles": 651,
+          "total_turns": 14499,
+          "completed": 1,
+          "losses": 226,
+          "final_level": 94
+        },
+        {
+          "run": 253,
+          "profile": "rush",
+          "total_battles": 292,
+          "total_turns": 1050,
+          "completed": 0,
+          "losses": 136,
+          "final_level": 33
+        },
+        {
+          "run": 254,
+          "profile": "balanced",
+          "total_battles": 736,
+          "total_turns": 9460,
+          "completed": 0,
+          "losses": 240,
+          "final_level": 100
+        },
+        {
+          "run": 255,
+          "profile": "collector",
+          "total_battles": 769,
+          "total_turns": 29592,
+          "completed": 1,
+          "losses": 234,
+          "final_level": 100
+        },
+        {
+          "run": 256,
+          "profile": "rush",
+          "total_battles": 422,
+          "total_turns": 1564,
+          "completed": 0,
+          "losses": 196,
+          "final_level": 48
+        },
+        {
+          "run": 257,
+          "profile": "balanced",
+          "total_battles": 931,
+          "total_turns": 12091,
+          "completed": 0,
+          "losses": 304,
+          "final_level": 100
+        },
+        {
+          "run": 258,
+          "profile": "collector",
+          "total_battles": 616,
+          "total_turns": 3379,
+          "completed": 1,
+          "losses": 197,
+          "final_level": 91
+        },
+        {
+          "run": 259,
+          "profile": "rush",
+          "total_battles": 613,
+          "total_turns": 2194,
+          "completed": 0,
+          "losses": 291,
+          "final_level": 60
+        },
+        {
+          "run": 260,
+          "profile": "balanced",
+          "total_battles": 756,
+          "total_turns": 14513,
+          "completed": 1,
+          "losses": 246,
+          "final_level": 100
+        },
+        {
+          "run": 261,
+          "profile": "collector",
+          "total_battles": 896,
+          "total_turns": 31066,
+          "completed": 1,
+          "losses": 263,
+          "final_level": 100
+        },
+        {
+          "run": 262,
+          "profile": "rush",
+          "total_battles": 307,
+          "total_turns": 1180,
+          "completed": 0,
+          "losses": 146,
+          "final_level": 34
+        },
+        {
+          "run": 263,
+          "profile": "balanced",
+          "total_battles": 592,
+          "total_turns": 2939,
+          "completed": 0,
+          "losses": 202,
+          "final_level": 92
+        },
+        {
+          "run": 264,
+          "profile": "collector",
+          "total_battles": 886,
+          "total_turns": 39633,
+          "completed": 0,
+          "losses": 252,
+          "final_level": 100
+        },
+        {
+          "run": 265,
+          "profile": "rush",
+          "total_battles": 248,
+          "total_turns": 977,
+          "completed": 0,
+          "losses": 116,
+          "final_level": 32
+        },
+        {
+          "run": 266,
+          "profile": "balanced",
+          "total_battles": 641,
+          "total_turns": 2196,
+          "completed": 0,
+          "losses": 225,
+          "final_level": 88
+        },
+        {
+          "run": 267,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 66805,
+          "completed": 0,
+          "losses": 280,
+          "final_level": 100
+        },
+        {
+          "run": 268,
+          "profile": "rush",
+          "total_battles": 396,
+          "total_turns": 1504,
+          "completed": 0,
+          "losses": 188,
+          "final_level": 42
+        },
+        {
+          "run": 269,
+          "profile": "balanced",
+          "total_battles": 582,
+          "total_turns": 4256,
+          "completed": 1,
+          "losses": 189,
+          "final_level": 88
+        },
+        {
+          "run": 270,
+          "profile": "collector",
+          "total_battles": 880,
+          "total_turns": 31965,
+          "completed": 0,
+          "losses": 271,
+          "final_level": 100
+        },
+        {
+          "run": 271,
+          "profile": "rush",
+          "total_battles": 638,
+          "total_turns": 2391,
+          "completed": 0,
+          "losses": 305,
+          "final_level": 62
+        },
+        {
+          "run": 272,
+          "profile": "balanced",
+          "total_battles": 929,
+          "total_turns": 33758,
+          "completed": 0,
+          "losses": 325,
+          "final_level": 100
+        },
+        {
+          "run": 273,
+          "profile": "collector",
+          "total_battles": 730,
+          "total_turns": 31601,
+          "completed": 1,
+          "losses": 221,
+          "final_level": 99
+        },
+        {
+          "run": 274,
+          "profile": "rush",
+          "total_battles": 269,
+          "total_turns": 998,
+          "completed": 0,
+          "losses": 128,
+          "final_level": 32
+        },
+        {
+          "run": 275,
+          "profile": "balanced",
+          "total_battles": 560,
+          "total_turns": 10171,
+          "completed": 1,
+          "losses": 181,
+          "final_level": 97
+        },
+        {
+          "run": 276,
+          "profile": "collector",
+          "total_battles": 990,
+          "total_turns": 59065,
+          "completed": 0,
+          "losses": 316,
+          "final_level": 100
+        },
+        {
+          "run": 277,
+          "profile": "rush",
+          "total_battles": 506,
+          "total_turns": 1834,
+          "completed": 0,
+          "losses": 240,
+          "final_level": 50
+        },
+        {
+          "run": 278,
+          "profile": "balanced",
+          "total_battles": 689,
+          "total_turns": 13253,
+          "completed": 1,
+          "losses": 228,
+          "final_level": 100
+        },
+        {
+          "run": 279,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 54098,
+          "completed": 0,
+          "losses": 301,
+          "final_level": 100
+        },
+        {
+          "run": 280,
+          "profile": "rush",
+          "total_battles": 492,
+          "total_turns": 1811,
+          "completed": 0,
+          "losses": 235,
+          "final_level": 50
+        },
+        {
+          "run": 281,
+          "profile": "balanced",
+          "total_battles": 829,
+          "total_turns": 24850,
+          "completed": 0,
+          "losses": 273,
+          "final_level": 100
+        },
+        {
+          "run": 282,
+          "profile": "collector",
+          "total_battles": 903,
+          "total_turns": 39602,
+          "completed": 0,
+          "losses": 265,
+          "final_level": 100
+        },
+        {
+          "run": 283,
+          "profile": "rush",
+          "total_battles": 232,
+          "total_turns": 860,
+          "completed": 0,
+          "losses": 107,
+          "final_level": 32
+        },
+        {
+          "run": 284,
+          "profile": "balanced",
+          "total_battles": 957,
+          "total_turns": 22834,
+          "completed": 0,
+          "losses": 317,
+          "final_level": 100
+        },
+        {
+          "run": 285,
+          "profile": "collector",
+          "total_battles": 697,
+          "total_turns": 12138,
+          "completed": 1,
+          "losses": 233,
+          "final_level": 91
+        },
+        {
+          "run": 286,
+          "profile": "rush",
+          "total_battles": 423,
+          "total_turns": 1332,
+          "completed": 0,
+          "losses": 196,
+          "final_level": 48
+        },
+        {
+          "run": 287,
+          "profile": "balanced",
+          "total_battles": 737,
+          "total_turns": 18276,
+          "completed": 0,
+          "losses": 237,
+          "final_level": 100
+        },
+        {
+          "run": 288,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 5321,
+          "completed": 0,
+          "losses": 874,
+          "final_level": 33
+        },
+        {
+          "run": 289,
+          "profile": "rush",
+          "total_battles": 324,
+          "total_turns": 1061,
+          "completed": 0,
+          "losses": 150,
+          "final_level": 40
+        },
+        {
+          "run": 290,
+          "profile": "balanced",
+          "total_battles": 789,
+          "total_turns": 28641,
+          "completed": 0,
+          "losses": 277,
+          "final_level": 100
+        },
+        {
+          "run": 291,
+          "profile": "collector",
+          "total_battles": 1000,
+          "total_turns": 51363,
+          "completed": 0,
+          "losses": 284,
+          "final_level": 100
+        },
+        {
+          "run": 292,
+          "profile": "rush",
+          "total_battles": 258,
+          "total_turns": 885,
+          "completed": 0,
+          "losses": 120,
+          "final_level": 32
+        },
+        {
+          "run": 293,
+          "profile": "balanced",
+          "total_battles": 576,
+          "total_turns": 4769,
+          "completed": 1,
+          "losses": 189,
+          "final_level": 95
+        },
+        {
+          "run": 294,
+          "profile": "collector",
+          "total_battles": 930,
+          "total_turns": 70742,
+          "completed": 0,
+          "losses": 269,
+          "final_level": 100
+        },
+        {
+          "run": 295,
+          "profile": "rush",
+          "total_battles": 319,
+          "total_turns": 1191,
+          "completed": 0,
+          "losses": 152,
+          "final_level": 34
+        },
+        {
+          "run": 296,
+          "profile": "balanced",
+          "total_battles": 908,
+          "total_turns": 3455,
+          "completed": 0,
+          "losses": 301,
+          "final_level": 100
+        },
+        {
+          "run": 297,
+          "profile": "collector",
+          "total_battles": 721,
+          "total_turns": 18207,
+          "completed": 1,
+          "losses": 219,
+          "final_level": 100
+        },
+        {
+          "run": 298,
+          "profile": "rush",
+          "total_battles": 369,
+          "total_turns": 1330,
+          "completed": 0,
+          "losses": 170,
+          "final_level": 46
+        },
+        {
+          "run": 299,
+          "profile": "balanced",
+          "total_battles": 779,
+          "total_turns": 26191,
+          "completed": 0,
+          "losses": 269,
+          "final_level": 100
+        },
+        {
+          "run": 300,
+          "profile": "collector",
+          "total_battles": 642,
+          "total_turns": 6949,
+          "completed": 1,
+          "losses": 213,
+          "final_level": 89
+        }
+      ]
+    },
+    "accessIssues": []
+  },
+  "sources": [
+    {
+      "id": "overview_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_csv_auto('docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/overview.csv', header = true);",
+        "description": "300周全体の主要指標。",
+        "executed_at": "2026-08-16T22:16:41.159Z"
+      }
+    },
+    {
+      "id": "profiles_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_csv_auto('docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/profile-metrics.csv', header = true);",
+        "description": "速攻・バランス・収集配合の方針別集計。",
+        "executed_at": "2026-08-16T22:16:41.159Z"
+      }
+    },
+    {
+      "id": "stages_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_csv_auto('docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/stage-metrics.csv', header = true);",
+        "description": "13地域の進行・ボス・育成集計。",
+        "executed_at": "2026-08-16T22:16:41.159Z"
+      }
+    },
+    {
+      "id": "findings_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_csv_auto('docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/findings.csv', header = true);",
+        "description": "動的検出と静的仕様監査の問題一覧。",
+        "executed_at": "2026-08-16T22:16:41.159Z"
+      }
+    }
+  ],
+  "package_info": {
+    "originUrl": "artifact://monster-links/8.6-A.58/campaign-audit",
+    "controls": {
+      "edit": false,
+      "refresh": false
+    }
+  }
+}

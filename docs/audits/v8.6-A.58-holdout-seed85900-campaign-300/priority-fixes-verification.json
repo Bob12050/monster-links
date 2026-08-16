@@ -1,0 +1,36 @@
+{
+  "schema": "monster-links.priority-fixes-verification",
+  "schemaVersion": 1,
+  "testVersion": "1.0.0",
+  "gameVersion": "8.6-A.58",
+  "sourceHash": "78cf4bf1dca27ad779f2917f33fc2336f24e1ca106db9f9a0f299c578a971b77",
+  "status": "passed",
+  "passed": true,
+  "counts": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0
+  },
+  "tests": [
+    {
+      "id": "scout-charm-reward-adds",
+      "status": "passed"
+    },
+    {
+      "id": "equipment-return-record-integrity",
+      "status": "passed"
+    },
+    {
+      "id": "fusion-neutral-inheritance",
+      "status": "passed"
+    },
+    {
+      "id": "fusion-equipment-return-record-integrity",
+      "status": "passed"
+    },
+    {
+      "id": "auto-guard-consecutive-limit",
+      "status": "passed"
+    }
+  ]
+}

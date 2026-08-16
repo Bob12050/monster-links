@@ -3,3 +3,6 @@
 
 # Release archives are local deliverables, not GitHub Pages source.
 monster-links-*.zip
+
+# Reproducible local campaign arms; only reviewed release artifacts are tracked.
+.audit-runs/

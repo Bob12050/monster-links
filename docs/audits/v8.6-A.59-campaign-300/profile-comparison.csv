@@ -1,0 +1,7 @@
+profile,profile_label,version_label,comparison_order,campaigns,completed,completion_rate,completion_rate_delta,median_battles,p90_battles
+rush,速攻,8.6-A.58 対照 HP+45%,0,100,0,0,0,368.5,551.1
+rush,速攻,8.6-A.59 公開値,1,100,0,0,0,368.5,551.1
+balanced,バランス,8.6-A.58 対照 HP+45%,0,100,48,0.48,0,734.5,957.2
+balanced,バランス,8.6-A.59 公開値,1,100,64,0.64,0.16000000000000003,666,931
+collector,収集・配合,8.6-A.58 対照 HP+45%,0,100,51,0.51,0,807,1000
+collector,収集・配合,8.6-A.59 公開値,1,100,59,0.59,0.07999999999999996,731.5,1000

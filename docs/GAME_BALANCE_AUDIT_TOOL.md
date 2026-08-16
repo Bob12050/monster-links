@@ -52,6 +52,32 @@ node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --ver
 
 `--verify-determinism` は先頭最大12周を同じseedで再実行し、campaign/stage明細のSHA-256が一致することを確認します。
 
+## 天空ボスの1変数実験
+
+天空遺跡ボスのHP補正だけを試す場合は、A/B両群を同じ監査ツール・本体ソース・seedで実行します。実験値は監査VM内だけへ適用され、ゲーム本体、セーブ、PWAは変更しません。
+
+```text
+node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --verify-determinism --sky-boss-hp-boost=control --out=.audit-runs/a59-discovery/control
+
+node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --verify-determinism --sky-boss-hp-boost=.35 --baseline=.audit-runs/a59-discovery/control --out=.audit-runs/a59-discovery/hp-035
+
+node tools/evaluate-sky-balance-experiment.mjs --phase=discovery --baseline=.audit-runs/a59-discovery/control --candidate=.audit-runs/a59-discovery/hp-035 --out=.audit-runs/a59-discovery/hp-035-evaluation.json
+```
+
+`control` は本体の実効補正 `{hp:.45,mp:.2,atk:.12,def:.12,wis:.12}` を検証する明示対照です。数値候補はこの完全なobjectを複製し、`hp`だけを差し替えます。部分objectにして他の能力補正を欠落させる実験は拒否します。
+
+実験flagは、固有の `--out` と `--verify-determinism` が必須です。数値候補には同じtool source hash・runtime source hashで生成した明示対照 `--baseline` も必須です。比較時には天空より前の12地域について全出力列、天空では到達・入口Lv・初回ボス開始Lv・入口Gを照合し、処置前の差があれば停止します。
+
+監査summaryは次の3署名を保存します。
+
+- `resultSignature`: campaign/stage結果だけの従来互換SHA-256
+- `runSignature`: 実効ボス補正scenarioと結果を結び付けるSHA-256
+- `executionSignature`: tool、本体source、GAME_VERSION、実行モードまで含む来歴SHA-256
+
+採用判定はA.58対照で天空へ到達した同一組を固定分母にします。主条件は、突破率のpaired差が+10pt以上かつprofile層別paired bootstrap 95%区間の下限が0超、未突破を80回扱いした挑戦負荷の差が0未満かつ区間上限も0未満です。天空停止数、天空戦闘数P90、全campaign P90、バランス/収集それぞれの突破数、自動防御を非劣化guardrailにします。過度な弱体化を防ぐ上限は突破率85%・初回成功20%です。75–80%の絶対突破率自体は、ユーザーテスト由来の目標ではないため診断値として併記します。
+
+候補選択に使ったseed集合は探索用です。採用候補は、別に事前固定したseedでA.58対照300周と正式版300周をpaired再実行し、判定器を `--phase=holdout` で通してから公開します。holdoutは探索seed 85700を拒否します。`.audit-runs/` はローカルの再生成可能な実験群で、レビュー済みの正式監査だけを `docs/audits/` へ保存します。
+
 ## 出力
 
 既定の出力先は `docs/audits/v<GAME_VERSION>-campaign-<runs>/` です。
@@ -73,7 +99,7 @@ node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --ver
 - `report-verification.json`: HTMLの検証結果（表示幅、チャート、ソース操作）
 - `queries/*.sql`: レポートの各CSV投影を再現するソース表示用クエリ
 
-CSVはExcel等で再分析でき、JSONにはgame version、Git revision、本体ソースhash、run signatureと回帰レシートを保存します。`audit-summary.json` と `artifact.json` にも同じレシートを埋め込みます。
+CSVはExcel等で再分析でき、JSONにはgame version、Git revision、本体ソースhash、scenario、3種類のsignatureと回帰レシートを保存します。`audit-summary.json` と `artifact.json` にも同じレシートを埋め込みます。
 
 閲覧用レポートの再生成:
 

@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.59 Sky Ruins boss HP tuning
+
+- Reduced only the Sky Ruins final boss HP bonus from 45% to 20%; all other boss boosts and combat parameters are unchanged.
+- Selected the value with same-seed 300-campaign control/treatment experiments, fixed-cohort paired metrics, and a separately seeded holdout.
+- Added scenario, result, run, and execution provenance plus full pre-treatment invariance checks to the campaign audit.
+- Preserved save schema 1, save keys, monster/stage/item/quest IDs, recipes, rewards, and all earlier stage parameters.
+- Updated PWA/cache version to v8.6-A.59.
+
 ## v8.6-A.58 Priority balance integrity fixes
 
 - Fixed fusion inheritance so equipment, personality, mutation, and previous inherited bonuses do not compound into the next generation.

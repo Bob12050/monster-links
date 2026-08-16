@@ -1,0 +1,4 @@
+profile,profile_label,campaigns,completed,completion_rate,completion_ci_low,completion_ci_high,median_battles,p90_battles,median_turns,p90_turns,avg_losses,avg_scouts,avg_fusions,avg_guard_loop_battles,avg_charm_waste_rate,avg_gold_sink_rate,median_final_level,median_final_gold,median_first_b,median_first_a,median_first_s,description
+rush,速攻,100,0,0,3.469446951953614e-18,0.03699349820698568,368.5,551.1,1331,2002.4,182.73,2,0,0,1,0.9908,42,354,,,,攻撃優先。序盤の3枠確保後は収集を抑え、修練の書を積極利用する。
+balanced,バランス,100,48,0.48,0.384645517580519,0.5768342223477603,734.5,957.2,11425,26215.6,242.71,13.02,0.11,0,1,0.9466,100,21837,218,519,471,本体のバランスオート（HP48%回復・HP22%防御）を使い、各地域で1回スカウトを狙う。
+collector,収集・配合,100,51,0.51,0.4134801193402717,0.6057800106955886,807,1000,20541.5,54655.4,260.31,26.14,1.36,0,0.8586,0.957,100,21557,207,532,,本体の回復優先オート（HP72%回復）を使い、未入手種・笛・成立済み配合を優先する。

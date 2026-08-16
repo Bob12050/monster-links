@@ -1,0 +1,2 @@
+campaigns,completed,completion_rate,completion_ci_low,completion_ci_high,median_battles,p90_battles,median_turns,p90_turns,avg_losses,avg_scouts,avg_fusions,boss_loss_cap_stops,stalled_campaigns,guard_loop_campaign_rate,median_final_level,high_findings
+300,99,0.33,0.2792344636154957,0.3850641466008499,651.5,980.3,8253,34561.2,228.58,13.72,0.49,160,18,0,97,6

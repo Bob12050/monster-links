@@ -1,6 +1,14 @@
-# Monster Links v8.6-A.58
+# Monster Links v8.6-A.59
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.59 update
+
+- Reduced only the final Sky Ruins boss HP bonus from 45% to 20%; MP, attack, defense, wisdom, rewards, level, and AI are unchanged.
+- Selected the value with same-seed 300-campaign control/treatment experiments and a separately seeded 300-pair holdout.
+- Kept save schema 1, save keys, content IDs, recipes, equipment, rewards, and every earlier stage unchanged.
+- Added machine-readable scenario signatures, pre-treatment invariance checks, paired bootstrap gates, and a reusable experiment evaluator.
+- Updated PWA/cache version to v8.6-A.59.
 
 ## v8.6-A.58 update
 
@@ -120,7 +128,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.58 Priority balance integrity fixes
+v8.6-A.59 Sky Ruins boss HP tuning
 ```
 
 ## v8.6-A.49 update
@@ -716,4 +724,4 @@ node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --ver
 
 `campaign-audit.mjs` は新規セーブから天空遺跡までを300周し、本体の戦闘・報酬・スカウト・成長・配合APIを使って監査上限内完走率、地域別難易度、育成周回、経済、自動戦闘の長期化、仕様矛盾を記録します。詳しい方法と出力は [300周キャンペーン監査ツール](docs/GAME_BALANCE_AUDIT_TOOL.md) を参照してください。
 
-v8.6-A.58をseed 85700で実行し、v8.6-A.57と同じ300条件で比較した結果は [300周キャンペーン監査レポート](docs/audits/v8.6-A.58-campaign-300/report.html) で確認できます。比較元の [v8.6-A.57レポート](docs/audits/v8.6-A.57-campaign-300/report.html) も残しています。
+v8.6-A.59は探索seed 85700で3候補を比較し、別seed 85900の300対300 holdoutで確認しました。判断過程は [天空遺跡ボス単変数チューニング](docs/audits/v8.6-A.59-sky-balance-study/REPORT.md)、正式結果は [A.59 300周キャンペーン監査レポート](docs/audits/v8.6-A.59-campaign-300/report.html)、対照は [A.58 holdoutレポート](docs/audits/v8.6-A.58-holdout-seed85900-campaign-300/report.html) で確認できます。以前の [A.58レポート](docs/audits/v8.6-A.58-campaign-300/report.html) も残しています。
