@@ -1,6 +1,14 @@
-# Monster Links v8.6-A.56
+# Monster Links v8.6-A.57
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.57 update
+
+- Unified Adventure, Monsters, Fusion, Menu, Quest, Shop, Dex, Arena, Settings, Help, Battle, and Result with the bright HOME atlas visual language.
+- Added a shared paper HUD, cobalt page ribbon, bright bottom dock, ivory content surfaces, and coral primary actions while reusing the production atlas and game art.
+- Kept all view IDs, navigation callbacks, battle/reward no-dock behavior, save compatibility, content IDs, recipes, rewards, and balance intact.
+- Verified the primary journey, board/map toggle, search filter, battle/result flow, and responsive layouts from 320 px mobile through tablet/desktop poster sizes.
+- Updated PWA/cache version to v8.6-A.57.
 
 ## v8.6-A.56 update
 
@@ -102,7 +110,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.56 Adventure gateway TITLE
+v8.6-A.57 Bright atlas UI unification
 ```
 
 ## v8.6-A.49 update

@@ -16220,3 +16220,1683 @@ body.mlReducedMotionV817 .titleGatewayPortalV856{
     border-radius:28px;
   }
 }
+
+/* =========================================================
+   v8.6-A.57 Bright adventure-atlas UI system
+   HOME の紙面・地図・青い見出し・コーラルCTAを通常画面へ展開。
+   既存の view ID / DOM / Game.* 契約は変更せず、最終カスケードで再着色する。
+   ========================================================= */
+#app.atlasUiV857{
+  --atlas-sky:#6fc3ef;
+  --atlas-canvas:#f6f1e8;
+  --atlas-paper:#fffdf7;
+  --atlas-paper-warm:#fff8e8;
+  --atlas-paper-soft:#f7f4ed;
+  --atlas-line:#e4ded3;
+  --atlas-line-strong:#cfc7ba;
+  --atlas-ink-strong:#1f4a79;
+  --atlas-ink:#294c73;
+  --atlas-muted:#5b6e84;
+  --atlas-nav-ink:#4c6480;
+  --atlas-blue:#2677ca;
+  --atlas-blue-accessible:#176ec5;
+  --atlas-blue-deep:#15549d;
+  --atlas-blue-deeper:#0b4d98;
+  --atlas-coral:#ef654e;
+  --atlas-coral-accessible:#c94634;
+  --atlas-gold-light:#ffe978;
+  --atlas-gold:#efc767;
+  --atlas-gold-deep:#d99a08;
+  --atlas-green:#14815f;
+  --atlas-focus:#0b4d98;
+  --atlas-shadow-card:0 7px 16px rgba(41,73,78,.20),inset 0 1px #fff;
+  --atlas-shadow-float:0 10px 25px rgba(42,75,83,.26),inset 0 1px #fff;
+  --atlas-shadow-dock:0 -8px 24px rgba(38,73,77,.20),inset 0 1px #fff;
+  width:min(430px,100%);
+  height:min(var(--app-height),932px);
+  color-scheme:light;
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro","M PLUS Rounded 1c",system-ui,sans-serif;
+  color:var(--atlas-ink);
+  background:var(--atlas-canvas);
+  box-shadow:0 24px 66px rgba(26,74,112,.28);
+}
+
+body:has(#app.atlasUiV857){
+  color:var(--atlas-ink,#294c73);
+  background:
+    radial-gradient(circle at 50% 5%,rgba(255,255,255,.95),transparent 34%),
+    linear-gradient(180deg,#9ed9f5,#d8eee7 68%,#c8ded5);
+}
+
+/* ---------- Shared paper HUD ---------- */
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821{
+  position:relative!important;
+  inset:auto!important;
+  z-index:30;
+  min-height:111px!important;
+  height:auto!important;
+  display:grid!important;
+  grid-template-columns:1.08fr 1.92fr!important;
+  grid-template-rows:70px 30px!important;
+  gap:7px 0!important;
+  align-items:stretch!important;
+  margin:0!important;
+  padding:10px 14px 0!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  color:var(--atlas-ink)!important;
+  background:
+    linear-gradient(180deg,rgba(111,195,239,.92),rgba(111,195,239,.55) 77%,transparent 77%)!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudBrandV821,
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudNoticeV821,
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudMenuV821{
+  display:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudRankV821,
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821{
+  position:relative!important;
+  inset:auto!important;
+  width:auto!important;
+  height:70px!important;
+  min-width:0!important;
+  min-height:70px!important;
+  margin:0!important;
+  border:1px solid rgba(255,255,255,.96)!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:0 9px 22px rgba(31,77,106,.22),inset 0 -1px rgba(171,160,143,.18)!important;
+  text-shadow:none!important;
+  backdrop-filter:blur(8px);
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudRankV821{
+  display:grid!important;
+  grid-template-columns:50px minmax(34px,auto)!important;
+  grid-template-rows:1fr!important;
+  align-items:center!important;
+  justify-content:start!important;
+  gap:5px!important;
+  padding:7px 6px!important;
+  border-right:0!important;
+  border-radius:25px 0 0 25px!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-left:1px solid var(--atlas-line)!important;
+  border-radius:0 25px 25px 0!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudAvatarV821{
+  width:52px!important;
+  height:52px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin-left:-3px!important;
+  padding:3px!important;
+  overflow:hidden!important;
+  border:2px solid #fff!important;
+  border-radius:50%!important;
+  color:var(--atlas-blue)!important;
+  background:radial-gradient(circle at 38% 28%,#fff,#e5f5ff 64%,#b7d8e9)!important;
+  box-shadow:0 3px 9px rgba(36,82,109,.22),inset 0 0 0 1px rgba(72,112,135,.18)!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudAvatarMonsterV821,
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudAvatarMonsterV821 img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudRankTextV821{
+  min-width:0!important;
+  display:grid!important;
+  align-content:center!important;
+  gap:1px!important;
+  text-align:left!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudRankTextV821 small{
+  height:11px;
+  overflow:hidden;
+  color:transparent!important;
+  font-size:0!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudRankTextV821 small:after{
+  content:"ランク";
+  color:#60728a;
+  font-size:10px;
+  font-weight:900;
+  line-height:1.1;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudRankTextV821 b{
+  color:var(--atlas-ink-strong)!important;
+  font-family:inherit!important;
+  font-size:23px!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudExpV821{
+  display:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudBadgeV821{
+  left:39px!important;
+  top:-5px!important;
+  border:2px solid #fff!important;
+  color:#fff!important;
+  background:var(--atlas-coral-accessible)!important;
+  box-shadow:0 2px 6px rgba(116,49,38,.28)!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button{
+  position:relative!important;
+  inset:auto!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:68px!important;
+  display:grid!important;
+  grid-template-columns:34px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:6px!important;
+  margin:0!important;
+  padding:7px 6px!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-left:1px solid var(--atlas-line)!important;
+  border-radius:0!important;
+  color:var(--atlas-ink)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  text-align:left!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button:first-child{
+  border-left:0!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button:before{
+  position:absolute;
+  left:45px;
+  top:14px;
+  color:#60728a;
+  font-size:10px;
+  font-weight:900;
+  line-height:1;
+  white-space:nowrap;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button:first-child:before{content:"ゴールド"}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button:last-child:before{content:"パーティ"}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button b{
+  min-width:0!important;
+  align-self:end!important;
+  margin-bottom:7px!important;
+  overflow:hidden!important;
+  color:var(--atlas-ink-strong)!important;
+  font-family:inherit!important;
+  font-size:18px!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourceIconV821{
+  width:32px!important;
+  height:32px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:0!important;
+  border-radius:50%!important;
+  color:#fff!important;
+  background:linear-gradient(145deg,#68caff,#1679c8)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.7),0 3px 6px rgba(42,91,121,.22)!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourceIconV821.gold{
+  color:#fff8c9!important;
+  background:linear-gradient(145deg,#ffe978,#e1a510 62%,#bb7500)!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourceIconV821 .mlIcon{
+  width:19px!important;
+  height:19px!important;
+  filter:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudViewLabelV821{
+  position:relative!important;
+  inset:auto!important;
+  grid-column:1/-1!important;
+  grid-row:2!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:30px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  margin:0 34px!important;
+  padding:4px 14px!important;
+  border:1px solid #0f5da9!important;
+  border-radius:3px!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#2d82d6,#1768bd)!important;
+  box-shadow:0 3px 8px rgba(22,83,139,.28),inset 0 1px rgba(255,255,255,.35)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudViewLabelV821 span,
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudViewLabelV821 b{
+  color:#fff!important;
+  font-family:inherit!important;
+  font-style:normal!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  text-shadow:none!important;
+  white-space:nowrap!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudViewLabelV821 span{
+  font-size:10px!important;
+  letter-spacing:.1em!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudViewLabelV821 b{
+  font-size:14px!important;
+}
+
+/* ---------- Shared atlas canvas ---------- */
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+){
+  position:relative!important;
+  min-width:0!important;
+  min-height:0!important;
+  display:grid!important;
+  align-content:start!important;
+  gap:12px!important;
+  margin:0!important;
+  padding:10px 10px 24px!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  scrollbar-gutter:auto!important;
+  scrollbar-width:none!important;
+  color:var(--atlas-ink)!important;
+  background:
+    linear-gradient(180deg,rgba(245,250,247,.72),rgba(246,241,232,.93) 56%,rgba(246,241,232,.98)),
+    url("../assets/images/ui/home_atlas_route_v855.png") center top/cover no-repeat!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+)::-webkit-scrollbar{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) :is(h1,h2,h3,h4,b,strong){
+  font-family:inherit!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) :is(h1,h2,h3){
+  color:var(--atlas-ink-strong)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) h1{
+  font-size:24px!important;
+  font-weight:1000!important;
+  line-height:1.15!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) h2{
+  font-size:18px!important;
+  font-weight:1000!important;
+  line-height:1.25!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) :is(p,.tiny,small){
+  color:var(--atlas-muted)!important;
+  line-height:1.5!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) :is(.tiny,small){
+  font-size:11px!important;
+}
+
+/* Shared paper surfaces */
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) :is(
+  .card,
+  .stageModeBarV817,
+  .partyFormationV831,
+  .pastureWorldV831,
+  .fusionParentListV824,
+  .fusionResearchCardV844,
+  .menuManagementV824,
+  .dexCollectionBoardV837,
+  .dexListSummaryV825,
+  .dexRankCardV825,
+  .questOverviewV825,
+  .questReadyV825,
+  .questSectionV825,
+  .shopQuickNavV835,
+  .shopSectionV825,
+  .shopBagV825,
+  .arenaSummaryV840,
+  .arenaNavV840,
+  .settingsQuickNavV839,
+  .guideQuickNavV841,
+  .guideShortcutGridV841
+){
+  border:1px solid rgba(207,199,186,.88)!important;
+  border-radius:17px!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:var(--atlas-shadow-card)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) > :is(.hero,.fusionHeroV34,.menuHeroV839,.dexHeroV825,.questBoardHeroV842,.shopHeroV825,.arenaHeroV840,.settingsHeroV839,.guideHeroV841){
+  position:relative!important;
+  margin:0!important;
+  padding:18px 16px 16px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(207,199,186,.9)!important;
+  border-top:7px solid var(--atlas-blue-accessible)!important;
+  border-radius:19px!important;
+  color:var(--atlas-ink)!important;
+  background:
+    linear-gradient(135deg,rgba(255,253,247,.98),rgba(244,251,255,.96))!important;
+  box-shadow:var(--atlas-shadow-float)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) > :is(.hero,.fusionHeroV34,.menuHeroV839,.dexHeroV825,.questBoardHeroV842,.shopHeroV825,.arenaHeroV840,.settingsHeroV839,.guideHeroV841):before{
+  display:none!important;
+}
+
+/* Inputs, notices, native accordions */
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) :is(input,select,textarea){
+  min-height:44px!important;
+  border:1px solid var(--atlas-line-strong)!important;
+  border-radius:12px!important;
+  color:var(--atlas-ink-strong)!important;
+  background:#fff!important;
+  box-shadow:inset 0 2px 6px rgba(49,78,96,.08)!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) :is(.notice,.empty){
+  border:1px solid #c9ddeb!important;
+  border-radius:12px!important;
+  color:var(--atlas-muted)!important;
+  background:#f3f9fc!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) details > summary{
+  min-height:50px;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.96)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) :is(.tag,.type,.rankFlagV831,.arenaRankBadge){
+  border:1px solid #d8b755!important;
+  color:#765400!important;
+  background:#fff4c9!important;
+  text-shadow:none!important;
+}
+
+/* Buttons */
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) button{
+  min-height:44px!important;
+  border:1px solid #8eb6d4!important;
+  border-radius:12px!important;
+  color:var(--atlas-blue-deep)!important;
+  background:linear-gradient(180deg,#fff,#edf7fd)!important;
+  box-shadow:inset 0 1px #fff,0 3px 7px rgba(53,91,116,.15)!important;
+  font-family:inherit!important;
+  font-size:12px!important;
+  font-weight:1000!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) button.primary{
+  border-color:#0f5da9!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#3b8cdb,#1768bd 66%,#12589f)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.4),0 4px 8px rgba(31,83,128,.24)!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) button.gold{
+  border-color:#c99408!important;
+  color:#5d4200!important;
+  background:linear-gradient(180deg,#ffe978,#efc767 62%,#dca30e)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.62),0 4px 8px rgba(135,98,17,.2)!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) button.green{
+  border-color:#0c684c!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#35b98c,#14815f 66%,#0d674c)!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) button.red{
+  border-color:#a93829!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ef715e,#c94634 68%,#a93729)!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) button:disabled{
+  border-color:#d7d3cb!important;
+  color:#8e969e!important;
+  background:#eceae5!important;
+  box-shadow:none!important;
+  opacity:.72!important;
+  filter:none!important;
+}
+#app.atlasUiV857 :is(button,[role="button"],summary):focus-visible{
+  outline:3px solid var(--atlas-focus)!important;
+  outline-offset:2px!important;
+  box-shadow:0 0 0 5px rgba(255,255,255,.92)!important;
+}
+
+/* ---------- Shared bright dock ---------- */
+#app.atlasUiV857 > .gameDockV821{
+  grid-row:3;
+  min-height:82px!important;
+  padding:6px 8px max(6px,var(--app-safe-bottom))!important;
+  overflow:visible!important;
+  border:0!important;
+  border-top:1px solid #ddd7cc!important;
+  border-radius:20px 20px 0 0!important;
+  color:var(--atlas-nav-ink)!important;
+  background:rgba(255,253,247,.99)!important;
+  box-shadow:var(--atlas-shadow-dock)!important;
+}
+#app.atlasUiV857[data-view="home"] > .gameDockV821{grid-row:2}
+#app.atlasUiV857 > .gameDockV821 > button{
+  min-width:0!important;
+  min-height:62px!important;
+  margin:0!important;
+  padding:5px 3px!important;
+  border:0!important;
+  border-left:1px solid #e6e0d6!important;
+  border-radius:0!important;
+  color:var(--atlas-nav-ink)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > .gameDockV821 > button:first-child{border-left:0!important}
+#app.atlasUiV857 > .gameDockV821 > button.on{
+  margin-top:-9px!important;
+  min-height:70px!important;
+  border:1px solid #1765b3!important;
+  border-radius:16px!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#4a9ae8,#1b6dc2 66%,#1458a2)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.45),0 5px 10px rgba(35,89,135,.28)!important;
+}
+#app.atlasUiV857 > .gameDockV821 > button.on:before{display:none!important}
+#app.atlasUiV857 > .gameDockV821 .dockIconV821{
+  color:inherit!important;
+  filter:none!important;
+}
+#app.atlasUiV857 > .gameDockV821 .dockIconV821 .mlIcon{
+  filter:none!important;
+}
+#app.atlasUiV857 > .gameDockV821 .dockLabelV821{
+  color:inherit!important;
+  font-size:11px!important;
+  font-weight:1000!important;
+  text-shadow:none!important;
+}
+
+/* ---------- Adventure ---------- */
+#app.atlasUiV857[data-view="stage"] > main.worldAdventureV851{
+  padding-top:10px!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyV849{
+  overflow:hidden!important;
+  border:3px solid rgba(255,253,247,.96)!important;
+  border-radius:20px!important;
+  background:#7abfe6!important;
+  box-shadow:var(--atlas-shadow-float)!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyContentV849{
+  color:#fff!important;
+  background:linear-gradient(180deg,rgba(21,84,157,.05),rgba(19,68,105,.28) 42%,rgba(20,54,72,.9) 100%)!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyV849 :is(h1,h2,h3,p,span,b,strong,small){
+  color:#fff!important;
+  text-shadow:0 2px 4px rgba(15,48,63,.65)!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyStatsV849 > div,
+#app.atlasUiV857[data-view="stage"] .stageLobbyBossV849{
+  border-color:rgba(255,255,255,.62)!important;
+  color:#fff!important;
+  background:rgba(255,253,247,.9)!important;
+  box-shadow:0 4px 10px rgba(31,74,92,.18)!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyStatsV849 > div :is(span,b,small),
+#app.atlasUiV857[data-view="stage"] .stageLobbyBossV849 :is(span,b,small,p){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="stage"] :is(
+  .stageLobbyActionsV849,
+  .questCardActionsV817,
+  .worldStageActionsV851,
+  .worldStageQuickButtonsV8615
+) button.primary{
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+  box-shadow:inset 0 2px rgba(255,255,255,.4),0 4px 8px rgba(144,68,51,.24)!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageModeBarV817{
+  position:sticky!important;
+  top:0!important;
+  z-index:8!important;
+  padding:10px!important;
+  backdrop-filter:blur(10px);
+}
+#app.atlasUiV857[data-view="stage"] .stageModeCopyV817 > span{
+  color:var(--atlas-blue-accessible)!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageModeSwitchV817{
+  border:1px solid #c8d8e4!important;
+  border-radius:12px!important;
+  background:#edf6fb!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageModeSwitchV817 button{
+  color:var(--atlas-blue-deep)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageModeSwitchV817 button.active{
+  border-color:#0f5da9!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#3b8cdb,#1768bd)!important;
+}
+#app.atlasUiV857[data-view="stage"] :is(.questCardV817,.worldStageDetailV851,.worldMapPanelV851,.worldStageQuickV8615){
+  border:1px solid rgba(207,199,186,.9)!important;
+  border-radius:17px!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:var(--atlas-shadow-card)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="stage"] .questCardV817.selected{
+  border:2px solid var(--atlas-blue-accessible)!important;
+  box-shadow:0 0 0 3px rgba(255,255,255,.8),0 9px 20px rgba(41,86,114,.25)!important;
+}
+#app.atlasUiV857[data-view="stage"] .questCardBodyV817{
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.98)!important;
+}
+#app.atlasUiV857[data-view="stage"] .questCardV817 :is(h2,h3,b,strong){
+  color:var(--atlas-ink-strong)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="stage"] :is(.questCardBossV817,.questCardRowV817,.worldBossPanelV851,.worldStageInfoBlockV851,.worldStageHintV851){
+  border-color:var(--atlas-line)!important;
+  color:var(--atlas-ink)!important;
+  background:var(--atlas-paper-soft)!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857[data-view="stage"] .worldStageContentV851{
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(180deg,rgba(255,253,247,.9),rgba(255,253,247,.99))!important;
+}
+#app.atlasUiV857[data-view="stage"] .worldMapPanelV851{
+  overflow:hidden!important;
+  background:#eaf7fd!important;
+}
+#app.atlasUiV857[data-view="stage"] .worldMapHeadV851,
+#app.atlasUiV857[data-view="stage"] .worldMapLegendV851{
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.96)!important;
+}
+#app.atlasUiV857[data-view="stage"] .worldStageQuickV8615{
+  bottom:6px!important;
+  backdrop-filter:blur(10px);
+}
+#app.atlasUiV857[data-view="stage"] .worldStageQuickCopyV8615 :is(span,b,small){
+  color:var(--atlas-ink)!important;
+}
+
+/* ---------- Monster camp ---------- */
+#app.atlasUiV857[data-view="monsters"] .monsterCampV831{
+  overflow:hidden!important;
+  border:3px solid rgba(255,253,247,.96)!important;
+  border-radius:20px!important;
+  color:#fff!important;
+  background:#65acd3!important;
+  box-shadow:var(--atlas-shadow-float)!important;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampCopyV831{
+  background:linear-gradient(180deg,rgba(13,65,89,.04),rgba(25,58,67,.76))!important;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampV831 :is(h1,h2,h3,p,span,b,strong,small){
+  color:#fff!important;
+  text-shadow:0 2px 4px rgba(18,58,71,.58)!important;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterEyebrowV831,
+#app.atlasUiV857[data-view="monsters"] .sectionEyebrowV831{
+  color:var(--atlas-blue-accessible)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="monsters"] :is(.partyFormationV831,.pastureWorldV831){
+  padding:13px!important;
+}
+#app.atlasUiV857[data-view="monsters"] :is(.partyFormationCardV831,.pastureMonsterCardV831){
+  border:1px solid #cbdce8!important;
+  border-radius:15px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f1f8fc)!important;
+  box-shadow:0 5px 12px rgba(45,82,105,.14)!important;
+}
+#app.atlasUiV857[data-view="monsters"] .partyFormationCardV831.leader{
+  border:2px solid #d9a627!important;
+  background:linear-gradient(145deg,#fffdf7,#fff7d8)!important;
+}
+#app.atlasUiV857[data-view="monsters"] :is(.partyFormationCardV831,.pastureMonsterCardV831) :is(h3,b,strong,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="monsters"] .pastureMonsterMainV831{
+  border:0!important;
+  color:var(--atlas-ink)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterFilterDetailsV831{
+  border:1px solid #cbdce8!important;
+  border-radius:13px!important;
+  background:#f3f9fc!important;
+}
+#app.atlasUiV857[data-view="monsters"] :is(.monsterStatusBarV831,.partySlotRailV831,.partyExchangeGuideV831){
+  border-color:var(--atlas-line)!important;
+  color:var(--atlas-ink)!important;
+  background:var(--atlas-paper-soft)!important;
+}
+
+/* ---------- Fusion lab ---------- */
+#app.atlasUiV857[data-view="fusion"] .fusionStepsV824{
+  border:1px solid rgba(207,199,186,.88)!important;
+  border-radius:15px!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:var(--atlas-shadow-card)!important;
+}
+#app.atlasUiV857[data-view="fusion"] .fusionStepsV824 > span{
+  min-height:48px!important;
+  color:var(--atlas-muted)!important;
+  background:transparent!important;
+}
+#app.atlasUiV857[data-view="fusion"] .fusionStepsV824 > span.active{
+  color:#fff!important;
+  background:linear-gradient(180deg,#4d9be2,#1768bd)!important;
+}
+#app.atlasUiV857[data-view="fusion"] .fusionStepsV824 > span.done{
+  color:#fff!important;
+  background:linear-gradient(180deg,#39b98e,#14815f)!important;
+}
+#app.atlasUiV857[data-view="fusion"] :is(
+  .selectedParentsPanelV728,
+  .fusionPreviewV34,
+  .routeDashboardV75,
+  .fusionParentCardV844,
+  .recommendCard,
+  .recipe,
+  .fusionInfoBlock
+){
+  border:1px solid #d8c9e9!important;
+  border-radius:14px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#faf6ff)!important;
+  box-shadow:0 4px 10px rgba(81,62,108,.12)!important;
+}
+#app.atlasUiV857[data-view="fusion"] .fusionWorkbenchHeadV835 > div > span,
+#app.atlasUiV857[data-view="fusion"] .fusionResearchHeadV844 > div > span{
+  color:#7b4fb3!important;
+}
+#app.atlasUiV857[data-view="fusion"] .fusionParentSelectV844{
+  border:0!important;
+  color:var(--atlas-ink)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857[data-view="fusion"] .fusionParentCardV844.selected{
+  border:2px solid #7b4fb3!important;
+  background:#f4eaff!important;
+}
+#app.atlasUiV857[data-view="fusion"] .stickyActions{
+  position:sticky!important;
+  bottom:4px!important;
+  z-index:7!important;
+  padding:8px!important;
+  border:1px solid var(--atlas-line-strong)!important;
+  border-radius:14px!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:0 -6px 18px rgba(51,77,92,.18)!important;
+}
+#app.atlasUiV857[data-view="fusion"] .fusionExecuteBarV835 button.gold:not(:disabled){
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+#app.atlasUiV857[data-view="fusion"] :is(.routeDashCard,.recipeFilterPanelV811,.recipeSection){
+  border-color:var(--atlas-line)!important;
+  color:var(--atlas-ink)!important;
+  background:var(--atlas-paper-soft)!important;
+}
+
+/* ---------- Menu ---------- */
+#app.atlasUiV857[data-view="menu"] :is(.menuPrimaryV824,.menuDataShortcutV839){
+  border:1px solid rgba(207,199,186,.88)!important;
+  border-radius:17px!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:var(--atlas-shadow-card)!important;
+}
+#app.atlasUiV857[data-view="menu"] .menuPrimaryHeadV824 span,
+#app.atlasUiV857[data-view="menu"] .sectionTitle span,
+#app.atlasUiV857[data-view="menu"] .menuDataShortcutV839 > div > span{
+  color:var(--atlas-blue-accessible)!important;
+}
+#app.atlasUiV857[data-view="menu"] :is(.nextGoal,.nextGoalPanel,.homeGoal,.goalPanel) button.gold{
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+#app.atlasUiV857[data-view="menu"] :is(.menuMainGridV824,.menuSubGridV824) > button{
+  min-height:76px!important;
+  border:1px solid #d3dde4!important;
+  border-left:5px solid var(--atlas-blue-accessible)!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 5px 12px rgba(45,82,105,.14)!important;
+  text-align:left!important;
+}
+#app.atlasUiV857[data-view="menu"] .menuMainGridV824 > button.green{border-left-color:var(--atlas-green)!important}
+#app.atlasUiV857[data-view="menu"] .menuMainGridV824 > button.fusion{border-left-color:#8b5fc8!important}
+#app.atlasUiV857[data-view="menu"] .menuMainGridV824 > button.gold{border-left-color:var(--atlas-gold-deep)!important}
+#app.atlasUiV857[data-view="menu"] :is(.menuMainGridV824,.menuSubGridV824) > button :is(b,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="menu"] .menuDataShortcutV839{
+  padding:13px!important;
+}
+
+/* ---------- Quest board ---------- */
+#app.atlasUiV857[data-view="quest"] .questBoardHeroV842{
+  display:grid!important;
+  gap:12px!important;
+}
+#app.atlasUiV857[data-view="quest"] .questClaimAllV842:not(:disabled){
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+#app.atlasUiV857[data-view="quest"] .questOverviewV825{
+  padding:10px!important;
+}
+#app.atlasUiV857[data-view="quest"] .questOverviewV825 > div{
+  border-color:var(--atlas-line)!important;
+  color:var(--atlas-ink)!important;
+  background:var(--atlas-paper-soft)!important;
+}
+#app.atlasUiV857[data-view="quest"] .questSectionV825{
+  overflow:hidden!important;
+}
+#app.atlasUiV857[data-view="quest"] .questBoardSectionHeadV842{
+  border-bottom:1px solid var(--atlas-line)!important;
+}
+#app.atlasUiV857[data-view="quest"] .questCardV842{
+  border:1px solid #d8d3ca!important;
+  border-radius:15px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#faf8f2)!important;
+  box-shadow:0 5px 12px rgba(55,76,84,.12)!important;
+}
+#app.atlasUiV857[data-view="quest"] .questCardV842.claimable{
+  border:2px solid #d8a72e!important;
+  background:linear-gradient(145deg,#fffdf7,#fff7d8)!important;
+}
+#app.atlasUiV857[data-view="quest"] .questCardV842.claimed{
+  opacity:.78;
+  background:#f0eee8!important;
+}
+#app.atlasUiV857[data-view="quest"] .questCardV842 :is(h3,b,strong,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="quest"] .questCardV842.claimable .questCardActionsV842 button.gold:not(:disabled){
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+
+/* ---------- Shop ---------- */
+#app.atlasUiV857[data-view="shop"] .shopWalletV825{
+  border:1px solid #d9b84d!important;
+  border-radius:15px!important;
+  color:#6f5000!important;
+  background:#fff4c9!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857[data-view="shop"] .shopWalletV825 :is(span,strong,small,em){
+  color:#6f5000!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="shop"] .shopQuickNavV835{
+  padding:8px!important;
+}
+#app.atlasUiV857[data-view="shop"] .shopSectionV825{
+  padding:14px!important;
+}
+#app.atlasUiV857[data-view="shop"] :is(.shopServiceV825,.shopItemV825,.itemCard){
+  border:1px solid #d3dde4!important;
+  border-radius:15px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 5px 12px rgba(45,82,105,.13)!important;
+}
+#app.atlasUiV857[data-view="shop"] .shopItemV825.unaffordable{
+  opacity:.7!important;
+  background:#f0eee8!important;
+}
+#app.atlasUiV857[data-view="shop"] :is(.shopServiceV825,.shopItemV825,.itemCard) :is(b,strong,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+
+/* ---------- Monster dex ---------- */
+#app.atlasUiV857[data-view="dex"] :is(.dexProgressBox,.dexRankProgressV837,.dexCardV31,.dexRecipeCardV83,.dexUseRecipeV83){
+  border:1px solid #d3dde4!important;
+  border-radius:14px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 5px 12px rgba(45,82,105,.13)!important;
+}
+#app.atlasUiV857[data-view="dex"] .dexCardV31.unknown{
+  color:#798795!important;
+  background:#f0eee8!important;
+  filter:none!important;
+}
+#app.atlasUiV857[data-view="dex"] .dexCardV31.scouted{
+  border:2px solid #d6ab32!important;
+  background:linear-gradient(145deg,#fff,#fff6d8)!important;
+}
+#app.atlasUiV857[data-view="dex"] .dexCardV31 :is(.name,b,strong,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="dex"] .dexRankCardV825 > summary{
+  border-bottom:1px solid var(--atlas-line)!important;
+}
+
+/* ---------- Arena ---------- */
+#app.atlasUiV857[data-view="arena"] :is(.arenaCardV840,.arenaNextCupV840){
+  border:1px solid #d3dde4!important;
+  border-radius:15px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 5px 12px rgba(45,82,105,.13)!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaCardV840.ready{
+  border:2px solid var(--atlas-blue-accessible)!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaCardV840.cleared{
+  border:2px solid #d6ab32!important;
+  background:linear-gradient(145deg,#fff,#fff6d8)!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaCardV840 :is(h3,b,strong,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaEntryV840 button.primary:not(:disabled),
+#app.atlasUiV857[data-view="arena"] .arenaNextCupV840 button.gold:not(:disabled){
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaRewardV840{
+  border-color:#dfc16c!important;
+  background:#fff7d9!important;
+}
+
+/* ---------- Settings and guide ---------- */
+#app.atlasUiV857[data-view="settings"] :is(.settingRow,.settingsChoiceV839,.slotCardV839,.backupBoxV839),
+#app.atlasUiV857[data-view="help"] :is(.guideCoreStepV841,.guideDetailV841,.guideRuleGridV841 > div,.guideTroubleStepsV841 > div){
+  border:1px solid #d3dde4!important;
+  border-radius:14px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 4px 10px rgba(45,82,105,.11)!important;
+}
+#app.atlasUiV857[data-view="settings"] .settingsDangerZoneV839{
+  border-color:#e2a299!important;
+  background:#fff2ef!important;
+}
+#app.atlasUiV857[data-view="settings"] .settingsSaveActionsV839 button.primary{
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+#app.atlasUiV857[data-view="help"] .guideCoreNumberV841,
+#app.atlasUiV857[data-view="help"] .guideDetailIconV841{
+  color:#fff!important;
+  background:var(--atlas-blue-accessible)!important;
+}
+
+/* ---------- Modal sheets ---------- */
+body :is(.modalBg,.dialogBg){
+  background:rgba(31,74,121,.5)!important;
+  backdrop-filter:blur(7px);
+}
+body :is(.modal,.dialog,.fourFusionTreeModalV1,.dexDetailModalV83){
+  border:2px solid rgba(255,255,255,.96)!important;
+  border-radius:24px!important;
+  color:#294c73!important;
+  background:#fffdf7!important;
+  box-shadow:0 18px 48px rgba(31,65,89,.35)!important;
+}
+body :is(.modal,.dialog,.fourFusionTreeModalV1,.dexDetailModalV83) :is(h1,h2,h3,b,strong){
+  color:#1f4a79!important;
+  text-shadow:none!important;
+}
+body :is(.modal,.dialog,.fourFusionTreeModalV1,.dexDetailModalV83) :is(p,small,.tiny){
+  color:#5b6e84!important;
+  text-shadow:none!important;
+}
+body :is(.modal,.dialog,.fourFusionTreeModalV1,.dexDetailModalV83) > :is(header,.stageTop):first-child,
+body .fourFusionTreeHeadV1{
+  background:linear-gradient(180deg,#fffdf7 82%,rgba(255,253,247,0))!important;
+}
+
+/* ---------- Battle and reward keep their no-dock contract ---------- */
+#app.atlasUiV857[data-view="battle"] > main.battlePageV821{
+  scrollbar-width:none!important;
+  background:#6fc3ef!important;
+}
+#app.atlasUiV857[data-view="battle"] > main.battlePageV821::-webkit-scrollbar{display:none!important}
+#app.atlasUiV857[data-view="battle"] :is(
+  .battleHudV821,
+  .battlePartyRailV821,
+  .battleMessageV821,
+  .battleTacticalBarV842,
+  .battleCommandDeckV821
+){
+  border-color:rgba(207,199,186,.9)!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.94)!important;
+  box-shadow:0 6px 16px rgba(34,69,86,.2)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="battle"] :is(
+  .battleHudV821,
+  .battlePartyRailV821,
+  .battleMessageV821,
+  .battleTacticalBarV842,
+  .battleCommandDeckV821
+) :is(b,strong,span,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="battle"] .commandsV821 button{
+  border-color:#8eb6d4!important;
+  color:var(--atlas-blue-deep)!important;
+  background:linear-gradient(180deg,#fff,#edf7fd)!important;
+  box-shadow:inset 0 1px #fff,0 3px 7px rgba(53,91,116,.16)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="battle"] .commandsV821 button.primary{
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+#app.atlasUiV857[data-view="reward"] > main.rewardPageV823{
+  padding:12px 10px 24px!important;
+  scrollbar-width:none!important;
+  color:var(--atlas-ink)!important;
+  background:
+    linear-gradient(180deg,rgba(245,250,247,.74),rgba(246,241,232,.96)),
+    url("../assets/images/ui/home_atlas_route_v855.png") center/cover no-repeat!important;
+}
+#app.atlasUiV857[data-view="reward"] > main.rewardPageV823::-webkit-scrollbar{display:none!important}
+#app.atlasUiV857[data-view="reward"] > main.rewardPageV823 :is(.card,section,article){
+  border-color:rgba(207,199,186,.9)!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.97)!important;
+  box-shadow:var(--atlas-shadow-card)!important;
+}
+#app.atlasUiV857[data-view="reward"] > main.rewardPageV823 :is(h1,h2,h3,b,strong){
+  color:var(--atlas-ink-strong)!important;
+  text-shadow:none!important;
+}
+
+/* HOME focus state joins the accessible atlas system. */
+#app.atlasUiV857[data-view="home"] :is(
+  .homeAtlasHudV855 button,
+  .homeAtlasQuestV855,
+  .homeAtlasCompanionV855,
+  .homeAtlasBottomV855 button,
+  .gameDockV821 button
+):focus-visible{
+  outline:3px solid var(--atlas-focus)!important;
+  outline-offset:2px!important;
+  box-shadow:0 0 0 5px rgba(255,255,255,.92)!important;
+}
+
+@media(min-width:560px){
+  #app.atlasUiV857{
+    height:min(calc(var(--app-height) - 24px),932px);
+    border:6px solid rgba(255,255,255,.94);
+    border-radius:34px;
+    box-shadow:0 0 0 2px rgba(38,85,111,.20),0 28px 74px rgba(41,81,103,.38);
+  }
+  #app.atlasUiV857:not([data-view="title"]) > .gameDockV821{
+    border-radius:20px 20px 28px 28px!important;
+  }
+}
+@media(max-width:370px){
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821{
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudRankV821{
+    grid-template-columns:45px minmax(30px,auto)!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudAvatarV821{
+    width:47px!important;
+    height:47px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button{
+    grid-template-columns:29px minmax(0,1fr)!important;
+    gap:4px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button:before{
+    left:39px;
+    font-size:9px;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button b{
+    font-size:16px!important;
+  }
+}
+
+/* v8.6-A.57 measured mobile corrections */
+#app.atlasUiV857 > :is(
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) > :is(.hero,.fusionHeroV34,.menuHeroV839,.dexHeroV825,.questBoardHeroV842,.shopHeroV825,.arenaHeroV840,.settingsHeroV839,.guideHeroV841){
+  width:auto!important;
+  height:auto!important;
+  min-height:96px!important;
+  max-height:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) details > summary :is(h2,h3,b,strong,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) details > summary :is(p,small){
+  color:var(--atlas-muted)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(
+  main.worldAdventureV851,
+  main.monsterBaseV831,
+  main.fusionFlowV824,
+  main.menuHubV824,
+  main.dexHubV825,
+  main.questBoardV842,
+  main.shopHubV825,
+  main.arenaHubV840,
+  main.settingsHubV839,
+  main.guideHubV841
+) details > summary em{
+  color:var(--atlas-blue-deep)!important;
+  text-shadow:none!important;
+}
+
+#app.atlasUiV857[data-view="stage"] :is(.stageModeBarV817,.questCardBodyV817,.worldStageContentV851) :is(h1,h2,h3,b,strong,span,p,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="stage"] :is(.questCardStatusV817,.questCardAreaV817,.questCardLastV817){
+  color:#fff!important;
+}
+#app.atlasUiV857[data-view="stage"] .stageStars{
+  color:#c38b00!important;
+}
+
+#app.atlasUiV857.gameFeelV845[data-view="menu"] > main.menuHubV824 :is(.menuMainGridV824,.menuSubGridV824) > button,
+#app.atlasUiV857.crystalUiV822[data-view="menu"] > main.menuHubV824 :is(.menuMainGridV824,.menuSubGridV824) > button{
+  border:1px solid #d3dde4!important;
+  border-left:5px solid var(--atlas-blue-accessible)!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 5px 12px rgba(45,82,105,.14)!important;
+}
+#app.atlasUiV857.gameFeelV845[data-view="menu"] > main.menuHubV824 .menuMainGridV824 > button.green{
+  border-left-color:var(--atlas-green)!important;
+}
+#app.atlasUiV857.gameFeelV845[data-view="menu"] > main.menuHubV824 .menuMainGridV824 > button.fusion{
+  border-left-color:#8b5fc8!important;
+}
+#app.atlasUiV857.gameFeelV845[data-view="menu"] > main.menuHubV824 .menuMainGridV824 > button.gold{
+  border-left-color:var(--atlas-gold-deep)!important;
+}
+#app.atlasUiV857.gameFeelV845[data-view="menu"] > main.menuHubV824 :is(.menuMainGridV824,.menuSubGridV824) > button :is(b,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="menu"] .nextGoalCard .actions button.gold:not(:disabled){
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+
+#app.atlasUiV857 :is(
+  .shopQuickNavV835,
+  .arenaNavV840,
+  .settingsQuickNavV839,
+  .guideQuickNavV841
+) button :is(b,span,small),
+#app.atlasUiV857 :is(
+  .shopQuickNavV835,
+  .arenaNavV840,
+  .settingsQuickNavV839,
+  .guideQuickNavV841
+) > :is(a,button){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 :is(
+  .shopQuickNavV835,
+  .arenaNavV840,
+  .settingsQuickNavV839,
+  .guideQuickNavV841
+) button small{
+  color:var(--atlas-muted)!important;
+}
+
+#app.atlasUiV857[data-view="quest"] .questOverviewV825 > div :is(span,b,strong,small),
+#app.atlasUiV857[data-view="quest"] .questBoardSectionHeadV842 :is(span,h2,p,b,strong,small,em),
+#app.atlasUiV857[data-view="quest"] .questReadyHeadV825 :is(span,h2,b,strong,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="quest"] .questOverviewV825 > div > b{
+  color:var(--atlas-blue-deep)!important;
+}
+#app.atlasUiV857[data-view="quest"] .questBoardSectionHeadV842 > div:first-child > span,
+#app.atlasUiV857[data-view="quest"] .questReadyHeadV825 span{
+  color:var(--atlas-blue-accessible)!important;
+}
+
+#app.atlasUiV857[data-view="dex"] :is(
+  .dexProgressBox,
+  .dexRankProgressV837,
+  .dexCollectionBoardV837,
+  .dexListSummaryV825,
+  .compactFilterSummaryV8615
+) :is(h2,h3,b,strong,span,small,p,em){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="dex"] :is(.dexProgressBox,.dexRankProgressV837) small{
+  color:var(--atlas-muted)!important;
+}
+#app.atlasUiV857[data-view="dex"] .compactFilterToggleV8615{
+  color:#fff!important;
+  background:var(--atlas-blue-accessible)!important;
+}
+
+#app.atlasUiV857[data-view="arena"] .arenaSummaryV840 > div{
+  border:1px solid #d3dde4!important;
+  border-radius:14px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 4px 10px rgba(45,82,105,.11)!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaSummaryV840 > div :is(span,b,strong,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaSummaryV840 > div > span{
+  color:var(--atlas-blue-accessible)!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaRoundsV840 > div{
+  border-color:#d6e0e7!important;
+  color:var(--atlas-ink)!important;
+  background:#f3f7f9!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaRoundsV840 > div :is(span,b,strong,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+
+#app.atlasUiV857[data-view="settings"] :is(.settingsQuickNavV839,.settingsCurrentV839) :is(span,b,strong,small),
+#app.atlasUiV857[data-view="help"] :is(.guideQuickNavV841,.guideProgressV841) :is(span,b,strong,small,p){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="help"] .guideProgressV841{
+  border:1px solid #cbdce8!important;
+  border-radius:15px!important;
+  color:var(--atlas-ink)!important;
+  background:#f3f9fc!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857[data-view="fusion"] :is(.selectedParentSlot,.selectedResultSlot){
+  border-color:#d8c9e9!important;
+  color:var(--atlas-ink)!important;
+  background:#faf6ff!important;
+}
+#app.atlasUiV857[data-view="monsters"] :is(.monsterMetaV831,.partyFormationInfoV831,.pastureMonsterCopyV831) :is(span,b,strong,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+
+/* Compact heroes only keep information that is not repeated immediately below. */
+#app.atlasUiV857[data-view="fusion"] .fusionBackActions,
+#app.atlasUiV857[data-view="shop"] .shopWalletV825,
+#app.atlasUiV857[data-view="dex"] .dexProgressWrap,
+#app.atlasUiV857[data-view="arena"] .arenaNextCupV840,
+#app.atlasUiV857[data-view="settings"] .settingsCurrentV839,
+#app.atlasUiV857[data-view="help"] .guideProgressV841{
+  display:none!important;
+}
+#app.atlasUiV857[data-view="quest"] > main.questBoardV842 > section.questBoardHeroV842{
+  min-height:172px!important;
+}
+#app.atlasUiV857[data-view="arena"] > main.arenaHubV840 > section.arenaHeroV840{
+  min-height:148px!important;
+}
+#app.atlasUiV857[data-view="help"] > main.guideHubV841 > section.guideHeroV841{
+  min-height:130px!important;
+}
+#app.atlasUiV857[data-view="arena"] .arenaNavV840 > button{
+  border:1px solid #d3dde4!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 4px 10px rgba(45,82,105,.11)!important;
+}
+
+/* The A.57 HUD uses real label nodes so narrow phones do not clip Japanese text. */
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button:before{
+  display:none!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .atlasHudResourceCopyV857{
+  min-width:0!important;
+  display:grid!important;
+  align-content:center!important;
+  gap:2px!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .atlasHudResourceCopyV857 small{
+  display:block!important;
+  overflow:hidden!important;
+  color:#60728a!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+#app.atlasUiV857:not([data-view="home"]):not([data-view="battle"]) > .gameHudV821 .atlasHudResourceCopyV857 b{
+  align-self:auto!important;
+  margin:0!important;
+}
+#app.atlasUiV857[data-view="quest"] .questBoardProgressV842 :is(strong,small,span){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="quest"] .questClaimAllV842:not(:disabled) :is(b,small){
+  color:#fff!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857 > :is(main.monsterBaseV831,main.fusionFlowV824,main.dexHubV825) details.compactFilterV8615,
+#app.atlasUiV857[data-view="monsters"] > main.monsterBaseV831 details.monsterFilterDetailsV831{
+  height:auto!important;
+  min-height:72px!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+#app.atlasUiV857[data-view="arena"] > main.arenaHubV840 > nav.arenaNavV840 > a{
+  min-height:68px!important;
+  border:1px solid #d3dde4!important;
+  border-radius:13px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 4px 10px rgba(45,82,105,.11)!important;
+}
+#app.atlasUiV857[data-view="arena"] > main.arenaHubV840 > nav.arenaNavV840 > a :is(span,b,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="arena"] > main.arenaHubV840 > nav.arenaNavV840 > a > span{
+  color:var(--atlas-blue-accessible)!important;
+}
+
+#app.atlasUiV857[data-view="reward"] > main.rewardPageV823 > section.rewardBoxV823{
+  padding:13px!important;
+  border:1px solid rgba(207,199,186,.92)!important;
+  border-radius:19px!important;
+  color:var(--atlas-ink)!important;
+  background:rgba(255,253,247,.98)!important;
+  box-shadow:var(--atlas-shadow-float)!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardHeroV817{
+  border:1px solid #0f5da9!important;
+  border-radius:15px!important;
+  color:#fff!important;
+  background:linear-gradient(145deg,#2677ca,#15549d)!important;
+  box-shadow:0 6px 14px rgba(31,83,128,.22)!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardBoxV823.lose .rewardHeroV817{
+  border-color:#a93829!important;
+  background:linear-gradient(145deg,#ef715e,#c94634)!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardBoxV823.scout .rewardHeroV817{
+  border-color:#0c684c!important;
+  background:linear-gradient(145deg,#35b98c,#14815f)!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardHeroV817 :is(span,b,strong,small,.rewardTitle,.rewardSub,.rewardStageV817){
+  color:#fff!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="reward"] :is(.rewardEnemyV53,.rewardNumsV53 > div,.rewardDetailLog,.rewardLevelCardV818,.rewardItemV53){
+  border:1px solid #d3dde4!important;
+  border-radius:13px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 4px 10px rgba(45,82,105,.1)!important;
+}
+#app.atlasUiV857[data-view="reward"] :is(.rewardEnemyV53,.rewardNumsV53 > div,.rewardDetailLog,.rewardLevelCardV818,.rewardItemV53) :is(span,b,strong,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardNumsV53 > div:nth-child(2) .rewardValueV846{
+  color:#9b6c00!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardActionsV817 button{
+  min-height:48px!important;
+  border:1px solid #8eb6d4!important;
+  border-radius:12px!important;
+  color:var(--atlas-blue-deep)!important;
+  background:linear-gradient(180deg,#fff,#edf7fd)!important;
+  box-shadow:inset 0 1px #fff,0 3px 7px rgba(53,91,116,.15)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardActionsV817 button.primary{
+  border-color:#b13d2e!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634)!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardActionsV817 button.gold{
+  border-color:#c99408!important;
+  color:#5d4200!important;
+  background:linear-gradient(180deg,#ffe978,#efc767 62%,#dca30e)!important;
+}
+#app.atlasUiV857[data-view="home"] > main.homeV855{
+  width:100%!important;
+  scrollbar-gutter:auto!important;
+}
+#app.atlasUiV857[data-view="fusion"] :is(.selectedParentSlot.emptyParent,.selectedResultSlot.emptyParent) .miniFace{
+  border:1px dashed #b8c5cf!important;
+  color:#8a98a4!important;
+  background:#edf3f6!important;
+  box-shadow:none!important;
+}
+#app.atlasUiV857[data-view="reward"] :is(.rewardPlayerRankV819,.rewardItemSection,.rewardLevelBoxV818,.rewardDetailLog){
+  border:1px solid #d3dde4!important;
+  border-radius:14px!important;
+  color:var(--atlas-ink)!important;
+  background:linear-gradient(145deg,#fff,#f4f9fc)!important;
+  box-shadow:0 4px 10px rgba(45,82,105,.1)!important;
+}
+#app.atlasUiV857[data-view="reward"] :is(.rewardPlayerRankV819,.rewardItemSection,.rewardLevelBoxV818,.rewardDetailLog) :is(h2,h3,b,strong,span,small){
+  color:var(--atlas-ink)!important;
+  text-shadow:none!important;
+}
+#app.atlasUiV857[data-view="reward"] :is(.rewardItemsV53,.rewardEmpty,.rewardLog){
+  border-color:#d6e0e7!important;
+  color:var(--atlas-muted)!important;
+  background:#f3f7f9!important;
+  box-shadow:none!important;
+}

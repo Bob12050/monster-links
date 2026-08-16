@@ -9,8 +9,8 @@
   "display": "standalone",
   "display_override": ["fullscreen", "standalone", "minimal-ui"],
   "orientation": "portrait",
-  "background_color": "#080d1d",
-  "theme_color": "#0b1024",
+  "background_color": "#f6f1e8",
+  "theme_color": "#6fc3ef",
   "icons": [
     {
       "src": "assets/images/ui/app-icon-192.png",
