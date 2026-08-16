@@ -697,8 +697,13 @@ SS/SSSランクを将来追加
 ```text
 node tools/progression-audit.mjs
 node tools/progression-audit.mjs --trials=1000
+node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --verify-determinism
 ```
 
 全モンスター・全固定レシピの到達可能性、各ボスで勝率65%かつ平均25ターン以内へ届く推定レベル、必要な追加育成周回数を読み取り専用で監査します。
 
-監査編成は標準性格・平均個体値・装備なしで、その時点までに入手可能な仲間から自動選出します。ボスは再戦後にスカウト可能、素材は再入手可能という前提です。
+`progression-audit.mjs` の監査編成は標準性格・平均個体値・装備なしで、その時点までに入手可能な仲間から自動選出します。ボスは再戦後にスカウト可能、素材は再入手可能という前提です。これは親消費や配合後Lv1を含まない理論見積もりです。
+
+`campaign-audit.mjs` は新規セーブから天空遺跡までを300周し、本体の戦闘・報酬・スカウト・成長・配合APIを使って監査上限内完走率、地域別難易度、育成周回、経済、自動戦闘の長期化、仕様矛盾を記録します。詳しい方法と出力は [300周キャンペーン監査ツール](docs/GAME_BALANCE_AUDIT_TOOL.md) を参照してください。
+
+v8.6-A.57をseed 85700で実行した結果は [300周キャンペーン監査レポート](docs/audits/v8.6-A.57-campaign-300/report.html) で確認できます。
