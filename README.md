@@ -1,6 +1,14 @@
-# Monster Links v8.6-A.55
+# Monster Links v8.6-A.56
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.56 update
+
+- Rebuilt the title screen as a bright adventure gateway based on the selected concept.
+- Added a dedicated transparent gateway-pin asset, live continue destination, party leader guide, and quest notice.
+- Kept title start behavior, navigation, battle, save compatibility, content IDs, recipes, rewards, and balance intact.
+- Verified the title at 360, 390, and 430 px mobile sizes and its primary interactions.
+- Updated PWA/cache version to v8.6-A.56.
 
 ## v8.6-A.55 update
 
@@ -94,7 +102,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.55 Bright adventure atlas HOME
+v8.6-A.56 Adventure gateway TITLE
 ```
 
 ## v8.6-A.49 update

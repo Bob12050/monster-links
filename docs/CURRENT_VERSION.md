@@ -1,3 +1,13 @@
+v8.6-A.56 Adventure gateway TITLE
+GAME_VERSION to 8.6-A.56
+
+Main changes:
+- Rebuilt the title screen as a bright adventure gateway based on the selected concept.
+- Added a transparent gateway-pin asset and connected live continue, leader, and quest state.
+- Kept the title/start lifecycle, save compatibility, IDs, battle, recipes, rewards, and balance intact.
+- Verified responsive mobile layouts, primary interactions, PWA cache list, and the full validator.
+---
+
 v8.6-A.55 Bright adventure atlas HOME
 GAME_VERSION to 8.6-A.55
 
