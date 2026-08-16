@@ -7,9 +7,10 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createHeadlessGame } from "./lib/headless-game-runtime.mjs";
 
-const TOOL_VERSION = "1.1.0";
-const OUTPUT_SCHEMA_VERSION = 2;
+const TOOL_VERSION = "1.3.0";
+const OUTPUT_SCHEMA_VERSION = 4;
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
+const FOCUS_STAGE_IDS = Object.freeze(["tower","prism_sanctuary","deep_sea_temple","sky_ruins"]);
 
 const PROFILE_DEFS = Object.freeze([
   {
@@ -102,6 +103,7 @@ function parseOptions(){
     runs:positiveInt(argValue("runs"),300),
     seed:positiveInt(argValue("seed"),85700),
     outputArg:argValue("out") || "",
+    baselineArg:argValue("baseline") || "",
     profiles,
     maxBattles:positiveInt(argValue("max-battles"),1000),
     maxTurns:positiveInt(argValue("max-turns"),400),
@@ -143,6 +145,25 @@ function wilson(successes,total,z=1.959963984540054){
   return {low:Math.max(0,center-margin),high:Math.min(1,center+margin)};
 }
 
+function exactTwoSidedMcNemar(failedToCompleted,completedToFailed){
+  const improved = Math.max(0,Math.floor(failedToCompleted));
+  const regressed = Math.max(0,Math.floor(completedToFailed));
+  const discordant = improved+regressed;
+  if(discordant === 0) return 1;
+  const tail = Math.min(improved,regressed);
+  let probability = 2 ** (-discordant);
+  let cumulative = probability;
+  for(let successes=1;successes<=tail;successes++){
+    probability *= (discordant-successes+1)/successes;
+    cumulative += probability;
+  }
+  return Math.min(1,2*cumulative);
+}
+
+function formatPValue(value){
+  return value < .001 ? value.toExponential(2) : value.toFixed(3);
+}
+
 function stableSeed(base,profileId,index){
   const digest = crypto.createHash("sha256").update(`${base}:${profileId}:${index}`).digest();
   return digest.readUInt32LE(0) || 1;
@@ -159,6 +180,32 @@ function clonePlain(value){
 function gitRevision(){
   const result = spawnSync("git",["rev-parse","HEAD"],{cwd:root,encoding:"utf8"});
   return result.status === 0 ? result.stdout.trim() : "unknown";
+}
+
+function runPriorityFixVerification(runtime){
+  const script = path.join(root,"tools","priority-fixes-test.mjs");
+  const result = spawnSync(process.execPath,[script,"--json"],{
+    cwd:root,
+    encoding:"utf8",
+    windowsHide:true,
+    maxBuffer:1024*1024
+  });
+  if(result.error) throw new Error(`Priority regression verification could not start: ${result.error.message}`);
+  let receipt;
+  try{
+    receipt = JSON.parse(String(result.stdout || "").trim());
+  }catch(error){
+    throw new Error(`Priority regression verification did not return valid JSON: ${error.message}`);
+  }
+  const errors = [];
+  if(result.status !== 0) errors.push(`process exit status ${result.status}`);
+  if(receipt?.passed !== true || receipt?.status !== "passed") errors.push("receipt status is not passed");
+  if(receipt?.gameVersion !== runtime.D.GAME_VERSION) errors.push(`gameVersion ${receipt?.gameVersion} != ${runtime.D.GAME_VERSION}`);
+  if(receipt?.sourceHash !== runtime.sourceHash) errors.push(`sourceHash ${receipt?.sourceHash || "missing"} != current runtime sourceHash`);
+  if(receipt?.counts?.total !== 5 || receipt?.counts?.passed !== 5 || receipt?.counts?.failed !== 0) errors.push("receipt count is not 5/5 passed");
+  if(!Array.isArray(receipt?.tests) || receipt.tests.length !== 5 || receipt.tests.some(test=>!test.id || test.status !== "passed")) errors.push("receipt test ids/status are incomplete");
+  if(errors.length) throw new Error(`Priority regression verification failed:\n${errors.join("\n")}`);
+  return clonePlain(receipt);
 }
 
 function ensureInsideRoot(target){
@@ -179,6 +226,63 @@ function toCsv(rows,columns){
   const header = columns.map(column=>csvEscape(column)).join(",");
   const body = rows.map(row=>columns.map(column=>csvEscape(row[column])).join(","));
   return `${[header,...body].join("\n")}\n`;
+}
+
+function parseCsv(text){
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
+  for(let index=0;index<text.length;index++){
+    const character = text[index];
+    if(quoted){
+      if(character === '"' && text[index+1] === '"'){
+        field += '"';
+        index++;
+      }else if(character === '"'){
+        quoted = false;
+      }else{
+        field += character;
+      }
+    }else if(character === '"'){
+      quoted = true;
+    }else if(character === ","){
+      row.push(field);
+      field = "";
+    }else if(character === "\n"){
+      row.push(field.replace(/\r$/, ""));
+      rows.push(row);
+      row = [];
+      field = "";
+    }else{
+      field += character;
+    }
+  }
+  if(quoted) throw new Error("CSV contains an unterminated quoted field");
+  if(field || row.length){
+    row.push(field.replace(/\r$/, ""));
+    rows.push(row);
+  }
+  const header = rows.shift() || [];
+  return rows.filter(values=>values.some(value=>value !== "")).map(values=>Object.fromEntries(header.map((column,index)=>[column,values[index] ?? ""])));
+}
+
+function readJson(file){
+  if(!fs.existsSync(file)) throw new Error(`Required baseline file is missing: ${path.relative(root,file).replaceAll("\\","/")}`);
+  return JSON.parse(fs.readFileSync(file,"utf8"));
+}
+
+function readCsv(file){
+  if(!fs.existsSync(file)) throw new Error(`Required baseline file is missing: ${path.relative(root,file).replaceAll("\\","/")}`);
+  return parseCsv(fs.readFileSync(file,"utf8"));
+}
+
+function numberField(row,field){
+  const raw = row?.[field];
+  if(raw === undefined || raw === null || raw === "") throw new Error(`Baseline ${field} is missing`);
+  const value = Number(raw);
+  if(!Number.isFinite(value)) throw new Error(`Baseline ${field} is not numeric: ${row?.[field]}`);
+  return value;
 }
 
 function typeMultiplier(D,element,targetId){
@@ -353,7 +457,7 @@ function chooseAction(runtime,profile,battle,scoutTarget){
   const hpRatio = ally.hp / Math.max(1,S.stats(ally).hp);
   const heal = bestHealAction(D,S,ally);
   if(profile.healThreshold > 0 && hpRatio <= profile.healThreshold && heal) return heal;
-  if(profile.guard && hpRatio <= .22 && !heal) return {kind:"guard",skillId:null};
+  if(profile.guard && hpRatio <= .22 && !heal && !battle.lastActionWasAutoGuard) return {kind:"guard",skillId:null};
   return bestDamageAction(D,S,ally,enemy.id);
 }
 
@@ -415,7 +519,10 @@ function runBattle(runtime,profile,campaign,stageMetric,{boss=false,allowScout=t
     }else{
       guardStreak = 0;
     }
-    G.act(action.kind,action.skillId || null);
+    // This policy driver is automated even though it advances synchronously. Passing
+    // fromAuto=true preserves the production auto-only guard invariant; manual guard
+    // input remains outside the campaign model and is not restricted here.
+    G.act(action.kind,action.skillId || null,true);
     const flush = runtime.flushTimers(10000);
     if(flush.limitHit) break;
   }
@@ -910,6 +1017,227 @@ function aggregateStages(stageRows,D){
   });
 }
 
+function sameList(left,right){
+  return Array.isArray(left) && Array.isArray(right) && left.length === right.length && left.every((value,index)=>value === right[index]);
+}
+
+function loadBaseline(options,D){
+  if(!options.baselineArg) return null;
+  const directory = ensureInsideRoot(path.resolve(root,options.baselineArg));
+  const relativePath = path.relative(root,directory).replaceAll("\\","/");
+  const summary = readJson(path.join(directory,"audit-summary.json"));
+  const artifact = readJson(path.join(directory,"artifact.json"));
+  const command = summary.command || {};
+  const expectedProfiles = options.profiles.map(profile=>profile.id);
+  const mismatches = [];
+  for(const [field,expected] of [
+    ["runs",options.runs],
+    ["seed",options.seed],
+    ["maxBattles",options.maxBattles],
+    ["maxTurns",options.maxTurns],
+    ["maxBossLosses",options.maxBossLosses]
+  ]){
+    if(Number(command[field]) !== expected) mismatches.push(`${field}: baseline ${command[field]} / current ${expected}`);
+  }
+  if(!sameList(command.profiles,expectedProfiles)) mismatches.push(`profiles: baseline ${JSON.stringify(command.profiles)} / current ${JSON.stringify(expectedProfiles)}`);
+  if(summary.validation?.passed !== true) mismatches.push("baseline simulation validation did not pass");
+  if(!summary.gameVersion) mismatches.push("baseline gameVersion is missing");
+  if(mismatches.length) throw new Error(`Baseline is not comparable:\n${mismatches.join("\n")}`);
+
+  const campaigns = readCsv(path.join(directory,"campaigns.csv")).map(row=>({
+    run:numberField(row,"run"),
+    profile:row.profile,
+    seed:numberField(row,"seed"),
+    completed:numberField(row,"completed"),
+    totalBattles:numberField(row,"totalBattles"),
+    totalTurns:numberField(row,"totalTurns"),
+    losses:numberField(row,"losses"),
+    stalledBattles:numberField(row,"stalledBattles"),
+    guardLoopBattles:numberField(row,"guardLoopBattles"),
+    finalHighestLevel:numberField(row,"finalHighestLevel")
+  }));
+  const stageRows = readCsv(path.join(directory,"campaign-stage-runs.csv")).map(row=>({
+    run:numberField(row,"run"),
+    profile:row.profile,
+    stage_id:row.stage_id,
+    stage_name:row.stage_name,
+    reached:numberField(row,"reached"),
+    cleared:numberField(row,"cleared"),
+    unlock_wins:numberField(row,"unlock_wins"),
+    normalCombatWins:numberField(row,"normalCombatWins"),
+    scoutWins:numberField(row,"scoutWins"),
+    bossAttempts:numberField(row,"bossAttempts"),
+    bossTurns:numberField(row,"bossTurns")
+  }));
+  if(campaigns.length !== options.runs) throw new Error(`Baseline campaign row count ${campaigns.length} != ${options.runs}`);
+  if(stageRows.length !== options.runs*D.STAGES.length) throw new Error(`Baseline stage row count ${stageRows.length} != ${options.runs*D.STAGES.length}`);
+  const campaignKeys = new Set();
+  campaigns.forEach(row=>{
+    const key = `${row.run}:${row.profile}`;
+    if(campaignKeys.has(key)) throw new Error(`Duplicate baseline campaign key: ${key}`);
+    campaignKeys.add(key);
+  });
+  const stageKeys = new Set();
+  stageRows.forEach(row=>{
+    const key = `${row.run}:${row.profile}:${row.stage_id}`;
+    if(stageKeys.has(key)) throw new Error(`Duplicate baseline stage key: ${key}`);
+    stageKeys.add(key);
+  });
+  const snapshotCampaigns = artifact.snapshot?.datasets?.campaigns;
+  if(!Array.isArray(snapshotCampaigns) || snapshotCampaigns.length !== options.runs){
+    throw new Error(`Baseline artifact campaign snapshot count ${snapshotCampaigns?.length ?? 0} != ${options.runs}`);
+  }
+  return {directory,relativePath,summary,artifact,campaigns,stageRows};
+}
+
+function buildComparison({baseline,D,command,overview,profiles,stages,campaigns,stageRows}){
+  if(!baseline) return null;
+  const baselineCampaigns = new Map(baseline.campaigns.map(row=>[`${row.run}:${row.profile}`,row]));
+  const pairedCampaigns = campaigns.map(current=>{
+    const key = `${current.run}:${current.profile}`;
+    const prior = baselineCampaigns.get(key);
+    if(!prior) throw new Error(`Baseline campaign pair is missing: ${key}`);
+    if(prior.seed !== current.seed) throw new Error(`Baseline seed mismatch for ${key}: ${prior.seed} != ${current.seed}`);
+    return {prior,current};
+  });
+  if(baselineCampaigns.size !== pairedCampaigns.length) throw new Error("Baseline contains unmatched campaign pairs");
+  const transitions = {
+    unchanged_completed:pairedCampaigns.filter(({prior,current})=>prior.completed && current.completed).length,
+    failed_to_completed:pairedCampaigns.filter(({prior,current})=>!prior.completed && current.completed).length,
+    completed_to_failed:pairedCampaigns.filter(({prior,current})=>prior.completed && !current.completed).length,
+    unchanged_incomplete:pairedCampaigns.filter(({prior,current})=>!prior.completed && !current.completed).length
+  };
+  const mcnemarP = exactTwoSidedMcNemar(transitions.failed_to_completed,transitions.completed_to_failed);
+  const currentStageRows = new Map();
+  stageRows.forEach(row=>{
+    const key = `${row.run}:${row.profile}:${row.stage_id}`;
+    if(currentStageRows.has(key)) throw new Error(`Duplicate current stage key: ${key}`);
+    currentStageRows.set(key,row);
+  });
+  const baselineStageRows = new Map(baseline.stageRows.map(row=>[`${row.run}:${row.profile}:${row.stage_id}`,row]));
+  if(currentStageRows.size !== baselineStageRows.size) throw new Error(`Stage pair count mismatch: baseline ${baselineStageRows.size} / current ${currentStageRows.size}`);
+  for(const key of currentStageRows.keys()){
+    if(!baselineStageRows.has(key)) throw new Error(`Baseline stage pair is missing: ${key}`);
+  }
+  const baselineOverview = baseline.summary.overview;
+  const overall = {
+    pair_count:pairedCampaigns.length,
+    baseline_game_version:baseline.summary.gameVersion,
+    current_game_version:D.GAME_VERSION,
+    baseline_completion_rate:baselineOverview.completion_rate,
+    current_completion_rate:overview.completion_rate,
+    completion_rate_delta:overview.completion_rate-baselineOverview.completion_rate,
+    baseline_median_battles:baselineOverview.median_battles,
+    current_median_battles:overview.median_battles,
+    median_battles_delta:overview.median_battles-baselineOverview.median_battles,
+    baseline_p90_battles:baselineOverview.p90_battles,
+    current_p90_battles:overview.p90_battles,
+    p90_battles_delta:overview.p90_battles-baselineOverview.p90_battles,
+    median_paired_battle_delta:round(quantile(pairedCampaigns.map(({prior,current})=>current.totalBattles-prior.totalBattles),.5),1),
+    p90_paired_battle_delta:round(quantile(pairedCampaigns.map(({prior,current})=>current.totalBattles-prior.totalBattles),.9),1),
+    baseline_stalled_campaigns:baselineOverview.stalled_campaigns,
+    current_stalled_campaigns:overview.stalled_campaigns,
+    stalled_campaigns_delta:overview.stalled_campaigns-baselineOverview.stalled_campaigns,
+    baseline_guard_loop_campaign_rate:baselineOverview.guard_loop_campaign_rate,
+    current_guard_loop_campaign_rate:overview.guard_loop_campaign_rate,
+    guard_loop_campaign_rate_delta:overview.guard_loop_campaign_rate-baselineOverview.guard_loop_campaign_rate,
+    mcnemar_discordant_pairs:transitions.failed_to_completed+transitions.completed_to_failed,
+    mcnemar_exact_two_sided_p:mcnemarP,
+    mcnemar_method:"discordant paired completion outcomes; exact two-sided binomial test",
+    ...transitions
+  };
+
+  const baselineProfiles = new Map(baseline.summary.profiles.map(row=>[row.profile,row]));
+  const profileComparisons = profiles.map(current=>{
+    const prior = baselineProfiles.get(current.profile);
+    if(!prior) throw new Error(`Baseline profile metric is missing: ${current.profile}`);
+    return {
+      profile:current.profile,
+      profile_label:current.profile_label,
+      campaigns:current.campaigns,
+      baseline_completed:prior.completed,
+      current_completed:current.completed,
+      baseline_completion_rate:prior.completion_rate,
+      current_completion_rate:current.completion_rate,
+      completion_rate_delta:current.completion_rate-prior.completion_rate,
+      baseline_median_battles:prior.median_battles,
+      current_median_battles:current.median_battles,
+      median_battles_delta:current.median_battles-prior.median_battles,
+      baseline_p90_battles:prior.p90_battles,
+      current_p90_battles:current.p90_battles,
+      p90_battles_delta:current.p90_battles-prior.p90_battles
+    };
+  });
+  const profileChartRows = profileComparisons.flatMap(row=>[
+    {profile:row.profile,profile_label:row.profile_label,version_label:baseline.summary.gameVersion,comparison_order:0,campaigns:row.campaigns,completed:row.baseline_completed,completion_rate:row.baseline_completion_rate,completion_rate_delta:0,median_battles:row.baseline_median_battles,p90_battles:row.baseline_p90_battles},
+    {profile:row.profile,profile_label:row.profile_label,version_label:D.GAME_VERSION,comparison_order:1,campaigns:row.campaigns,completed:row.current_completed,completion_rate:row.current_completion_rate,completion_rate_delta:row.completion_rate_delta,median_battles:row.current_median_battles,p90_battles:row.current_p90_battles}
+  ]);
+
+  const baselineStages = new Map(baseline.summary.stages.map(row=>[row.stage_id,row]));
+  const focusStageComparisons = FOCUS_STAGE_IDS.map(stageId=>{
+    const prior = baselineStages.get(stageId);
+    const current = stages.find(row=>row.stage_id === stageId);
+    if(!prior || !current) throw new Error(`Focus-stage metric is missing: ${stageId}`);
+    const pairs = stageRows.filter(row=>row.stage_id === stageId).map(currentRow=>{
+      const key = `${currentRow.run}:${currentRow.profile}:${stageId}`;
+      const priorRow = baselineStageRows.get(key);
+      if(!priorRow) throw new Error(`Baseline focus-stage pair is missing: ${key}`);
+      return {prior:priorRow,current:currentRow};
+    });
+    const bothReached = pairs.filter(({prior:priorRow,current:currentRow})=>priorRow.reached && currentRow.reached);
+    const extraWins = row=>Math.max(0,row.normalCombatWins+row.scoutWins-row.unlock_wins);
+    return {
+      stage_id:stageId,
+      stage_name:current.stage_name,
+      pair_count:pairs.length,
+      pairs_both_reached:bothReached.length,
+      baseline_campaigns_reached:prior.campaigns_reached,
+      current_campaigns_reached:current.campaigns_reached,
+      baseline_stage_clears:prior.stage_clears,
+      current_stage_clears:current.stage_clears,
+      failed_to_cleared:pairs.filter(({prior:priorRow,current:currentRow})=>!priorRow.cleared && currentRow.cleared).length,
+      cleared_to_failed:pairs.filter(({prior:priorRow,current:currentRow})=>priorRow.cleared && !currentRow.cleared).length,
+      baseline_avg_boss_attempts:prior.avg_boss_attempts,
+      current_avg_boss_attempts:current.avg_boss_attempts,
+      avg_boss_attempts_delta:current.avg_boss_attempts-prior.avg_boss_attempts,
+      paired_avg_boss_attempts_delta:round(mean(bothReached.map(({prior:priorRow,current:currentRow})=>currentRow.bossAttempts-priorRow.bossAttempts)),2),
+      baseline_first_try_rate:prior.first_try_rate,
+      current_first_try_rate:current.first_try_rate,
+      first_try_rate_delta:current.first_try_rate-prior.first_try_rate,
+      baseline_avg_extra_normal_wins:prior.avg_extra_normal_wins,
+      current_avg_extra_normal_wins:current.avg_extra_normal_wins,
+      avg_extra_normal_wins_delta:current.avg_extra_normal_wins-prior.avg_extra_normal_wins,
+      paired_avg_extra_normal_wins_delta:round(mean(bothReached.map(({prior:priorRow,current:currentRow})=>extraWins(currentRow)-extraWins(priorRow))),2),
+      baseline_avg_boss_turns:prior.avg_boss_turns,
+      current_avg_boss_turns:current.avg_boss_turns,
+      avg_boss_turns_delta:current.avg_boss_turns-prior.avg_boss_turns
+    };
+  });
+  const focusStageChartRows = focusStageComparisons.flatMap(row=>[
+    {stage_id:row.stage_id,stage_name:row.stage_name,version_label:baseline.summary.gameVersion,comparison_order:0,campaigns_reached:row.baseline_campaigns_reached,stage_clears:row.baseline_stage_clears,avg_boss_attempts:row.baseline_avg_boss_attempts,first_try_rate:row.baseline_first_try_rate,avg_extra_normal_wins:row.baseline_avg_extra_normal_wins,avg_boss_turns:row.baseline_avg_boss_turns},
+    {stage_id:row.stage_id,stage_name:row.stage_name,version_label:D.GAME_VERSION,comparison_order:1,campaigns_reached:row.current_campaigns_reached,stage_clears:row.current_stage_clears,avg_boss_attempts:row.current_avg_boss_attempts,first_try_rate:row.current_first_try_rate,avg_extra_normal_wins:row.current_avg_extra_normal_wins,avg_boss_turns:row.current_avg_boss_turns}
+  ]);
+  return {
+    baseline:{path:baseline.relativePath,gameVersion:baseline.summary.gameVersion,gitRevision:baseline.summary.gitRevision,sourceHash:baseline.summary.sourceHash,runSignature:baseline.summary.runSignature},
+    current:{gameVersion:D.GAME_VERSION},
+    command:clonePlain(command),
+    validation:{passed:true,matchingFields:["runs","seed","profiles","maxBattles","maxTurns","maxBossLosses"],campaignPairs:pairedCampaigns.length,stagePairs:currentStageRows.size},
+    pairing:{
+      method:"同じ方針・run番号・初期seedの1対1比較",
+      caveat:"初期seedは対になりますが、修正で乱数呼び出し回数が変わるため、その後の個々の乱数事象まで共通化する比較ではありません。",
+      bundleCaveat:"4件の優先修正をまとめた版比較であり、各修正の個別因果効果は分離していません。",
+      proofCaveat:"配合継承・笛在庫・取得記録はボット内の発生頻度が低く、解消判定は主に専用回帰試験で担保します。",
+      guardCaveat:"連続自動防御を止めても防御と攻撃の交互選択はあり得るため、全停止戦の解消を意味しません。",
+      collectorCaveat:"装備由来の過剰な配合継承を除く修正は、収集・配合方針の短期成績を下げる可能性があります。"
+    },
+    overall,
+    profiles:profileComparisons,
+    profileChartRows,
+    focusStages:focusStageComparisons,
+    focusStageChartRows
+  };
+}
+
 function specFindings(){
   return [
     {
@@ -917,18 +1245,6 @@ function specFindings(){
       finding:"素早さは行動順・回避・逃走・スカウトに使われず、実質的に1特技の火力以外へ影響しない。",
       evidence:"battle.js 312-518, 878-899 / skills.js 11。プレイヤーは常に先手で、逃走率も固定。",
       recommendation:"spdで先制・回避・ゲージを決めるか、低リスク案として純spd装備と説明を有効な能力へ置換する。"
-    },
-    {
-      severity:"HIGH",code:"AUTO_GUARD_LOOP",scope:"オート戦闘",
-      finding:"回復技なし・HP22%以下のバランス系AIは毎ターン防御し、攻撃せず最小1ダメージで倒れるまで長期化する。",
-      evidence:"battle.js 93-110, 338-343, 509-518。防御に回復・MP回復・反撃・連続制限がない。",
-      recommendation:"連続防御を禁止して次手を攻撃/交代にする。防御へMP回復等を足す場合は同一seedで再監査する。"
-    },
-    {
-      severity:"HIGH",code:"FUSION_EQUIP_INHERIT",scope:"配合/成長",
-      finding:"配合ボーナスが装備込み能力の5.5%を永久継承し、装備自体は袋へ戻るため同じ装備を世代ごとに再利用できる。",
-      evidence:"fusion.js 234-239, 839-845 / state.js 263-282。",
-      recommendation:"継承は装備・性格・突然変異を除く基礎能力から算出し、世代累積の上限も設ける。"
     },
     {
       severity:"MEDIUM",code:"FREE_HEAL_SHOP_CONFLICT",scope:"経済/回復",
@@ -949,22 +1265,16 @@ function specFindings(){
       recommendation:"表記を必要Lvへ変えて通常/ボスを統一するか、両方を警告だけにする。判定は編成平均も比較候補。"
     },
     {
-      severity:"MEDIUM",code:"ITEM_RECORD_INFLATION",scope:"任務/装備",
-      finding:"装備交換・解除・配合時の装備返却も「アイテム入手数」に加算され、同じ1個で収集任務を水増しできる。",
-      evidence:"state.js 819-854 / fusion.js 839-840。",
-      recommendation:"袋への返却は取得記録を増やさない専用関数へ分離し、records.itemsは外部獲得だけを数える。"
-    },
-    {
       severity:"MEDIUM",code:"SCOUT_ZERO_REWARD",scope:"収集/育成/経済",
       finding:"通常スカウト成功はボス解放勝数を進める一方、EXP・GOLD・ドロップがすべて0で収集プレイほど育成不足になりやすい。",
       evidence:"battle.js 662-714。ボススカウトだけは通常報酬を得る。",
       recommendation:"通常スカウトにも通常勝利の50-70%EXP/GOLDを与えるか、ボス気配の進行を報酬設計と分離する。"
     },
     {
-      severity:"MEDIUM",code:"SCOUT_CHARM_OVERWRITE",scope:"任務/スカウト笛",
-      finding:"任務の笛報酬は加算でなく在庫を1に上書きし、複数所持時に受け取ると減少する。笛は対象確認前の戦闘開始時に消費される。",
-      evidence:"state.js 990-1000 / battle.js 226-234, 283-291。",
-      recommendation:"報酬は += 1、消費はスカウト初回実行時へ移す。"
+      severity:"MEDIUM",code:"SCOUT_CHARM_EARLY_CONSUMPTION",scope:"スカウト笛",
+      finding:"スカウト笛は対象確認や初回スカウト実行より前の戦闘開始時に消費されるため、スカウトへ進めない戦闘でも失う。",
+      evidence:"battle.js 226-234, 283-291。任務報酬の在庫上書きは修正済みだが、消費タイミングは別仕様として残る。",
+      recommendation:"笛の消費を、その戦闘で最初にスカウトを実行した時点へ移す。"
     },
     {
       severity:"MEDIUM",code:"AUTO_SKILL_SELECTION",scope:"オート戦闘",
@@ -999,36 +1309,59 @@ function specFindings(){
   ];
 }
 
-function buildFindings(campaigns,profileMetrics,stageMetrics){
-  const findings = specFindings();
+function resolvedFindings(comparison,priorityFixVerification){
+  if(!comparison || priorityFixVerification?.passed !== true || priorityFixVerification?.counts?.passed !== 5 || priorityFixVerification?.counts?.total !== 5) return [];
+  const versionChange = `${comparison.baseline.gameVersion} → ${comparison.current.gameVersion}`;
+  const regressionEvidence = `tools/priority-fixes-test.mjs 5/5 passed（testVersion ${priorityFixVerification.testVersion}、本体sourceHash一致）`;
+  return [
+    {severity:"INFO",status:"resolved",code:"FUSION_EQUIP_INHERIT",scope:"配合/成長",finding:"装備・性格・突然変異・既存ボーナスを除いた中立能力から配合継承を計算するよう修正した。",evidence:`${versionChange} の優先修正。装備返却は取得記録を増やさない経路へ分離。${regressionEvidence}。`,recommendation:"配合世代を重ねる長期試験で、意図した基礎能力由来の増加だけが残ることを継続監視する。"},
+    {severity:"INFO",status:"resolved",code:"SCOUT_CHARM_OVERWRITE",scope:"任務/スカウト笛",finding:"任務のスカウト笛報酬を在庫上書きから加算へ修正した。",evidence:`${versionChange} の優先修正。${regressionEvidence}。`,recommendation:"別件の戦闘開始時消費は SCOUT_CHARM_EARLY_CONSUMPTION として追跡する。"},
+    {severity:"INFO",status:"resolved",code:"ITEM_RECORD_INFLATION",scope:"任務/装備",finding:"装備交換・解除・配合返却でアイテム取得記録を増やさないよう返却APIを分離した。",evidence:`${versionChange} の優先修正。${regressionEvidence}。`,recommendation:"外部獲得だけが records.items を増やす回帰試験を維持する。"},
+    {severity:"INFO",status:"resolved",code:"AUTO_GUARD_LOOP",scope:"オート戦闘",finding:"オート戦闘では防御を2手連続で選ばない制限を追加した。手動防御は変更していない。",evidence:`${versionChange} の優先修正。${regressionEvidence}。同一seed監査ではguard-loopと全停止戦を別々に比較する。`,recommendation:"guard_loop_campaign_rate、stalled_campaigns、50/100ターン超を継続監視し、別原因の長期戦と混同しない。"}
+  ];
+}
+
+function buildFindings(campaigns,profileMetrics,stageMetrics,comparison,priorityFixVerification){
+  const findings = specFindings().map(row=>({...row,status:"open"}));
   const completed = campaigns.filter(campaign=>campaign.completed).length;
   const overallRate = completed/Math.max(1,campaigns.length);
   const maxBossLosses = campaigns[0]?.maxBossLosses || 80;
   const bossLossCapStops = campaigns.filter(campaign=>campaign.failure_reason === "boss_retry_cap").length;
-  if(overallRate < .9){
-    findings.unshift({severity:"MEDIUM",code:"CAMPAIGN_COMPLETION_LOW",scope:"本編全体",finding:`${campaigns.length}周の監査上限内完走率が${round(overallRate*100,1)}%に留まった。`,evidence:`${completed}/${campaigns.length}周が天空遺跡まで完走。1周${campaigns[0]?.maxBattles || 0}戦、1戦${campaigns[0]?.maxTurnsPerBattle || 0}ターン、各ボス敗北${maxBossLosses}回を監査上限とし、ボス敗北上限で${bossLossCapStops}周が停止。`,recommendation:"停止理由を方針・地域別に分解し、上限感度を確認してからボス火力・必要周回・AIを個別調整する。"});
+  findings.unshift({severity:"MEDIUM",status:"open",code:"CAMPAIGN_BOUNDED_COMPLETION",scope:"本編全体",finding:`明示した監査上限内で${completed}/${campaigns.length}周（${round(overallRate*100,1)}%）が天空遺跡まで完走した。`,evidence:`1周${campaigns[0]?.maxBattles || 0}戦、1戦${campaigns[0]?.maxTurnsPerBattle || 0}ターン、各ボス敗北${maxBossLosses}回で打ち切り、ボス敗北上限で${bossLossCapStops}周が停止。プロジェクトの目標完走率は未定義のため、この値単独を合否判定に使わない。`,recommendation:"目標プレイ時間・許容戦闘数・想定方針ごとの目標を先に定義し、停止理由と上限感度を確認してから個別のボス値や経験値を調整する。"});
+  const guardLoopBattles = campaigns.reduce((sum,row)=>sum+row.guardLoopBattles,0);
+  if(guardLoopBattles > 0){
+    findings.push({severity:"MEDIUM",status:"open",code:"AUTO_GUARD_LOOP_REMAINS",scope:"オート戦闘",finding:`連続防御5回以上の戦闘が${guardLoopBattles}件残った。`,evidence:`${campaigns.filter(row=>row.guardLoopBattles>0).length}/${campaigns.length}周で検出。`,recommendation:"自動防御の2連続制限以外の入力経路・状態復元・手動相当アクションを明細から特定する。"});
   }
-  const walls = stageMetrics.filter(row=>row.campaigns_reached >= 10 && (row.first_try_rate < .65 || row.avg_boss_attempts > 1.8))
+  const walls = stageMetrics.filter(row=>row.campaigns_reached >= 10 && row.clear_rate < .95 && (row.first_try_rate < .65 || row.avg_boss_attempts > 1.8))
     .sort((a,b)=>b.avg_boss_attempts-a.avg_boss_attempts)
     .slice(0,3);
   walls.forEach(row=>findings.push({
-    severity:"HIGH",code:`BOSS_WALL_${row.stage_id.toUpperCase()}`,scope:row.stage_name,
-    finding:`初回ボス成功率${round(row.first_try_rate*100,1)}%、平均${row.avg_boss_attempts}回で、進行上の壁になっている。`,
-    evidence:`到達${row.campaigns_reached}周、ボス開始Lv中央値${row.median_boss_start_level}、ボスLv${row.boss_level}。`,
+    severity:"HIGH",status:"open",code:`BOSS_WALL_${row.stage_id.toUpperCase()}`,scope:row.stage_name,
+    finding:`到達後突破率${round(row.clear_rate*100,1)}%、初回成功率${round(row.first_try_rate*100,1)}%、平均${row.avg_boss_attempts}回で、監査上限内の進行停止を伴う壁になっている。`,
+    evidence:`到達${row.campaigns_reached}周のうち${row.campaigns_reached-row.stage_clears}周が未突破。ボス開始Lv中央値${row.median_boss_start_level}、ボスLv${row.boss_level}。`,
     recommendation:"boss.boostのHP/ATKを5-10%刻みで下げる案と、直前地域EXPを10-15%増やす案を同一seedで比較する。"
+  }));
+  const retryLoads = stageMetrics.filter(row=>row.campaigns_reached >= 10 && row.clear_rate >= .95 && row.avg_boss_attempts > 8)
+    .sort((a,b)=>b.avg_boss_attempts-a.avg_boss_attempts)
+    .slice(0,3);
+  retryLoads.forEach(row=>findings.push({
+    severity:"MEDIUM",status:"open",code:`BOSS_RETRY_LOAD_${row.stage_id.toUpperCase()}`,scope:row.stage_name,
+    finding:`到達後突破率は${round(row.clear_rate*100,1)}%だが、平均${row.avg_boss_attempts}回を要し、進行停止壁ではなく再挑戦負荷として大きい。`,
+    evidence:`到達${row.campaigns_reached}周、初回成功率${round(row.first_try_rate*100,1)}%、ボス平均${row.avg_boss_turns}ターン。`,
+    recommendation:"高い最終突破率を保ったまま再挑戦回数を減らせるよう、敗北後育成導線・直前EXP・ボス耐久を1変数ずつ比較する。"
   }));
   const grind = stageMetrics.filter(row=>row.avg_extra_normal_wins > 8)
     .sort((a,b)=>b.avg_extra_normal_wins-a.avg_extra_normal_wins)
     .slice(0,3);
   grind.forEach(row=>findings.push({
-    severity:"MEDIUM",code:`GRIND_SPIKE_${row.stage_id.toUpperCase()}`,scope:row.stage_name,
+    severity:"MEDIUM",status:"open",code:`GRIND_SPIKE_${row.stage_id.toUpperCase()}`,scope:row.stage_name,
     finding:`ボス解放に必要な${row.unlock_wins}勝に加えて、平均${row.avg_extra_normal_wins}勝の追加育成が発生した。`,
     evidence:`通常戦平均${row.avg_normal_battles}回、ボス開始Lv中央値${row.median_boss_start_level}。`,
     recommendation:"直前/当該地域のEXP、boss Lv/boost、修練40EXP/60Gを別々の反実仮想として比較する。"
   }));
   const easy = stageMetrics.filter(row=>row.campaigns_reached >= 10 && row.first_try_rate >= .985 && row.avg_boss_turns < 8).slice(0,3);
   easy.forEach(row=>findings.push({
-    severity:"LOW",code:`BOSS_TRIVIAL_${row.stage_id.toUpperCase()}`,scope:row.stage_name,
+    severity:"LOW",status:"open",code:`BOSS_TRIVIAL_${row.stage_id.toUpperCase()}`,scope:row.stage_name,
     finding:`初回成功率${round(row.first_try_rate*100,1)}%、平均${row.avg_boss_turns}ターンでボス演出に対して緊張感が弱い。`,
     evidence:`到達${row.campaigns_reached}周の実本体戦闘処理。`,
     recommendation:"数値を上げる前に、固有AI/予告技/回復など地域らしい行動で難しさを作る。"
@@ -1037,9 +1370,9 @@ function buildFindings(campaigns,profileMetrics,stageMetrics){
   if(rates.length > 1 && Math.max(...rates)-Math.min(...rates) >= .15){
     const best = profileMetrics.reduce((a,b)=>a.completion_rate>b.completion_rate?a:b);
     const worst = profileMetrics.reduce((a,b)=>a.completion_rate<b.completion_rate?a:b);
-    findings.push({severity:"HIGH",code:"PLAYSTYLE_COMPLETION_GAP",scope:"プレイスタイル差",finding:`監査上限内完走率が${best.profile_label}と${worst.profile_label}で${round((best.completion_rate-worst.completion_rate)*100,1)}pt開いた。`,evidence:`${best.profile_label} ${round(best.completion_rate*100,1)}% / ${worst.profile_label} ${round(worst.completion_rate*100,1)}%。`,recommendation:"停止理由を方針別に分解し、特に速攻側で不足する対抗手段・育成導線を調整してから、同一seed集合で再比較する。"});
+    findings.push({severity:"HIGH",status:"open",code:"PLAYSTYLE_COMPLETION_GAP",scope:"プレイスタイル差",finding:`監査上限内完走率が${best.profile_label}と${worst.profile_label}で${round((best.completion_rate-worst.completion_rate)*100,1)}pt開いた。`,evidence:`${best.profile_label} ${round(best.completion_rate*100,1)}% / ${worst.profile_label} ${round(worst.completion_rate*100,1)}%。`,recommendation:"停止理由を方針別に分解し、特に速攻側で不足する対抗手段・育成導線を調整してから、同一seed集合で再比較する。"});
   }
-  return findings;
+  return [...findings,...resolvedFindings(comparison,priorityFixVerification)];
 }
 
 function buildOverview(campaigns){
@@ -1065,13 +1398,22 @@ function buildOverview(campaigns){
   };
 }
 
-function buildReportSources(outputRelative,generatedAt,runs){
-  return [
+function buildReportSources(outputRelative,generatedAt,runs,comparison){
+  const sources = [
     {id:"overview_source",label:"主要指標CSV投影",csv:"overview.csv",description:`${runs}周全体の主要指標。`},
     {id:"profiles_source",label:"方針別CSV投影",csv:"profile-metrics.csv",description:"速攻・バランス・収集配合の方針別集計。"},
     {id:"stages_source",label:"地域別CSV投影",csv:"stage-metrics.csv",description:"13地域の進行・ボス・育成集計。"},
     {id:"findings_source",label:"問題一覧CSV投影",csv:"findings.csv",description:"動的検出と静的仕様監査の問題一覧。"}
-  ].map(source=>{
+  ];
+  if(comparison){
+    sources.push(
+      {id:"baseline_comparison_source",label:"全体paired比較CSV投影",csv:"baseline-comparison.csv",description:`${comparison.baseline.gameVersion}から${comparison.current.gameVersion}への同一seed全体比較。`},
+      {id:"profile_comparison_source",label:"方針別paired比較CSV投影",csv:"profile-comparison.csv",description:"方針ごとの監査上限内完走率・戦闘数の版比較。"},
+      {id:"focus_stage_comparison_source",label:"重点地域paired比較CSV投影",csv:"focus-stage-comparison.csv",description:"重点4地域のpaired遷移・両版到達組差分を含む詳細比較。"},
+      {id:"focus_stage_chart_source",label:"重点地域チャートCSV投影",csv:"focus-stage-chart.csv",description:"重点4地域のbaseline/currentチャート用long形式。"}
+    );
+  }
+  return sources.map(source=>{
     const csvPath = `${outputRelative}/${source.csv}`;
     const sql = `SELECT * FROM read_csv_auto('${csvPath}', header = true);`;
     return {
@@ -1082,16 +1424,36 @@ function buildReportSources(outputRelative,generatedAt,runs){
   });
 }
 
-function makeArtifact({D,generatedAt,command,overview,profiles,stages,findings,campaigns,sourceHash,revision,runSignature,reportSources}){
+function makeArtifact({D,generatedAt,command,overview,profiles,stages,findings,campaigns,sourceHash,revision,runSignature,reportSources,comparison,priorityFixVerification}){
   const title = `Monster Links ${D.GAME_VERSION} ${command.runs}周キャンペーン監査`;
-  const highCount = findings.filter(row=>["CRITICAL","HIGH"].includes(row.severity)).length;
-  const preferredFindingCodes = ["FUSION_EQUIP_INHERIT","SCOUT_CHARM_OVERWRITE","ITEM_RECORD_INFLATION","AUTO_GUARD_LOOP","CAMPAIGN_COMPLETION_LOW","PLAYSTYLE_COMPLETION_GAP"];
-  const topFindings = preferredFindingCodes.map(code=>findings.find(row=>row.code === code)).filter(Boolean).slice(0,6).map(row=>`- **${row.code}** — ${row.finding}`).join("\n");
+  const highCount = findings.filter(row=>row.status !== "resolved" && ["CRITICAL","HIGH"].includes(row.severity)).length;
+  const resolvedCount = findings.filter(row=>row.status === "resolved").length;
+  const preferredFindingCodes = ["FUSION_EQUIP_INHERIT","SCOUT_CHARM_OVERWRITE","ITEM_RECORD_INFLATION","AUTO_GUARD_LOOP","CAMPAIGN_BOUNDED_COMPLETION","PLAYSTYLE_COMPLETION_GAP"];
+  const topFindings = preferredFindingCodes.map(code=>findings.find(row=>row.code === code)).filter(Boolean).slice(0,6).map(row=>`- **${row.code}**（${row.status === "resolved" ? "解消" : "未解消"}）— ${row.finding}`).join("\n");
   const profileText = profiles.map(row=>`${row.profile_label} ${round(row.completion_rate*100,1)}%（${row.completed}/${row.campaigns}、95% CI ${round(row.completion_ci_low*100,1)}–${round(row.completion_ci_high*100,1)}%）`).join("、");
-  const worstBoss = [...stages].sort((a,b)=>b.avg_boss_attempts-a.avg_boss_attempts)[0];
+  const mostAttemptsBoss = [...stages].sort((a,b)=>b.avg_boss_attempts-a.avg_boss_attempts)[0];
+  const mostProgressionStopsBoss = [...stages].sort((a,b)=>(b.campaigns_reached-b.stage_clears)-(a.campaigns_reached-a.stage_clears) || a.clear_rate-b.clear_rate)[0];
+  const heaviestRetryLoad = [...stages].filter(row=>row.clear_rate >= .95).sort((a,b)=>b.avg_boss_attempts-a.avg_boss_attempts)[0] || mostAttemptsBoss;
   const heaviestGrind = [...stages].sort((a,b)=>b.avg_extra_normal_wins-a.avg_extra_normal_wins)[0];
+  const mcnemarConclusion = comparison
+    ? comparison.overall.mcnemar_exact_two_sided_p < .05 && comparison.overall.failed_to_completed > comparison.overall.completed_to_failed
+      ? "集計完走率の改善を支持するpaired証拠があります"
+      : comparison.overall.mcnemar_exact_two_sided_p < .05 && comparison.overall.completed_to_failed > comparison.overall.failed_to_completed
+        ? "集計完走率の低下を示すpaired証拠があります"
+        : "集計完走率の改善を示すpaired証拠は得られませんでした"
+    : "";
+  const comparisonSummary = comparison
+    ? `${comparison.baseline.gameVersion}と同じ${comparison.overall.pair_count}組の初期seedで比較すると、監査上限内完走率は **${round(comparison.overall.baseline_completion_rate*100,1)}% → ${round(comparison.overall.current_completion_rate*100,1)}%**（${comparison.overall.completion_rate_delta >= 0 ? "+" : ""}${round(comparison.overall.completion_rate_delta*100,1)}pt）。未完走→完走は${comparison.overall.failed_to_completed}周、完走→未完走は${comparison.overall.completed_to_failed}周で、exact two-sided McNemar p=${formatPValue(comparison.overall.mcnemar_exact_two_sided_p)}（${mcnemarConclusion}）。連続防御5回以上を含む周回率は${round(comparison.overall.baseline_guard_loop_campaign_rate*100,1)}% → ${round(comparison.overall.current_guard_loop_campaign_rate*100,1)}%、停止戦を1件以上含む周回は${comparison.overall.baseline_stalled_campaigns} → ${comparison.overall.current_stalled_campaigns}周でした。連続防御ループが0でも、別原因の停止戦まで全て解消したとは扱いません。`
+    : "";
+  const profileComparisonText = comparison
+    ? comparison.profiles.map(row=>`${row.profile_label} ${round(row.baseline_completion_rate*100,1)}% → ${round(row.current_completion_rate*100,1)}%（${row.completion_rate_delta >= 0 ? "+" : ""}${round(row.completion_rate_delta*100,1)}pt）`).join("、")
+    : "";
+  const focusComparisonText = comparison
+    ? comparison.focusStages.map(row=>`${row.stage_name} ${row.baseline_avg_boss_attempts} → ${row.current_avg_boss_attempts}回（到達${row.baseline_campaigns_reached} → ${row.current_campaigns_reached}周）`).join("、")
+    : "";
   return {
     surface:"report",
+    priorityFixVerification:clonePlain(priorityFixVerification),
     manifest:{
       version:1,
       surface:"report",
@@ -1107,22 +1469,36 @@ function makeArtifact({D,generatedAt,command,overview,profiles,stages,findings,c
         ]}
       ],
       charts:[
-        {id:"battle_quantiles",title:"完走・停止までの戦闘数",subtitle:`全${command.runs}周の中央値と90パーセンタイル。`,type:"bar",dataset:"battle_quantiles",sourceId:"overview_source",valueFormat:"number",encodings:{x:{field:"percentile",type:"nominal",label:"分位"},y:{field:"battles",type:"quantitative",label:"戦闘数"},tooltip:[{field:"battles",type:"quantitative",label:"戦闘数"}] }}
+        {id:"battle_quantiles",title:"完走・停止までの戦闘数",subtitle:`全${command.runs}周の中央値と90パーセンタイル。`,type:"bar",dataset:"battle_quantiles",sourceId:"overview_source",valueFormat:"number",encodings:{x:{field:"percentile",type:"nominal",label:"分位"},y:{field:"battles",type:"quantitative",label:"戦闘数"},tooltip:[{field:"battles",type:"quantitative",label:"戦闘数"}] }},
+        ...(comparison ? [
+          {id:"profile_completion_comparison",title:"方針別の監査上限内完走率",subtitle:`${comparison.baseline.gameVersion}と${comparison.current.gameVersion}の同一seed比較。`,type:"bar",dataset:"profile_comparison",sourceId:"profile_comparison_source",valueFormat:"percent",palette:{roots:["blue","orange"]},encodings:{x:{field:"profile_label",type:"nominal",label:"方針"},y:{field:"completion_rate",type:"quantitative",label:"監査上限内完走率",format:"percent"},color:{field:"version_label",type:"nominal",label:"バージョン"},tooltip:[{field:"version_label",type:"nominal",label:"バージョン"},{field:"completed",type:"quantitative",label:"完走周"},{field:"campaigns",type:"quantitative",label:"周回数"},{field:"completion_rate",type:"quantitative",label:"監査上限内完走率",format:"percent"},{field:"median_battles",type:"quantitative",label:"戦闘数P50"},{field:"p90_battles",type:"quantitative",label:"戦闘数P90"}]}},
+          {id:"focus_stage_attempts_comparison",title:"重点4地域の平均ボス挑戦回数",subtitle:"到達した監査周回を分母にした版比較。",type:"bar",dataset:"focus_stage_comparison",sourceId:"focus_stage_chart_source",valueFormat:"number",palette:{roots:["blue","orange"]},encodings:{x:{field:"stage_name",type:"nominal",label:"地域"},y:{field:"avg_boss_attempts",type:"quantitative",label:"平均ボス挑戦回数"},color:{field:"version_label",type:"nominal",label:"バージョン"},tooltip:[{field:"version_label",type:"nominal",label:"バージョン"},{field:"campaigns_reached",type:"quantitative",label:"到達周"},{field:"stage_clears",type:"quantitative",label:"突破周"},{field:"avg_boss_attempts",type:"quantitative",label:"平均ボス挑戦回数"},{field:"first_try_rate",type:"quantitative",label:"初回成功率",format:"percent"},{field:"avg_extra_normal_wins",type:"quantitative",label:"追加通常勝利"}]}}
+        ] : [])
       ],
       tables:[],
       sources:reportSources.map(({id,label,path:sourcePath})=>({id,label,path:sourcePath})),
       blocks:[
-        {id:"title_summary",type:"markdown",body:`# ${title}\n\n## 技術サマリー\n\n新規セーブから天空遺跡ボス初回制覇までを1周と定義し、実際の本体IIFE・戦闘・報酬・スカウト・成長・配合APIをシード付き乱数と仮想タイマーで${overview.campaigns}周実行しました。監査上限内完走率は **${round(overview.completion_rate*100,1)}%**（95% Wilson CI ${round(overview.completion_ci_low*100,1)}–${round(overview.completion_ci_high*100,1)}%）、戦闘数中央値は **${overview.median_battles}**、P90は **${overview.p90_battles}** です。\n\n重大/高優先の指摘は **${highCount}件**。まず装備込み配合継承・笛報酬上書き・取得記録水増しの確定バグと、自動防御の停止リスクを分離して直し、その後に同一seedで難易度を再計測するのが安全です。`},
+        {id:"title_summary",type:"markdown",sourceId:"overview_source",body:`# ${title}\n\n## 技術サマリー\n\n新規セーブから天空遺跡ボス初回制覇までを1周と定義し、実際の本体IIFE・戦闘・報酬・スカウト・成長・配合APIをシード付き乱数と仮想タイマーで${overview.campaigns}周実行しました。監査上限内完走率は **${round(overview.completion_rate*100,1)}%**（95% Wilson CI ${round(overview.completion_ci_low*100,1)}–${round(overview.completion_ci_high*100,1)}%）、戦闘数中央値は **${overview.median_battles}**、P90は **${overview.p90_battles}** です。これは未定義の目標値に対する合否ではありません。`},
         {id:"metrics",type:"metric-strip",cardIds:["overview_card"]},
-        {id:"key_findings",type:"markdown",body:`## 主な発見\n\n${topFindings}`},
-        {id:"profile_context",type:"markdown",body:`## 方針差\n\n${profileText}。各方針の周回数と95%信頼区間を併記し、小差ではなく区間も含めて方針差を判断します。`},
+        {id:"priority_fix_verification",type:"markdown",sourceId:"findings_source",body:`## 優先修正の検証\n\n専用回帰試験は **${priorityFixVerification.counts.passed}/${priorityFixVerification.counts.total}件成功**し、本監査とGAME_VERSION・sourceHashが一致しています。未解消の重大/高優先指摘は **${highCount}件**、証拠付きで解消扱いにした指摘は **${resolvedCount}件**です。${comparison ? "集計完走率と停止戦の版比較は次節で、個別修正の根拠は問題一覧の回帰試験証拠で確認します。" : "難易度値は目標を定義してから1変数ずつ判断します。"}`},
+        {id:"key_findings",type:"markdown",sourceId:"findings_source",body:`## 主な発見\n\n${topFindings}`},
+        ...(comparison ? [
+          {id:"comparison_overview",type:"markdown",sourceId:"baseline_comparison_source",body:`## ${comparison.baseline.gameVersion} → ${comparison.current.gameVersion} paired比較\n\n${comparisonSummary}\n\n4件をまとめた版比較なので、各修正の個別因果効果は分離していません。`},
+          {id:"profile_comparison_context",type:"markdown",sourceId:"profile_comparison_source",body:`## 方針別の版比較\n\n${profileComparisonText}。棒グラフの完走率は実ユーザー率ではなく、同じ監査上限とボット方針で測った値です。`},
+          {id:"profile_completion_comparison_chart",type:"chart",chartId:"profile_completion_comparison"},
+          {id:"focus_stage_comparison_context",type:"markdown",sourceId:"focus_stage_chart_source",body:`## 重点4地域の変化\n\n${focusComparisonText}。平均挑戦回数は各版でその地域へ到達した周回が分母であり、到達数の変化もツールチップとCSVで併読します。`},
+          {id:"focus_stage_attempts_comparison_chart",type:"chart",chartId:"focus_stage_attempts_comparison"},
+          {id:"focus_stage_comparison_takeaway",type:"markdown",sourceId:"focus_stage_comparison_source",body:`重点地域の \`failed_to_cleared\` / \`cleared_to_failed\`、両版到達組だけの挑戦回数差、追加通常勝利差は \`focus-stage-comparison.csv\` に保存しています。到達集団が版間で変わるため、集計平均だけでボス値の因果効果とは断定しません。`}
+        ] : []),
+        {id:"profile_context",type:"markdown",sourceId:"profiles_source",body:`## 現行版の方針差\n\n${profileText}。各方針の周回数と95%信頼区間を併記し、小差ではなく区間も含めて方針差を判断します。`},
+        {id:"battle_quantiles_context",type:"markdown",sourceId:"overview_source",body:`## 戦闘数分布\n\n完走または停止までの戦闘数はP50が${overview.median_battles}戦、P90が${overview.p90_battles}戦です。P90は1周上限${command.maxBattles}戦の${round(overview.p90_battles/command.maxBattles*100,1)}%に達し、残りは${round(Math.max(0,command.maxBattles-overview.p90_battles),1)}戦です。上位10%を読む際は、この打ち切り上限への近さを感度指標として併記します。`},
         {id:"battle_quantiles_chart",type:"chart",chartId:"battle_quantiles"},
-        {id:"boss_context",type:"markdown",body:`## ボス難易度\n\n最大の壁は **${worstBoss.stage_name}**（平均${worstBoss.avg_boss_attempts}回、初回成功${round(worstBoss.first_try_rate*100,1)}%）。ボス値だけでなく、直前地域の経験値とオートAIの長期化を同時に確認してください。`},
-        {id:"grind_context",type:"markdown",body:`## 育成周回\n\n追加育成が最大なのは **${heaviestGrind.stage_name}**（ボス解放条件を超えて平均${heaviestGrind.avg_extra_normal_wins}勝）。収集方針では通常スカウト成功が報酬0のため、勝数だけ進んでレベルと資金が遅れます。`},
-        {id:"scope_method",type:"markdown",body:`## 対象・データ・定義\n\n- 対象: GAME_VERSION ${D.GAME_VERSION}、本編13地域、モンスター${Object.keys(D.MONSTERS).length}種、固定配合${D.RECIPE_LIST.length}件。\n- 1周: 初期ぷるミン/80Gから、全13ボス初回制覇まで。闘技場EXと図鑑100%は本編完走と分離。\n- 監査上限: 1周${command.maxBattles}戦、1戦${command.maxTurns}ターン、各ボス敗北${command.maxBossLosses}回。上限到達は未完走として停止理由を記録。\n- 実装共有: VM内で本体のState/Game APIを直接実行。ダメージ、敵AI、報酬、ドロップ、スカウト、Lv/ランク成長、配合条件は本体コード。\n- プレイヤー判断: 速攻・バランス・収集配合の3方針を明示。全方針が現仕様上の無料キャンプ回復、到達時の任務/ランク報酬、3枠内の自動編成を利用。\n- 再現性: seed ${command.seed}、source hash ${sourceHash.slice(0,16)}…、run signature ${runSignature.slice(0,16)}…。`},
-        {id:"detail_files",type:"markdown",body:`## 詳細データ\n\n方針別の信頼区間・地域別の全指標・全問題と個別修正案は、同じ監査フォルダの \`profile-metrics.csv\`、\`stage-metrics.csv\`、\`findings.csv\` に保存しています。\`campaigns.csv\` と \`campaign-stage-runs.csv\` から全${command.runs}周を再集計できます。`},
-        {id:"limitations",type:"markdown",body:`## 制約・頑健性\n\nこれは実ユーザーの完走率や実ユーザーテレメトリではなく、明示したボット方針を、1周${command.maxBattles}戦・1戦${command.maxTurns}ターン・各ボス敗北${command.maxBossLosses}回で打ち切る監査モデルです。したがって完走率は必ず「監査上限内完走率」として解釈します。編成選択とスカウト準備攻撃はプレイヤー判断の近似ですが、戦闘結果・報酬・成長は本体処理です。方針差は各95%信頼区間と停止理由を確認し、修正案比較は同一seed集合でpaired実行してください。既存progression-auditの理論閉包は配合Lv1化・親消費を無視するため、本レポートのキャンペーン結論には使用していません。`},
-        {id:"next_steps",type:"markdown",body:`## 推奨する次の手順\n\n1. 装備なし基礎能力から配合継承を計算し、笛報酬を加算へ直し、アイテム返却と取得記録を分離する。\n2. 自動防御へ連続制限を入れて、停止戦と50/100ターン超を同一seedで再確認する。\n3. 方針別の停止理由を分解し、星晶の塔・虹晶聖域・深海神殿・天空遺跡をpaired比較する。\n4. 地域別boss.boost・EXP・修練価格は1変数ずつ変更し、監査上限内完走率だけでなくP90戦闘数と方針差もガードレールにする。\n5. 素早さ、敵回復、長期経済、冒険者ランクは全戦闘へ波及するため、難易度調整と分けて仕様を決める。`},
+        {id:"boss_context",type:"markdown",sourceId:"stages_source",body:`## ボス難易度\n\n平均挑戦回数が最大なのは **${mostAttemptsBoss.stage_name}**（平均${mostAttemptsBoss.avg_boss_attempts}回）です。一方、到達後の未突破数が最多なのは **${mostProgressionStopsBoss.stage_name}**（${mostProgressionStopsBoss.campaigns_reached-mostProgressionStopsBoss.stage_clears}/${mostProgressionStopsBoss.campaigns_reached}周が未突破、突破率${round(mostProgressionStopsBoss.clear_rate*100,1)}%）で、再挑戦の重さと進行停止は分けて判断します。突破率95%以上の地域では **${heaviestRetryLoad.stage_name}** が平均${heaviestRetryLoad.avg_boss_attempts}回で最大ですが、これはHIGHの進行壁ではなくMEDIUMの再挑戦負荷として分類します。ボス値だけでなく、直前地域の経験値とオートAIの長期化を同時に確認してください。`},
+        {id:"grind_context",type:"markdown",sourceId:"stages_source",body:`## 育成周回\n\n追加育成が最大なのは **${heaviestGrind.stage_name}**（ボス解放条件を超えて平均${heaviestGrind.avg_extra_normal_wins}勝）。収集方針では通常スカウト成功が報酬0のため、勝数だけ進んでレベルと資金が遅れます。`},
+        {id:"scope_method",type:"markdown",body:`## 対象・データ・定義\n\n- 対象: GAME_VERSION ${D.GAME_VERSION}、本編13地域、モンスター${Object.keys(D.MONSTERS).length}種、固定配合${D.RECIPE_LIST.length}件。\n- 1周: 初期ぷるミン/80Gから、全13ボス初回制覇まで。闘技場EXと図鑑100%は本編完走と分離。\n- 監査上限: 1周${command.maxBattles}戦、1戦${command.maxTurns}ターン、各ボス敗北${command.maxBossLosses}回。上限到達は未完走として停止理由を記録。\n- 実装共有: VM内で本体のState/Game APIを直接実行。ダメージ、敵AI、報酬テーブル、ドロップ、スカウト、Lv/ランク成長、配合条件は本体コード。\n- 自動行動: 方針ドライバの全行動を本体APIへ \`fromAuto=true\` で渡し、本番の「自動防御は2手連続不可」を共有。手動防御は本監査の対象外で、制限しない。\n- プレイヤー判断: 速攻・バランス・収集配合の3方針を明示。全方針が現仕様上の無料キャンプ回復、到達時の任務/ランク報酬、3枠内の自動編成を利用。\n- 再現性: seed ${command.seed}、source hash ${sourceHash.slice(0,16)}…、run signature ${runSignature.slice(0,16)}…。`},
+        {id:"detail_files",type:"markdown",body:`## 詳細データ\n\n方針別の信頼区間・地域別の全指標・全問題と個別修正案は、同じ監査フォルダの \`profile-metrics.csv\`、\`stage-metrics.csv\`、\`findings.csv\` に保存しています。優先修正の機械可読レシートは \`priority-fixes-verification.json\`、全${command.runs}周の再集計元は \`campaigns.csv\` と \`campaign-stage-runs.csv\` です。${comparison ? "版比較は `baseline-comparison.csv`、`profile-comparison.csv`、`focus-stage-comparison.csv` に保存しています。" : ""}`},
+        {id:"limitations",type:"markdown",body:`## 制約・頑健性\n\nこれは実ユーザーの完走率や実ユーザーテレメトリではなく、明示したボット方針を、1周${command.maxBattles}戦・1戦${command.maxTurns}ターン・各ボス敗北${command.maxBossLosses}回で打ち切る監査モデルです。したがって完走率は必ず「監査上限内完走率」として解釈します。Wilson 95%信頼区間は固定ボット方針におけるseed間変動を表し、実ユーザー母集団への推定区間ではありません。編成選択とスカウト準備攻撃はプレイヤー判断の近似ですが、戦闘結果・報酬テーブル・成長は本体処理です。${comparison ? `${comparison.pairing.caveat} ${comparison.pairing.bundleCaveat} ${comparison.pairing.proofCaveat} ${comparison.pairing.guardCaveat} ${comparison.pairing.collectorCaveat} ` : ""}方針差は各95%信頼区間と停止理由を確認してください。既存progression-auditの理論閉包は配合Lv1化・親消費を無視するため、本レポートのキャンペーン結論には使用していません。`},
+        {id:"next_steps",type:"markdown",body:`## 推奨する次の手順\n\n1. 解消扱いの4件を回帰試験で固定し、取得記録・笛在庫・配合継承・自動防御を再発させない。\n2. 方針別の停止理由と重点4地域のpaired明細を使い、残る壁がボス値・経験値・方針AIのどこにあるか分離する。\n3. 地域別boss.boost・EXP・修練価格は1変数ずつ変更し、監査上限内完走率だけでなくP90戦闘数と方針差もガードレールにする。\n4. スカウト笛の早期消費と通常スカウト報酬0は収集方針へ直接効くため、ボス数値とは別変更で検証する。\n5. 素早さ、敵回復、長期経済、冒険者ランクは全戦闘へ波及するため、今回の優先修正と分けて仕様を決める。`},
         {id:"questions",type:"markdown",body:"## 追加で確認したい問い\n\n- 本編の目標プレイ時間と、1地域あたり許容する通常戦数はどれくらいか。\n- 無料キャンプ回復は正式仕様か、一時的な救済か。\n- 「推奨Lv」は警告か必須条件か。\n- 収集・配合プレイを速攻と同程度に完走可能にするか、意図的に長くするか。"}
       ]
     },
@@ -1136,7 +1512,14 @@ function makeArtifact({D,generatedAt,command,overview,profiles,stages,findings,c
         profiles,
         stages,
         findings:findings.map(row=>({...row,severity_rank:{CRITICAL:0,HIGH:1,MEDIUM:2,LOW:3,INFO:4}[row.severity] ?? 9})),
-        campaigns:campaigns.map(row=>({run:row.run,profile:row.profile,total_battles:row.totalBattles,total_turns:row.totalTurns,completed:row.completed,losses:row.losses,final_level:row.finalHighestLevel}))
+        campaigns:campaigns.map(row=>({run:row.run,profile:row.profile,total_battles:row.totalBattles,total_turns:row.totalTurns,completed:row.completed,losses:row.losses,final_level:row.finalHighestLevel})),
+        ...(comparison ? {
+          baseline_comparison:[comparison.overall],
+          profile_comparison:comparison.profileChartRows,
+          focus_stage_comparison:comparison.focusStageChartRows,
+          paired_profile_deltas:comparison.profiles,
+          paired_focus_stage_deltas:comparison.focusStages
+        } : {})
       },
       accessIssues:[]
     },
@@ -1157,6 +1540,7 @@ function validateSimulation(result,options,D){
     if(campaign.totalBattles !== campaign.normalBattles+campaign.bossBattles) errors.push(`run ${campaign.run}: battle subtotal mismatch`);
     if(campaign.wins+campaign.losses+campaign.stalledBattles !== campaign.totalBattles) errors.push(`run ${campaign.run}: outcome count mismatch`);
     if(campaign.completed && campaign.bossesCleared !== D.STAGES.length) errors.push(`run ${campaign.run}: completed without all bosses`);
+    if(campaign.maxGuardStreak > 1) errors.push(`run ${campaign.run}: automated guard streak ${campaign.maxGuardStreak} exceeds production limit`);
     if(campaign.finalGold < 0) errors.push(`run ${campaign.run}: negative gold`);
     const expectedGold = campaign.goldInflow-campaign.goldSink;
     if(Math.abs(expectedGold-campaign.finalGold) > 1) errors.push(`run ${campaign.run}: gold conservation ${expectedGold} != ${campaign.finalGold}`);
@@ -1200,8 +1584,11 @@ function runAll(runtime,options){
 function main(){
   const options = parseOptions();
   const runtime = createHeadlessGame({rootDir:root,seed:options.seed});
+  const priorityFixVerification = runPriorityFixVerification(runtime);
   const versionDirectory = String(runtime.D.GAME_VERSION).startsWith("v") ? runtime.D.GAME_VERSION : `v${runtime.D.GAME_VERSION}`;
   const output = ensureInsideRoot(options.outputArg || path.join(root,"docs","audits",`${versionDirectory}-campaign-${options.runs}`));
+  const baseline = loadBaseline(options,runtime.D);
+  if(baseline && baseline.directory.toLowerCase() === output.toLowerCase()) throw new Error("Baseline and output directories must be different");
   const result = runAll(runtime,options);
   const signature = coreSignature(result);
   let determinism = {checked:false,passed:null,signature};
@@ -1221,10 +1608,11 @@ function main(){
   const profileMetrics = aggregateProfiles(result.campaigns,options.profiles);
   const stageMetrics = aggregateStages(result.stageRows,runtime.D);
   const overview = buildOverview(result.campaigns);
-  const findings = buildFindings(result.campaigns,profileMetrics,stageMetrics);
   const generatedAt = new Date().toISOString();
   const revision = gitRevision();
   const command = {runs:options.runs,seed:options.seed,maxBattles:options.maxBattles,maxTurns:options.maxTurns,maxBossLosses:options.maxBossLosses,profiles:options.profiles.map(profile=>profile.id)};
+  const comparison = buildComparison({baseline,D:runtime.D,command,overview,profiles:profileMetrics,stages:stageMetrics,campaigns:result.campaigns,stageRows:result.stageRows});
+  const findings = buildFindings(result.campaigns,profileMetrics,stageMetrics,comparison,priorityFixVerification);
   const validation = validateSimulation(result,options,runtime.D);
   if(!validation.passed) throw new Error(`Simulation validation failed:\n${validation.errors.join("\n")}`);
   const summary = {
@@ -1238,43 +1626,57 @@ function main(){
     command,
     determinism,
     validation,
+    priorityFixVerification,
     methodology:{
       campaignDefinition:"新規セーブから天空遺跡ボス初回制覇まで",
       runtime:"本体IIFEをNode VMへロードし、State/Game公開APIをシード乱数・仮想タイマーで実行",
       profiles:options.profiles.map(profile=>({id:profile.id,label:profile.label,description:profile.description})),
       auditLimits:{maxBattles:options.maxBattles,maxTurnsPerBattle:options.maxTurns,maxBossLossesPerBoss:options.maxBossLosses},
+      automatedActionExecution:"本体Game.actへfromAuto=trueを渡し、本番の自動専用状態（連続防御制限を含む）を共有",
+      manualGuardExcluded:true,
       freeHeal:true,
       questAndRankRewards:true,
-      arenaExcluded:true
+      arenaExcluded:true,
+      priorityFixRegression:"tools/priority-fixes-test.mjs --jsonを監査前に実行し、5/5成功・GAME_VERSION・sourceHash一致を必須化"
     },
     overview,
     profiles:profileMetrics,
     stages:stageMetrics,
-    findings
+    findings,
+    comparison
   };
   const relativeOutput = path.relative(root,output).replaceAll("\\","/");
-  const reportSources = buildReportSources(relativeOutput,generatedAt,options.runs);
+  const reportSources = buildReportSources(relativeOutput,generatedAt,options.runs,comparison);
   summary.reportSources = reportSources.map(({id,label,path:sourcePath,csv})=>({id,label,path:sourcePath,csv}));
-  const artifact = makeArtifact({D:runtime.D,generatedAt,command,overview,profiles:profileMetrics,stages:stageMetrics,findings,campaigns:result.campaigns,sourceHash:runtime.sourceHash,revision,runSignature:signature,reportSources});
+  const artifact = makeArtifact({D:runtime.D,generatedAt,command,overview,profiles:profileMetrics,stages:stageMetrics,findings,campaigns:result.campaigns,sourceHash:runtime.sourceHash,revision,runSignature:signature,reportSources,comparison,priorityFixVerification});
   fs.mkdirSync(output,{recursive:true});
   fs.mkdirSync(path.join(output,"queries"),{recursive:true});
   const campaignColumns = ["run","profile","profile_label","seed","status","completed","failed_stage","failure_reason","maxBattles","maxTurnsPerBattle","maxBossLosses","totalBattles","normalBattles","bossBattles","totalTurns","wins","losses","stalledBattles","timerOrTurnCaps","kos","guardTurns","maxGuardStreak","maxBattleTurns","guardLoopBattles","battles50Plus","battles100Plus","scoutAttempts","scoutSuccesses","zeroRewardScoutWins","scoutCharmPurchases","scoutCharmConsumed","scoutCharmWasted","charmWasteRate","fusions","fusionLevelDebt","levelRecoveryBattles","trainingBooks","trainingGold","freeHeals","questClaims","rankClaims","battleGold","questGold","rankGold","defeatGoldLost","goldInflow","goldSink","goldSinkRate","minGold","finalGold","finalHighestLevel","finalPlayerRank","firstBRankBattle","firstARankBattle","firstSRankBattle","finalOwned","finalDexDiscovered","finalDexScouted","bossesCleared","finalParty"];
   const stageColumns = ["run","profile","stage_index","stage_id","stage_name","req_level","boss_level","unlock_wins","reached","cleared","entry_highest_level","boss_start_highest_level","clear_highest_level","normalBattles","normalCombatWins","scoutWins","normalLosses","scoutEncounters","bossAttempts","bossLosses","bossTurns","recruitmentBossBattles","recruitmentBossLosses","totalBattles","totalTurns","guardTurns","maxGuardStreak","maxBattleTurns","battles50Plus","guardLoopBattles","stalledBattles","kos","trainingBooks","fusions","levelRecoveryBattles","gold_at_entry","gold_at_clear"];
   fs.writeFileSync(path.join(output,"audit-summary.json"),JSON.stringify(summary,null,2)+"\n");
+  fs.writeFileSync(path.join(output,"priority-fixes-verification.json"),JSON.stringify(priorityFixVerification,null,2)+"\n");
   fs.writeFileSync(path.join(output,"campaigns.csv"),toCsv(result.campaigns,campaignColumns));
   fs.writeFileSync(path.join(output,"campaign-stage-runs.csv"),toCsv(result.stageRows,stageColumns));
   fs.writeFileSync(path.join(output,"overview.csv"),toCsv([{...overview,high_findings:findings.filter(row=>["CRITICAL","HIGH"].includes(row.severity)).length}],Object.keys({...overview,high_findings:0})));
   fs.writeFileSync(path.join(output,"profile-metrics.csv"),toCsv(profileMetrics,Object.keys(profileMetrics[0] || {})));
   fs.writeFileSync(path.join(output,"stage-metrics.csv"),toCsv(stageMetrics,Object.keys(stageMetrics[0] || {})));
-  fs.writeFileSync(path.join(output,"findings.csv"),toCsv(findings,["severity","code","scope","finding","evidence","recommendation"]));
+  fs.writeFileSync(path.join(output,"findings.csv"),toCsv(findings,["severity","status","code","scope","finding","evidence","recommendation"]));
+  if(comparison){
+    fs.writeFileSync(path.join(output,"baseline-comparison.csv"),toCsv([comparison.overall],Object.keys(comparison.overall)));
+    fs.writeFileSync(path.join(output,"profile-comparison.csv"),toCsv(comparison.profileChartRows,Object.keys(comparison.profileChartRows[0] || {})));
+    fs.writeFileSync(path.join(output,"focus-stage-comparison.csv"),toCsv(comparison.focusStages,Object.keys(comparison.focusStages[0] || {})));
+    fs.writeFileSync(path.join(output,"focus-stage-chart.csv"),toCsv(comparison.focusStageChartRows,Object.keys(comparison.focusStageChartRows[0] || {})));
+  }
   reportSources.forEach(source=>{
     const sqlText = `-- Portable report projection for ${source.csv}.\n-- Canonical simulation is tools/campaign-audit.mjs; this query exposes its reviewed CSV snapshot.\n${source.query.sql}\n`;
     fs.writeFileSync(path.join(root,source.path),sqlText);
   });
   fs.writeFileSync(path.join(output,"artifact.json"),JSON.stringify(artifact,null,2)+"\n");
   console.log(`Monster Links ${runtime.D.GAME_VERSION} campaign audit`);
+  console.log(`Priority regression: ${priorityFixVerification.counts.passed}/${priorityFixVerification.counts.total} passed`);
   console.log(`Runs: ${options.runs} / completed: ${overview.completed} (${round(overview.completion_rate*100,1)}%)`);
   console.log(`Battles P50/P90: ${overview.median_battles}/${overview.p90_battles}`);
+  if(comparison) console.log(`Baseline ${comparison.baseline.gameVersion}: ${round(comparison.overall.baseline_completion_rate*100,1)}% -> ${round(comparison.overall.current_completion_rate*100,1)}% (${comparison.overall.failed_to_completed} improved / ${comparison.overall.completed_to_failed} regressed pairs)`);
   console.log(`Findings: ${findings.filter(row=>row.severity === "CRITICAL").length} critical, ${findings.filter(row=>row.severity === "HIGH").length} high, ${findings.filter(row=>row.severity === "MEDIUM").length} medium`);
   console.log(`Signature: ${signature}`);
   console.log(`Output: ${relativeOutput}`);

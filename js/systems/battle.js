@@ -102,7 +102,7 @@
     if(strategy === "healing" && hpPct <= 72 && heal) return {kind:"skill",skillId:heal.id};
     if(strategy === "balanced" && hpPct <= 48 && heal) return {kind:"skill",skillId:heal.id};
     if(strategy === "conserve" && hpPct <= 30 && heal) return {kind:"skill",skillId:heal.id};
-    if(hpPct <= 22 && !heal && strategy !== "offense") return {kind:"guard"};
+    if(hpPct <= 22 && !heal && strategy !== "offense" && !b.lastActionWasAutoGuard) return {kind:"guard"};
 
     const mpLimit = strategy === "conserve" ? Math.max(4,Math.floor(maxMp * .12)) : Infinity;
     const damageSkill = bestDamageSkill(ally,b.enemy,mpLimit);
@@ -314,6 +314,8 @@
     const b = state.battle;
     if(!b || b.lock) return;
     if(!fromAuto) stopBattleAuto();
+    // 戦闘中だけ使う互換フィールド。手動防御は制限せず、自動防御の連続選択だけを防ぐ。
+    b.lastActionWasAutoGuard = fromAuto && kind === "guard";
     const a = active();
     const e = b.enemy;
 

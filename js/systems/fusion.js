@@ -232,9 +232,18 @@
   }
 
   function inheritedBonus(a,b){
+    const neutralStats = parent=>S.stats(Object.assign({},parent,{
+      bonus:{hp:0,mp:0,atk:0,def:0,spd:0,wis:0},
+      equip:null,
+      personality:"balanced",
+      mutation:false,
+      mutationTitle:null
+    }));
+    const aStats = neutralStats(a);
+    const bStats = neutralStats(b);
     const bonus = {hp:0,mp:0,atk:0,def:0,spd:0,wis:0};
     ["hp","mp","atk","def","spd","wis"].forEach(k=>{
-      bonus[k] = Math.floor((S.stats(a)[k] + S.stats(b)[k]) * .055);
+      bonus[k] = Math.floor((aStats[k] + bStats[k]) * .055);
     });
     return bonus;
   }
@@ -836,8 +845,8 @@
     };
     if(Math.random() < .18) inherited.personality = S.randomPersonality();
 
-    if(a.equip) S.addItem(a.equip,1);
-    if(b.equip) S.addItem(b.equip,1);
+    if(a.equip) S.returnItem(a.equip,1);
+    if(b.equip) S.returnItem(b.equip,1);
 
     S.removeMonster(a.uid);
     S.removeMonster(b.uid);

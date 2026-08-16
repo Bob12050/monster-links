@@ -1,3 +1,16 @@
+v8.6-A.58 Priority balance integrity fixes
+GAME_VERSION to 8.6-A.58
+
+Main changes:
+- Fixed fusion inheritance so equipment, personality, mutation, and prior inherited bonuses cannot be counted again.
+- Returned equipment to the bag without inflating item-acquisition records during unequip, replacement, or fusion.
+- Changed scout-charm quest rewards from inventory overwrite to additive grants.
+- Prevented auto battle from selecting guard twice in a row while keeping manual guard unchanged.
+- Kept save schema, save keys, content IDs, recipes, reward tables, and stage parameters unchanged.
+- Added a paired 300-campaign comparison against v8.6-A.57 and updated the PWA/cache version.
+- The audit's bounded bot completion stayed effectively flat at 36.0% to 36.3%, while campaigns with five-or-more consecutive guards fell from 9% to 0%; other stalls remain open.
+---
+
 v8.6-A.57 Bright atlas UI unification
 GAME_VERSION to 8.6-A.57
 

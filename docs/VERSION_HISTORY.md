@@ -1,5 +1,15 @@
 # Version History
 
+## v8.6-A.58 Priority balance integrity fixes
+
+- Fixed fusion inheritance so equipment, personality, mutation, and previous inherited bonuses do not compound into the next generation.
+- Separated item returns from item acquisition, preventing equipment swaps, unequips, and fusion returns from inflating records.
+- Made scout-charm quest rewards additive instead of replacing the existing stock.
+- Limited automatic guard to one consecutive turn while preserving unrestricted manual guard.
+- Preserved save schema 1, save keys, monster/stage/item/quest IDs, recipes, reward tables, and stage parameters.
+- Added a paired 300-campaign audit against v8.6-A.57 and updated PWA/cache version to v8.6-A.58.
+- Bounded bot completion stayed effectively flat at 36.0% to 36.3%, while campaigns with five-or-more consecutive guards fell from 9% to 0%; other stalls remain open.
+
 ## v8.6-A.57 Bright atlas UI unification
 
 - Unified Adventure, Monsters, Fusion, Menu, Quest, Shop, Dex, Arena, Settings, Help, Battle, and Result with the HOME atlas design language.

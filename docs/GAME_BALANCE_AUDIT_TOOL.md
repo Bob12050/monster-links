@@ -6,9 +6,26 @@
 
 ## 実行
 
+優先修正の専用回帰試験は単独でも実行できます。通常モードは人が読む5/5結果、`--json` は監査へ埋め込める決定的なレシートを返します。
+
+```text
+node tools/priority-fixes-test.mjs
+node tools/priority-fixes-test.mjs --json
+```
+
+JSONレシートにはschema/test version、GAME_VERSION、本体source hash、成功/失敗件数、5件の固定test idとstatusを保存し、時刻や絶対パスは含めません。キャンペーン監査はシミュレーション開始前にこのJSON試験を自動実行し、5/5成功・GAME_VERSION・source hash一致を検証します。いずれかが不一致なら監査を中止し、解消済み指摘を出力しません。
+
 ```text
 node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --verify-determinism
 ```
+
+修正版を同一条件の既存監査と比較する場合は、baseline監査フォルダを指定します。
+
+```text
+node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --verify-determinism --baseline=docs/audits/v8.6-A.57-campaign-300 --out=docs/audits/v8.6-A.58-campaign-300
+```
+
+`--baseline` はbaseline側の `runs`、`seed`、方針の並び、1周戦闘上限、1戦ターン上限、ボス敗北上限が現行実行と完全一致することを検証します。さらにcampaignのrun/profile/seedと、地域明細のrun/profile/stageを1対1で照合し、不一致時は実行を停止します。
 
 既定では300周を次の3方針へ交互に割り当てます。
 
@@ -27,7 +44,8 @@ node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --ver
 --max-battles=1000
 --max-turns=400
 --max-boss-losses=80
---out=docs/audits/v8.6-A.57-campaign-300
+--out=docs/audits/v8.6-A.58-campaign-300
+--baseline=docs/audits/v8.6-A.57-campaign-300
 --verify-determinism
 --quiet
 ```
@@ -45,17 +63,22 @@ node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --ver
 - `campaign-stage-runs.csv`: 周回×地域の明細
 - `stage-metrics.csv`: 地域別集計
 - `findings.csv`: 優先度付き問題一覧
+- `priority-fixes-verification.json`: 監査前に実行した優先修正5件の機械可読回帰レシート
+- `baseline-comparison.csv`: baseline/current全体指標と完走状態のpaired遷移（`--baseline` 指定時）
+- `profile-comparison.csv`: 方針別のbaseline/current完走率・戦闘数（`--baseline` 指定時）
+- `focus-stage-comparison.csv`: 星晶の塔・虹晶聖域・深海神殿・天空遺跡の版比較（`--baseline` 指定時）
+- `focus-stage-chart.csv`: 重点4地域チャートのbaseline/current long形式（`--baseline` 指定時）
 - `artifact.json`: ポータブルHTMLレポートの正規入力
 - `report.html`: リリース時に `artifact.json` から生成する単一の閲覧用レポート
 - `report-verification.json`: HTMLの検証結果（表示幅、チャート、ソース操作）
 - `queries/*.sql`: レポートの各CSV投影を再現するソース表示用クエリ
 
-CSVはExcel等で再分析でき、JSONにはgame version、Git revision、本体ソースhash、run signatureを保存します。
+CSVはExcel等で再分析でき、JSONにはgame version、Git revision、本体ソースhash、run signatureと回帰レシートを保存します。`audit-summary.json` と `artifact.json` にも同じレシートを埋め込みます。
 
 閲覧用レポートの再生成:
 
 ```text
-node tools/build-campaign-audit-report.mjs --input docs/audits/v8.6-A.57-campaign-300/artifact.json --output docs/audits/v8.6-A.57-campaign-300/report.html
+node tools/build-campaign-audit-report.mjs --input docs/audits/v8.6-A.58-campaign-300/artifact.json --output docs/audits/v8.6-A.58-campaign-300/report.html
 ```
 
 このビルダーはCodexのData Analyticsポータブルレポート基盤を使用し、PC 1440pxとスマホ390pxの表示・ソース表示操作を検証してから出力を確定します。
@@ -63,15 +86,23 @@ node tools/build-campaign-audit-report.mjs --input docs/audits/v8.6-A.57-campaig
 ## 読み方
 
 - 監査上限は既定で1周1,000戦、1戦400ターン、各ボス敗北80回です。上限到達は未完走として停止理由を記録します。
-- 「完走率」は実ユーザーの完走率ではなく、明示したボット方針の監査上限内完走率です。Wilson 95%信頼区間を付け、300周全体で50%付近の最大誤差は約±5.7ptです。
+- 「完走率」は実ユーザーの完走率ではなく、明示したボット方針の監査上限内完走率です。Wilson 95%信頼区間を付け、300周全体で50%付近の最大誤差は約±5.7ptです。この区間は固定ボット方針のseed間変動であり、実ユーザー母集団へ外挿する区間ではありません。
+- プロジェクトの目標完走率は未定義です。監査上限内完走率を任意の90%基準などに対する合否として扱わず、目標プレイ時間・許容戦闘数・方針別目標を定義してから評価します。
 - 方針別は約100周なので最大誤差は約±9.8ptです。8pt未満の小差を断定材料にしません。
 - `avg_extra_normal_wins` はボス解放条件を超えて必要になった追加通常勝利です。
 - `guard_loop_battle_rate` は連続防御5回以上の戦闘比率です。
+- `guard_loop_battle_rate` が0でも、別原因のターン上限停止などは残り得ます。版比較では連続防御ループ周回率と `stalled_campaigns` を別々に表示します。
 - 50/100ターン超、戦闘数上限、ターン上限、ボス敗北上限は進行停止候補として記録します。ターン上限へ達した戦闘も1戦・全ターンとして集計します。
-- 修正案比較は必ず同じ300 seedを使い、1変数ずつpairedで比較します。
+- 比較の「paired」は同じ方針・run番号・初期seedの組を指します。修正により乱数呼び出し回数が変わるため、後続の個々の乱数事象まで共通化する比較ではありません。
+- `--baseline` の完走遷移は1対1 pairedです。未完走→完走と完走→未完走のdiscordant pairに、exact two-sided McNemar検定（帰無仮説は両方向が同確率）を適用します。p値が高い小差は、集計完走率改善の証拠とは解釈しません。重点地域の集計平均は各版でその地域へ到達した周回が分母なので、到達数と両版到達組の差分も併読します。
+- ボス指摘は、到達後突破率95%未満かつ初回成功/平均挑戦回数の閾値を満たす上位3地域をHIGHの進行壁、突破率95%以上でも平均8回超の地域をMEDIUMの再挑戦負荷として分けます。平均挑戦回数最大と未突破周回数最大も別指標として記述します。
+- 複数修正をまとめて実行した比較は版全体の効果であり、各修正の個別因果効果を分離しません。個別効果が必要な場合は1変数ずつ別の出力先で再実行します。
+- 配合継承・笛在庫・取得記録のようにボット内で発生頻度が低い仕様修正は、300周の差だけでなく専用回帰試験を主証拠にします。
 
 ## 実装上の境界
 
-プレイヤーの「どの仲間を編成するか」「いつスカウトするか」は方針モデルです。一方、戦闘と状態変化は `tools/lib/headless-game-runtime.mjs` が本体IIFEを読み込み、公開APIを直接動かします。
+プレイヤーの「どの仲間を編成するか」「いつスカウトするか」は方針モデルです。一方、戦闘と状態変化は `tools/lib/headless-game-runtime.mjs` が本体IIFEを読み込み、公開APIを直接動かします。方針ドライバの行動は `Game.act(..., fromAuto=true)` として実行し、本番の自動専用状態（自動防御の連続制限を含む）を共有します。手動防御は監査対象外で、制限しません。
+
+自動防御の2手連続禁止は、防御と攻撃を交互に選ぶ状態や別原因の停止戦まで解消する保証ではありません。配合継承から装備由来の過剰値を除く変更は、収集・配合方針の短期成績を下げる可能性もあります。レポートは完走率だけでなく、停止戦・P90戦闘数・方針差を併記します。
 
 このツールはゲームデータ、セーブ、PWA、バランス値を変更しません。監査結果から修正を実装する場合は、別の変更として同じseedを再実行してください。
