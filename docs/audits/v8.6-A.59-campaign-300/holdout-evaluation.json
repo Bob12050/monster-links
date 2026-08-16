@@ -1,0 +1,298 @@
+{
+  "schema": "monster-links.sky-balance-experiment-evaluation",
+  "schemaVersion": 1,
+  "toolVersion": "1.0.0",
+  "generatedAt": "2026-08-16T22:36:11.848Z",
+  "phase": "holdout",
+  "passed": true,
+  "decision": "confirmed-for-release",
+  "baseline": {
+    "path": "docs/audits/v8.6-A.58-holdout-seed85900-campaign-300",
+    "gameVersion": "8.6-A.58",
+    "gitRevision": "28c4de96452ad6d3aac55a17b375a46613bab110",
+    "sourceHash": "78cf4bf1dca27ad779f2917f33fc2336f24e1ca106db9f9a0f299c578a971b77",
+    "runSignature": "ab9363c83dde72a6fa02446d81c5c0b7ce7d533682a7bf920f1f7027cddc92c2",
+    "scenario": {
+      "schemaVersion": 1,
+      "id": "sky_ruins-boss-boost",
+      "label": "8.6-A.58 対照 HP+45%",
+      "mode": "explicit_control",
+      "simulationOnly": true,
+      "hash": "b686d6019b0ce4ad854628bb934eb3157a4707ff7b8b8279b2ef7e9d30ddc695",
+      "identity": {
+        "schemaVersion": 1,
+        "stageId": "sky_ruins",
+        "bossId": "zenithdragon",
+        "effectiveBossBoost": {
+          "hp": 0.45,
+          "mp": 0.2,
+          "atk": 0.12,
+          "def": 0.12,
+          "wis": 0.12
+        }
+      },
+      "target": {
+        "stageId": "sky_ruins",
+        "bossId": "zenithdragon"
+      },
+      "requested": {
+        "option": "--sky-boss-hp-boost",
+        "value": "control"
+      },
+      "before": {
+        "bossBoost": {
+          "hp": 0.45,
+          "mp": 0.2,
+          "atk": 0.12,
+          "def": 0.12,
+          "wis": 0.12
+        }
+      },
+      "effective": {
+        "bossBoost": {
+          "hp": 0.45,
+          "mp": 0.2,
+          "atk": 0.12,
+          "def": 0.12,
+          "wis": 0.12
+        }
+      },
+      "changedPaths": []
+    }
+  },
+  "candidate": {
+    "path": "docs/audits/v8.6-A.59-campaign-300",
+    "gameVersion": "8.6-A.59",
+    "gitRevision": "46e7981aac62184a505ad6dfca06b4dfdf7353b3",
+    "sourceHash": "d9ba94bb486965ec7ef1d81aae6a6dafb22795c63808feff78133a6719d61338",
+    "runSignature": "d63bc81d13292b9e3981cbb35440ae65305a4c9fba39114afba6b61364d4a03d",
+    "scenario": {
+      "schemaVersion": 1,
+      "id": "sky_ruins-boss-boost",
+      "label": "8.6-A.59 公開値",
+      "mode": "production_runtime",
+      "simulationOnly": false,
+      "hash": "7123d08e6116afecd2ed589da01d0d972c6d41eaa7c95c1d41774cf65724cd5e",
+      "identity": {
+        "schemaVersion": 1,
+        "stageId": "sky_ruins",
+        "bossId": "zenithdragon",
+        "effectiveBossBoost": {
+          "hp": 0.2,
+          "mp": 0.2,
+          "atk": 0.12,
+          "def": 0.12,
+          "wis": 0.12
+        }
+      },
+      "target": {
+        "stageId": "sky_ruins",
+        "bossId": "zenithdragon"
+      },
+      "requested": null,
+      "before": {
+        "bossBoost": {
+          "hp": 0.2,
+          "mp": 0.2,
+          "atk": 0.12,
+          "def": 0.12,
+          "wis": 0.12
+        }
+      },
+      "effective": {
+        "bossBoost": {
+          "hp": 0.2,
+          "mp": 0.2,
+          "atk": 0.12,
+          "def": 0.12,
+          "wis": 0.12
+        }
+      },
+      "changedPaths": []
+    }
+  },
+  "pairing": {
+    "campaignPairs": 300,
+    "eligibleSkyPairs": 159,
+    "missingReached": [],
+    "extraReached": [],
+    "bootstrapIterations": 20000,
+    "bootstrapMethod": "profile-stratified paired percentile bootstrap",
+    "bootstrapSeeds": [
+      "sky-clear-rate-delta",
+      "sky-capped-load-delta",
+      "sky-stage-p90-delta"
+    ],
+    "seeded": true
+  },
+  "metrics": {
+    "overall": {
+      "eligible": 159,
+      "baselineCleared": 99,
+      "candidateCleared": 123,
+      "clearRateBaseline": 0.6226415094339622,
+      "clearRateCandidate": 0.7735849056603774,
+      "clearRateDelta": 0.1509433962264151,
+      "failedToCleared": 24,
+      "clearedToFailed": 0,
+      "firstTryBaseline": 15,
+      "firstTryCandidate": 28,
+      "firstTryRateBaseline": 0.09433962264150944,
+      "firstTryRateCandidate": 0.1761006289308176,
+      "meanCappedLoadBaseline": 44.100628930817614,
+      "meanCappedLoadCandidate": 28.59748427672956,
+      "meanCappedLoadDelta": -15.50314465408805,
+      "stallsBaseline": 12,
+      "stallsCandidate": 10,
+      "newStalls": 0,
+      "resolvedStalls": 2,
+      "stageBattlesP90Baseline": 250,
+      "stageBattlesP90Candidate": 247,
+      "capRateBaseline": 0.37735849056603776,
+      "capRateCandidate": 0.23270440251572327
+    },
+    "profiles": [
+      {
+        "profile": "balanced",
+        "eligible": 83,
+        "baselineCleared": 48,
+        "candidateCleared": 64,
+        "clearRateBaseline": 0.5783132530120482,
+        "clearRateCandidate": 0.7710843373493976,
+        "clearRateDelta": 0.1927710843373494,
+        "failedToCleared": 16,
+        "clearedToFailed": 0,
+        "firstTryBaseline": 7,
+        "firstTryCandidate": 13,
+        "firstTryRateBaseline": 0.08433734939759036,
+        "firstTryRateCandidate": 0.1566265060240964,
+        "meanCappedLoadBaseline": 48.28915662650602,
+        "meanCappedLoadCandidate": 32.66265060240964,
+        "meanCappedLoadDelta": -15.626506024096386,
+        "stallsBaseline": 3,
+        "stallsCandidate": 2,
+        "newStalls": 0,
+        "resolvedStalls": 1,
+        "stageBattlesP90Baseline": 248,
+        "stageBattlesP90Candidate": 247,
+        "capRateBaseline": 0.42168674698795183,
+        "capRateCandidate": 0.24096385542168675
+      },
+      {
+        "profile": "collector",
+        "eligible": 76,
+        "baselineCleared": 51,
+        "candidateCleared": 59,
+        "clearRateBaseline": 0.6710526315789473,
+        "clearRateCandidate": 0.7763157894736842,
+        "clearRateDelta": 0.10526315789473684,
+        "failedToCleared": 8,
+        "clearedToFailed": 0,
+        "firstTryBaseline": 8,
+        "firstTryCandidate": 15,
+        "firstTryRateBaseline": 0.10526315789473684,
+        "firstTryRateCandidate": 0.19736842105263158,
+        "meanCappedLoadBaseline": 39.526315789473685,
+        "meanCappedLoadCandidate": 24.157894736842106,
+        "meanCappedLoadDelta": -15.368421052631579,
+        "stallsBaseline": 9,
+        "stallsCandidate": 8,
+        "newStalls": 0,
+        "resolvedStalls": 1,
+        "stageBattlesP90Baseline": 301.5,
+        "stageBattlesP90Candidate": 178,
+        "capRateBaseline": 0.32894736842105265,
+        "capRateCandidate": 0.2236842105263158
+      }
+    ],
+    "intervals": {
+      "clearRateDelta": {
+        "low": 0.09434,
+        "high": 0.207547
+      },
+      "meanCappedLoadDelta": {
+        "low": -18.773585,
+        "high": -12.345912
+      },
+      "stageBattlesP90Delta": {
+        "low": -61.8,
+        "high": -1
+      }
+    },
+    "transitions": {
+      "failedToCleared": 24,
+      "clearedToFailed": 0,
+      "exactTwoSidedMcNemarP": 1.1920928955078125e-7
+    },
+    "campaign": {
+      "completionRateBaseline": 0.33,
+      "completionRateCandidate": 0.41,
+      "p90BattlesBaseline": 980.3,
+      "p90BattlesCandidate": 964,
+      "stalledCampaignsBaseline": 18,
+      "stalledCampaignsCandidate": 16
+    }
+  },
+  "gates": [
+    {
+      "id": "validation",
+      "passed": true,
+      "detail": "Both audits passed simulation, determinism, and priority 5/5 checks."
+    },
+    {
+      "id": "reach-cohort",
+      "passed": true,
+      "detail": "missing=0, extra=0"
+    },
+    {
+      "id": "clear-effect",
+      "passed": true,
+      "detail": "delta=15.09pt, bootstrap95%=[9.43, 20.75]pt"
+    },
+    {
+      "id": "final-boss-envelope",
+      "passed": true,
+      "detail": "clear=77.36% (max 85%), firstTry=17.61% (max 20%)"
+    },
+    {
+      "id": "capped-load",
+      "passed": true,
+      "detail": "delta=-15.5, bootstrap95%=[-18.77, -12.35]"
+    },
+    {
+      "id": "sky-stalls",
+      "passed": true,
+      "detail": "overall 12->10; balanced 3->2, collector 9->8"
+    },
+    {
+      "id": "sky-p90",
+      "passed": true,
+      "detail": "250->247"
+    },
+    {
+      "id": "campaign-p90",
+      "passed": true,
+      "detail": "980.3->964"
+    },
+    {
+      "id": "campaign-stalls",
+      "passed": true,
+      "detail": "18->16"
+    },
+    {
+      "id": "profile-clear-noninferiority",
+      "passed": true,
+      "detail": "balanced 48->64, collector 51->59"
+    },
+    {
+      "id": "automated-guard",
+      "passed": true,
+      "detail": "campaign rate 0->0"
+    }
+  ],
+  "caveats": [
+    "This evaluates seeded bot campaigns under audit caps, not real-user completion probability.",
+    "The 75% sky clear rate is a provisional effect-size target, not a user-validated difficulty target.",
+    "This receipt is the separately seeded paired confirmation; production telemetry remains outside scope."
+  ]
+}

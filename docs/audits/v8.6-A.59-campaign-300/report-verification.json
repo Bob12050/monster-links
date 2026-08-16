@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "html": "docs/audits/v8.6-A.59-campaign-300/report.html",
+  "stages": {
+    "validation": "passed",
+    "package": "passed",
+    "verification": "passed"
+  },
+  "counts": {
+    "blocks": 21,
+    "charts": 3,
+    "html": 0,
+    "metrics": 1,
+    "tables": 0
+  },
+  "sourceDialog": "passed",
+  "sourceInteraction": "keyboard_menu_semantic_click",
+  "viewports": [
+    1440,
+    390
+  ],
+  "timings": {
+    "validateAndPackageMs": 3206.5,
+    "staticChartExtractionMs": 3101.5,
+    "browserRunMs": 2123,
+    "readerReadyMs": 313.6,
+    "contentChecksMs": 32,
+    "sourceDialogMs": 32,
+    "responsiveChecksMs": 31.9,
+    "verificationMs": 2147,
+    "totalMs": 5372.3
+  }
+}

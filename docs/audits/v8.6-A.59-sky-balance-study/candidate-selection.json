@@ -1,0 +1,65 @@
+{
+  "schema": "monster-links.sky-balance-candidate-selection",
+  "schemaVersion": 1,
+  "targetRelease": "8.6-A.59",
+  "status": "confirmed-for-release",
+  "selectedCandidate": {
+    "id": "hp-020",
+    "stageId": "sky_ruins",
+    "bossId": "zenithdragon",
+    "changedField": "boss.boost.hp",
+    "controlValue": 0.45,
+    "selectedValue": 0.2,
+    "effectiveBoost": {
+      "hp": 0.2,
+      "mp": 0.2,
+      "atk": 0.12,
+      "def": 0.12,
+      "wis": 0.12
+    },
+    "scenarioHash": "7123d08e6116afecd2ed589da01d0d972c6d41eaa7c95c1d41774cf65724cd5e"
+  },
+  "revisions": {
+    "experimentToolCommit": "28c4de96452ad6d3aac55a17b375a46613bab110",
+    "productionRuntimeCommit": "46e7981aac62184a505ad6dfca06b4dfdf7353b3"
+  },
+  "commonLimits": {
+    "runs": 300,
+    "maxBattles": 1000,
+    "maxTurnsPerBattle": 400,
+    "maxBossLossesPerBoss": 80,
+    "profiles": ["rush", "balanced", "collector"]
+  },
+  "discovery": {
+    "seed": 85700,
+    "controlResultSignature": "c13d4ee482c7e14f65b03d4bee06d76910be5bc91dae5211f2ae552909906a53",
+    "arms": [
+      {"id":"hp-035","value":0.35,"passed":false,"reason":"fixed-cohort clear delta was 3.59pt, below the preregistered 10pt effect gate"},
+      {"id":"hp-025","value":0.25,"passed":false,"reason":"fixed-cohort clear delta was 8.38pt, below the preregistered 10pt effect gate"},
+      {"id":"hp-020","value":0.2,"passed":true,"reason":"all 11 discovery gates passed; fixed-cohort clear delta was 10.18pt"}
+    ]
+  },
+  "holdout": {
+    "seed": 85900,
+    "baselinePath": "docs/audits/v8.6-A.58-holdout-seed85900-campaign-300",
+    "candidatePath": "docs/audits/v8.6-A.59-campaign-300",
+    "evaluationPath": "docs/audits/v8.6-A.59-campaign-300/holdout-evaluation.json",
+    "passed": true,
+    "decision": "confirmed-for-release",
+    "fixedSkyCohort": 159,
+    "clearRateDelta": 0.1509433962264151,
+    "clearRateDeltaBootstrap95": [0.09434, 0.207547],
+    "meanCappedLoadDelta": -15.50314465408805,
+    "meanCappedLoadDeltaBootstrap95": [-18.773585, -12.345912]
+  },
+  "guardrails": {
+    "maxCandidateSkyClearRate": 0.85,
+    "maxCandidateFirstTryRate": 0.2,
+    "noSkyStallIncrease": true,
+    "noSkyP90Increase": true,
+    "noCampaignP90Increase": true,
+    "noProfileClearRegression": true,
+    "noAutomatedGuardRegression": true
+  },
+  "caveat": "These are capped seeded bot campaigns, not an estimate of real-user completion probability."
+}

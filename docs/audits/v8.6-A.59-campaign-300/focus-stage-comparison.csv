@@ -1,0 +1,5 @@
+stage_id,stage_name,pair_count,pairs_both_reached,baseline_campaigns_reached,current_campaigns_reached,baseline_stage_clears,current_stage_clears,failed_to_cleared,cleared_to_failed,baseline_avg_boss_attempts,current_avg_boss_attempts,avg_boss_attempts_delta,paired_avg_boss_attempts_delta,baseline_first_try_rate,current_first_try_rate,first_try_rate_delta,baseline_avg_extra_normal_wins,current_avg_extra_normal_wins,avg_extra_normal_wins_delta,paired_avg_extra_normal_wins_delta,baseline_avg_boss_turns,current_avg_boss_turns,avg_boss_turns_delta
+tower,星晶の塔,300,300,300,300,259,259,0,0,29.93,29.93,0,0,0.0033333333333333335,0.0033333333333333335,0,39.34,39.34,0,0,5.46,5.46,0
+prism_sanctuary,虹晶聖域,300,222,222,222,194,194,0,0,43.25,43.25,0,0,0,0,0,91.86,91.86,0,0,6.78,6.78,0
+deep_sea_temple,深海神殿,300,193,193,193,189,189,0,0,38.22,38.22,0,0,0.0051813471502590676,0.0051813471502590676,0,90.98,90.98,0,0,57.42,57.42,0
+sky_ruins,天空遺跡,300,159,159,159,99,123,24,0,36.99,22.78,-14.21,-14.21,0.09433962264150944,0.1761006289308176,0.08176100628930816,85.64,50.58,-35.06,-35.06,201.27,204.15,2.8799999999999955
