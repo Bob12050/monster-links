@@ -1,0 +1,9 @@
+stage_id,stage_name,version_label,comparison_order,campaigns_reached,stage_clears,avg_boss_attempts,first_try_rate,avg_extra_normal_wins,avg_boss_turns
+tower,星晶の塔,8.6-A.57,0,300,261,29.47,0,37.81,5.28
+tower,星晶の塔,8.6-A.58,1,300,261,29.64,0,38.26,5.23
+prism_sanctuary,虹晶聖域,8.6-A.57,0,220,195,43.23,0,92.37,6.96
+prism_sanctuary,虹晶聖域,8.6-A.58,1,220,196,42.99,0,92.55,6.94
+deep_sea_temple,深海神殿,8.6-A.57,0,194,193,36.3,0.015463917525773196,86.19,50.17
+deep_sea_temple,深海神殿,8.6-A.58,1,196,193,38.77,0,91.78,51.55
+sky_ruins,天空遺跡,8.6-A.57,0,168,108,39.56,0.06547619047619048,94.71,188.8
+sky_ruins,天空遺跡,8.6-A.58,1,167,109,39.6,0.023952095808383235,90.98,192.13

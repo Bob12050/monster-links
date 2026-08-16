@@ -1,0 +1,3 @@
+-- Portable report projection for findings.csv.
+-- Canonical simulation is tools/campaign-audit.mjs; this query exposes its reviewed CSV snapshot.
+SELECT * FROM read_csv_auto('docs/audits/v8.6-A.58-campaign-300/findings.csv', header = true);
