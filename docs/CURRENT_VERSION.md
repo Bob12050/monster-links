@@ -1,3 +1,14 @@
+v8.6-A.57 Bright atlas UI unification
+GAME_VERSION to 8.6-A.57
+
+Main changes:
+- Extended the bright HOME atlas design system to Adventure, Monsters, Fusion, Menu, and every supporting game view.
+- Added a shared paper HUD, cobalt context ribbon, bright bottom dock, ivory cards, and semantic coral/gold/green actions without changing screen contracts.
+- Restyled Battle and Result panels while preserving their dedicated no-dock lifecycle and existing commands.
+- Kept save schema, save keys, view/content IDs, progression, battle logic, recipes, rewards, and balance unchanged.
+- Verified responsive layouts, core interactions, PWA cache/version synchronization, and the full validator.
+---
+
 v8.6-A.56 Adventure gateway TITLE
 GAME_VERSION to 8.6-A.56
 

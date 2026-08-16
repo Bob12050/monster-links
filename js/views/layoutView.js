@@ -38,7 +38,7 @@
         <span><b>モンスターリンクス</b><small>MONSTER LINKS</small></span>
       </button>
 
-      <button class="hudRankV821" onclick="Game.openPlayerRankRewards()" aria-label="冒険者ランクと報酬">
+      <button class="hudRankV821" onclick="Game.openPlayerRankRewards()" aria-label="冒険者ランク ${pr.rank}。ランク報酬へ">
         <span class="hudAvatarV821">${lead ? V.monsterInline(lead,"hudAvatarMonsterV821") : ico("monster")}</span>
         <span class="hudRankTextV821"><small>RANK</small><b>${pr.rank}</b></span>
         <span class="hudExpV821">
@@ -49,13 +49,13 @@
       </button>
 
       <div class="hudResourcesV821">
-        <button onclick="Game.setView('shop')" aria-label="所持金とショップ">
+        <button onclick="Game.setView('shop')" aria-label="所持ゴールド ${state.gold}。ショップへ">
           <span class="hudResourceIconV821 gold">${ico("coin")}</span>
-          <b>${state.gold}</b>
+          <span class="atlasHudResourceCopyV857"><small>ゴールド</small><b>${state.gold}</b></span>
         </button>
-        <button onclick="Game.setView('monsters')" aria-label="パーティ編成">
+        <button onclick="Game.setView('monsters')" aria-label="パーティ ${S.partySizeText ? S.partySizeText() : `${state.party.length}/3`}。編成へ">
           <span class="hudResourceIconV821 party">${ico("monster")}</span>
-          <b>${S.partySizeText ? S.partySizeText() : `${state.party.length}/3`}</b>
+          <span class="atlasHudResourceCopyV857"><small>パーティ</small><b>${S.partySizeText ? S.partySizeText() : `${state.party.length}/3`}</b></span>
         </button>
       </div>
 

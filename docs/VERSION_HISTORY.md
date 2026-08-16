@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.57 Bright atlas UI unification
+
+- Unified Adventure, Monsters, Fusion, Menu, Quest, Shop, Dex, Arena, Settings, Help, Battle, and Result with the HOME atlas design language.
+- Added a shared paper HUD, cobalt page ribbon, bright bottom dock, ivory surfaces, and semantic action colors while reusing production assets.
+- Preserved all view IDs, callbacks, direct-main layout, battle/reward navigation contract, save compatibility, content IDs, progression, recipes, rewards, and balance.
+- Verified 320 x 568, 360 x 667, 390 x 844, 430 x 932, 768 x 1024, and 1024 x 768 layouts, core interactions, console output, and the full validator.
+- Updated PWA/cache version to v8.6-A.57.
+
 ## v8.6-A.56 Adventure gateway TITLE
 
 - Rebuilt the title screen as a bright adventure gateway based on the selected concept.
