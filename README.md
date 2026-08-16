@@ -1,6 +1,16 @@
-# Monster Links v8.6-A.57
+# Monster Links v8.6-A.58
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.58 update
+
+- Fixed fusion inheritance so temporary stat modifiers and previous inherited bonuses cannot compound into the next generation.
+- Prevented equipment returns from inflating item-acquisition records.
+- Made scout-charm quest rewards additive and stopped automatic guard from repeating forever.
+- Kept save schema, content IDs, recipes, reward tables, and stage parameters unchanged.
+- Added a paired 300-campaign comparison against v8.6-A.57.
+- The bounded bot completion result stayed effectively flat at 36.0% to 36.3%, while campaigns with five-or-more consecutive guards fell from 9% to 0%; other stalls remain a separate issue.
+- Updated PWA/cache version to v8.6-A.58.
 
 ## v8.6-A.57 update
 
@@ -110,7 +120,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.57 Bright atlas UI unification
+v8.6-A.58 Priority balance integrity fixes
 ```
 
 ## v8.6-A.49 update
@@ -706,4 +716,4 @@ node tools/campaign-audit.mjs --runs=300 --seed=85700 --max-boss-losses=80 --ver
 
 `campaign-audit.mjs` は新規セーブから天空遺跡までを300周し、本体の戦闘・報酬・スカウト・成長・配合APIを使って監査上限内完走率、地域別難易度、育成周回、経済、自動戦闘の長期化、仕様矛盾を記録します。詳しい方法と出力は [300周キャンペーン監査ツール](docs/GAME_BALANCE_AUDIT_TOOL.md) を参照してください。
 
-v8.6-A.57をseed 85700で実行した結果は [300周キャンペーン監査レポート](docs/audits/v8.6-A.57-campaign-300/report.html) で確認できます。
+v8.6-A.58をseed 85700で実行し、v8.6-A.57と同じ300条件で比較した結果は [300周キャンペーン監査レポート](docs/audits/v8.6-A.58-campaign-300/report.html) で確認できます。比較元の [v8.6-A.57レポート](docs/audits/v8.6-A.57-campaign-300/report.html) も残しています。

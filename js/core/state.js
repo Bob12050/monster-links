@@ -817,9 +817,17 @@
   }
 
   function addItem(id,count=1){
-    if(!D.ITEMS[id] || count <= 0) return false;
-    state.bag[id] = (state.bag[id] || 0) + count;
-    state.records.items[id] = (state.records.items[id] || 0) + count;
+    const amount = Math.max(0,Math.floor(Number(count) || 0));
+    if(!D.ITEMS[id] || amount <= 0) return false;
+    state.bag[id] = (state.bag[id] || 0) + amount;
+    state.records.items[id] = (state.records.items[id] || 0) + amount;
+    return true;
+  }
+
+  function returnItem(id,count=1){
+    const amount = Math.max(0,Math.floor(Number(count) || 0));
+    if(!D.ITEMS[id] || amount <= 0) return false;
+    state.bag[id] = (state.bag[id] || 0) + amount;
     return true;
   }
 
@@ -839,7 +847,7 @@
   function equipItem(uid,itemId){
     const m = owned().find(x=>x.uid===uid);
     if(!m || !D.ITEMS[itemId] || itemCount(itemId) <= 0) return false;
-    if(m.equip) addItem(m.equip,1);
+    if(m.equip) returnItem(m.equip,1);
     removeItem(itemId,1);
     m.equip = itemId;
     fixMonster(m);
@@ -849,7 +857,7 @@
   function unequipItem(uid){
     const m = owned().find(x=>x.uid===uid);
     if(!m || !m.equip) return false;
-    addItem(m.equip,1);
+    returnItem(m.equip,1);
     m.equip = null;
     fixMonster(m);
     return true;
@@ -993,7 +1001,12 @@
     const lines = [];
     if(r.gold){state.gold += r.gold; lines.push(`${r.gold}Gを受け取った！`);}
     if(r.item){addItem(r.item,r.count || 1); lines.push(`${D.ITEMS[r.item].name} ×${r.count || 1}を受け取った！`);}
-    if(r.scoutCharm){state.scoutCharm = 1; lines.push("スカウト笛の効果が次の戦闘に付いた！");}
+    if(r.scoutCharm){
+      const configuredAmount = typeof r.scoutCharm === "number" ? r.scoutCharm : r.amount;
+      const amount = Math.max(1,Math.floor(Number(configuredAmount) || 1));
+      state.scoutCharm = Math.max(0,Math.floor(Number(state.scoutCharm) || 0)) + amount;
+      lines.push(`スカウト笛の効果を${amount}回分受け取った！`);
+    }
     if(r.exp){
       state.party.forEach(m=>lines.push(...gainExp(m,r.exp)));
       lines.push(`パーティ全員が${r.exp}EXPを受け取った！`);
@@ -1067,6 +1080,7 @@
     playerRankRewardClaimable,
     grantPlayerRankReward,
     addItem,
+    returnItem,
     removeItem,
     itemCount,
     bagEntries,
