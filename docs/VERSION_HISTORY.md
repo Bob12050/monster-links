@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.56 Adventure gateway TITLE
+
+- Rebuilt the title screen as a bright adventure gateway based on the selected concept.
+- Added a transparent gateway-pin asset with live destination art, party leader guide, and quest notice.
+- Kept the title/start lifecycle, save compatibility, content IDs, battle, recipes, rewards, and balance intact.
+- Verified responsive mobile layouts, primary interactions, PWA cache list, and the full validator.
+- Updated PWA/cache version to v8.6-A.56.
+
 ## v8.6-A.55 Bright adventure atlas HOME
 
 - Rebuilt HOME as a bright, full-height adventure atlas based on the selected concept.

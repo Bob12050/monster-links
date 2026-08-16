@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "8.6-A.55";
+const VERSION = "8.6-A.56";
 const CACHE_PREFIX = "monster-links-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const VERSION_QUERY = `v=${VERSION}`;
@@ -14,6 +14,7 @@ const CORE_FILES = [
   "./assets/images/ui/app-icon-512.png",
   "./assets/images/ui/apple-touch-icon.png",
   "./assets/images/ui/home_atlas_route_v855.png",
+  "./assets/images/ui/title_gateway_pin_v856.png",
   "./assets/images/backgrounds/base_camp_v827.jpg",
   "./assets/images/stages/meadow_v827.jpg",
   "./assets/images/stages/cave_v828.jpg",
