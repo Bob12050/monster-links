@@ -1,6 +1,14 @@
-# Monster Links v8.6-A.58
+# Monster Links v8.6-A.59
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.59 update
+
+- Reduced only the final Sky Ruins boss HP bonus from 45% to 20%; MP, attack, defense, wisdom, rewards, level, and AI are unchanged.
+- Selected the value with same-seed 300-campaign control/treatment experiments and a separately seeded 300-pair holdout.
+- Kept save schema 1, save keys, content IDs, recipes, equipment, rewards, and every earlier stage unchanged.
+- Added machine-readable scenario signatures, pre-treatment invariance checks, paired bootstrap gates, and a reusable experiment evaluator.
+- Updated PWA/cache version to v8.6-A.59.
 
 ## v8.6-A.58 update
 
@@ -120,7 +128,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.58 Priority balance integrity fixes
+v8.6-A.59 Sky Ruins boss HP tuning
 ```
 
 ## v8.6-A.49 update

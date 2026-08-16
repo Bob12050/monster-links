@@ -1,3 +1,14 @@
+v8.6-A.59 Sky Ruins boss HP tuning
+GAME_VERSION to 8.6-A.59
+
+Main changes:
+- Reduced only the Sky Ruins final boss HP bonus from 45% to 20% after three same-seed 300-campaign treatment arms.
+- Kept the final boss MP, attack, defense, wisdom, level, rewards, scout rate, and AI unchanged with a complete explicit boost object.
+- Preserved all earlier stages, save schema 1, save keys, content IDs, recipes, equipment, quest/rank rewards, and player assets.
+- Added a reproducible control/treatment campaign workflow, scenario signatures, pre-treatment invariance checks, paired bootstrap decision gates, and a distinct-seed holdout.
+- Updated PWA/cache version to v8.6-A.59.
+---
+
 v8.6-A.58 Priority balance integrity fixes
 GAME_VERSION to 8.6-A.58
 
