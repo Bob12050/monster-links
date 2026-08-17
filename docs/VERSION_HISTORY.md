@@ -1,5 +1,18 @@
 # Version History
 
+## v8.6-A.69 Responsive layout stability
+
+- Repaired host-viewport media queries that forced desktop child grids into the fixed phone-sized game canvas.
+- Kept Adventure cards, Quest sections, and Monster Camp readable at mobile, landscape, and desktop host sizes.
+- Added scroll-safe short-landscape fallbacks and widened Battle to the available landscape/desktop canvas.
+- Increased portrait Battle target sizes, preserved active-party emphasis, and prevented command controls from becoming vertically cramped.
+- Separated Battle Result detail scrolling from the persistent action rail, with a compact 2 x 2 action grid in short landscape.
+- Prevented open Quest and claimable-reward sections from collapsing and hiding their contents.
+- Removed the premature Fusion execution rail until two parents are selected and kept the initial parent CTA in view.
+- Corrected duplicate safe-area dock padding and aligned developer tools with the Atlas canvas.
+- Preserved gameplay, balance, IDs, monster/stage/recipe data, progression, save schema 1, and all save/storage keys.
+- Updated PWA/cache version to v8.6-A.69.
+
 ## v8.6-A.68 Early-game difficulty ramp
 
 - Reduced the normal-enemy level ceilings in Meadow, Cave, Brook, and Volcano from 3/6/8/12 to 1/5/7/11.

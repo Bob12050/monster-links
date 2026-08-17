@@ -457,6 +457,8 @@
       <section class="rewardBox rewardBoxV53 rewardBoxV817 rewardBoxV818 rewardBoxV823 rewardBoxV846 ${r.type}">
         <div class="rewardBurst" aria-hidden="true"></div>
 
+        <div class="rewardScrollV869">
+
         <div class="rewardHero rewardHeroV817">
           <div class="rewardBigIcon">${rewardIcon(r)}</div>
           <div>
@@ -495,6 +497,8 @@
         </div>`}
 
         ${logHtml}
+
+        </div>
 
         ${actionsHtml}
       </section>
