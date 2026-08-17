@@ -1,6 +1,17 @@
-# Monster Links v8.6-A.67
+# Monster Links v8.6-A.68
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.68 update
+
+- Rebalanced the first four areas so new saves no longer face endgame-grade boss bonuses at the start of the game.
+- Smoothed normal-enemy level ceilings from 3/6/8/12 to 1/5/7/11 while preserving enemy pools, rewards, stage gates, and boss display levels.
+- Added stage-specific boss tuning for Meadow, Cave, Brook, and Volcano; later stages and all monster base stats remain unchanged.
+- Added a one-time Volcano first-clear EXP bridge so the shorter opening does not underlevel parties entering Star Crystal Tower; boss replays keep the original EXP.
+- Scoped offense-strategy emergency healing to the Volcano boss only, leaving other strategies and battles unchanged.
+- Selected the final values with a separately seeded 300-pair holdout and all seven preregistered balance/guardrail gates passing.
+- Preserved save schema 1, every save key, content ID, recipe, monster rank, and monster art.
+- Updated PWA/cache version to v8.6-A.68.
 
 ## v8.6-A.67 update
 
@@ -203,7 +214,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.67 approved monster style reset — batch 2
+v8.6-A.68 early-game difficulty ramp
 ```
 
 ## v8.6-A.49 update

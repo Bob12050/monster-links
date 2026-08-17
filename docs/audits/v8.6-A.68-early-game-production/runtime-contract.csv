@@ -1,0 +1,5 @@
+stage_id,stage,normal_enemy_max,boss_exp,first_clear_exp_bonus,offense_emergency_heal_rate,boss_hp_boost,boss_mp_boost,boss_atk_boost,boss_def_boost,boss_wis_boost
+meadow,はじまり草原,1,115,0,0,-0.28,0.06,-0.18,-0.24,-0.18
+cave,こだま洞くつ,5,190,0,0,-0.05,0.12,-0.08,-0.12,-0.08
+brook,しずく湖畔,7,310,0,0,0.12,0.16,0,-0.03,0
+volcano,ほむら火山,11,380,2500,0.3,-0.03,0.12,-0.05,-0.08,-0.05

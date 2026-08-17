@@ -33,7 +33,7 @@ const SKY_PRE_TREATMENT_FIELDS = Object.freeze(["run","profile","stage_id","reac
 const RUSH_PRIOR_STAGE_FIELDS = Object.freeze(["run","profile","stage_index","stage_id","stage_name","req_level","boss_level","unlock_wins","reached","cleared","entry_highest_level","boss_start_highest_level","clear_highest_level","gold_at_entry","gold_at_clear"]);
 const RUSH_ENTRY_FIELDS = Object.freeze(["run","profile","stage_id","reached","entry_highest_level","gold_at_entry"]);
 
-const PROFILE_DEFS = Object.freeze([
+export const PROFILE_DEFS = Object.freeze([
   {
     id:"rush",
     label:"速攻",
@@ -716,7 +716,10 @@ function chooseAction(runtime,profile,battle,scoutTarget){
   }
   const hpRatio = ally.hp / Math.max(1,S.stats(ally).hp);
   const heal = bestHealAction(D,S,ally);
-  const configuredOffenseThreshold = Number(D.BALANCE?.autoOffenseEmergencyHealRate ?? 0);
+  const scopedOffenseThreshold = battle.isBoss ? Number(battle.stage?.boss?.offenseEmergencyHealRate) : NaN;
+  const configuredOffenseThreshold = Number.isFinite(scopedOffenseThreshold)
+    ? scopedOffenseThreshold
+    : Number(D.BALANCE?.autoOffenseEmergencyHealRate ?? 0);
   const healThreshold = profile.autoStrategy === "offense"
     ? Math.max(0,Math.min(1,Number.isFinite(configuredOffenseThreshold) ? configuredOffenseThreshold : 0))
     : profile.healThreshold;
@@ -949,7 +952,7 @@ function initialCampaignStateHash(runtime){
   return sha256(JSON.stringify({state,randomCalls:runtime.randomCalls}));
 }
 
-function simulateCampaign(runtime,options,profile,runIndex){
+export function simulateCampaign(runtime,options,profile,runIndex){
   const {D,S} = runtime;
   const seed = stableSeed(options.seed,profile.id,runIndex);
   runtime.reset(seed);
@@ -2107,4 +2110,5 @@ function main(){
   console.log(`Output: ${relativeOutput}`);
 }
 
-main();
+const isMainModule = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if(isMainModule) main();

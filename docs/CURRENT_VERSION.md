@@ -1,3 +1,16 @@
+v8.6-A.68 early-game difficulty ramp
+GAME_VERSION to 8.6-A.68
+
+Main changes:
+- Smoothed normal-enemy level ceilings across Meadow, Cave, Brook, and Volcano while preserving enemy rosters and stage gates.
+- Replaced the shared endgame-grade boss bonus with explicit stage-local tuning for the first four bosses.
+- Added a Volcano first-clear-only EXP bridge; replay EXP remains unchanged, preventing a repeat-farming exploit.
+- Scoped offense-strategy emergency recovery to the Volcano boss only.
+- Passed all seven preregistered gates in a separately seeded 300-pair holdout, including Star Crystal Tower spillover checks.
+- Preserved save schema 1, save keys, content IDs, monster data, recipes, rewards outside the one-time bridge, and every art asset.
+- Updated PWA/cache version to v8.6-A.68.
+---
+
 v8.6-A.67 approved monster style reset — batch 2
 GAME_VERSION to 8.6-A.67
 

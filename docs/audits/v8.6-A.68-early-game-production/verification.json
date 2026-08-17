@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "audit": "v8.6-A.68-early-game-production",
+  "verifiedAt": "2026-08-17T12:00:04.188Z",
+  "passed": true,
+  "checks": {
+    "campaignRows": 600,
+    "stageRows": 3000,
+    "metricRows": 36,
+    "campaignKeys": 600,
+    "stageKeys": 3000,
+    "pairedSeeds": true,
+    "strictCsv": true,
+    "metricsRecomputed": true,
+    "determinism": true,
+    "gatesPassed": "7/7"
+  },
+  "source": {
+    "summary": "summary.json",
+    "campaigns": "campaigns.csv",
+    "stages": "stage-runs.csv",
+    "metrics": "metrics.csv"
+  }
+}

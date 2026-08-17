@@ -1,0 +1,725 @@
+{
+  "surface": "report",
+  "scenario": {
+    "family": "early-game-balance",
+    "decision": "ship-A.68",
+    "controlSignature": "3593670304be2284b054fa7cc41cd56d938636c1d9a3fcc5f0cf71f0ecb54f47",
+    "productionSignature": "f52e377c83d47994056fd2b139b4d30c819d4dd4b1c51fe513e37863724b8b63"
+  },
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Monster Links 8.6-A.68 序盤難易度調整レポート",
+    "description": "A.67対照とA.68本実装を同一seedの各300周で比較した、序盤4地域の難易度調整レポート。",
+    "generatedAt": "2026-08-17T11:50:47.004Z",
+    "cards": [
+      {
+        "id": "completion_card",
+        "description": "監査上限内で序盤4地域を全て突破した割合。",
+        "dataset": "headline",
+        "sourceId": "headline_source",
+        "metrics": [
+          {
+            "label": "A.68 序盤4地域突破率",
+            "field": "production_completion",
+            "format": "percent"
+          },
+          {
+            "label": "A.67 対照",
+            "field": "control_completion",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "balanced_p90_card",
+        "description": "既定のバランス方針で、序盤4地域を終えるまでの戦闘数90パーセンタイル。",
+        "dataset": "headline",
+        "sourceId": "headline_source",
+        "metrics": [
+          {
+            "label": "バランス型 戦闘数P90",
+            "field": "balanced_p90",
+            "format": "number"
+          },
+          {
+            "label": "A.67 対照",
+            "field": "balanced_p90_control",
+            "format": "number"
+          },
+          {
+            "label": "短縮率",
+            "field": "balanced_p90_reduction",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "meadow_loss_card",
+        "description": "はじまり草原の通常戦に占める敗北数。3方針を合算。",
+        "dataset": "headline",
+        "sourceId": "headline_source",
+        "metrics": [
+          {
+            "label": "草原 通常戦敗北率",
+            "field": "meadow_loss",
+            "format": "percent"
+          },
+          {
+            "label": "A.67 対照",
+            "field": "meadow_loss_control",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "volcano_attempts_card",
+        "description": "ほむら火山に到達した周回の平均ボス挑戦回数。3方針を合算。",
+        "dataset": "headline",
+        "sourceId": "headline_source",
+        "metrics": [
+          {
+            "label": "火山 平均ボス挑戦",
+            "field": "volcano_attempts",
+            "format": "number"
+          },
+          {
+            "label": "A.67 対照",
+            "field": "volcano_attempts_control",
+            "format": "number"
+          }
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "id": "boss_attempts",
+        "title": "序盤ボスの平均挑戦回数",
+        "subtitle": "到達した周回を3方針合算。火山の再挑戦負荷を大きく抑えた。",
+        "type": "bar",
+        "dataset": "boss_attempts",
+        "sourceId": "boss_attempts_source",
+        "valueFormat": "number",
+        "palette": {
+          "roots": [
+            "gray",
+            "blue"
+          ]
+        },
+        "encodings": {
+          "x": {
+            "field": "stage",
+            "type": "nominal",
+            "label": "地域"
+          },
+          "y": {
+            "field": "avg_boss_attempts",
+            "type": "quantitative",
+            "label": "平均挑戦回数"
+          },
+          "color": {
+            "field": "scenario",
+            "type": "nominal",
+            "label": "バージョン"
+          },
+          "tooltip": [
+            {
+              "field": "scenario",
+              "type": "nominal",
+              "label": "バージョン"
+            },
+            {
+              "field": "stage",
+              "type": "nominal",
+              "label": "地域"
+            },
+            {
+              "field": "avg_boss_attempts",
+              "type": "quantitative",
+              "label": "平均挑戦回数"
+            },
+            {
+              "field": "first_try_rate",
+              "type": "quantitative",
+              "label": "初回撃破率"
+            }
+          ]
+        }
+      },
+      {
+        "id": "profile_burden",
+        "title": "方針別・序盤4地域の戦闘数P90",
+        "subtitle": "速攻・バランス・収集配合の全方針で、長い周回を短縮した。",
+        "type": "bar",
+        "dataset": "profile_burden",
+        "sourceId": "profile_source",
+        "valueFormat": "number",
+        "palette": {
+          "roots": [
+            "gray",
+            "blue"
+          ]
+        },
+        "encodings": {
+          "x": {
+            "field": "profile",
+            "type": "nominal",
+            "label": "方針"
+          },
+          "y": {
+            "field": "p90_battles",
+            "type": "quantitative",
+            "label": "戦闘数P90"
+          },
+          "color": {
+            "field": "scenario",
+            "type": "nominal",
+            "label": "バージョン"
+          },
+          "tooltip": [
+            {
+              "field": "scenario",
+              "type": "nominal",
+              "label": "バージョン"
+            },
+            {
+              "field": "profile",
+              "type": "nominal",
+              "label": "方針"
+            },
+            {
+              "field": "p90_battles",
+              "type": "quantitative",
+              "label": "戦闘数P90"
+            },
+            {
+              "field": "clear_rate",
+              "type": "quantitative",
+              "label": "序盤突破率"
+            }
+          ]
+        }
+      }
+    ],
+    "tables": [],
+    "sources": [
+      {
+        "id": "headline_source",
+        "label": "主要指標の再集計",
+        "path": "docs/audits/v8.6-A.68-early-game-production/metrics.csv"
+      },
+      {
+        "id": "boss_attempts_source",
+        "label": "地域別実行原票",
+        "path": "docs/audits/v8.6-A.68-early-game-production/stage-runs.csv"
+      },
+      {
+        "id": "profile_source",
+        "label": "方針別集計",
+        "path": "docs/audits/v8.6-A.68-early-game-production/metrics.csv"
+      },
+      {
+        "id": "runtime_source",
+        "label": "A.68実効難易度契約",
+        "path": "docs/audits/v8.6-A.68-early-game-production/runtime-contract.csv"
+      },
+      {
+        "id": "verification_source",
+        "label": "独立検証レシート",
+        "path": "docs/audits/v8.6-A.68-early-game-production/verification.json"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# Monster Links 8.6-A.68 序盤難易度調整レポート"
+      },
+      {
+        "id": "executive_summary",
+        "type": "markdown",
+        "sourceId": "headline_source",
+        "body": "## Executive Summary\n\nA.68は公開推奨です。同一seedの対照300周と本実装300周を比較し、本実装は序盤4地域を **300/300周** 突破しました。既定のバランス型では戦闘数P90を **79.4→41.0戦（48.4%短縮）**、草原の通常戦敗北率を **17.9%→4.6%**、火山ボスの平均挑戦回数を **10.22→3.72回**へ改善しました。事前登録した採用ゲートは **7/7通過**です。"
+      },
+      {
+        "id": "headline_metrics",
+        "type": "metric-strip",
+        "cardIds": [
+          "completion_card",
+          "balanced_p90_card",
+          "meadow_loss_card",
+          "volcano_attempts_card"
+        ]
+      },
+      {
+        "id": "boss_finding",
+        "type": "markdown",
+        "sourceId": "boss_attempts_source",
+        "body": "## 序盤ボスの再挑戦負荷を、地域ごとの段差へ戻した\n\n3方針を合算した平均挑戦回数は、草原 **3.75→2.03**、洞くつ **4.99→2.42**、湖畔 **3.99→2.30**、火山 **10.22→3.72**です。一方、A.68の初回撃破率は順に **8.0% / 15.3% / 30.0% / 32.3%**で、全員が一発で通る難易度にはしていません。"
+      },
+      {
+        "id": "boss_chart",
+        "type": "chart",
+        "chartId": "boss_attempts"
+      },
+      {
+        "id": "profile_finding",
+        "type": "markdown",
+        "sourceId": "profile_source",
+        "body": "## どの遊び方でも長い足止めを短縮した\n\n序盤4地域の戦闘数P90は、速攻 **121.1→56.1**、バランス **79.4→41.0**、収集・配合 **95.0→58.0**です。本実装では3方針とも100/100周が序盤4地域を突破しました。"
+      },
+      {
+        "id": "profile_chart",
+        "type": "chart",
+        "chartId": "profile_burden"
+      },
+      {
+        "id": "runtime_contract",
+        "type": "markdown",
+        "sourceId": "runtime_source",
+        "body": "## 実装した調整\n\n- 通常敵の上限Lvを草原1、洞くつ5、湖畔7、火山11へ滑らかにした。\n- 4ボスは共通の終盤向け補正をやめ、地域別のHP・攻撃・防御補正にした。\n- 火山の初回撃破時だけ追加経験値2,500を付け、再戦周回では増殖しないようにした。\n- 攻撃優先オートの緊急回復30%は火山ボス戦だけに限定し、通常戦や他ボスの判断は変えていない。\n- 敵ID、表示ボスLv、解放勝数、通常のボス報酬、配合、セーブschemaは変更していない。"
+      },
+      {
+        "id": "recommendations",
+        "type": "markdown",
+        "body": "## 推奨事項\n\n1. A.68を公開し、序盤の離脱感と再戦回数を実機で確認する。\n2. 星晶の塔以降は今回の数値と分離し、直ちに追加弱体化しない。\n3. 次の難易度変更でも1地域・1要因ずつ、同一seed対照と別seedホールドアウトを維持する。"
+      },
+      {
+        "id": "questions",
+        "type": "markdown",
+        "body": "## Further Questions\n\n- 実プレイヤーが草原・洞くつで許容する再挑戦回数は何回か。\n- 火山初回撃破後、星晶の塔へ進む前に育成・配合へ戻る割合はどれくらいか。\n- 無料全回復を前提にしない実プレイでも、同じ難易度曲線に見えるか。"
+      },
+      {
+        "id": "caveats",
+        "type": "markdown",
+        "sourceId": "verification_source",
+        "body": "## Caveats\n\nこれは実ユーザーの成功率ではなく、速攻・バランス・収集配合の固定ボット方針です。各arm 300周、1周400戦、1戦200ターン、各ボス敗北40回で打ち切り、戦闘前に無料全回復を使用しました。CSV原票600キャンペーン・3,000地域行・36集計行は独立再計算済みです。初回候補は不採用とし、その後に移行案を再事前登録して別seed 87000でホールドアウトしました。今回の波及確認は直後の星晶の塔までで、全13地域の再監査ではありません。"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-17T11:50:47.004Z",
+    "status": "ready",
+    "datasets": {
+      "headline": [
+        {
+          "production_completion": 1,
+          "control_completion": 0.9633333333333334,
+          "balanced_p90": 41,
+          "balanced_p90_control": 79.4,
+          "balanced_p90_reduction": 0.48362720403022674,
+          "meadow_loss": 0.04559748427672956,
+          "meadow_loss_control": 0.1790193842645382,
+          "volcano_attempts": 3.72,
+          "volcano_attempts_control": 10.22,
+          "gates_passed": 7,
+          "gates_total": 7
+        }
+      ],
+      "boss_attempts": [
+        {
+          "scenario": "A.67 対照",
+          "stage": "はじまり草原",
+          "stage_order": 1,
+          "reached": 300,
+          "avg_boss_attempts": 3.75,
+          "first_try_rate": 0,
+          "normal_loss_rate": 0.1790193842645382
+        },
+        {
+          "scenario": "A.67 対照",
+          "stage": "こだま洞くつ",
+          "stage_order": 2,
+          "reached": 300,
+          "avg_boss_attempts": 4.99,
+          "first_try_rate": 0,
+          "normal_loss_rate": 0.016237623762376238
+        },
+        {
+          "scenario": "A.67 対照",
+          "stage": "しずく湖畔",
+          "stage_order": 3,
+          "reached": 298,
+          "avg_boss_attempts": 3.99,
+          "first_try_rate": 0.06040268456375839,
+          "normal_loss_rate": 0
+        },
+        {
+          "scenario": "A.67 対照",
+          "stage": "ほむら火山",
+          "stage_order": 4,
+          "reached": 298,
+          "avg_boss_attempts": 10.22,
+          "first_try_rate": 0.053691275167785234,
+          "normal_loss_rate": 0.009936938658513281
+        },
+        {
+          "scenario": "A.68 本実装",
+          "stage": "はじまり草原",
+          "stage_order": 1,
+          "reached": 300,
+          "avg_boss_attempts": 2.03,
+          "first_try_rate": 0.08,
+          "normal_loss_rate": 0.04559748427672956
+        },
+        {
+          "scenario": "A.68 本実装",
+          "stage": "こだま洞くつ",
+          "stage_order": 2,
+          "reached": 300,
+          "avg_boss_attempts": 2.42,
+          "first_try_rate": 0.15333333333333332,
+          "normal_loss_rate": 0.028363636363636365
+        },
+        {
+          "scenario": "A.68 本実装",
+          "stage": "しずく湖畔",
+          "stage_order": 3,
+          "reached": 300,
+          "avg_boss_attempts": 2.3,
+          "first_try_rate": 0.3,
+          "normal_loss_rate": 0.001218026796589525
+        },
+        {
+          "scenario": "A.68 本実装",
+          "stage": "ほむら火山",
+          "stage_order": 4,
+          "reached": 300,
+          "avg_boss_attempts": 3.72,
+          "first_try_rate": 0.3233333333333333,
+          "normal_loss_rate": 0.03977039770397704
+        }
+      ],
+      "profile_burden": [
+        {
+          "scenario": "A.67 対照",
+          "profile": "速攻",
+          "profile_order": 1,
+          "p90_battles": 121.1,
+          "clear_rate": 0.89
+        },
+        {
+          "scenario": "A.67 対照",
+          "profile": "バランス",
+          "profile_order": 2,
+          "p90_battles": 79.4,
+          "clear_rate": 1
+        },
+        {
+          "scenario": "A.67 対照",
+          "profile": "収集・配合",
+          "profile_order": 3,
+          "p90_battles": 95,
+          "clear_rate": 1
+        },
+        {
+          "scenario": "A.68 本実装",
+          "profile": "速攻",
+          "profile_order": 1,
+          "p90_battles": 56.1,
+          "clear_rate": 1
+        },
+        {
+          "scenario": "A.68 本実装",
+          "profile": "バランス",
+          "profile_order": 2,
+          "p90_battles": 41,
+          "clear_rate": 1
+        },
+        {
+          "scenario": "A.68 本実装",
+          "profile": "収集・配合",
+          "profile_order": 3,
+          "p90_battles": 58,
+          "clear_rate": 1
+        }
+      ],
+      "production_detail": [
+        {
+          "profile": "速攻",
+          "stage": "はじまり草原",
+          "clear_rate": 1,
+          "first_try_rate": 0.13,
+          "avg_boss_attempts": 2.05,
+          "avg_extra_normal_wins": 1.05,
+          "normal_loss_rate": 0.06153846153846154,
+          "p90_total_battles": 7
+        },
+        {
+          "profile": "速攻",
+          "stage": "こだま洞くつ",
+          "clear_rate": 1,
+          "first_try_rate": 0.01,
+          "avg_boss_attempts": 3.25,
+          "avg_extra_normal_wins": 2.25,
+          "normal_loss_rate": 0.07205240174672489,
+          "p90_total_battles": 9
+        },
+        {
+          "profile": "速攻",
+          "stage": "しずく湖畔",
+          "clear_rate": 1,
+          "first_try_rate": 0.24,
+          "avg_boss_attempts": 2.67,
+          "avg_extra_normal_wins": 1.67,
+          "normal_loss_rate": 0.0042643923240938165,
+          "p90_total_battles": 12
+        },
+        {
+          "profile": "速攻",
+          "stage": "ほむら火山",
+          "clear_rate": 1,
+          "first_try_rate": 0.05,
+          "avg_boss_attempts": 6.97,
+          "avg_extra_normal_wins": 5.97,
+          "normal_loss_rate": 0.01966568338249754,
+          "p90_total_battles": 33
+        },
+        {
+          "profile": "バランス",
+          "stage": "はじまり草原",
+          "clear_rate": 1,
+          "first_try_rate": 0.04,
+          "avg_boss_attempts": 2.06,
+          "avg_extra_normal_wins": 2.12,
+          "normal_loss_rate": 0.0351288056206089,
+          "p90_total_battles": 10
+        },
+        {
+          "profile": "バランス",
+          "stage": "こだま洞くつ",
+          "clear_rate": 1,
+          "first_try_rate": 0.27,
+          "avg_boss_attempts": 1.95,
+          "avg_extra_normal_wins": 1.9,
+          "normal_loss_rate": 0.012658227848101266,
+          "p90_total_battles": 11
+        },
+        {
+          "profile": "バランス",
+          "stage": "しずく湖畔",
+          "clear_rate": 1,
+          "first_try_rate": 0.37,
+          "avg_boss_attempts": 1.99,
+          "avg_extra_normal_wins": 1.98,
+          "normal_loss_rate": 0,
+          "p90_total_battles": 12
+        },
+        {
+          "profile": "バランス",
+          "stage": "ほむら火山",
+          "clear_rate": 1,
+          "first_try_rate": 0.47,
+          "avg_boss_attempts": 2.15,
+          "avg_extra_normal_wins": 2.3,
+          "normal_loss_rate": 0.02476780185758514,
+          "p90_total_battles": 16.1
+        },
+        {
+          "profile": "収集・配合",
+          "stage": "はじまり草原",
+          "clear_rate": 1,
+          "first_try_rate": 0.07,
+          "avg_boss_attempts": 1.99,
+          "avg_extra_normal_wins": 2.97,
+          "normal_loss_rate": 0.04423076923076923,
+          "p90_total_battles": 12
+        },
+        {
+          "profile": "収集・配合",
+          "stage": "こだま洞くつ",
+          "clear_rate": 1,
+          "first_try_rate": 0.18,
+          "avg_boss_attempts": 2.07,
+          "avg_extra_normal_wins": 3.21,
+          "normal_loss_rate": 0.0019157088122605363,
+          "p90_total_battles": 13
+        },
+        {
+          "profile": "収集・配合",
+          "stage": "しずく湖畔",
+          "clear_rate": 1,
+          "first_try_rate": 0.29,
+          "avg_boss_attempts": 2.25,
+          "avg_extra_normal_wins": 3.75,
+          "normal_loss_rate": 0,
+          "p90_total_battles": 21
+        },
+        {
+          "profile": "収集・配合",
+          "stage": "ほむら火山",
+          "clear_rate": 1,
+          "first_try_rate": 0.45,
+          "avg_boss_attempts": 2.05,
+          "avg_extra_normal_wins": 3.15,
+          "normal_loss_rate": 0.07860824742268041,
+          "p90_total_battles": 23
+        }
+      ],
+      "runtime_contract": [
+        {
+          "stage_id": "meadow",
+          "stage": "はじまり草原",
+          "normal_enemy_max": 1,
+          "boss_exp": 115,
+          "first_clear_exp_bonus": 0,
+          "offense_emergency_heal_rate": 0,
+          "boss_hp_boost": -0.28,
+          "boss_mp_boost": 0.06,
+          "boss_atk_boost": -0.18,
+          "boss_def_boost": -0.24,
+          "boss_wis_boost": -0.18
+        },
+        {
+          "stage_id": "cave",
+          "stage": "こだま洞くつ",
+          "normal_enemy_max": 5,
+          "boss_exp": 190,
+          "first_clear_exp_bonus": 0,
+          "offense_emergency_heal_rate": 0,
+          "boss_hp_boost": -0.05,
+          "boss_mp_boost": 0.12,
+          "boss_atk_boost": -0.08,
+          "boss_def_boost": -0.12,
+          "boss_wis_boost": -0.08
+        },
+        {
+          "stage_id": "brook",
+          "stage": "しずく湖畔",
+          "normal_enemy_max": 7,
+          "boss_exp": 310,
+          "first_clear_exp_bonus": 0,
+          "offense_emergency_heal_rate": 0,
+          "boss_hp_boost": 0.12,
+          "boss_mp_boost": 0.16,
+          "boss_atk_boost": 0,
+          "boss_def_boost": -0.03,
+          "boss_wis_boost": 0
+        },
+        {
+          "stage_id": "volcano",
+          "stage": "ほむら火山",
+          "normal_enemy_max": 11,
+          "boss_exp": 380,
+          "first_clear_exp_bonus": 2500,
+          "offense_emergency_heal_rate": 0.3,
+          "boss_hp_boost": -0.03,
+          "boss_mp_boost": 0.12,
+          "boss_atk_boost": -0.05,
+          "boss_def_boost": -0.08,
+          "boss_wis_boost": -0.05
+        }
+      ],
+      "verification": [
+        {
+          "campaignRows": 600,
+          "stageRows": 3000,
+          "metricRows": 36,
+          "campaignKeys": 600,
+          "stageKeys": 3000,
+          "pairedSeeds": true,
+          "strictCsv": true,
+          "metricsRecomputed": true,
+          "determinism": true,
+          "gatesPassed": "7/7"
+        }
+      ]
+    },
+    "accessIssues": []
+  },
+  "sources": [
+    {
+      "id": "headline_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "WITH m AS (SELECT * FROM read_csv_auto('docs/audits/v8.6-A.68-early-game-production/metrics.csv', header = true)), s AS (SELECT * FROM read_csv_auto('docs/audits/v8.6-A.68-early-game-production/stage-runs.csv', header = true)) SELECT * FROM m WHERE stage_id = 'all_early';",
+        "description": "序盤突破率、方針別P90、草原通常戦敗北率、火山ボス挑戦回数の再集計元。",
+        "executed_at": "2026-08-17T11:50:47.004Z",
+        "filters": {
+          "scenarios": [
+            "control",
+            "production"
+          ],
+          "profiles": [
+            "rush",
+            "balanced",
+            "collector"
+          ],
+          "runs_per_arm": 300
+        },
+        "metric_definitions": {
+          "completion": "序盤4地域を全てcleared=1にした周回数 / 300",
+          "p90": "序盤4地域のtotalBattles合計のR7 90パーセンタイル",
+          "normal_loss_rate": "normalLosses合計 / normalBattles合計",
+          "avg_boss_attempts": "到達周回のbossAttempts算術平均"
+        }
+      }
+    },
+    {
+      "id": "boss_attempts_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT scenario, stage_id, AVG(CAST(bossAttempts AS DOUBLE)) AS avg_boss_attempts, AVG(CASE WHEN cleared = 1 AND bossAttempts = 1 THEN 1 ELSE 0 END) AS first_try_rate FROM read_csv_auto('docs/audits/v8.6-A.68-early-game-production/stage-runs.csv', header = true) WHERE reached = 1 AND stage_id IN ('meadow','cave','brook','volcano') GROUP BY scenario, stage_id;",
+        "description": "到達した周回を3方針合算した地域別ボス負荷。",
+        "executed_at": "2026-08-17T11:50:47.004Z",
+        "filters": {
+          "reached": 1,
+          "stages": [
+            "meadow",
+            "cave",
+            "brook",
+            "volcano"
+          ],
+          "runs_per_arm": 300
+        },
+        "metric_definitions": {
+          "avg_boss_attempts": "到達周回のbossAttempts算術平均",
+          "first_try_rate": "cleared=1かつbossAttempts=1の周回数 / 到達周回数"
+        }
+      }
+    },
+    {
+      "id": "profile_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT scenario, profile, p90_total_battles, clear_rate FROM read_csv_auto('docs/audits/v8.6-A.68-early-game-production/metrics.csv', header = true) WHERE stage_id = 'all_early';",
+        "description": "方針別の序盤4地域戦闘数P90と突破率。",
+        "executed_at": "2026-08-17T11:50:47.004Z",
+        "filters": {
+          "stage_id": "all_early",
+          "runs_per_profile": 100
+        },
+        "metric_definitions": {
+          "p90_total_battles": "各周の序盤4地域totalBattles合計のR7 90パーセンタイル",
+          "clear_rate": "序盤4地域を全てcleared=1にした周回数 / 方針別100周"
+        }
+      }
+    },
+    {
+      "id": "runtime_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_csv_auto('docs/audits/v8.6-A.68-early-game-production/runtime-contract.csv', header = true);",
+        "description": "js/core/stages.jsとjs/systems/battle.jsから監査時に読み込まれたA.68実効値。",
+        "executed_at": "2026-08-17T11:50:47.004Z"
+      }
+    },
+    {
+      "id": "verification_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_json_auto('docs/audits/v8.6-A.68-early-game-production/verification.json');",
+        "description": "厳格CSV解析、対応seed、行数、一意キー、36指標の独立再計算、決定性、採用ゲート検証。",
+        "executed_at": "2026-08-17T11:54:49.695Z"
+      }
+    }
+  ],
+  "package_info": {
+    "originUrl": "artifact://monster-links/8.6-A.68/early-game-balance",
+    "controls": {
+      "edit": false,
+      "refresh": false
+    }
+  }
+}
