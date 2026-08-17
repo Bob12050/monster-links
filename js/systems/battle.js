@@ -719,7 +719,16 @@
     if(result === "lose"){
       const lost = Math.min(state.gold,Math.floor(state.gold*.12));
       state.gold -= lost;
+      const defeatExpRate = b.isBoss
+        ? U.clamp(Number(b.stage?.boss?.defeatExpRate) || 0,0,1)
+        : 0;
+      const defeatExp = defeatExpRate > 0
+        ? Math.floor(battleRewards(b).exp * defeatExpRate)
+        : 0;
       S.fullHeal();
+      const lines = [`${lost}Gを落としてキャンプへ戻った。`,"キャンプで全員回復した。"];
+      const levelUps = defeatExp > 0 ? grantPartyExp(defeatExp,lines) : [];
+      if(defeatExp > 0) lines.unshift(`強敵との戦いから${defeatExp}EXPを学んだ。`);
       state.reward = {
         type:"lose",
         title:"全滅……",
@@ -732,12 +741,12 @@
         enemyLevel:b.enemy.level,
         enemyMutation:!!b.enemy.mutation,
         enemyMutationTitle:b.enemy.mutationTitle || null,
-        levelUps:[],
+        levelUps,
         isBoss:b.isBoss,
-        exp:0,
+        exp:defeatExp,
         gold:-lost,
         drops:[],
-        lines:[`${lost}Gを落としてキャンプへ戻った。`,"キャンプで全員回復した。"],
+        lines,
         retryStageId:b.stage.id,
         retryBoss:!!b.isBoss,
         nextView:"stage"

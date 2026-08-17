@@ -78,6 +78,26 @@ node tools/evaluate-sky-balance-experiment.mjs --phase=discovery --baseline=.aud
 
 候補選択に使ったseed集合は探索用です。採用候補は、別に事前固定したseedでA.58対照300周と正式版300周をpaired再実行し、判定器を `--phase=holdout` で通してから公開します。holdoutは探索seed 85700を拒否します。`.audit-runs/` はローカルの再生成可能な実験群で、レビュー済みの正式監査だけを `docs/audits/` へ保存します。
 
+## 速攻進行の1変数実験
+
+A.60では星晶の塔から虹晶聖域までの速攻型進行を、次の3候補で比較します。候補は同時適用せず、各300周を別々に実行します。
+
+- `mid-exp-15`: 4地域の通常戦EXPレンジだけを15%増加
+- `mid-boss-hp-25`: 4地域のボスHP補正だけを+45%から+25%へ変更
+- `boss-defeat-exp-10`: 4地域のボス敗北時だけ、ボス勝利EXPの10%を学習EXPとして付与
+
+```text
+node tools/campaign-audit.mjs --runs=300 --seed=86000 --profiles=rush,balanced,collector --rush-progression-scenario=control --out=.audit-runs/v860-discovery/control --verify-determinism
+
+node tools/campaign-audit.mjs --runs=300 --seed=86000 --profiles=rush,balanced,collector --rush-progression-scenario=boss-defeat-exp-10 --baseline=.audit-runs/v860-discovery/control --out=.audit-runs/v860-discovery/boss-defeat-exp-10 --verify-determinism
+
+node tools/evaluate-rush-progression-experiment.mjs --phase=discovery --baseline=.audit-runs/v860-discovery/control --candidate=.audit-runs/v860-discovery/boss-defeat-exp-10 --out=.audit-runs/v860-discovery/boss-defeat-exp-10-evaluation.json
+```
+
+主指標は速攻型100周における虹晶聖域突破率で、対照より15pt以上改善し、paired bootstrap 95%区間の下限が0を超えることを求めます。星晶の塔突破、バランス/収集型完走、全体P90戦闘数、停止周回、自動防御、対象4地域の初回撃破率をガードレールにします。速攻型の全編完走率は後半地域の新しい壁を含むため、探索時は診断指標として扱います。
+
+探索seedは86000、別seedホールドアウトは86100で固定します。ホールドアウトは、探索で全ゲートを通過した単一候補のレシートを `--selected-receipt` で指定し、正式ランタイムが同じscenario hashを持つことを検証します。事前条件の詳細は `docs/audits/v8.6-A.60-rush-progression-preregistration.md` に固定します。
+
 ## 出力
 
 既定の出力先は `docs/audits/v<GAME_VERSION>-campaign-<runs>/` です。

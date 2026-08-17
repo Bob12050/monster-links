@@ -7,15 +7,29 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createHeadlessGame } from "./lib/headless-game-runtime.mjs";
 
-const TOOL_VERSION = "1.4.0";
-const OUTPUT_SCHEMA_VERSION = 5;
+const TOOL_VERSION = "1.5.0";
+const OUTPUT_SCHEMA_VERSION = 6;
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 const FOCUS_STAGE_IDS = Object.freeze(["tower","prism_sanctuary","deep_sea_temple","sky_ruins"]);
 const SKY_STAGE_ID = "sky_ruins";
+const RUSH_STAGE_IDS = Object.freeze(["tower","snowfield","thunder_ruins","prism_sanctuary"]);
 const BOSS_BOOST_FIELDS = Object.freeze(["hp","mp","atk","def","wis"]);
 const DEFAULT_BOSS_BOOST = Object.freeze({hp:.45,mp:.2,atk:.12,def:.12,wis:.12});
+const RUSH_SCENARIO_DEFS = Object.freeze({
+  "mid-exp-15":Object.freeze({kind:"normal-exp",multiplier:1.15}),
+  "mid-boss-hp-25":Object.freeze({kind:"boss-hp",hp:.25}),
+  "boss-defeat-exp-10":Object.freeze({kind:"boss-defeat-exp",rate:.10})
+});
+const RUSH_CONTROL_EXP = Object.freeze({
+  tower:Object.freeze([100,165]),
+  snowfield:Object.freeze([170,260]),
+  thunder_ruins:Object.freeze([240,360]),
+  prism_sanctuary:Object.freeze([380,580])
+});
 const STAGE_OUTPUT_COLUMNS = Object.freeze(["run","profile","stage_index","stage_id","stage_name","req_level","boss_level","unlock_wins","reached","cleared","entry_highest_level","boss_start_highest_level","clear_highest_level","normalBattles","normalCombatWins","scoutWins","normalLosses","scoutEncounters","bossAttempts","bossLosses","bossTurns","recruitmentBossBattles","recruitmentBossLosses","totalBattles","totalTurns","guardTurns","maxGuardStreak","maxBattleTurns","battles50Plus","guardLoopBattles","stalledBattles","kos","trainingBooks","fusions","levelRecoveryBattles","gold_at_entry","gold_at_clear"]);
 const SKY_PRE_TREATMENT_FIELDS = Object.freeze(["run","profile","stage_id","reached","entry_highest_level","boss_start_highest_level","gold_at_entry"]);
+const RUSH_PRIOR_STAGE_FIELDS = Object.freeze(["run","profile","stage_index","stage_id","stage_name","req_level","boss_level","unlock_wins","reached","cleared","entry_highest_level","boss_start_highest_level","clear_highest_level","gold_at_entry","gold_at_clear"]);
+const RUSH_ENTRY_FIELDS = Object.freeze(["run","profile","stage_id","reached","entry_highest_level","gold_at_entry"]);
 
 const PROFILE_DEFS = Object.freeze([
   {
@@ -115,6 +129,21 @@ function skyBossScenarioOption(){
   return {present:true,kind:"treatment",hp:parsed,raw:value};
 }
 
+function rushProgressionScenarioOption(){
+  const name = "rush-progression-scenario";
+  const prefix = `--${name}=`;
+  const values = process.argv.filter(value=>value.startsWith(prefix)).map(value=>value.slice(prefix.length));
+  if(values.length > 1) throw new Error(`--${name} must be provided at most once`);
+  if(!values.length) return {present:false,kind:"production",id:null,definition:null};
+  const id = String(values[0]).trim().toLowerCase();
+  if(id === "control") return {present:true,kind:"control",id,definition:null};
+  const definition = RUSH_SCENARIO_DEFS[id];
+  if(!definition){
+    throw new Error(`--${name} must be control or one of: ${Object.keys(RUSH_SCENARIO_DEFS).join(", ")}`);
+  }
+  return {present:true,kind:"treatment",id,definition};
+}
+
 function parseOptions(){
   const profileIds = String(argValue("profiles") || PROFILE_DEFS.map(profile=>profile.id).join(","))
     .split(",")
@@ -126,9 +155,15 @@ function parseOptions(){
   const baselineArg = argValue("baseline") || "";
   const verifyDeterminism = process.argv.includes("--verify-determinism");
   const skyBossScenario = skyBossScenarioOption();
-  if(skyBossScenario.present && !outputArg) throw new Error("--sky-boss-hp-boost requires an explicit --out directory");
-  if(skyBossScenario.present && !verifyDeterminism) throw new Error("--sky-boss-hp-boost requires --verify-determinism");
-  if(skyBossScenario.kind === "treatment" && !baselineArg) throw new Error("A numeric --sky-boss-hp-boost treatment requires --baseline pointing to an explicit control run");
+  const rushProgressionScenario = rushProgressionScenarioOption();
+  if(skyBossScenario.present && rushProgressionScenario.present){
+    throw new Error("--sky-boss-hp-boost and --rush-progression-scenario cannot be combined");
+  }
+  const explicitScenario = skyBossScenario.present || rushProgressionScenario.present;
+  const treatment = skyBossScenario.kind === "treatment" || rushProgressionScenario.kind === "treatment";
+  if(explicitScenario && !outputArg) throw new Error("Explicit scenarios require an explicit --out directory");
+  if(explicitScenario && !verifyDeterminism) throw new Error("Explicit scenarios require --verify-determinism");
+  if(treatment && !baselineArg) throw new Error("A treatment scenario requires --baseline pointing to an explicit control run");
   return {
     runs:positiveInt(argValue("runs"),300),
     seed:positiveInt(argValue("seed"),85700),
@@ -139,6 +174,7 @@ function parseOptions(){
     maxTurns:positiveInt(argValue("max-turns"),400),
     maxBossLosses:requiredPositiveIntOption("max-boss-losses",80),
     skyBossScenario,
+    rushProgressionScenario,
     verifyDeterminism,
     quiet:process.argv.includes("--quiet")
   };
@@ -227,7 +263,36 @@ function sameBossBoost(left,right){
   return BOSS_BOOST_FIELDS.every(field=>Number(left?.[field]) === Number(right?.[field]));
 }
 
-function applyScenario(runtime,options){
+function rushStageSnapshot(D){
+  return RUSH_STAGE_IDS.map(stageId=>{
+    const stage = D.STAGES.find(candidate=>candidate.id === stageId);
+    if(!stage?.boss) throw new Error(`Rush scenario target stage is missing: ${stageId}`);
+    const exp = Array.isArray(stage.exp) ? stage.exp.map(value=>Number(value)) : [];
+    if(exp.length !== 2 || exp.some(value=>!Number.isFinite(value))){
+      throw new Error(`Rush scenario stage exp must contain two finite values: ${stageId}`);
+    }
+    const defeatExpRate = Number(stage.boss.defeatExpRate) || 0;
+    if(!Number.isFinite(defeatExpRate) || defeatExpRate < 0 || defeatExpRate > 1){
+      throw new Error(`Rush scenario boss defeatExpRate must be between 0 and 1: ${stageId}`);
+    }
+    return {stageId,exp,bossBoost:fullBossBoost(stage.boss),defeatExpRate};
+  });
+}
+
+function expectedRushControlSnapshot(){
+  return RUSH_STAGE_IDS.map(stageId=>({
+    stageId,
+    exp:[...RUSH_CONTROL_EXP[stageId]],
+    bossBoost:{...DEFAULT_BOSS_BOOST},
+    defeatExpRate:0
+  }));
+}
+
+function sameRushSnapshot(left,right){
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function applySkyScenario(runtime,options){
   const stage = runtime.D.STAGES.find(candidate=>candidate.id === SKY_STAGE_ID);
   if(!stage?.boss) throw new Error(`Scenario target stage is missing: ${SKY_STAGE_ID}`);
   const before = fullBossBoost(stage.boss);
@@ -268,6 +333,69 @@ function applyScenario(runtime,options){
     effective:{bossBoost:effectiveBossBoost},
     changedPaths
   };
+}
+
+function applyRushScenario(runtime,options){
+  const scenarioOption = options.rushProgressionScenario;
+  const before = rushStageSnapshot(runtime.D);
+  const expectedControl = expectedRushControlSnapshot();
+  if(scenarioOption.present && !sameRushSnapshot(before,expectedControl)){
+    throw new Error(`Explicit rush progression experiment requires the A.59 control snapshot\nexpected=${JSON.stringify(expectedControl)}\nactual=${JSON.stringify(before)}`);
+  }
+  if(scenarioOption.kind === "treatment"){
+    for(const stageId of RUSH_STAGE_IDS){
+      const stage = runtime.D.STAGES.find(candidate=>candidate.id === stageId);
+      const definition = scenarioOption.definition;
+      if(definition.kind === "normal-exp"){
+        stage.exp = stage.exp.map(value=>Math.round(Number(value)*definition.multiplier));
+      }else if(definition.kind === "boss-hp"){
+        stage.boss.boost = {...fullBossBoost(stage.boss),hp:definition.hp};
+      }else if(definition.kind === "boss-defeat-exp"){
+        stage.boss.defeatExpRate = definition.rate;
+      }
+    }
+  }
+  const effectiveStages = rushStageSnapshot(runtime.D);
+  const identity = {schemaVersion:1,family:"rush-progression",stages:effectiveStages};
+  const hash = sha256(JSON.stringify(identity));
+  const changedPaths = [];
+  before.forEach((prior,index)=>{
+    const current = effectiveStages[index];
+    if(JSON.stringify(prior.exp) !== JSON.stringify(current.exp)) changedPaths.push(`STAGES[${prior.stageId}].exp`);
+    if(!sameBossBoost(prior.bossBoost,current.bossBoost)) changedPaths.push(`STAGES[${prior.stageId}].boss.boost`);
+    if(prior.defeatExpRate !== current.defeatExpRate) changedPaths.push(`STAGES[${prior.stageId}].boss.defeatExpRate`);
+  });
+  const id = scenarioOption.kind === "production" ? "production" : scenarioOption.id;
+  return {
+    schemaVersion:1,
+    family:"rush-progression",
+    id:`rush-progression-${id}`,
+    label:scenarioOption.kind === "treatment"
+      ? `${runtime.D.GAME_VERSION} 速攻実験 ${scenarioOption.id}`
+      : scenarioOption.kind === "control"
+        ? `${runtime.D.GAME_VERSION} 速攻対照`
+        : `${runtime.D.GAME_VERSION} 公開値`,
+    mode:scenarioOption.kind === "treatment" ? "simulation_treatment" : scenarioOption.kind === "control" ? "explicit_control" : "production_runtime",
+    simulationOnly:scenarioOption.present,
+    hash,
+    identity,
+    target:{stageIds:[...RUSH_STAGE_IDS]},
+    requested:scenarioOption.present ? {option:"--rush-progression-scenario",value:scenarioOption.id} : null,
+    before:{stages:before},
+    effective:{stages:effectiveStages},
+    changedPaths,
+    firstAffectedStageId:RUSH_STAGE_IDS[0]
+  };
+}
+
+function applyScenario(runtime,options){
+  if(options.rushProgressionScenario.present) return applyRushScenario(runtime,options);
+  if(options.skyBossScenario.present) return applySkyScenario(runtime,options);
+  const currentRush = rushStageSnapshot(runtime.D);
+  if(!sameRushSnapshot(currentRush,expectedRushControlSnapshot())){
+    return applyRushScenario(runtime,options);
+  }
+  return applySkyScenario(runtime,options);
 }
 
 function gitRevision(){
@@ -1155,8 +1283,13 @@ function loadBaseline(options,runtime,scenario,currentToolSourceHash){
     if(summary.toolVersion !== TOOL_VERSION) mismatches.push(`treatment baseline toolVersion ${summary.toolVersion} != ${TOOL_VERSION}`);
     if(summary.toolSourceHash !== currentToolSourceHash) mismatches.push("treatment baseline toolSourceHash does not match the current audit tool");
     if(summary.sourceHash !== runtime.sourceHash) mismatches.push("treatment baseline sourceHash does not match the current runtime source");
-    if(summary.scenario?.mode !== "explicit_control" || summary.scenario?.requested?.value !== "control") mismatches.push("treatment baseline is not an explicit --sky-boss-hp-boost=control run");
-    if(!sameBossBoost(summary.scenario?.effective?.bossBoost,DEFAULT_BOSS_BOOST)) mismatches.push("treatment baseline effective boss boost is not the full control boost");
+    if(summary.scenario?.mode !== "explicit_control" || summary.scenario?.requested?.value !== "control") mismatches.push("treatment baseline is not an explicit control run");
+    if(scenario.family === "rush-progression"){
+      if(summary.scenario?.family !== "rush-progression") mismatches.push("treatment baseline is not a rush progression control");
+      if(!sameRushSnapshot(summary.scenario?.effective?.stages,expectedRushControlSnapshot())) mismatches.push("treatment baseline rush stage snapshot is not the A.59 control");
+    }else if(!sameBossBoost(summary.scenario?.effective?.bossBoost,DEFAULT_BOSS_BOOST)){
+      mismatches.push("treatment baseline effective boss boost is not the full control boost");
+    }
     if(summary.determinism?.checked !== true || summary.determinism?.passed !== true) mismatches.push("treatment baseline determinism verification did not pass");
   }
   if(mismatches.length) throw new Error(`Baseline is not comparable:\n${mismatches.join("\n")}`);
@@ -1197,17 +1330,20 @@ function loadBaseline(options,runtime,scenario,currentToolSourceHash){
 
 function preTreatmentInvarianceReceipt({baseline,D,scenario,stageRows}){
   if(scenario.mode !== "simulation_treatment"){
-    return {required:false,passed:null,reason:"Only numeric sky boss treatments require a same-source explicit control receipt"};
+    return {required:false,passed:null,reason:"Only simulation treatments require a same-source explicit control receipt"};
   }
   const currentRows = new Map(stageRows.map(row=>{
     const normalized = normalizedStageOutputRow(row);
     return [`${normalized.run}:${normalized.profile}:${normalized.stage_id}`,normalized];
   }));
-  const skyStageIndex = D.STAGES.findIndex(stage=>stage.id === SKY_STAGE_ID)+1;
-  if(skyStageIndex <= 1) throw new Error(`Cannot define pre-treatment stages before ${SKY_STAGE_ID}`);
+  const targetStageId = scenario.family === "rush-progression" ? scenario.firstAffectedStageId : SKY_STAGE_ID;
+  const targetFields = scenario.family === "rush-progression" ? RUSH_ENTRY_FIELDS : SKY_PRE_TREATMENT_FIELDS;
+  const priorStageFields = scenario.family === "rush-progression" ? RUSH_PRIOR_STAGE_FIELDS : STAGE_OUTPUT_COLUMNS;
+  const targetStageIndex = D.STAGES.findIndex(stage=>stage.id === targetStageId)+1;
+  if(targetStageIndex <= 1) throw new Error(`Cannot define pre-treatment stages before ${targetStageId}`);
   const mismatches = [];
   let fullStagePairs = 0;
-  let skyPairs = 0;
+  let targetPairs = 0;
   const compare = (prior,current,fields,key)=>{
     for(const field of fields){
       if(prior[field] !== current[field]){
@@ -1223,33 +1359,40 @@ function preTreatmentInvarianceReceipt({baseline,D,scenario,stageRows}){
       mismatches.push({key,field:"row",control:"present",treatment:"missing"});
       continue;
     }
-    if(prior.stage_index < skyStageIndex){
+    if(prior.stage_index < targetStageIndex){
       fullStagePairs++;
-      compare(prior,current,STAGE_OUTPUT_COLUMNS,key);
-    }else if(prior.stage_id === SKY_STAGE_ID){
-      skyPairs++;
-      compare(prior,current,SKY_PRE_TREATMENT_FIELDS,key);
+      compare(prior,current,priorStageFields,key);
+    }else if(prior.stage_id === targetStageId){
+      targetPairs++;
+      compare(prior,current,targetFields,key);
     }
     if(mismatches.length >= 20) break;
   }
-  const expectedFullStagePairs = baseline.campaigns.length*(skyStageIndex-1);
-  const expectedSkyPairs = baseline.campaigns.length;
+  const expectedFullStagePairs = baseline.campaigns.length*(targetStageIndex-1);
+  const expectedTargetPairs = baseline.campaigns.length;
   if(fullStagePairs !== expectedFullStagePairs) mismatches.push({field:"fullStagePairs",control:expectedFullStagePairs,treatment:fullStagePairs});
-  if(skyPairs !== expectedSkyPairs) mismatches.push({field:"skyPairs",control:expectedSkyPairs,treatment:skyPairs});
+  if(targetPairs !== expectedTargetPairs) mismatches.push({field:"targetPairs",control:expectedTargetPairs,treatment:targetPairs});
   if(mismatches.length){
-    throw new Error(`Pre-treatment invariance failed for the sky boss experiment:\n${JSON.stringify(mismatches,null,2)}`);
+    throw new Error(`Pre-treatment invariance failed for the ${scenario.family || "sky-boss"} experiment:\n${JSON.stringify(mismatches,null,2)}`);
   }
-  return {
+  const receipt = {
     required:true,
     passed:true,
+    family:scenario.family || "sky-boss",
+    targetStageId,
     controlScenarioHash:baseline.summary.scenarioHash || baseline.summary.scenario?.hash,
     treatmentScenarioHash:scenario.hash,
     fullStagePairs,
-    fullStageFields:[...STAGE_OUTPUT_COLUMNS],
-    skyPreTreatmentPairs:skyPairs,
-    skyPreTreatmentFields:[...SKY_PRE_TREATMENT_FIELDS],
+    fullStageFields:[...priorStageFields],
+    targetEntryPairs:targetPairs,
+    targetEntryFields:[...targetFields],
     mismatchCount:0
   };
+  if(targetStageId === SKY_STAGE_ID){
+    receipt.skyPreTreatmentPairs = targetPairs;
+    receipt.skyPreTreatmentFields = [...targetFields];
+  }
+  return receipt;
 }
 
 function buildComparison({baseline,D,scenario,command,overview,profiles,stages,campaigns,stageRows}){
@@ -1619,9 +1762,16 @@ function makeArtifact({D,scenario,generatedAt,command,overview,profiles,stages,f
   const focusComparisonText = comparison
     ? comparison.focusStages.map(row=>`${row.stage_name} ${row.baseline_avg_boss_attempts} → ${row.current_avg_boss_attempts}回（到達${row.baseline_campaigns_reached} → ${row.current_campaigns_reached}周）`).join("、")
     : "";
-  const scenarioScopeText = scenario.simulationOnly
-    ? `これは **${scenario.label}** のシミュレーション専用シナリオです。本体ファイルは変更せず、実行時の変更対象は \`${scenario.changedPaths.join("、") || "なし（明示対照）"}\` です。天空遺跡ボスの補正は HP ${scenario.before.bossBoost.hp} → ${scenario.effective.bossBoost.hp}、MP ${scenario.effective.bossBoost.mp}、ATK ${scenario.effective.bossBoost.atk}、DEF ${scenario.effective.bossBoost.def}、WIS ${scenario.effective.bossBoost.wis} で、HP以外の実効値は維持しています。`
-    : `これは **${scenario.label}** の本体実効値を測った監査です。天空遺跡ボスの実効補正は HP ${scenario.effective.bossBoost.hp}、MP ${scenario.effective.bossBoost.mp}、ATK ${scenario.effective.bossBoost.atk}、DEF ${scenario.effective.bossBoost.def}、WIS ${scenario.effective.bossBoost.wis} です。`;
+  const rushStageText = scenario.family === "rush-progression"
+    ? scenario.effective.stages.map(stage=>`${stage.stageId}: EXP ${stage.exp.join("–")} / boss HP+${round(stage.bossBoost.hp*100,1)}% / 敗北EXP ${round(stage.defeatExpRate*100,1)}%`).join("、")
+    : "";
+  const scenarioScopeText = scenario.family === "rush-progression"
+    ? scenario.simulationOnly
+      ? `これは **${scenario.label}** のシミュレーション専用シナリオです。本体データは保存変更せず、監査VM内で \`${scenario.changedPaths.join("、") || "なし（明示対照）"}\` だけを差し替えます。実効値は ${rushStageText} です。`
+      : `これは **${scenario.label}** の本体実効値を測った監査です。速攻進行に関係する4地域の実効値は ${rushStageText} です。`
+    : scenario.simulationOnly
+      ? `これは **${scenario.label}** のシミュレーション専用シナリオです。本体ファイルは変更せず、実行時の変更対象は \`${scenario.changedPaths.join("、") || "なし（明示対照）"}\` です。天空遺跡ボスの補正は HP ${scenario.before.bossBoost.hp} → ${scenario.effective.bossBoost.hp}、MP ${scenario.effective.bossBoost.mp}、ATK ${scenario.effective.bossBoost.atk}、DEF ${scenario.effective.bossBoost.def}、WIS ${scenario.effective.bossBoost.wis} で、HP以外の実効値は維持しています。`
+      : `これは **${scenario.label}** の本体実効値を測った監査です。天空遺跡ボスの実効補正は HP ${scenario.effective.bossBoost.hp}、MP ${scenario.effective.bossBoost.mp}、ATK ${scenario.effective.bossBoost.atk}、DEF ${scenario.effective.bossBoost.def}、WIS ${scenario.effective.bossBoost.wis} です。`;
   return {
     surface:"report",
     priorityFixVerification:clonePlain(priorityFixVerification),
@@ -1780,7 +1930,7 @@ function main(){
   const scenario = applyScenario(runtime,options);
   const versionDirectory = String(runtime.D.GAME_VERSION).startsWith("v") ? runtime.D.GAME_VERSION : `v${runtime.D.GAME_VERSION}`;
   const output = ensureInsideRoot(options.outputArg || path.join(root,"docs","audits",`${versionDirectory}-campaign-${options.runs}`));
-  const command = {runs:options.runs,seed:options.seed,maxBattles:options.maxBattles,maxTurns:options.maxTurns,maxBossLosses:options.maxBossLosses,profiles:options.profiles.map(profile=>profile.id),skyBossHpBoost:options.skyBossScenario.present ? options.skyBossScenario.kind === "control" ? "control" : options.skyBossScenario.hp : null};
+  const command = {runs:options.runs,seed:options.seed,maxBattles:options.maxBattles,maxTurns:options.maxTurns,maxBossLosses:options.maxBossLosses,profiles:options.profiles.map(profile=>profile.id),skyBossHpBoost:options.skyBossScenario.present ? options.skyBossScenario.kind === "control" ? "control" : options.skyBossScenario.hp : null,rushProgressionScenario:options.rushProgressionScenario.present ? options.rushProgressionScenario.id : null};
   const baseline = loadBaseline(options,runtime,scenario,currentToolSourceHash);
   if(baseline && baseline.directory.toLowerCase() === output.toLowerCase()) throw new Error("Baseline and output directories must be different");
   const result = runAll(runtime,options);
@@ -1840,7 +1990,7 @@ function main(){
       questAndRankRewards:true,
       arenaExcluded:true,
       scenarioExecution:scenario.simulationOnly ? "本体ソースを変更せず、監査VM内だけで明示シナリオを適用" : "本体ランタイムの実効値を変更せず測定",
-      scenarioIdentity:"runSignatureは実効天空ボス補正と結果だけを含み、同じ実効値を本体へ反映した将来版との一致確認に使う。executionSignatureはツール・本体source・実行モードも含む",
+      scenarioIdentity:"runSignatureは実効シナリオ値と結果を含み、同じ実効値を本体へ反映した将来版との一致確認に使う。executionSignatureはツール・本体source・実行モードも含む",
       priorityFixRegression:"tools/priority-fixes-test.mjs --jsonを監査前に実行し、5/5成功・GAME_VERSION・sourceHash一致を必須化"
     },
     overview,
