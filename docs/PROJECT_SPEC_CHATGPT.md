@@ -1,7 +1,7 @@
 # Monster Links 現行プロジェクト仕様書
 
 更新日: 2026-08-17
-対象バージョン: v8.6-A.65
+対象バージョン: v8.6-A.66
 
 この文書は、普通のChatGPTや別の開発担当へプロジェクトを引き継ぐための現行仕様書です。
 古いdocsと内容が異なる場合は、この文書と実際のゲームコードを優先してください。
@@ -199,7 +199,7 @@ PNG
 
 ### 2026年6月7日時点の維持対象（履歴）
 
-以下は2026年6月7日に確認・実装済みとした当時の一覧です。現在は個別承認を優先し、`venomchimera` はv8.6-A.61、`celestiseraph` はv8.6-A.62、`omegaframe` はv8.6-A.63、`chaoswyrm` はv8.6-A.64で正式刷新済みです。
+以下は2026年6月7日に確認・実装済みとした当時の一覧です。現在は個別承認を優先し、`venomchimera` はv8.6-A.61、`celestiseraph` はv8.6-A.62、`omegaframe` はv8.6-A.63、`chaoswyrm` はv8.6-A.64、`phoenixdrake` と `eclipsewolf` はv8.6-A.66で正式刷新済みです。
 
 ```text
 phoenixdrake     フェニックスドレイク
