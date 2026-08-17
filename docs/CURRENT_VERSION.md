@@ -1,3 +1,18 @@
+v8.6-A.69 responsive layout stability
+GAME_VERSION to 8.6-A.69
+
+Main changes:
+- Kept phone-canvas Adventure, Quest, and Monster Camp layouts compact even when the host browser is wide.
+- Added scroll-safe Home and Battle layouts for short landscape screens and a full-width Battle canvas for landscape/desktop.
+- Raised portrait Battle controls to practical touch sizes and restored full emphasis to the active party member.
+- Made Battle Result details independently scrollable while keeping every result action reachable; short landscape uses a 2 x 2 action grid.
+- Prevented open Quest sections and ready rewards from collapsing inside the fixed-height app grid.
+- Hid the Fusion execution rail until two parents are selected and kept the initial parent-selection CTA visible.
+- Removed duplicate safe-area padding and applied the Atlas canvas treatment to developer tools.
+- Preserved gameplay, balance, monster/stage/recipe data, content IDs, save schema 1, and every save/storage key.
+- Updated PWA/cache version to v8.6-A.69.
+---
+
 v8.6-A.68 early-game difficulty ramp
 GAME_VERSION to 8.6-A.68
 

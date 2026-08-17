@@ -16501,6 +16501,7 @@ body:has(#app.atlasUiV857){
 }
 
 /* ---------- Shared atlas canvas ---------- */
+#app.atlasUiV857[data-view="devtools"] > main,
 #app.atlasUiV857 > :is(
   main.worldAdventureV851,
   main.monsterBaseV831,
@@ -18124,4 +18125,416 @@ body .backupModalV839 .backupTextarea::placeholder{
 }
 #app.atlasUiV857 #modal .equipModalV847 .equipChoiceV847 > strong{
   color:#ffe18a!important;
+}
+
+/* =========================================================
+   v8.6-A.69 Responsive layout stability
+   The Atlas shell is intentionally phone-sized. Keep child layouts keyed to
+   that canvas instead of letting the outer desktop viewport trigger wide
+   grids, and give short landscape screens a scroll-safe fallback.
+   ========================================================= */
+
+/* Phone-canvas layouts stay compact even when the browser itself is wide. */
+#app.atlasUiV857 :is(
+  .grid.two,
+  .arena,
+  .recipeGrid,
+  .itemGrid,
+  .slotGrid,
+  .devResultGrid,
+  .pastureGridV761,
+  .partyListV761
+){
+  grid-template-columns:minmax(0,1fr);
+}
+#app.atlasUiV857 :is(.dexGrid,.dexGridV31){
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+#app.atlasUiV857 .dashGrid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+#app.atlasUiV857 .quickGrid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+/* Adventure gate and cards use the same one-column contract at every host width. */
+#app.atlasUiV857[data-view="stage"] .stageLobbyContentV849{
+  grid-template-columns:minmax(0,1fr);
+  grid-template-areas:"kicker" "title" "boss" "stats" "actions";
+  min-height:0;
+  gap:9px;
+  padding:11px;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyV849{
+  min-height:0;
+  border-radius:18px;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyTitleV849 h1{font-size:24px}
+#app.atlasUiV857[data-view="stage"] .stageLobbyTitleV849 p{font-size:11px}
+#app.atlasUiV857[data-view="stage"] .stageLobbyStatsV849{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:5px;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyStatsV849 div{padding:6px 7px}
+#app.atlasUiV857[data-view="stage"] .stageLobbyStatsV849 b{font-size:12px}
+#app.atlasUiV857[data-view="stage"] .stageLobbyBossV849{
+  grid-template-columns:42px minmax(0,1fr) auto;
+  padding:8px;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyBossFaceV849{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+}
+#app.atlasUiV857[data-view="stage"] .stageLobbyActionsV849 button{min-height:48px}
+#app.atlasUiV857[data-view="stage"] .stageLobbyActionsV849 b{font-size:12px}
+#app.atlasUiV857[data-view="stage"] .questBoardGridV817{
+  grid-template-columns:minmax(0,1fr);
+}
+#app.atlasUiV857[data-view="stage"] .questCardV817{
+  grid-template-columns:108px minmax(0,1fr);
+  gap:8px;
+  padding:7px;
+  border-radius:15px;
+}
+#app.atlasUiV857[data-view="stage"] .questCardThumbV817{
+  min-height:126px;
+  border-radius:12px;
+}
+#app.atlasUiV857[data-view="stage"] .questCardTitleV817 b{font-size:13px}
+#app.atlasUiV857[data-view="stage"] .questCardRowV817{display:none}
+#app.atlasUiV857[data-view="stage"] .questCardBossV817{
+  grid-template-columns:28px minmax(0,1fr);
+  gap:6px;
+  padding:6px;
+}
+#app.atlasUiV857[data-view="stage"] .questCardBossFaceV817{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+}
+#app.atlasUiV857[data-view="stage"] .questCardBossV817 b{font-size:10px}
+#app.atlasUiV857[data-view="stage"] .questCardActionsV817 button{
+  min-height:38px;
+  padding:7px 4px;
+  font-size:10px;
+}
+
+/* Quest board headline and cards must not be squeezed into desktop columns. */
+#app.atlasUiV857[data-view="quest"] .questBoardHeroV842{
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+  padding:14px;
+  border-radius:17px;
+}
+#app.atlasUiV857[data-view="quest"] .questBoardHeroV842 h1{font-size:22px}
+#app.atlasUiV857[data-view="quest"] .questBoardProgressV842 > i{width:85px}
+#app.atlasUiV857[data-view="quest"] .questClaimAllV842{
+  grid-column:1/-1;
+  width:100%;
+}
+#app.atlasUiV857[data-view="quest"] .questListV842{
+  grid-template-columns:minmax(0,1fr);
+}
+#app.atlasUiV857[data-view="quest"] details.questSectionV825{
+  height:max-content!important;
+  min-height:72px!important;
+  max-height:none!important;
+}
+#app.atlasUiV857[data-view="quest"] .questReadyV825{
+  height:max-content!important;
+  min-height:72px!important;
+  max-height:none!important;
+}
+#app.atlasUiV857[data-view="quest"] .questBoardSectionV842{
+  padding:10px;
+  border-radius:16px;
+}
+#app.atlasUiV857[data-view="quest"] .questCardBottomV842{
+  align-items:stretch;
+  flex-direction:column;
+}
+#app.atlasUiV857[data-view="quest"] .questCardActionsV842{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+}
+#app.atlasUiV857[data-view="quest"] .questCardActionsV842 button{width:100%}
+
+/* Monster camp also keeps its phone composition on a wide host viewport. */
+#app.atlasUiV857[data-view="monsters"] .monsterBaseV831{gap:10px}
+#app.atlasUiV857[data-view="monsters"] .monsterCampV831{
+  min-height:350px;
+  grid-template-columns:minmax(0,1fr);
+  padding:17px;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampBackdropV831{
+  background:
+    linear-gradient(0deg,rgba(8,17,31,.97) 0%,rgba(8,17,31,.5) 75%),
+    url("../assets/images/stages/meadow_v827.jpg") center/cover;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampCopyV831{
+  align-self:end;
+  padding-top:148px;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampCopyV831 h1{font-size:25px}
+#app.atlasUiV857[data-view="monsters"] .monsterCampCopyV831 > p{font-size:10px}
+#app.atlasUiV857[data-view="monsters"] .monsterCampLeaderV831{
+  position:absolute;
+  z-index:1;
+  top:4px;
+  right:5px;
+  width:180px;
+  height:190px;
+  display:block;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampLeaderArtV831{
+  width:180px;
+  height:160px;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampLeaderV831 > span{
+  min-width:0;
+  display:block;
+  padding:5px 8px;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampLeaderV831 em{display:none}
+#app.atlasUiV857[data-view="monsters"] .monsterCampStatsV831{
+  gap:5px;
+  margin-top:11px;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampStatsV831 span{
+  min-width:0;
+  flex:1;
+  padding:6px 8px;
+}
+#app.atlasUiV857[data-view="monsters"] .monsterCampActionsV831{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+}
+#app.atlasUiV857[data-view="monsters"] :is(.partyFormationV831,.pastureWorldV831){
+  padding:11px;
+  border-radius:17px;
+}
+#app.atlasUiV857[data-view="monsters"] :is(.partyFormationGridV831,.pastureGridV831){
+  grid-template-columns:minmax(0,1fr);
+}
+#app.atlasUiV857[data-view="monsters"] .partyFormationCardV831{
+  grid-template-columns:125px minmax(0,1fr);
+}
+
+/* The app already owns the safe-area inset; do not charge it again in the dock. */
+#app.atlasUiV857 > .gameDockV821{
+  padding-bottom:6px!important;
+}
+
+/* Keep the result actions visible while the result details scroll independently. */
+#app.atlasUiV857[data-view="reward"] > main.rewardPageV823{
+  overflow:hidden!important;
+  padding-bottom:12px!important;
+}
+#app.atlasUiV857[data-view="reward"] > main.rewardPageV823 > .rewardBoxV823{
+  height:100%;
+  min-height:0;
+  display:grid;
+  grid-template-rows:minmax(0,1fr) auto;
+  overflow:hidden!important;
+}
+#app.atlasUiV857[data-view="reward"] .rewardScrollV869{
+  position:relative;
+  z-index:1;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  padding-right:2px;
+}
+#app.atlasUiV857[data-view="reward"] .rewardActionsV817{
+  position:static!important;
+  bottom:auto!important;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  margin-top:8px;
+}
+#app.atlasUiV857[data-view="reward"] .rewardActionsV817 .primary{
+  grid-column:1/-1;
+}
+
+/* The active battler is intentionally not clickable, but should not look absent. */
+#app.atlasUiV857[data-view="battle"] .battlePartyRailV821 button.active:disabled{
+  opacity:1;
+  filter:none;
+}
+
+/* Portrait phones have enough height for accessible command targets. */
+@media(max-width:560px) and (min-height:620px){
+  #app.atlasUiV857[data-view="battle"] .battlePageV849 .battleV849{
+    grid-template-rows:56px minmax(0,1fr) 52px 48px 36px 196px 44px;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleHeaderV821{
+    height:56px;
+    padding:4px 7px;
+  }
+  #app.atlasUiV857[data-view="battle"] :is(.battleSpeedButtonV84,.battleModeV821){
+    min-height:44px;
+  }
+  #app.atlasUiV857[data-view="battle"] .battlePartyRailV821{padding:4px}
+  #app.atlasUiV857[data-view="battle"] .battlePartyRailV821 button{
+    min-height:44px;
+  }
+  #app.atlasUiV857[data-view="battle"] .battlePartyRailV821 button :is(b,small){
+    font-size:9px;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleMessageV821{
+    padding-top:6px;
+    padding-bottom:6px;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleTacticalBarV842{
+    padding-top:5px;
+    padding-bottom:5px;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleCommandDeckV821{
+    grid-template-rows:44px minmax(0,1fr);
+  }
+  #app.atlasUiV857[data-view="battle"] .commandHeadingV842 > div:first-child span{
+    font-size:8px!important;
+  }
+  #app.atlasUiV857[data-view="battle"] .commandHeadingV842 > div:first-child b{
+    font-size:10px;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleAutoControlV842 > button{
+    min-height:44px!important;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleAutoControlV842 > button b{font-size:11px}
+  #app.atlasUiV857[data-view="battle"] .battleAutoControlV842 > button small{font-size:9px}
+  #app.atlasUiV857[data-view="battle"] .commandsV821 button{
+    min-height:44px!important;
+  }
+  #app.atlasUiV857[data-view="battle"] .commandsV842 .commandGroupV842 button > b{
+    font-size:10px;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleLogDetailsV821 summary{
+    min-height:44px;
+    padding-top:8px;
+    padding-bottom:8px;
+  }
+}
+
+@media(max-width:560px) and (max-height:860px){
+  #app.atlasUiV857[data-view="fusion"] .selectedParentsPanelV835{
+    margin-top:4px!important;
+  }
+  #app.atlasUiV857[data-view="fusion"] .fusionParentActionsV844{
+    margin-top:4px!important;
+  }
+}
+
+/* Short landscape screens scroll instead of stacking controls over content. */
+@media(orientation:landscape) and (max-height:520px){
+  #app.atlasUiV857[data-view="battle"]{
+    width:100%!important;
+  }
+  #app.atlasUiV857[data-view="home"] > main.homeV855{
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  #app.atlasUiV857[data-view="home"] .homeAtlasV855{
+    height:600px!important;
+    min-height:600px!important;
+  }
+
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821{
+    min-height:86px!important;
+    grid-template-rows:54px 25px!important;
+    gap:4px 0!important;
+    padding:4px 10px 0!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 :is(.hudRankV821,.hudResourcesV821){
+    height:54px!important;
+    min-height:54px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 .hudAvatarV821{
+    width:42px!important;
+    height:42px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 .hudRankV821{
+    grid-template-columns:43px minmax(30px,auto)!important;
+    padding:4px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 .hudRankTextV821 b{
+    font-size:18px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button{
+    min-height:52px!important;
+    grid-template-columns:28px minmax(0,1fr)!important;
+    padding:4px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 .hudResourceIconV821{
+    width:27px!important;
+    height:27px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button:before{
+    left:36px;
+    top:8px;
+    font-size:8px;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 .hudResourcesV821 > button b{
+    margin-bottom:4px!important;
+    font-size:15px!important;
+  }
+  #app.atlasUiV857:not([data-view="home"]):not([data-view="title"]):not([data-view="battle"]) > .gameHudV821 .hudViewLabelV821{
+    min-height:25px!important;
+    margin:0 28px!important;
+    padding:2px 10px!important;
+  }
+  #app.atlasUiV857:not([data-view="title"]):not([data-view="battle"]) > .gameDockV821{
+    min-height:62px!important;
+    padding:4px 6px!important;
+  }
+  #app.atlasUiV857:not([data-view="title"]):not([data-view="battle"]) > .gameDockV821 > button{
+    min-height:50px!important;
+    grid-template-rows:26px 14px!important;
+  }
+  #app.atlasUiV857:not([data-view="title"]):not([data-view="battle"]) > .gameDockV821 .dockLabelV821{
+    font-size:9px!important;
+  }
+
+  #app.atlasUiV857[data-view="reward"] .rewardActionsV817{
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+  }
+  #app.atlasUiV857[data-view="reward"] .rewardActionsV817 .primary{
+    grid-column:auto;
+  }
+  #app.atlasUiV857[data-view="reward"] .rewardActionsV817 button{
+    min-height:44px;
+    padding:6px 8px;
+  }
+
+  #app.atlasUiV857[data-view="battle"] > main.battlePageV849{
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleV849{
+    height:auto!important;
+    min-height:720px!important;
+    overflow:visible!important;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleArenaV821{
+    height:292px!important;
+    min-height:292px!important;
+  }
+  #app.atlasUiV857[data-view="battle"] .battleCommandDeckV821{
+    position:relative!important;
+    bottom:auto!important;
+  }
+}
+
+/* Let the existing desktop battle layout use the width it was designed for. */
+@media(min-width:900px) and (min-height:521px){
+  #app.atlasUiV857[data-view="battle"]{
+    width:min(1180px,100%);
+  }
 }

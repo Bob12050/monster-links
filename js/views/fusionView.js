@@ -38,10 +38,10 @@
         </div>
         ${selectedParentsPanel(pick,prev)}
         ${fusionPreviewPanel(prev)}
-        <div class="actions stickyActions fusionExecuteBarV835">
-          <button class="gold" ${(ready && prev?.available && !prev.locked) ? "" : "disabled"} onclick="Game.doFusion()">この2体で配合</button>
+        ${ready ? `<div class="actions stickyActions fusionExecuteBarV835">
+          <button class="gold" ${(prev?.available && !prev.locked) ? "" : "disabled"} onclick="Game.doFusion()">この2体で配合</button>
           <button onclick="Game.clearFusion()">選択解除</button>
-        </div>
+        </div>` : ""}
       </section>
 
       <details id="fusionParentPicker" class="fusionParentListV824 fusionParentListV835 fusionParentPickerV844" ${pick.length === 1 ? "open" : ""}>

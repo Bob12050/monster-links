@@ -1,6 +1,18 @@
-# Monster Links v8.6-A.68
+# Monster Links v8.6-A.69
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.69 update
+
+- Repaired layouts that switched to desktop child grids inside the fixed phone-sized game canvas.
+- Kept Adventure, Quest, and Monster Camp readable on wide browsers while preserving their mobile composition.
+- Added scroll-safe landscape fallbacks for Home and Battle, and expanded Battle to the available landscape or desktop width.
+- Raised portrait Battle controls to practical touch sizes and kept the active party member visually present.
+- Split Battle Result details from its action rail so rewards remain scrollable and every action stays reachable, including short landscape screens.
+- Removed the empty Fusion execution rail until two parents are selected and kept the initial `Choose parents` action fully visible.
+- Corrected duplicated safe-area padding and brought the developer screen into the shared Atlas canvas treatment.
+- Verified 360 x 640, 390 x 844, 430 x 932, 844 x 390, and 1440 x 900 layouts without changing gameplay, balance, IDs, content data, or save schema 1.
+- Updated PWA/cache version to v8.6-A.69.
 
 ## v8.6-A.68 update
 
@@ -214,7 +226,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.68 early-game difficulty ramp
+v8.6-A.69 responsive layout stability
 ```
 
 ## v8.6-A.49 update
