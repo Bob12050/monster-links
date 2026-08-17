@@ -276,6 +276,30 @@
       </section>`;
   }
 
+  function fusionProgressGuideHtml(){
+    const unlocked = U.clamp(Number(S.state.stageUnlocked) || 1,1,D.STAGES.length);
+    const fusions = Math.max(0,Number(S.state.records?.fusions) || 0);
+    const needsFirstFusion = unlocked >= 5 && fusions === 0;
+    const needsAdvancedFusion = unlocked >= 8 && fusions < 2;
+    if(!needsFirstFusion && !needsAdvancedFusion) return "";
+    const title = needsFirstFusion ? "星晶の塔からは配合が戦力の近道" : "虹晶聖域へ向けて、もう一段階配合しよう";
+    const copy = needsFirstFusion
+      ? "親の技と一部能力を引き継いだ仲間なら、低ランクのまま育て続けるより安定します。"
+      : "虹晶聖域は配合・装備・属性相性の総合戦です。次の配合候補を確認しましょう。";
+    return `
+      <section class="fusionProgressGuideV860" aria-label="配合による戦力強化ガイド">
+        <span class="fusionProgressIconV860">${V.icon?.("fusion","fusionProgressIconSvgV860") || "⚗"}</span>
+        <div>
+          <small>POWER-UP ROUTE</small>
+          <b>${title}</b>
+          <p>${copy}</p>
+        </div>
+        <button type="button" onclick="Game.setView('fusion')">
+          <span>配合候補を見る</span><b aria-hidden="true">›</b>
+        </button>
+      </section>`;
+  }
+
   function questCardHtml(st,index,currentId){
     const status = stageStatus(st);
     const open = st.unlock <= S.state.stageUnlocked;
@@ -360,6 +384,7 @@
       <main class="worldAdventureV851 worldAdventureV849 stageViewMode-${stageViewMode}">
         ${stageLobbyHtml(current)}
         ${stageModeToggleHtml()}
+        ${fusionProgressGuideHtml()}
         ${questBoardHtml(current)}
         ${worldMapHtml(current)}
         ${stageQuickActionsHtml(current)}

@@ -1,5 +1,13 @@
 # Version History
 
+## v8.6-A.60 Fusion route guidance
+
+- Added a contextual Adventure-screen guide that routes players to Fusion after reaching the Star Crystal Tower with zero fusions, and again at the Prism Sanctuary with fewer than two fusions.
+- Screened four rush-progression treatments with paired 300-campaign experiments and rejected all four because none improved the preregistered Prism Sanctuary clear outcome.
+- Kept enemy stats, stage EXP, defeat rewards, auto-battle behavior, content IDs, recipes, and reward tables unchanged.
+- Preserved save schema 1 and every existing save/storage key.
+- Published the machine-readable decision evidence and a responsive report, then updated the PWA/cache version to v8.6-A.60.
+
 ## v8.6-A.59 Sky Ruins boss HP tuning
 
 - Reduced only the Sky Ruins final boss HP bonus from 45% to 20%; all other boss boosts and combat parameters are unchanged.

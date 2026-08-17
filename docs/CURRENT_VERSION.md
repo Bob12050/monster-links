@@ -1,12 +1,12 @@
-v8.6-A.59 Sky Ruins boss HP tuning
-GAME_VERSION to 8.6-A.59
+v8.6-A.60 Fusion route guidance
+GAME_VERSION to 8.6-A.60
 
 Main changes:
-- Reduced only the Sky Ruins final boss HP bonus from 45% to 20% after three same-seed 300-campaign treatment arms.
-- Kept the final boss MP, attack, defense, wisdom, level, rewards, scout rate, and AI unchanged with a complete explicit boost object.
-- Preserved all earlier stages, save schema 1, save keys, content IDs, recipes, equipment, quest/rank rewards, and player assets.
-- Added a reproducible control/treatment campaign workflow, scenario signatures, pre-treatment invariance checks, paired bootstrap decision gates, and a distinct-seed holdout.
-- Updated PWA/cache version to v8.6-A.59.
+- Added a contextual Adventure-screen guide that routes zero-fusion players to Fusion from the Star Crystal Tower, with a second preparation prompt at the Prism Sanctuary.
+- Rejected all four tested rush-progression treatments after paired 300-campaign screening; no enemy, EXP, defeat reward, or auto-policy value was adopted.
+- Preserved save schema 1, save keys, content IDs, recipes, equipment, quest/rank rewards, stage parameters, and battle entry contracts.
+- Added a reproducible decision artifact, four evaluator receipts, and a responsive PC/390px report.
+- Updated PWA/cache version to v8.6-A.60.
 ---
 
 v8.6-A.58 Priority balance integrity fixes

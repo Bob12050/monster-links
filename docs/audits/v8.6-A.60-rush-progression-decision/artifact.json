@@ -1,0 +1,392 @@
+{
+  "surface": "report",
+  "scenario": {
+    "family": "rush-progression-decision",
+    "decision": "reject-all-numeric-and-auto-policy-treatments",
+    "acceptedCandidate": null
+  },
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Monster Links A.60 速攻進行の採否レポート",
+    "description": "A.59を対照に4候補を各300周で比較し、A.60で数値変更を採用しない判断をまとめたレポート。",
+    "generatedAt": "2026-08-17T01:39:38.570Z",
+    "cards": [],
+    "charts": [
+      {
+        "id": "rush_stage_clears",
+        "title": "速攻型の地域別突破数",
+        "subtitle": "対照と4候補、各100周。",
+        "type": "bar",
+        "dataset": "stage_clears",
+        "sourceId": "stage_source",
+        "valueFormat": "number",
+        "palette": {
+          "roots": [
+            "gray",
+            "blue",
+            "orange",
+            "purple",
+            "green"
+          ]
+        },
+        "encodings": {
+          "x": {
+            "field": "stage",
+            "type": "nominal",
+            "label": "地域"
+          },
+          "y": {
+            "field": "cleared",
+            "type": "quantitative",
+            "label": "突破周"
+          },
+          "color": {
+            "field": "scenario",
+            "type": "nominal",
+            "label": "シナリオ"
+          },
+          "tooltip": [
+            {
+              "field": "scenario",
+              "type": "nominal",
+              "label": "シナリオ"
+            },
+            {
+              "field": "stage",
+              "type": "nominal",
+              "label": "地域"
+            },
+            {
+              "field": "cleared",
+              "type": "quantitative",
+              "label": "突破周"
+            }
+          ]
+        }
+      }
+    ],
+    "tables": [],
+    "sources": [
+      {
+        "id": "candidate_source",
+        "label": "候補別採否CSV",
+        "path": "docs/audits/v8.6-A.60-rush-progression-decision/queries/candidate_source.sql"
+      },
+      {
+        "id": "stage_source",
+        "label": "速攻型地域突破CSV",
+        "path": "docs/audits/v8.6-A.60-rush-progression-decision/queries/stage_source.sql"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title_summary",
+        "type": "markdown",
+        "sourceId": "candidate_source",
+        "body": "# 速攻進行の調整案は4案とも不採用\n\n## Executive Summary\n\n- **ゲームの数値は変更しません。** EXP、ボスHP、敗北EXP、攻撃優先の緊急回復を各300周で比較しましたが、4案とも速攻型の虹晶聖域突破は0/100で、事前登録した9ゲートを完走できませんでした。\n- **序盤だけを良くする案はありましたが、安全ではありません。** ボス敗北EXP10%は7/9ゲートで戦闘数P90を928.2→898.3へ短縮した一方、停止周回が8→14へ増えました。ボスHP案は星晶の塔を57→81へ改善しても、全体P90と収集型を悪化させました。\n- **主因は「配合を一度も使わない速攻方針」です。** 虹晶聖域は配合・装備・属性相性を総動員する設計であり、ここを数値だけで通過させると中核ループを弱めます。A.60は数値を据え置き、星晶の塔以降で配合画面へ進めるガイドを追加します。"
+      },
+      {
+        "id": "stage_context",
+        "type": "markdown",
+        "sourceId": "stage_source",
+        "body": "## 4候補は序盤の到達を動かしても虹晶聖域を突破できなかった\n\n各候補は同じprofile・run番号・初期seedを対にした300周比較です。棒グラフは速攻型100周の地域別突破数で、虹晶聖域は全シナリオ0周でした。これは候補の強さ不足だけでなく、「配合0回」という方針が地域の設計意図と合わないことを示します。"
+      },
+      {
+        "id": "stage_chart",
+        "type": "chart",
+        "chartId": "rush_stage_clears"
+      },
+      {
+        "id": "candidate_table",
+        "type": "markdown",
+        "sourceId": "candidate_source",
+        "body": "## 候補別の採否\n\n- **通常EXP +15%** — 6/9ゲート。星晶の塔 57→63、虹晶聖域 0→0、全体P90 928.2→941戦、停止 8→14周。\n- **対象ボスHP +25%** — 5/9ゲート。星晶の塔 57→81、虹晶聖域 0→0、全体P90 928.2→974.7戦、停止 8→16周。\n- **ボス敗北EXP 10%** — 7/9ゲート。星晶の塔 57→75、虹晶聖域 0→0、全体P90 928.2→898.3戦、停止 8→14周。\n- **攻撃優先・緊急回復30%** — 7/9ゲート。星晶の塔 57→53、虹晶聖域 0→0、全体P90 928.2→928.2戦、停止 8→8周。\n\n**判断:** 最高でも7/9ゲートで、主指標の虹晶聖域を満たした候補はありません。緊急回復30%は停止数を増やさなかったものの、星晶の塔を57→53へ悪化させたため採用しません。"
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## A.60で行うこと\n\n1. 星晶の塔以降で配合0回なら、冒険画面に配合推奨ガイドと配合画面へのボタンを出す。\n2. 虹晶聖域到達時に配合1回以下なら、追加の戦力準備を案内する。\n3. 敵能力、通常EXP、敗北EXP、報酬、セーブschemaは変更しない。\n4. ガイドの表示条件・スマホ表示・既存の戦闘入口を回帰検証してから公開する。\n\n## 次に確認する問い\n\n- 配合ガイドを見た実ユーザーが、星晶の塔で初回配合へ進めるか。\n- 配合を1〜2回使う最短方針では、虹晶聖域までの再挑戦数がどこまで下がるか。\n- 実ユーザーが許容する1地域あたりの探索・再挑戦回数はいくつか。\n\n## 前提と制約\n\nこれは固定ボット方針を1周1,000戦、1戦400ターン、各ボス敗北80回で打ち切った監査です。完走・突破率は実ユーザー率ではありません。追加候補は初期3案の結果を見た後に事前登録追補したため、公開採用なら別seedホールドアウトが必要でしたが、不採用のため実施していません。"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-17T01:39:38.570Z",
+    "status": "ready",
+    "datasets": {
+      "candidate_comparison": [
+        {
+          "candidate_id": "mid-exp-15",
+          "candidate": "通常EXP +15%",
+          "decision": "棄却",
+          "gates_passed": 6,
+          "gates_total": 9,
+          "rush_prism_control": 0,
+          "rush_prism_candidate": 0,
+          "rush_tower_control": 57,
+          "rush_tower_candidate": 63,
+          "campaign_completion_control": 0.44,
+          "campaign_completion_candidate": 0.4,
+          "p90_battles_control": 928.2,
+          "p90_battles_candidate": 941,
+          "stalled_campaigns_control": 8,
+          "stalled_campaigns_candidate": 14,
+          "failed_gates": "rush-prism-effect / collector-completion-noninferiority / campaign-stalls",
+          "scenario_hash": "cd0b986661973299a798377dd3be1f79b0c01941bfc53c65fa44633b570d3df6",
+          "run_signature": "070b5f57ffdbfe0fbfa244ac8aa3d49a9e21a81a8e3949bb295bfa00e932179e"
+        },
+        {
+          "candidate_id": "mid-boss-hp-25",
+          "candidate": "対象ボスHP +25%",
+          "decision": "棄却",
+          "gates_passed": 5,
+          "gates_total": 9,
+          "rush_prism_control": 0,
+          "rush_prism_candidate": 0,
+          "rush_tower_control": 57,
+          "rush_tower_candidate": 81,
+          "campaign_completion_control": 0.44,
+          "campaign_completion_candidate": 0.3933333333333333,
+          "p90_battles_control": 928.2,
+          "p90_battles_candidate": 974.7,
+          "stalled_campaigns_control": 8,
+          "stalled_campaigns_candidate": 16,
+          "failed_gates": "rush-prism-effect / collector-completion-noninferiority / campaign-p90 / campaign-stalls",
+          "scenario_hash": "b1a56cb918a9e07fa0b2f2b650858ff6ca933b5f84f5954b05c0f37d267ce849",
+          "run_signature": "312a7e5ff8a88d5f39c192389f2fa9aaecf46744817c849a736f2bda38a96d47"
+        },
+        {
+          "candidate_id": "boss-defeat-exp-10",
+          "candidate": "ボス敗北EXP 10%",
+          "decision": "棄却",
+          "gates_passed": 7,
+          "gates_total": 9,
+          "rush_prism_control": 0,
+          "rush_prism_candidate": 0,
+          "rush_tower_control": 57,
+          "rush_tower_candidate": 75,
+          "campaign_completion_control": 0.44,
+          "campaign_completion_candidate": 0.43,
+          "p90_battles_control": 928.2,
+          "p90_battles_candidate": 898.3,
+          "stalled_campaigns_control": 8,
+          "stalled_campaigns_candidate": 14,
+          "failed_gates": "rush-prism-effect / campaign-stalls",
+          "scenario_hash": "8e12e1928fbac003c7476d165942566f9d41850df164f425d0f29d5e15975642",
+          "run_signature": "742fe5cfd925c9b496bdd3eb3f3580f5312564fce591556f66420941dd16e56f"
+        },
+        {
+          "candidate_id": "offense-emergency-heal-30",
+          "candidate": "攻撃優先・緊急回復30%",
+          "decision": "棄却",
+          "gates_passed": 7,
+          "gates_total": 9,
+          "rush_prism_control": 0,
+          "rush_prism_candidate": 0,
+          "rush_tower_control": 57,
+          "rush_tower_candidate": 53,
+          "campaign_completion_control": 0.44,
+          "campaign_completion_candidate": 0.44,
+          "p90_battles_control": 928.2,
+          "p90_battles_candidate": 928.2,
+          "stalled_campaigns_control": 8,
+          "stalled_campaigns_candidate": 8,
+          "failed_gates": "rush-prism-effect / rush-tower-noninferiority",
+          "scenario_hash": "4dadd16ce35ba59af5d6bcd86b3145c477d499eed240ca53d959eb69ff343d23",
+          "run_signature": "b95df5ceac46027979e30d5f0f242efd7c2e30b1f931be85478c028d2753f51d"
+        }
+      ],
+      "stage_clears": [
+        {
+          "scenario_order": 0,
+          "scenario": "A.59 対照",
+          "stage_order": 1,
+          "stage_id": "tower",
+          "stage": "星晶の塔",
+          "cleared": 57
+        },
+        {
+          "scenario_order": 0,
+          "scenario": "A.59 対照",
+          "stage_order": 2,
+          "stage_id": "snowfield",
+          "stage": "霜降り雪原",
+          "cleared": 46
+        },
+        {
+          "scenario_order": 0,
+          "scenario": "A.59 対照",
+          "stage_order": 3,
+          "stage_id": "thunder_ruins",
+          "stage": "雷鳴遺跡",
+          "cleared": 22
+        },
+        {
+          "scenario_order": 0,
+          "scenario": "A.59 対照",
+          "stage_order": 4,
+          "stage_id": "prism_sanctuary",
+          "stage": "虹晶聖域",
+          "cleared": 0
+        },
+        {
+          "scenario_order": 1,
+          "scenario": "通常EXP +15%",
+          "stage_order": 1,
+          "stage_id": "tower",
+          "stage": "星晶の塔",
+          "cleared": 63
+        },
+        {
+          "scenario_order": 1,
+          "scenario": "通常EXP +15%",
+          "stage_order": 2,
+          "stage_id": "snowfield",
+          "stage": "霜降り雪原",
+          "cleared": 53
+        },
+        {
+          "scenario_order": 1,
+          "scenario": "通常EXP +15%",
+          "stage_order": 3,
+          "stage_id": "thunder_ruins",
+          "stage": "雷鳴遺跡",
+          "cleared": 27
+        },
+        {
+          "scenario_order": 1,
+          "scenario": "通常EXP +15%",
+          "stage_order": 4,
+          "stage_id": "prism_sanctuary",
+          "stage": "虹晶聖域",
+          "cleared": 0
+        },
+        {
+          "scenario_order": 2,
+          "scenario": "対象ボスHP +25%",
+          "stage_order": 1,
+          "stage_id": "tower",
+          "stage": "星晶の塔",
+          "cleared": 81
+        },
+        {
+          "scenario_order": 2,
+          "scenario": "対象ボスHP +25%",
+          "stage_order": 2,
+          "stage_id": "snowfield",
+          "stage": "霜降り雪原",
+          "cleared": 70
+        },
+        {
+          "scenario_order": 2,
+          "scenario": "対象ボスHP +25%",
+          "stage_order": 3,
+          "stage_id": "thunder_ruins",
+          "stage": "雷鳴遺跡",
+          "cleared": 33
+        },
+        {
+          "scenario_order": 2,
+          "scenario": "対象ボスHP +25%",
+          "stage_order": 4,
+          "stage_id": "prism_sanctuary",
+          "stage": "虹晶聖域",
+          "cleared": 0
+        },
+        {
+          "scenario_order": 3,
+          "scenario": "ボス敗北EXP 10%",
+          "stage_order": 1,
+          "stage_id": "tower",
+          "stage": "星晶の塔",
+          "cleared": 75
+        },
+        {
+          "scenario_order": 3,
+          "scenario": "ボス敗北EXP 10%",
+          "stage_order": 2,
+          "stage_id": "snowfield",
+          "stage": "霜降り雪原",
+          "cleared": 66
+        },
+        {
+          "scenario_order": 3,
+          "scenario": "ボス敗北EXP 10%",
+          "stage_order": 3,
+          "stage_id": "thunder_ruins",
+          "stage": "雷鳴遺跡",
+          "cleared": 32
+        },
+        {
+          "scenario_order": 3,
+          "scenario": "ボス敗北EXP 10%",
+          "stage_order": 4,
+          "stage_id": "prism_sanctuary",
+          "stage": "虹晶聖域",
+          "cleared": 0
+        },
+        {
+          "scenario_order": 4,
+          "scenario": "攻撃優先・緊急回復30%",
+          "stage_order": 1,
+          "stage_id": "tower",
+          "stage": "星晶の塔",
+          "cleared": 53
+        },
+        {
+          "scenario_order": 4,
+          "scenario": "攻撃優先・緊急回復30%",
+          "stage_order": 2,
+          "stage_id": "snowfield",
+          "stage": "霜降り雪原",
+          "cleared": 39
+        },
+        {
+          "scenario_order": 4,
+          "scenario": "攻撃優先・緊急回復30%",
+          "stage_order": 3,
+          "stage_id": "thunder_ruins",
+          "stage": "雷鳴遺跡",
+          "cleared": 20
+        },
+        {
+          "scenario_order": 4,
+          "scenario": "攻撃優先・緊急回復30%",
+          "stage_order": 4,
+          "stage_id": "prism_sanctuary",
+          "stage": "虹晶聖域",
+          "cleared": 0
+        }
+      ]
+    },
+    "accessIssues": []
+  },
+  "sources": [
+    {
+      "id": "candidate_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_csv_auto('docs/audits/v8.6-A.60-rush-progression-decision/candidate-comparison.csv', header = true);",
+        "description": "4候補のゲート、主要指標、停止数。",
+        "executed_at": "2026-08-17T01:39:38.570Z"
+      }
+    },
+    {
+      "id": "stage_source",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_csv_auto('docs/audits/v8.6-A.60-rush-progression-decision/rush-stage-clears.csv', header = true);",
+        "description": "対照と4候補の速攻型100周における対象4地域突破数。",
+        "executed_at": "2026-08-17T01:39:38.570Z"
+      }
+    }
+  ],
+  "package_info": {
+    "originUrl": "artifact://monster-links/8.6-A.60/rush-progression-decision",
+    "controls": {
+      "edit": false,
+      "refresh": false
+    }
+  }
+}

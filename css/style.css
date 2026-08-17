@@ -17900,3 +17900,117 @@ body .fourFusionTreeHeadV1{
   background:#f3f7f9!important;
   box-shadow:none!important;
 }
+
+/* v8.6-A.60: evidence-led fusion route guide for the first late-game wall. */
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860{
+  position:relative;
+  display:grid;
+  grid-template-columns:58px minmax(0,1fr) auto;
+  gap:13px;
+  align-items:center;
+  overflow:hidden;
+  padding:14px 15px;
+  border:1px solid #d4dee5;
+  border-radius:17px;
+  color:var(--atlas-ink);
+  background:linear-gradient(145deg,#fffdf7,#f4f9fc);
+  box-shadow:0 6px 16px rgba(45,82,105,.13);
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860:before{
+  position:absolute;
+  top:0;
+  right:0;
+  left:0;
+  height:4px;
+  content:"";
+  background:linear-gradient(90deg,var(--atlas-blue-deep),var(--atlas-blue),#6fc3ef);
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressIconV860{
+  display:grid;
+  width:54px;
+  height:54px;
+  place-items:center;
+  border:3px solid #fff;
+  border-radius:50%;
+  color:#fff;
+  background:linear-gradient(145deg,#3d9be8,#15549d);
+  box-shadow:0 0 0 2px #2b80c7,0 5px 11px rgba(36,105,164,.22);
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressIconSvgV860{
+  width:28px;
+  height:28px;
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 > div{
+  min-width:0;
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 small{
+  display:block;
+  margin-bottom:3px;
+  color:var(--atlas-blue-accessible);
+  font-size:11px;
+  font-weight:1000;
+  letter-spacing:.08em;
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 > div > b{
+  display:block;
+  color:var(--atlas-ink);
+  font-size:16px;
+  line-height:1.35;
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 p{
+  margin:4px 0 0;
+  color:var(--atlas-muted);
+  font-size:13px;
+  line-height:1.55;
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 > button{
+  display:flex;
+  min-width:154px;
+  min-height:48px;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:10px 14px;
+  border:1px solid #b13d2e;
+  border-radius:13px;
+  color:#fff;
+  background:linear-gradient(180deg,#ff8069,#ea5a43 64%,#c94634);
+  box-shadow:inset 0 1px rgba(255,255,255,.45),0 4px 9px rgba(170,66,49,.2);
+  font-size:13px;
+  font-weight:1000;
+  text-shadow:none;
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 > button > b{
+  color:#fff;
+  font-size:24px;
+  line-height:1;
+}
+#app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 > button:focus-visible{
+  outline:3px solid var(--atlas-blue-deep);
+  outline-offset:2px;
+  box-shadow:0 0 0 2px #fff,0 4px 9px rgba(170,66,49,.2);
+}
+@media(max-width:600px){
+  #app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860{
+    grid-template-columns:48px minmax(0,1fr);
+    gap:10px;
+    padding:13px 12px 12px;
+    border-radius:15px;
+  }
+  #app.atlasUiV857[data-view="stage"] .fusionProgressIconV860{
+    width:44px;
+    height:44px;
+  }
+  #app.atlasUiV857[data-view="stage"] .fusionProgressIconSvgV860{
+    width:23px;
+    height:23px;
+  }
+  #app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 > div > b{
+    font-size:15px;
+  }
+  #app.atlasUiV857[data-view="stage"] .fusionProgressGuideV860 > button{
+    grid-column:1/-1;
+    width:100%;
+    min-width:0;
+  }
+}
