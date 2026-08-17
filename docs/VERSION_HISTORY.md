@@ -1,5 +1,16 @@
 # Version History
 
+## v8.6-A.66 Approved monster style reset — batch 1
+
+- Rebuilt Phoenix Drake and Eclipse Wolf around the approved classic hand-drawn monster direction.
+- Expressed S-rank status through Phoenix Drake's scale, great wings, and mass while keeping A-rank Eclipse Wolf to one crescent identifier and a grounded silhouette.
+- Removed gem, neon, armor, and particle-heavy visual language from this pair.
+- Kept all slime-family art unchanged.
+- Replaced only the two existing production PNGs while preserving monster IDs, ranks, stats, recipes, progression, rewards, stages, and battle balance.
+- Added true-alpha 1024 x 1024 assets and archived the v8.6-A.65 originals for rollback.
+- Preserved save schema 1 and every existing save/storage key.
+- Updated PWA/cache version to v8.6-A.66.
+
 ## v8.6-A.65 Responsive display repair
 
 - Repaired contrast regressions where Atlas light-theme text colors were applied over legacy dark modal panels.

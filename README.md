@@ -1,6 +1,17 @@
-# Monster Links v8.6-A.65
+# Monster Links v8.6-A.66
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.66 update
+
+- Rebuilt Phoenix Drake and Eclipse Wolf around the user-approved classic hand-drawn monster direction.
+- Made the S/A-rank hierarchy explicit: Phoenix Drake uses scale, great wings, and mass, while Eclipse Wolf is limited to one crescent motif and a grounded silhouette.
+- Removed the recent gem, neon, armor, and particle-heavy visual language from this approved pair.
+- Kept every slime-family monster unchanged and preserved both monster IDs, ranks, stats, recipes, stages, progression, rewards, and battle balance.
+- Added true-alpha 1024 x 1024 production art and archived the v8.6-A.65 originals for rollback.
+- Updated the responsive [monster style and rank comparison](docs/design/style-reference-reset-preview/index.html) to the production assets.
+- Preserved save schema 1 and all existing save/storage keys.
+- Updated PWA/cache version to v8.6-A.66.
 
 ## v8.6-A.65 update
 
@@ -181,7 +192,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.65 responsive display repair
+v8.6-A.66 approved monster style reset — batch 1
 ```
 
 ## v8.6-A.49 update
