@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "html": "docs/audits/v8.6-A.60-rush-progression-decision/report.html",
+  "stages": {
+    "validation": "passed",
+    "package": "passed",
+    "verification": "passed"
+  },
+  "counts": {
+    "blocks": 5,
+    "charts": 1,
+    "html": 0,
+    "metrics": 0,
+    "tables": 0
+  },
+  "sourceDialog": "passed",
+  "sourceInteraction": "keyboard_menu_semantic_click",
+  "viewports": [
+    1440,
+    390
+  ],
+  "timings": {
+    "validateAndPackageMs": 2518.1,
+    "staticChartExtractionMs": 2424.3,
+    "browserRunMs": 1550.6,
+    "readerReadyMs": 233.8,
+    "contentChecksMs": 32.1,
+    "sourceDialogMs": 31.9,
+    "responsiveChecksMs": 32.1,
+    "verificationMs": 1566.4,
+    "totalMs": 4099.4
+  }
+}

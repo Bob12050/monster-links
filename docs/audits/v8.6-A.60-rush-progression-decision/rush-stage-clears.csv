@@ -1,0 +1,21 @@
+scenario_order,scenario,stage_order,stage_id,stage,cleared
+0,A.59 対照,1,tower,星晶の塔,57
+0,A.59 対照,2,snowfield,霜降り雪原,46
+0,A.59 対照,3,thunder_ruins,雷鳴遺跡,22
+0,A.59 対照,4,prism_sanctuary,虹晶聖域,0
+1,通常EXP +15%,1,tower,星晶の塔,63
+1,通常EXP +15%,2,snowfield,霜降り雪原,53
+1,通常EXP +15%,3,thunder_ruins,雷鳴遺跡,27
+1,通常EXP +15%,4,prism_sanctuary,虹晶聖域,0
+2,対象ボスHP +25%,1,tower,星晶の塔,81
+2,対象ボスHP +25%,2,snowfield,霜降り雪原,70
+2,対象ボスHP +25%,3,thunder_ruins,雷鳴遺跡,33
+2,対象ボスHP +25%,4,prism_sanctuary,虹晶聖域,0
+3,ボス敗北EXP 10%,1,tower,星晶の塔,75
+3,ボス敗北EXP 10%,2,snowfield,霜降り雪原,66
+3,ボス敗北EXP 10%,3,thunder_ruins,雷鳴遺跡,32
+3,ボス敗北EXP 10%,4,prism_sanctuary,虹晶聖域,0
+4,攻撃優先・緊急回復30%,1,tower,星晶の塔,53
+4,攻撃優先・緊急回復30%,2,snowfield,霜降り雪原,39
+4,攻撃優先・緊急回復30%,3,thunder_ruins,雷鳴遺跡,20
+4,攻撃優先・緊急回復30%,4,prism_sanctuary,虹晶聖域,0

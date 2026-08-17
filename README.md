@@ -1,6 +1,14 @@
-# Monster Links v8.6-A.59
+# Monster Links v8.6-A.60
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.60 update
+
+- Added a contextual fusion route guide from the Adventure screen when a player reaches the Star Crystal Tower without fusing, with a second preparation prompt at the Prism Sanctuary.
+- Rejected all four rush-progression balance treatments after paired 300-campaign screening; enemy stats, EXP, defeat rewards, and auto-battle policy remain unchanged.
+- Preserved save schema 1, save keys, all content IDs, recipes, rewards, and battle entry contracts.
+- Added a reproducible [rush-progression decision report](docs/audits/v8.6-A.60-rush-progression-decision/report.html) with the four evaluation receipts and responsive PC/390px HTML.
+- Updated PWA/cache version to v8.6-A.60.
 
 ## v8.6-A.59 update
 
@@ -128,7 +136,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.59 Sky Ruins boss HP tuning
+v8.6-A.60 Fusion route guidance
 ```
 
 ## v8.6-A.49 update

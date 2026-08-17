@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "toolVersion": "1.0.0",
+  "generatedAt": "2026-08-17T00:51:44.980Z",
+  "phase": "discovery",
+  "passed": false,
+  "decision": "reject-or-test-next-arm",
+  "baseline": {
+    "path": ".audit-runs/v860-discovery/control",
+    "gameVersion": "8.6-A.59",
+    "gitRevision": "2f1666b69f1e10f42ca7fe2738998f3fab64fa31",
+    "sourceHash": "e4f13e125e026f51e5b47926f70d58fda2c7b0807f01db6fee956c20fb96970d",
+    "toolSourceHash": "4cb3926dda9b04f27f0da3480dbfce2637778ce75433bd4ca998a8b2c8cd3074",
+    "scenarioHash": "bebc5fd85a44e3abe58115fe0ad4bad6d3c97225d37b1b6fe33661d5f9818e4c",
+    "runSignature": "eb652fed19f18bf2e2a09f1a0a19a40f1e8b20d4c0e0e76c3a258cba0ae21706"
+  },
+  "candidate": {
+    "path": ".audit-runs/v860-discovery/boss-defeat-exp-10",
+    "id": "boss-defeat-exp-10",
+    "gameVersion": "8.6-A.59",
+    "gitRevision": "2f1666b69f1e10f42ca7fe2738998f3fab64fa31",
+    "sourceHash": "e4f13e125e026f51e5b47926f70d58fda2c7b0807f01db6fee956c20fb96970d",
+    "toolSourceHash": "4cb3926dda9b04f27f0da3480dbfce2637778ce75433bd4ca998a8b2c8cd3074",
+    "scenarioHash": "8e12e1928fbac003c7476d165942566f9d41850df164f425d0f29d5e15975642",
+    "runSignature": "742fe5cfd925c9b496bdd3eb3f3580f5312564fce591556f66420941dd16e56f"
+  },
+  "pairing": {
+    "campaignPairs": 300,
+    "stagePairs": 3900,
+    "profiles": {
+      "rush": 100,
+      "balanced": 100,
+      "collector": 100
+    },
+    "seed": 86000,
+    "preTreatment": {
+      "passed": true,
+      "priorStagePairs": 1200,
+      "targetEntryPairs": 300,
+      "mismatches": []
+    },
+    "bootstrapIterations": 20000,
+    "bootstrapSeed": "rush-prism-discovery"
+  },
+  "metrics": {
+    "rushPrism": {
+      "baselineCleared": 0,
+      "candidateCleared": 0,
+      "delta": 0,
+      "bootstrap95": {
+        "low": 0,
+        "high": 0
+      },
+      "improved": 0,
+      "regressed": 0,
+      "mcnemarExactTwoSidedP": 1
+    },
+    "campaign": {
+      "baseline": {
+        "campaigns": 300,
+        "completed": 132,
+        "completion_rate": 0.44,
+        "p90_battles": 928.2,
+        "stalled_campaigns": 8,
+        "guard_loop_campaign_rate": 0
+      },
+      "candidate": {
+        "campaigns": 300,
+        "completed": 129,
+        "completion_rate": 0.43,
+        "p90_battles": 898.3,
+        "stalled_campaigns": 14,
+        "guard_loop_campaign_rate": 0
+      }
+    },
+    "profiles": {
+      "rush": {
+        "baseline": {
+          "campaigns": 100,
+          "completed": 0,
+          "rate": 0
+        },
+        "candidate": {
+          "campaigns": 100,
+          "completed": 0,
+          "rate": 0
+        }
+      },
+      "balanced": {
+        "baseline": {
+          "campaigns": 100,
+          "completed": 61,
+          "rate": 0.61
+        },
+        "candidate": {
+          "campaigns": 100,
+          "completed": 61,
+          "rate": 0.61
+        }
+      },
+      "collector": {
+        "baseline": {
+          "campaigns": 100,
+          "completed": 71,
+          "rate": 0.71
+        },
+        "candidate": {
+          "campaigns": 100,
+          "completed": 68,
+          "rate": 0.68
+        }
+      }
+    },
+    "targetStages": {
+      "tower": {
+        "baseline": {
+          "rows": 300,
+          "reached": 300,
+          "cleared": 257,
+          "clearRate": 0.8566666666666667,
+          "conditionalClearRate": 0.8566666666666667,
+          "firstTry": 2,
+          "firstTryRate": 0.006666666666666667,
+          "stalls": 0
+        },
+        "candidate": {
+          "rows": 300,
+          "reached": 300,
+          "cleared": 275,
+          "clearRate": 0.9166666666666666,
+          "conditionalClearRate": 0.9166666666666666,
+          "firstTry": 2,
+          "firstTryRate": 0.006666666666666667,
+          "stalls": 0
+        },
+        "rushBaseline": {
+          "rows": 100,
+          "reached": 100,
+          "cleared": 57,
+          "clearRate": 0.57,
+          "conditionalClearRate": 0.57,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        },
+        "rushCandidate": {
+          "rows": 100,
+          "reached": 100,
+          "cleared": 75,
+          "clearRate": 0.75,
+          "conditionalClearRate": 0.75,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        }
+      },
+      "snowfield": {
+        "baseline": {
+          "rows": 300,
+          "reached": 257,
+          "cleared": 246,
+          "clearRate": 0.82,
+          "conditionalClearRate": 0.9571984435797666,
+          "firstTry": 7,
+          "firstTryRate": 0.027237354085603113,
+          "stalls": 0
+        },
+        "candidate": {
+          "rows": 300,
+          "reached": 275,
+          "cleared": 266,
+          "clearRate": 0.8866666666666667,
+          "conditionalClearRate": 0.9672727272727273,
+          "firstTry": 9,
+          "firstTryRate": 0.03272727272727273,
+          "stalls": 0
+        },
+        "rushBaseline": {
+          "rows": 100,
+          "reached": 57,
+          "cleared": 46,
+          "clearRate": 0.46,
+          "conditionalClearRate": 0.8070175438596491,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        },
+        "rushCandidate": {
+          "rows": 100,
+          "reached": 75,
+          "cleared": 66,
+          "clearRate": 0.66,
+          "conditionalClearRate": 0.88,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        }
+      },
+      "thunder_ruins": {
+        "baseline": {
+          "rows": 300,
+          "reached": 246,
+          "cleared": 222,
+          "clearRate": 0.74,
+          "conditionalClearRate": 0.9024390243902439,
+          "firstTry": 11,
+          "firstTryRate": 0.044715447154471545,
+          "stalls": 0
+        },
+        "candidate": {
+          "rows": 300,
+          "reached": 266,
+          "cleared": 232,
+          "clearRate": 0.7733333333333333,
+          "conditionalClearRate": 0.8721804511278195,
+          "firstTry": 10,
+          "firstTryRate": 0.03759398496240601,
+          "stalls": 0
+        },
+        "rushBaseline": {
+          "rows": 100,
+          "reached": 46,
+          "cleared": 22,
+          "clearRate": 0.22,
+          "conditionalClearRate": 0.4782608695652174,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        },
+        "rushCandidate": {
+          "rows": 100,
+          "reached": 66,
+          "cleared": 32,
+          "clearRate": 0.32,
+          "conditionalClearRate": 0.48484848484848486,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        }
+      },
+      "prism_sanctuary": {
+        "baseline": {
+          "rows": 300,
+          "reached": 222,
+          "cleared": 196,
+          "clearRate": 0.6533333333333333,
+          "conditionalClearRate": 0.8828828828828829,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        },
+        "candidate": {
+          "rows": 300,
+          "reached": 232,
+          "cleared": 195,
+          "clearRate": 0.65,
+          "conditionalClearRate": 0.8405172413793104,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        },
+        "rushBaseline": {
+          "rows": 100,
+          "reached": 22,
+          "cleared": 0,
+          "clearRate": 0,
+          "conditionalClearRate": 0,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        },
+        "rushCandidate": {
+          "rows": 100,
+          "reached": 32,
+          "cleared": 0,
+          "clearRate": 0,
+          "conditionalClearRate": 0,
+          "firstTry": 0,
+          "firstTryRate": 0,
+          "stalls": 0
+        }
+      }
+    }
+  },
+  "gates": [
+    {
+      "id": "validation-and-pairing",
+      "passed": true,
+      "detail": "300 campaign pairs / 3900 stage pairs; pre-treatment mismatches=0"
+    },
+    {
+      "id": "rush-prism-effect",
+      "passed": false,
+      "detail": "delta=0pt, bootstrap95%=[0, 0]pt"
+    },
+    {
+      "id": "rush-tower-noninferiority",
+      "passed": true,
+      "detail": "57% -> 75% (floor 54%)"
+    },
+    {
+      "id": "balanced-completion-noninferiority",
+      "passed": true,
+      "detail": "61% -> 61%"
+    },
+    {
+      "id": "collector-completion-noninferiority",
+      "passed": true,
+      "detail": "71% -> 68%"
+    },
+    {
+      "id": "campaign-p90",
+      "passed": true,
+      "detail": "928.2 -> 898.3; max=956"
+    },
+    {
+      "id": "campaign-stalls",
+      "passed": false,
+      "detail": "8 -> 14; max=10"
+    },
+    {
+      "id": "auto-guard",
+      "passed": true,
+      "detail": "guard-loop=0%, max-streak=1"
+    },
+    {
+      "id": "target-first-try-envelope",
+      "passed": true,
+      "detail": "max target-stage first-try=3.76% (max 25%)"
+    }
+  ],
+  "caveats": [
+    "These are capped seeded bot campaigns, not real-user completion probabilities.",
+    "Rush prism clear is the primary midgame outcome; full campaign completion remains diagnostic because later rush stages were previously unobserved.",
+    "Only one passing discovery arm may proceed to the distinct-seed holdout."
+  ]
+}

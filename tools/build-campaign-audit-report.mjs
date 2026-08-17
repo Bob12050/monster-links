@@ -41,6 +41,12 @@ function buildLocalizedResponsiveReport(artifact,options){
   const css = `<style id="monster-links-report-viewport-fix">
 .analytics-top-bar{width:100%!important;margin-right:0!important;margin-left:0!important}
 @media(max-width:480px){
+  main,section,article,[data-block-id]{min-width:0!important;max-width:100%!important}
+  table{display:block!important;width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch}
+  .recharts-responsive-container,.recharts-wrapper,.recharts-surface{min-width:0!important;max-width:100%!important}
+  .chart-frame,.chart-body-measure,.chart-legend-wrap,.recharts-legend-wrapper{min-width:0!important;width:100%!important;max-width:100%!important;overflow:visible!important}
+  .recharts-default-legend{position:static!important;display:flex!important;width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;flex-wrap:wrap!important;justify-content:center!important;gap:.25rem .5rem!important}
+  .recharts-legend-item{margin-right:0!important}
   .metric-badge-row{flex-wrap:wrap!important;overflow:visible!important}
   .chip.metric-badge{flex:0 0 auto!important;overflow:visible!important}
   .metric-badge-label{overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important}
