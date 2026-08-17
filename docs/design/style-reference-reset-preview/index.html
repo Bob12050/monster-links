@@ -22,7 +22,7 @@
         linear-gradient(#76c9ef, #d8f3ff 45%, #f7fbff);
     }
     main {
-      width: min(100%, 760px);
+      width: min(100%, 980px);
       margin: 0 auto;
     }
     header, .card, .note {
@@ -44,8 +44,12 @@
     }
     h1 { margin: 0; font-size: clamp(23px, 7vw, 34px); line-height: 1.25; }
     header p { margin: 9px 0 0; font-weight: 700; line-height: 1.6; }
-    .card {
+    .compare-grid {
+      display: grid;
+      gap: 14px;
       margin-top: 14px;
+    }
+    .card {
       padding: 12px;
       border-radius: 28px;
     }
@@ -59,10 +63,11 @@
       margin: 3px 0 10px 4px;
       border-radius: 999px;
       color: #fff;
-      background: #6f43a9;
       font-weight: 1000;
       box-shadow: inset 0 -3px 0 rgba(0,0,0,.18);
     }
+    .rank-s { background: #b9442d; }
+    .rank-a { background: #6250a6; }
     img {
       display: block;
       width: 100%;
@@ -74,6 +79,15 @@
       padding: 14px 8px 6px;
       font-size: 18px;
       font-weight: 900;
+      text-align: center;
+    }
+    .tier-note {
+      min-height: 3.2em;
+      margin: 0 8px 4px;
+      color: #486781;
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.55;
       text-align: center;
     }
     .open {
@@ -106,6 +120,9 @@
       color: #6a4710;
       font-weight: 900;
     }
+    @media (min-width: 780px) {
+      .compare-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
   </style>
 </head>
 <body>
@@ -113,16 +130,29 @@
     <header>
       <p class="eyebrow">STYLE RESET / REVIEW ONLY</p>
       <h1>モンスター絵柄 再基準案</h1>
-      <p>参考画像の「手描き感・分かりやすい輪郭・表情のある魔物」へ戻した、虫ではない再試作です。</p>
+      <p>参考画像の「手描き感・分かりやすい輪郭・表情のある魔物」を、S・Aランクへ展開した比較案です。</p>
     </header>
 
-    <section class="card" aria-labelledby="monster-name">
-      <span class="rank">S</span>
-      <figure>
-        <img src="./phoenixdrake-direction.png?v=preview-2" width="1254" height="1254" alt="赤い竜の体、炎のような大翼と鳥のくちばしを持つフェニックスドレイク再基準案">
-        <figcaption id="monster-name">フェニックスドレイク</figcaption>
-      </figure>
-      <a class="open" href="./phoenixdrake-direction.png?v=preview-2">画像だけを大きく表示</a>
+    <section class="compare-grid" aria-label="SランクとAランクの絵柄比較">
+      <article class="card" aria-labelledby="phoenix-name">
+        <span class="rank rank-s">S</span>
+        <figure>
+          <img src="./phoenixdrake-direction-v2.png?v=preview-3" width="1254" height="1254" alt="赤い竜の体と大きな炎の翼を持つSランクのフェニックスドレイク調整案">
+          <figcaption id="phoenix-name">フェニックスドレイク</figcaption>
+        </figure>
+        <p class="tier-note">大翼・大きな体格・炎の頭飾りで、Sランクの格を表現。</p>
+        <a class="open" href="./phoenixdrake-direction-v2.png?v=preview-3">Sランク画像を大きく表示</a>
+      </article>
+
+      <article class="card" aria-labelledby="wolf-name">
+        <span class="rank rank-a">A</span>
+        <figure>
+          <img src="./eclipsewolf-direction.png?v=preview-3" width="1254" height="1254" alt="黒い毛並みと三日月模様の尾を持つAランクのエクリプスウルフ案">
+          <figcaption id="wolf-name">エクリプスウルフ</figcaption>
+        </figure>
+        <p class="tier-note">月の印と尾だけに特徴を絞り、Sランクより装飾と規模を抑制。</p>
+        <a class="open" href="./eclipsewolf-direction.png?v=preview-3">Aランク画像を大きく表示</a>
+      </article>
     </section>
 
     <section class="note">
@@ -132,6 +162,7 @@
         <li>細部より、ひと目で分かる体型と表情</li>
         <li>発光・宝石・装甲・エフェクトを控えめに</li>
         <li>Sランクの強さは、宝石や発光ではなく大翼・体格・姿勢で表現</li>
+        <li>Aランクはモチーフを1つに絞り、Sランクより明確に簡素化</li>
         <li>昆虫らしさ、機械装甲、細かな鱗の描き込みは使わない</li>
       </ul>
       <p class="status">確認用のみ。ゲームにはまだ反映していません。</p>
