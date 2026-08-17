@@ -1,6 +1,15 @@
-# Monster Links v8.6-A.62
+# Monster Links v8.6-A.63
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.63 update
+
+- Rebuilt Void Dragon, Omega Frame, and Aurora Nya as a mature void dragon, ancient living machine guardian, and predatory aurora lynx.
+- Preserved every slime-family monster and all monster IDs, ranks, stats, recipes, progression, rewards, stages, and battle balance.
+- Added true-alpha 1024 x 1024 production art and archived the v8.6-A.62 originals for rollback.
+- Added a responsive [high-rank batch 3 production-art gallery](docs/design/v8.6-A.63-high-rank-batch3/index.html).
+- Preserved save schema 1 and all existing save/storage keys.
+- Updated PWA/cache version to v8.6-A.63.
 
 ## v8.6-A.62 update
 
@@ -153,7 +162,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.62 S-rank monster art renewal — batch 2
+v8.6-A.63 high-rank monster art renewal — batch 3
 ```
 
 ## v8.6-A.49 update

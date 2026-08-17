@@ -1,5 +1,14 @@
 # Version History
 
+## v8.6-A.63 High-rank monster art renewal — batch 3
+
+- Rebuilt Void Dragon, Omega Frame, and Aurora Nya as a mature void dragon, ancient living machine guardian, and predatory aurora lynx.
+- Kept all slime-family art unchanged.
+- Replaced only the three existing production PNGs while preserving monster IDs, ranks, stats, recipes, progression, rewards, stages, and battle balance.
+- Added true-alpha 1024 x 1024 assets with mobile-safe padding and archived the v8.6-A.62 originals for rollback.
+- Preserved save schema 1 and every existing save/storage key.
+- Updated PWA/cache version to v8.6-A.63.
+
 ## v8.6-A.62 S-rank monster art renewal — batch 2
 
 - Rebuilt Prism Dragon, Abyss Levia, and Celestial Seraph as mature organic S-rank monsters with distinct rainbow-crystal, deep-sea, and sacred-beast silhouettes.

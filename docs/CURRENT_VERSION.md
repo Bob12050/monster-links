@@ -1,3 +1,15 @@
+v8.6-A.63 high-rank monster art renewal — batch 3
+GAME_VERSION to 8.6-A.63
+
+Main changes:
+- Rebuilt Void Dragon, Omega Frame, and Aurora Nya with distinct organic-void, living-machine, and aurora-lynx silhouettes.
+- Kept every slime-family monster unchanged.
+- Replaced only the three existing image files; monster IDs, ranks, stats, recipes, progression, rewards, stages, and battle balance are unchanged.
+- Added real-alpha 1024 x 1024 assets with square-safe padding and preserved the v8.6-A.62 art in a rollback directory.
+- Preserved save schema 1, save keys, and all content IDs.
+- Updated PWA/cache version to v8.6-A.63.
+---
+
 v8.6-A.62 S-rank monster art renewal — batch 2
 GAME_VERSION to 8.6-A.62
 
