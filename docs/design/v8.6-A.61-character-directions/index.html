@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#102b49">
+  <title>Monster Links キャラクター刷新 3案</title>
+  <style>
+    :root{
+      color-scheme:light;
+      --ink:#183a5b;
+      --muted:#5e7488;
+      --blue:#1773c7;
+      --paper:#fffdf7;
+      --line:#d4e0e8;
+      --sky:#dff3ff;
+    }
+    *{box-sizing:border-box}
+    html{background:#bfe7fb}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 12% 0,rgba(255,255,255,.9),transparent 27rem),
+        linear-gradient(180deg,#91d5f6 0,#eaf7fc 24rem,#f5f2e9 100%);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+    }
+    header{
+      padding:max(24px,env(safe-area-inset-top)) 18px 22px;
+      text-align:center;
+    }
+    header small{
+      display:block;
+      margin-bottom:7px;
+      color:#155b91;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.15em;
+    }
+    h1{margin:0;font-size:clamp(25px,7vw,42px);line-height:1.18}
+    header p{max-width:680px;margin:12px auto 0;color:#35566f;font-size:14px;line-height:1.7}
+    main{width:min(1120px,100%);margin:0 auto;padding:0 12px 44px}
+    .notice{
+      margin:0 auto 16px;
+      padding:12px 15px;
+      border:1px solid rgba(26,105,161,.24);
+      border-radius:15px;
+      background:rgba(255,255,255,.8);
+      box-shadow:0 5px 15px rgba(43,95,124,.1);
+      font-size:13px;
+      font-weight:700;
+      line-height:1.6;
+      text-align:center;
+    }
+    .grid{display:grid;gap:18px}
+    article{
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:var(--paper);
+      box-shadow:0 12px 28px rgba(37,76,104,.17);
+    }
+    .label{
+      display:flex;
+      min-height:55px;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 15px;
+      border-bottom:1px solid var(--line);
+    }
+    .label b{font-size:19px}
+    .label span{color:var(--muted);font-size:12px;font-weight:700}
+    figure{margin:0;background:#eef6fb}
+    img{display:block;width:100%;height:auto}
+    .open{
+      display:flex;
+      min-height:48px;
+      align-items:center;
+      justify-content:center;
+      color:var(--blue);
+      font-size:14px;
+      font-weight:900;
+      text-decoration:none;
+    }
+    .open:focus-visible{outline:3px solid #15549d;outline-offset:-4px}
+    footer{padding:0 18px max(24px,env(safe-area-inset-bottom));color:#527086;font-size:12px;line-height:1.6;text-align:center}
+    @media(min-width:860px){
+      main{padding-right:22px;padding-left:22px}
+      .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      article{border-radius:18px}
+      .label{min-height:60px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <small>MONSTER LINKS / CHARACTER REFRESH</small>
+    <h1>強キャラクター刷新 3案</h1>
+    <p>同じ3体を異なる方向で描き分けています。画像を押すと大きく確認できます。</p>
+  </header>
+  <main>
+    <p class="notice">ぷるミンを含むスライム系の見た目は変更しません。</p>
+    <div class="grid">
+      <article>
+        <div class="label"><b>案 1</b><span>ゼニス / デモン / オメガ</span></div>
+        <figure><a href="direction-1.webp"><img src="direction-1.webp" alt="キャラクター刷新案1。白金の竜、紫黒の魔王、青いコアを持つ古代機械" fetchpriority="high"></a></figure>
+        <a class="open" href="direction-1.webp">画像だけを大きく開く</a>
+      </article>
+      <article>
+        <div class="label"><b>案 2</b><span>ゼニス / デモン / オメガ</span></div>
+        <figure><a href="direction-2.webp"><img src="direction-2.webp" alt="キャラクター刷新案2。神話的な白金の竜、魔王、古代機械" loading="lazy"></a></figure>
+        <a class="open" href="direction-2.webp">画像だけを大きく開く</a>
+      </article>
+      <article>
+        <div class="label"><b>案 3</b><span>ゼニス / デモン / オメガ</span></div>
+        <figure><a href="direction-3.webp"><img src="direction-3.webp" alt="キャラクター刷新案3。立体的な白金の竜、魔王、古代機械" loading="lazy"></a></figure>
+        <a class="open" href="direction-3.webp">画像だけを大きく開く</a>
+      </article>
+    </div>
+  </main>
+  <footer>選ぶときは「1」「2」「3」の番号だけで大丈夫です。</footer>
+</body>
+</html>
