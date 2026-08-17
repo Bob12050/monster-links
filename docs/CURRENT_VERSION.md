@@ -1,3 +1,16 @@
+v8.6-A.64 rank-aware monster art renewal — batch 4
+GAME_VERSION to 8.6-A.64
+
+Main changes:
+- Rebuilt Chaos Wyrm as the S-rank anchor and rebuilt Pearl Seraph and Venom Hydra as clearly subordinate A-rank monsters.
+- Limited the A-rank designs to one dominant signature each and tied this batch's displayed scale to the existing size fields (900 / 820 / 760px maximum foreground).
+- Kept every slime-family monster unchanged.
+- Replaced only the three existing image files; monster IDs, ranks, stats, recipes, progression, rewards, stages, and battle balance are unchanged.
+- Added real-alpha 1024 x 1024 assets and preserved the v8.6-A.63 art in a rollback directory.
+- Preserved save schema 1, save keys, and all content IDs.
+- Updated PWA/cache version to v8.6-A.64.
+---
+
 v8.6-A.63 high-rank monster art renewal — batch 3
 GAME_VERSION to 8.6-A.63
 

@@ -1,5 +1,15 @@
 # Version History
 
+## v8.6-A.64 Rank-aware monster art renewal — batch 4
+
+- Rebuilt Chaos Wyrm, Pearl Seraph, and Venom Hydra with an explicit S/A-rank visual hierarchy.
+- Used multiple legendary signatures and the largest silhouette for the S-rank monster, while limiting each A-rank monster to one major identifier and a smaller canvas footprint.
+- Kept all slime-family art unchanged.
+- Replaced only the three existing production PNGs while preserving monster IDs, ranks, stats, recipes, progression, rewards, stages, and battle balance.
+- Added true-alpha 1024 x 1024 assets and archived the v8.6-A.63 originals for rollback.
+- Preserved save schema 1 and every existing save/storage key.
+- Updated PWA/cache version to v8.6-A.64.
+
 ## v8.6-A.63 High-rank monster art renewal — batch 3
 
 - Rebuilt Void Dragon, Omega Frame, and Aurora Nya as a mature void dragon, ancient living machine guardian, and predatory aurora lynx.
