@@ -1,5 +1,17 @@
 # Version History
 
+## v8.6-A.67 Approved monster style reset — batch 2
+
+- Rebuilt Demon Lord and Doom Gazer around the approved classic hand-drawn monster direction.
+- Kept S-rank Demon Lord visibly above A-rank Doom Gazer through larger body mass, great curled horns, broad wings, and a third eye.
+- Strengthened Doom Gazer to an upper A-rank silhouette with one giant eye, thick attacking arms, large claws, and fangs without adding S-rank regalia or effects.
+- Removed armor, gems, extra eyes, crystals, halos, and excessive visual effects from this pair.
+- Kept all slime-family art unchanged.
+- Replaced only the two existing production PNGs while preserving monster IDs, ranks, stats, recipes, progression, rewards, stages, and battle balance.
+- Added true-alpha 1024 x 1024 assets and archived the v8.6-A.66 originals for rollback.
+- Preserved save schema 1 and every existing save/storage key.
+- Updated PWA/cache version to v8.6-A.67.
+
 ## v8.6-A.66 Approved monster style reset — batch 1
 
 - Rebuilt Phoenix Drake and Eclipse Wolf around the approved classic hand-drawn monster direction.
