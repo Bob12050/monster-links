@@ -1,5 +1,15 @@
 # Version History
 
+## v8.6-A.68 Early-game difficulty ramp
+
+- Reduced the normal-enemy level ceilings in Meadow, Cave, Brook, and Volcano from 3/6/8/12 to 1/5/7/11.
+- Replaced the default HP +45% / core-stat +12% boss treatment with explicit early-stage boss modifiers, without changing boss IDs or display levels.
+- Added 2,500 base EXP only to the first Volcano boss clear so the faster opening still hands off enough growth to Star Crystal Tower; replays retain the original 380 base EXP.
+- Added HP30% emergency healing for the offense strategy only during the Volcano boss encounter.
+- Kept every later stage parameter, monster base stat, recipe, rank, reward table, art asset, save key, and save schema unchanged.
+- Validated the treatment against a same-seed control with a distinct-seed 300-pair holdout and seven of seven preregistered gates passing.
+- Updated PWA/cache version to v8.6-A.68.
+
 ## v8.6-A.67 Approved monster style reset — batch 2
 
 - Rebuilt Demon Lord and Doom Gazer around the approved classic hand-drawn monster direction.

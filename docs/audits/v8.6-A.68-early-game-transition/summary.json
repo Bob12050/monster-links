@@ -1,0 +1,1312 @@
+{
+  "schemaVersion": 1,
+  "toolVersion": "1.1.0",
+  "gameVersion": "8.6-A.67",
+  "generatedAt": "2026-08-17T11:45:16.088Z",
+  "command": {
+    "runs": 300,
+    "seed": 87000,
+    "phase": "holdout",
+    "profiles": [
+      "rush",
+      "balanced",
+      "collector"
+    ],
+    "scenarios": [
+      "control",
+      "transition4"
+    ],
+    "maxBattles": 400,
+    "maxTurns": 200,
+    "maxBossLosses": 40
+  },
+  "methodology": {
+    "campaignDefinition": "新規セーブから序盤4地域を突破し、星晶の塔への波及まで",
+    "runtime": "本体Game/State APIをNode VM・シード乱数・仮想タイマーで実行",
+    "freeHealBeforeEveryBattle": true,
+    "questAndRankRewards": true,
+    "arenaExcluded": true,
+    "profilePolicy": "campaign-audit.mjsと同一の速攻・バランス・収集配合方針"
+  },
+  "sourceHash": "b175e6a531456b87f525076c621cde6d6a16d02e3ac00230bd5828c95339d7b0",
+  "gateVersion": "transition-v2",
+  "validation": {
+    "passed": true,
+    "expectedCampaignsPerArm": 300,
+    "expectedStageRowsPerArm": 1500
+  },
+  "scenarios": [
+    {
+      "scenario": {
+        "id": "control",
+        "label": "A.67 control",
+        "identity": {
+          "schemaVersion": 1,
+          "scenarioId": "control",
+          "stages": [
+            {
+              "stageId": "meadow",
+              "min": 1,
+              "max": 3,
+              "bossExp": 115,
+              "firstClearExpBonus": 0,
+              "offenseEmergencyHealRate": 0,
+              "bossBoost": {
+                "hp": 0.45,
+                "mp": 0.2,
+                "atk": 0.12,
+                "def": 0.12,
+                "wis": 0.12
+              }
+            },
+            {
+              "stageId": "cave",
+              "min": 3,
+              "max": 6,
+              "bossExp": 190,
+              "firstClearExpBonus": 0,
+              "offenseEmergencyHealRate": 0,
+              "bossBoost": {
+                "hp": 0.45,
+                "mp": 0.2,
+                "atk": 0.12,
+                "def": 0.12,
+                "wis": 0.12
+              }
+            },
+            {
+              "stageId": "brook",
+              "min": 5,
+              "max": 8,
+              "bossExp": 310,
+              "firstClearExpBonus": 0,
+              "offenseEmergencyHealRate": 0,
+              "bossBoost": {
+                "hp": 0.45,
+                "mp": 0.2,
+                "atk": 0.12,
+                "def": 0.12,
+                "wis": 0.12
+              }
+            },
+            {
+              "stageId": "volcano",
+              "min": 8,
+              "max": 12,
+              "bossExp": 380,
+              "firstClearExpBonus": 0,
+              "offenseEmergencyHealRate": 0,
+              "bossBoost": {
+                "hp": 0.45,
+                "mp": 0.2,
+                "atk": 0.12,
+                "def": 0.12,
+                "wis": 0.12
+              }
+            }
+          ]
+        },
+        "hash": "59bbf36fb952e57e85c8c0a3861d25ca2d4e056c4ef38216e8b291f794f919bd",
+        "before": [
+          {
+            "stageId": "meadow",
+            "min": 1,
+            "max": 3,
+            "bossExp": 115,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "cave",
+            "min": 3,
+            "max": 6,
+            "bossExp": 190,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "brook",
+            "min": 5,
+            "max": 8,
+            "bossExp": 310,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "volcano",
+            "min": 8,
+            "max": 12,
+            "bossExp": 380,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          }
+        ],
+        "effective": [
+          {
+            "stageId": "meadow",
+            "min": 1,
+            "max": 3,
+            "bossExp": 115,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "cave",
+            "min": 3,
+            "max": 6,
+            "bossExp": 190,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "brook",
+            "min": 5,
+            "max": 8,
+            "bossExp": 310,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "volcano",
+            "min": 8,
+            "max": 12,
+            "bossExp": 380,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          }
+        ]
+      },
+      "signature": "3593670304be2284b054fa7cc41cd56d938636c1d9a3fcc5f0cf71f0ecb54f47",
+      "determinism": {
+        "checked": true,
+        "sampleRuns": 12,
+        "passed": true,
+        "expected": "556f5a5990e1ba70e155cc5c8a3afcc7ef6e46264569e32cb0bb82a3c4dc5728",
+        "repeated": "556f5a5990e1ba70e155cc5c8a3afcc7ef6e46264569e32cb0bb82a3c4dc5728"
+      }
+    },
+    {
+      "scenario": {
+        "id": "transition4",
+        "label": "Smooth ramp with full transition catch-up",
+        "identity": {
+          "schemaVersion": 1,
+          "scenarioId": "transition4",
+          "stages": [
+            {
+              "stageId": "meadow",
+              "min": 1,
+              "max": 1,
+              "bossExp": 115,
+              "firstClearExpBonus": 0,
+              "offenseEmergencyHealRate": 0,
+              "bossBoost": {
+                "hp": -0.28,
+                "mp": 0.06,
+                "atk": -0.18,
+                "def": -0.24,
+                "wis": -0.18
+              }
+            },
+            {
+              "stageId": "cave",
+              "min": 3,
+              "max": 5,
+              "bossExp": 190,
+              "firstClearExpBonus": 0,
+              "offenseEmergencyHealRate": 0,
+              "bossBoost": {
+                "hp": -0.05,
+                "mp": 0.12,
+                "atk": -0.08,
+                "def": -0.12,
+                "wis": -0.08
+              }
+            },
+            {
+              "stageId": "brook",
+              "min": 5,
+              "max": 7,
+              "bossExp": 310,
+              "firstClearExpBonus": 0,
+              "offenseEmergencyHealRate": 0,
+              "bossBoost": {
+                "hp": 0.12,
+                "mp": 0.16,
+                "atk": 0,
+                "def": -0.03,
+                "wis": 0
+              }
+            },
+            {
+              "stageId": "volcano",
+              "min": 8,
+              "max": 11,
+              "bossExp": 380,
+              "firstClearExpBonus": 2500,
+              "offenseEmergencyHealRate": 0.3,
+              "bossBoost": {
+                "hp": -0.03,
+                "mp": 0.12,
+                "atk": -0.05,
+                "def": -0.08,
+                "wis": -0.05
+              }
+            }
+          ]
+        },
+        "hash": "2c57da05c4210fe11c299b50f6760fbea7b91ee5272b9021f8e573ed2ddc786b",
+        "before": [
+          {
+            "stageId": "meadow",
+            "min": 1,
+            "max": 3,
+            "bossExp": 115,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "cave",
+            "min": 3,
+            "max": 6,
+            "bossExp": 190,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "brook",
+            "min": 5,
+            "max": 8,
+            "bossExp": 310,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          },
+          {
+            "stageId": "volcano",
+            "min": 8,
+            "max": 12,
+            "bossExp": 380,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.45,
+              "mp": 0.2,
+              "atk": 0.12,
+              "def": 0.12,
+              "wis": 0.12
+            }
+          }
+        ],
+        "effective": [
+          {
+            "stageId": "meadow",
+            "min": 1,
+            "max": 1,
+            "bossExp": 115,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": -0.28,
+              "mp": 0.06,
+              "atk": -0.18,
+              "def": -0.24,
+              "wis": -0.18
+            }
+          },
+          {
+            "stageId": "cave",
+            "min": 3,
+            "max": 5,
+            "bossExp": 190,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": -0.05,
+              "mp": 0.12,
+              "atk": -0.08,
+              "def": -0.12,
+              "wis": -0.08
+            }
+          },
+          {
+            "stageId": "brook",
+            "min": 5,
+            "max": 7,
+            "bossExp": 310,
+            "firstClearExpBonus": 0,
+            "offenseEmergencyHealRate": 0,
+            "bossBoost": {
+              "hp": 0.12,
+              "mp": 0.16,
+              "atk": 0,
+              "def": -0.03,
+              "wis": 0
+            }
+          },
+          {
+            "stageId": "volcano",
+            "min": 8,
+            "max": 11,
+            "bossExp": 380,
+            "firstClearExpBonus": 2500,
+            "offenseEmergencyHealRate": 0.3,
+            "bossBoost": {
+              "hp": -0.03,
+              "mp": 0.12,
+              "atk": -0.05,
+              "def": -0.08,
+              "wis": -0.05
+            }
+          }
+        ]
+      },
+      "signature": "f52e377c83d47994056fd2b139b4d30c819d4dd4b1c51fe513e37863724b8b63",
+      "determinism": {
+        "checked": true,
+        "sampleRuns": 12,
+        "passed": true,
+        "expected": "8a7d31dd73c9d42cc738f139c8452cfb425c6ee9c8452512f46afcf1a900dc49",
+        "repeated": "8a7d31dd73c9d42cc738f139c8452cfb425c6ee9c8452512f46afcf1a900dc49"
+      }
+    }
+  ],
+  "evaluations": [
+    {
+      "scenario": "control",
+      "passed": null,
+      "gates": []
+    },
+    {
+      "scenario": "transition4",
+      "passed": true,
+      "gates": [
+        {
+          "id": "completion",
+          "passed": true,
+          "detail": "各方針の序盤4地域完走率98%以上"
+        },
+        {
+          "id": "meadow-loss",
+          "passed": true,
+          "detail": "草原通常戦敗北率10%以下"
+        },
+        {
+          "id": "early-burden",
+          "passed": true,
+          "detail": "序盤4地域の戦闘数P90をバランス型25%以上、他方針15%以上短縮"
+        },
+        {
+          "id": "boss-load",
+          "passed": true,
+          "detail": "平均ボス挑戦は既定バランス型3回以下、速攻型火山のみ8回以下"
+        },
+        {
+          "id": "not-trivial",
+          "passed": true,
+          "detail": "初回撃破率はバランス型60%、速攻型65%、収集配合型70%以下"
+        },
+        {
+          "id": "grind",
+          "passed": true,
+          "detail": "ボス解放後の追加通常勝利は火山8回、他5回以下"
+        },
+        {
+          "id": "tower-spillover",
+          "passed": true,
+          "detail": "星晶の塔突破率は対照比-5pt以内、地域戦闘数P90は対照の125%以下"
+        }
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "scenario": "control",
+      "profile": "rush",
+      "stage_id": "all_early",
+      "stage_name": "序盤4地域",
+      "campaigns": 100,
+      "clear_rate": 0.89,
+      "first_try_rate": null,
+      "avg_boss_attempts": null,
+      "avg_extra_normal_wins": null,
+      "normal_loss_rate": null,
+      "p50_total_battles": 80.5,
+      "p90_total_battles": 121.1,
+      "median_boss_start_level": null,
+      "avg_training_books": 208.52
+    },
+    {
+      "scenario": "control",
+      "profile": "rush",
+      "stage_id": "meadow",
+      "stage_name": "はじまり草原",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 4.47,
+      "avg_extra_normal_wins": 3.47,
+      "normal_loss_rate": 0.2914507772020725,
+      "p50_total_battles": 10,
+      "p90_total_battles": 22.2,
+      "median_boss_start_level": 2,
+      "avg_training_books": 7.68
+    },
+    {
+      "scenario": "control",
+      "profile": "rush",
+      "stage_id": "cave",
+      "stage_name": "こだま洞くつ",
+      "campaigns": 100,
+      "clear_rate": 0.98,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 8.47,
+      "avg_extra_normal_wins": 7.49,
+      "normal_loss_rate": 0.027663934426229508,
+      "p50_total_battles": 15,
+      "p90_total_battles": 31,
+      "median_boss_start_level": 7,
+      "avg_training_books": 20.47
+    },
+    {
+      "scenario": "control",
+      "profile": "rush",
+      "stage_id": "brook",
+      "stage_name": "しずく湖畔",
+      "campaigns": 98,
+      "clear_rate": 1,
+      "first_try_rate": 0.01020408163265306,
+      "avg_boss_attempts": 4.54,
+      "avg_extra_normal_wins": 3.54,
+      "normal_loss_rate": 0,
+      "p50_total_battles": 8,
+      "p90_total_battles": 22,
+      "median_boss_start_level": 11,
+      "avg_training_books": 22.15
+    },
+    {
+      "scenario": "control",
+      "profile": "rush",
+      "stage_id": "volcano",
+      "stage_name": "ほむら火山",
+      "campaigns": 98,
+      "clear_rate": 0.9081632653061225,
+      "first_try_rate": 0.01020408163265306,
+      "avg_boss_attempts": 19.87,
+      "avg_extra_normal_wins": 18.96,
+      "normal_loss_rate": 0.0013315579227696406,
+      "p50_total_battles": 37,
+      "p90_total_battles": 83,
+      "median_boss_start_level": 15,
+      "avg_training_books": 57.82
+    },
+    {
+      "scenario": "control",
+      "profile": "rush",
+      "stage_id": "tower",
+      "stage_name": "星晶の塔",
+      "campaigns": 89,
+      "clear_rate": 0.0898876404494382,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 38.97,
+      "avg_extra_normal_wins": 38.88,
+      "normal_loss_rate": 0.011892712550607287,
+      "p50_total_battles": 85,
+      "p90_total_battles": 87,
+      "median_boss_start_level": 20,
+      "avg_training_books": 114.61
+    },
+    {
+      "scenario": "control",
+      "profile": "balanced",
+      "stage_id": "all_early",
+      "stage_name": "序盤4地域",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": null,
+      "avg_boss_attempts": null,
+      "avg_extra_normal_wins": null,
+      "normal_loss_rate": null,
+      "p50_total_battles": 59.5,
+      "p90_total_battles": 79.4,
+      "median_boss_start_level": null,
+      "avg_training_books": 165.12
+    },
+    {
+      "scenario": "control",
+      "profile": "balanced",
+      "stage_id": "meadow",
+      "stage_name": "はじまり草原",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 3.21,
+      "avg_extra_normal_wins": 4.42,
+      "normal_loss_rate": 0.19850187265917604,
+      "p50_total_battles": 12,
+      "p90_total_battles": 18,
+      "median_boss_start_level": 2,
+      "avg_training_books": 5.25
+    },
+    {
+      "scenario": "control",
+      "profile": "balanced",
+      "stage_id": "cave",
+      "stage_name": "こだま洞くつ",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 3.15,
+      "avg_extra_normal_wins": 4.3,
+      "normal_loss_rate": 0.014084507042253521,
+      "p50_total_battles": 11,
+      "p90_total_battles": 14,
+      "median_boss_start_level": 7,
+      "avg_training_books": 15.59
+    },
+    {
+      "scenario": "control",
+      "profile": "balanced",
+      "stage_id": "brook",
+      "stage_name": "しずく湖畔",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.09,
+      "avg_boss_attempts": 3.47,
+      "avg_extra_normal_wins": 4.94,
+      "normal_loss_rate": 0,
+      "p50_total_battles": 12,
+      "p90_total_battles": 21,
+      "median_boss_start_level": 11,
+      "avg_training_books": 21.76
+    },
+    {
+      "scenario": "control",
+      "profile": "balanced",
+      "stage_id": "volcano",
+      "stage_name": "ほむら火山",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.06,
+      "avg_boss_attempts": 6.72,
+      "avg_extra_normal_wins": 11.47,
+      "normal_loss_rate": 0.007697241821680564,
+      "p50_total_battles": 22,
+      "p90_total_battles": 43,
+      "median_boss_start_level": 13,
+      "avg_training_books": 39
+    },
+    {
+      "scenario": "control",
+      "profile": "balanced",
+      "stage_id": "tower",
+      "stage_name": "星晶の塔",
+      "campaigns": 100,
+      "clear_rate": 0.99,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 14.6,
+      "avg_extra_normal_wins": 27.22,
+      "normal_loss_rate": 0.02066869300911854,
+      "p50_total_battles": 50,
+      "p90_total_battles": 72,
+      "median_boss_start_level": 18,
+      "avg_training_books": 83.52
+    },
+    {
+      "scenario": "control",
+      "profile": "collector",
+      "stage_id": "all_early",
+      "stage_name": "序盤4地域",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": null,
+      "avg_boss_attempts": null,
+      "avg_extra_normal_wins": null,
+      "normal_loss_rate": null,
+      "p50_total_battles": 72.5,
+      "p90_total_battles": 95,
+      "median_boss_start_level": null,
+      "avg_training_books": 78.87
+    },
+    {
+      "scenario": "control",
+      "profile": "collector",
+      "stage_id": "meadow",
+      "stage_name": "はじまり草原",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 3.57,
+      "avg_extra_normal_wins": 7.71,
+      "normal_loss_rate": 0.08223062381852551,
+      "p50_total_battles": 16,
+      "p90_total_battles": 21,
+      "median_boss_start_level": 3,
+      "avg_training_books": 0.42
+    },
+    {
+      "scenario": "control",
+      "profile": "collector",
+      "stage_id": "cave",
+      "stage_name": "こだま洞くつ",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 3.35,
+      "avg_extra_normal_wins": 7.05,
+      "normal_loss_rate": 0.005494505494505495,
+      "p50_total_battles": 16,
+      "p90_total_battles": 20.1,
+      "median_boss_start_level": 7,
+      "avg_training_books": 10.18
+    },
+    {
+      "scenario": "control",
+      "profile": "collector",
+      "stage_id": "brook",
+      "stage_name": "しずく湖畔",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.08,
+      "avg_boss_attempts": 3.97,
+      "avg_extra_normal_wins": 8.91,
+      "normal_loss_rate": 0,
+      "p50_total_battles": 21,
+      "p90_total_battles": 29,
+      "median_boss_start_level": 11,
+      "avg_training_books": 14.09
+    },
+    {
+      "scenario": "control",
+      "profile": "collector",
+      "stage_id": "volcano",
+      "stage_name": "ほむら火山",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.09,
+      "avg_boss_attempts": 4.28,
+      "avg_extra_normal_wins": 9.84,
+      "normal_loss_rate": 0.026038001407459536,
+      "p50_total_battles": 19,
+      "p90_total_battles": 38.1,
+      "median_boss_start_level": 12.5,
+      "avg_training_books": 17.12
+    },
+    {
+      "scenario": "control",
+      "profile": "collector",
+      "stage_id": "tower",
+      "stage_name": "星晶の塔",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 8.71,
+      "avg_extra_normal_wins": 23.13,
+      "normal_loss_rate": 0.044497282608695655,
+      "p50_total_battles": 43,
+      "p90_total_battles": 64,
+      "median_boss_start_level": 16,
+      "avg_training_books": 37.06
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "all_early",
+      "stage_name": "序盤4地域",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": null,
+      "avg_boss_attempts": null,
+      "avg_extra_normal_wins": null,
+      "normal_loss_rate": null,
+      "p50_total_battles": 33.5,
+      "p90_total_battles": 56.1,
+      "median_boss_start_level": null,
+      "avg_training_books": 199.6
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "meadow",
+      "stage_name": "はじまり草原",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.13,
+      "avg_boss_attempts": 2.05,
+      "avg_extra_normal_wins": 1.05,
+      "normal_loss_rate": 0.06153846153846154,
+      "p50_total_battles": 5,
+      "p90_total_battles": 7,
+      "median_boss_start_level": 2,
+      "avg_training_books": 2.97
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "cave",
+      "stage_name": "こだま洞くつ",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.01,
+      "avg_boss_attempts": 3.25,
+      "avg_extra_normal_wins": 2.25,
+      "normal_loss_rate": 0.07205240174672489,
+      "p50_total_battles": 7,
+      "p90_total_battles": 9,
+      "median_boss_start_level": 6,
+      "avg_training_books": 12.7
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "brook",
+      "stage_name": "しずく湖畔",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.24,
+      "avg_boss_attempts": 2.67,
+      "avg_extra_normal_wins": 1.67,
+      "normal_loss_rate": 0.0042643923240938165,
+      "p50_total_battles": 6,
+      "p90_total_battles": 12,
+      "median_boss_start_level": 10,
+      "avg_training_books": 17.03
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "volcano",
+      "stage_name": "ほむら火山",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.05,
+      "avg_boss_attempts": 6.97,
+      "avg_extra_normal_wins": 5.97,
+      "normal_loss_rate": 0.01966568338249754,
+      "p50_total_battles": 13,
+      "p90_total_battles": 33,
+      "median_boss_start_level": 13,
+      "avg_training_books": 36.37
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "tower",
+      "stage_name": "星晶の塔",
+      "campaigns": 100,
+      "clear_rate": 0.06,
+      "first_try_rate": 0,
+      "avg_boss_attempts": 39.53,
+      "avg_extra_normal_wins": 39.47,
+      "normal_loss_rate": 0.041594827586206896,
+      "p50_total_battles": 86,
+      "p90_total_battles": 90,
+      "median_boss_start_level": 20,
+      "avg_training_books": 130.53
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "all_early",
+      "stage_name": "序盤4地域",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": null,
+      "avg_boss_attempts": null,
+      "avg_extra_normal_wins": null,
+      "normal_loss_rate": null,
+      "p50_total_battles": 34,
+      "p90_total_battles": 41,
+      "median_boss_start_level": null,
+      "avg_training_books": 134.58
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "meadow",
+      "stage_name": "はじまり草原",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.04,
+      "avg_boss_attempts": 2.06,
+      "avg_extra_normal_wins": 2.12,
+      "normal_loss_rate": 0.0351288056206089,
+      "p50_total_battles": 8,
+      "p90_total_battles": 10,
+      "median_boss_start_level": 2,
+      "avg_training_books": 2.16
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "cave",
+      "stage_name": "こだま洞くつ",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.27,
+      "avg_boss_attempts": 1.95,
+      "avg_extra_normal_wins": 1.9,
+      "normal_loss_rate": 0.012658227848101266,
+      "p50_total_battles": 8,
+      "p90_total_battles": 11,
+      "median_boss_start_level": 7,
+      "avg_training_books": 5.87
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "brook",
+      "stage_name": "しずく湖畔",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.37,
+      "avg_boss_attempts": 1.99,
+      "avg_extra_normal_wins": 1.98,
+      "normal_loss_rate": 0,
+      "p50_total_battles": 9,
+      "p90_total_battles": 12,
+      "median_boss_start_level": 10,
+      "avg_training_books": 10.54
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "volcano",
+      "stage_name": "ほむら火山",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.47,
+      "avg_boss_attempts": 2.15,
+      "avg_extra_normal_wins": 2.3,
+      "normal_loss_rate": 0.02476780185758514,
+      "p50_total_battles": 10,
+      "p90_total_battles": 16.1,
+      "median_boss_start_level": 12,
+      "avg_training_books": 13.39
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "tower",
+      "stage_name": "星晶の塔",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.01,
+      "avg_boss_attempts": 11.89,
+      "avg_extra_normal_wins": 21.78,
+      "normal_loss_rate": 0.03356189101407434,
+      "p50_total_battles": 38,
+      "p90_total_battles": 70.1,
+      "median_boss_start_level": 17,
+      "avg_training_books": 102.62
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "all_early",
+      "stage_name": "序盤4地域",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": null,
+      "avg_boss_attempts": null,
+      "avg_extra_normal_wins": null,
+      "normal_loss_rate": null,
+      "p50_total_battles": 45.5,
+      "p90_total_battles": 58,
+      "median_boss_start_level": null,
+      "avg_training_books": 72.62
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "meadow",
+      "stage_name": "はじまり草原",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.07,
+      "avg_boss_attempts": 1.99,
+      "avg_extra_normal_wins": 2.97,
+      "normal_loss_rate": 0.04423076923076923,
+      "p50_total_battles": 9,
+      "p90_total_battles": 12,
+      "median_boss_start_level": 2,
+      "avg_training_books": 0
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "cave",
+      "stage_name": "こだま洞くつ",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.18,
+      "avg_boss_attempts": 2.07,
+      "avg_extra_normal_wins": 3.21,
+      "normal_loss_rate": 0.0019157088122605363,
+      "p50_total_battles": 9,
+      "p90_total_battles": 13,
+      "median_boss_start_level": 6.5,
+      "avg_training_books": 3.52
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "brook",
+      "stage_name": "しずく湖畔",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.29,
+      "avg_boss_attempts": 2.25,
+      "avg_extra_normal_wins": 3.75,
+      "normal_loss_rate": 0,
+      "p50_total_battles": 13,
+      "p90_total_battles": 21,
+      "median_boss_start_level": 10,
+      "avg_training_books": 7.18
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "volcano",
+      "stage_name": "ほむら火山",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.45,
+      "avg_boss_attempts": 2.05,
+      "avg_extra_normal_wins": 3.15,
+      "normal_loss_rate": 0.07860824742268041,
+      "p50_total_battles": 12.5,
+      "p90_total_battles": 23,
+      "median_boss_start_level": 11,
+      "avg_training_books": 5.93
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "tower",
+      "stage_name": "星晶の塔",
+      "campaigns": 100,
+      "clear_rate": 1,
+      "first_try_rate": 0.06,
+      "avg_boss_attempts": 7.82,
+      "avg_extra_normal_wins": 20.46,
+      "normal_loss_rate": 0.05738615327656423,
+      "p50_total_battles": 39.5,
+      "p90_total_battles": 62.2,
+      "median_boss_start_level": 17,
+      "avg_training_books": 55.99
+    }
+  ],
+  "comparison": [
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "all_early",
+      "clear_rate_delta": 0.10999999999999999,
+      "first_try_rate_delta": null,
+      "avg_boss_attempts_delta": null,
+      "avg_extra_normal_wins_delta": null,
+      "normal_loss_rate_delta": null,
+      "p50_total_battles_delta": -47,
+      "p90_total_battles_delta": -65,
+      "avg_training_books_delta": -8.920000000000016
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "meadow",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.13,
+      "avg_boss_attempts_delta": -2.42,
+      "avg_extra_normal_wins_delta": -2.42,
+      "normal_loss_rate_delta": -0.22991231566361098,
+      "p50_total_battles_delta": -5,
+      "p90_total_battles_delta": -15.2,
+      "avg_training_books_delta": -4.709999999999999
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "cave",
+      "clear_rate_delta": 0.020000000000000018,
+      "first_try_rate_delta": 0.01,
+      "avg_boss_attempts_delta": -5.220000000000001,
+      "avg_extra_normal_wins_delta": -5.24,
+      "normal_loss_rate_delta": 0.04438846732049538,
+      "p50_total_battles_delta": -8,
+      "p90_total_battles_delta": -22,
+      "avg_training_books_delta": -7.77
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "brook",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.22979591836734692,
+      "avg_boss_attempts_delta": -1.87,
+      "avg_extra_normal_wins_delta": -1.87,
+      "normal_loss_rate_delta": 0.0042643923240938165,
+      "p50_total_battles_delta": -2,
+      "p90_total_battles_delta": -10,
+      "avg_training_books_delta": -5.119999999999997
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "volcano",
+      "clear_rate_delta": 0.09183673469387754,
+      "first_try_rate_delta": 0.039795918367346944,
+      "avg_boss_attempts_delta": -12.900000000000002,
+      "avg_extra_normal_wins_delta": -12.990000000000002,
+      "normal_loss_rate_delta": 0.0183341254597279,
+      "p50_total_battles_delta": -24,
+      "p90_total_battles_delta": -50,
+      "avg_training_books_delta": -21.450000000000003
+    },
+    {
+      "scenario": "transition4",
+      "profile": "rush",
+      "stage_id": "tower",
+      "clear_rate_delta": -0.029887640449438202,
+      "first_try_rate_delta": 0,
+      "avg_boss_attempts_delta": 0.5600000000000023,
+      "avg_extra_normal_wins_delta": 0.5899999999999963,
+      "normal_loss_rate_delta": 0.029702115035599608,
+      "p50_total_battles_delta": 1,
+      "p90_total_battles_delta": 3,
+      "avg_training_books_delta": 15.920000000000002
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "all_early",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": null,
+      "avg_boss_attempts_delta": null,
+      "avg_extra_normal_wins_delta": null,
+      "normal_loss_rate_delta": null,
+      "p50_total_battles_delta": -25.5,
+      "p90_total_battles_delta": -38.400000000000006,
+      "avg_training_books_delta": -30.539999999999992
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "meadow",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.04,
+      "avg_boss_attempts_delta": -1.15,
+      "avg_extra_normal_wins_delta": -2.3,
+      "normal_loss_rate_delta": -0.16337306703856713,
+      "p50_total_battles_delta": -4,
+      "p90_total_battles_delta": -8,
+      "avg_training_books_delta": -3.09
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "cave",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.27,
+      "avg_boss_attempts_delta": -1.2,
+      "avg_extra_normal_wins_delta": -2.4,
+      "normal_loss_rate_delta": -0.0014262791941522558,
+      "p50_total_battles_delta": -3,
+      "p90_total_battles_delta": -3,
+      "avg_training_books_delta": -9.719999999999999
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "brook",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.28,
+      "avg_boss_attempts_delta": -1.4800000000000002,
+      "avg_extra_normal_wins_delta": -2.9600000000000004,
+      "normal_loss_rate_delta": 0,
+      "p50_total_battles_delta": -3,
+      "p90_total_battles_delta": -9,
+      "avg_training_books_delta": -11.220000000000002
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "volcano",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.41,
+      "avg_boss_attempts_delta": -4.57,
+      "avg_extra_normal_wins_delta": -9.170000000000002,
+      "normal_loss_rate_delta": 0.017070560035904576,
+      "p50_total_battles_delta": -12,
+      "p90_total_battles_delta": -26.9,
+      "avg_training_books_delta": -25.61
+    },
+    {
+      "scenario": "transition4",
+      "profile": "balanced",
+      "stage_id": "tower",
+      "clear_rate_delta": 0.010000000000000009,
+      "first_try_rate_delta": 0.01,
+      "avg_boss_attempts_delta": -2.709999999999999,
+      "avg_extra_normal_wins_delta": -5.439999999999998,
+      "normal_loss_rate_delta": 0.012893198004955801,
+      "p50_total_battles_delta": -12,
+      "p90_total_battles_delta": -1.9000000000000057,
+      "avg_training_books_delta": 19.10000000000001
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "all_early",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": null,
+      "avg_boss_attempts_delta": null,
+      "avg_extra_normal_wins_delta": null,
+      "normal_loss_rate_delta": null,
+      "p50_total_battles_delta": -27,
+      "p90_total_battles_delta": -37,
+      "avg_training_books_delta": -6.25
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "meadow",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.07,
+      "avg_boss_attempts_delta": -1.5799999999999998,
+      "avg_extra_normal_wins_delta": -4.74,
+      "normal_loss_rate_delta": -0.03799985458775628,
+      "p50_total_battles_delta": -7,
+      "p90_total_battles_delta": -9,
+      "avg_training_books_delta": -0.42
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "cave",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.18,
+      "avg_boss_attempts_delta": -1.2800000000000002,
+      "avg_extra_normal_wins_delta": -3.84,
+      "normal_loss_rate_delta": -0.003578796682244959,
+      "p50_total_battles_delta": -7,
+      "p90_total_battles_delta": -7.100000000000001,
+      "avg_training_books_delta": -6.66
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "brook",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.20999999999999996,
+      "avg_boss_attempts_delta": -1.7200000000000002,
+      "avg_extra_normal_wins_delta": -5.16,
+      "normal_loss_rate_delta": 0,
+      "p50_total_battles_delta": -8,
+      "p90_total_battles_delta": -8,
+      "avg_training_books_delta": -6.91
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "volcano",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.36,
+      "avg_boss_attempts_delta": -2.2300000000000004,
+      "avg_extra_normal_wins_delta": -6.6899999999999995,
+      "normal_loss_rate_delta": 0.052570246015220874,
+      "p50_total_battles_delta": -6.5,
+      "p90_total_battles_delta": -15.100000000000001,
+      "avg_training_books_delta": -11.190000000000001
+    },
+    {
+      "scenario": "transition4",
+      "profile": "collector",
+      "stage_id": "tower",
+      "clear_rate_delta": 0,
+      "first_try_rate_delta": 0.06,
+      "avg_boss_attempts_delta": -0.8900000000000006,
+      "avg_extra_normal_wins_delta": -2.669999999999998,
+      "normal_loss_rate_delta": 0.012888870667868577,
+      "p50_total_battles_delta": -3.5,
+      "p90_total_battles_delta": -1.7999999999999972,
+      "avg_training_books_delta": 18.93
+    }
+  ]
+}

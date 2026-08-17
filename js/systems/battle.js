@@ -91,7 +91,9 @@
   }
 
   function offenseEmergencyHealRate(){
-    const configured = Number(balance().autoOffenseEmergencyHealRate);
+    const battle = S.state.battle;
+    const scoped = battle?.isBoss ? Number(battle.stage?.boss?.offenseEmergencyHealRate) : NaN;
+    const configured = Number.isFinite(scoped) ? scoped : Number(balance().autoOffenseEmergencyHealRate);
     return Number.isFinite(configured) ? U.clamp(configured,0,1) : 0;
   }
 
@@ -560,6 +562,11 @@
     };
   }
 
+  function firstClearExpBonus(b){
+    if(!b?.isBoss || S.state.bossCleared[b.stage.id]) return 0;
+    return rate(Math.max(0,Math.floor(Number(b.stage?.boss?.firstClearExpBonus) || 0)),"expMultiplier");
+  }
+
   function rollDrops(b, firstBossClear=false){
     const drops = [];
     const table = D.DROPS[b.enemy.id] || [];
@@ -626,6 +633,7 @@
 
     if(result === "win"){
       const reward = battleRewards(b);
+      reward.exp += firstClearExpBonus(b);
       state.gold += reward.gold;
       state.wins++;
       if(b.isBoss) S.recordBossWin();
@@ -683,6 +691,7 @@
       let levelUps = [];
       if(b.isBoss){
         reward = battleRewards(b);
+        reward.exp += firstClearExpBonus(b);
         state.gold += reward.gold;
         levelUps = grantPartyExp(reward.exp,lines);
       }
