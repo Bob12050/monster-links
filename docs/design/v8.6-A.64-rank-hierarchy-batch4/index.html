@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#142940">
+  <title>Monster Links ランク階層リニューアル 第4弾</title>
+  <style>
+    :root{
+      color-scheme:light;
+      --ink:#183a5b;
+      --muted:#60758a;
+      --paper:#fffdf8;
+      --line:#d3e0e8;
+      --s:#8b2cc0;
+      --a:#176fc2;
+    }
+    *{box-sizing:border-box}
+    html{background:#bfe6f8}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 12% 0,rgba(255,255,255,.92),transparent 28rem),
+        linear-gradient(180deg,#8fd3f4 0,#edf8fc 25rem,#f5f2e9 100%);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+    }
+    header{padding:max(24px,env(safe-area-inset-top)) 18px 20px;text-align:center}
+    header small{display:block;margin-bottom:7px;color:#165c91;font-size:12px;font-weight:900;letter-spacing:.14em}
+    h1{margin:0;font-size:clamp(25px,7vw,42px);line-height:1.2}
+    header p{max-width:720px;margin:12px auto 0;color:#35566f;font-size:14px;line-height:1.7}
+    main{width:min(1120px,100%);margin:0 auto;padding:0 12px 44px}
+    .notice{
+      margin:0 auto 16px;
+      padding:12px 15px;
+      border:1px solid rgba(26,105,161,.25);
+      border-radius:15px;
+      background:rgba(255,255,255,.84);
+      box-shadow:0 5px 15px rgba(43,95,124,.1);
+      font-size:13px;
+      font-weight:800;
+      line-height:1.6;
+      text-align:center;
+    }
+    .grid{display:grid;gap:18px}
+    article{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--paper);box-shadow:0 12px 28px rgba(37,76,104,.17)}
+    .label{display:flex;min-height:58px;align-items:center;justify-content:space-between;gap:10px;padding:10px 15px;border-bottom:1px solid var(--line)}
+    .label b{font-size:19px}
+    .rank{flex:none;border-radius:999px;padding:5px 10px;color:white;font-size:12px;font-weight:900}
+    .rank-s{background:var(--s)}
+    .rank-a{background:var(--a)}
+    figure{
+      margin:0;
+      background:
+        radial-gradient(circle at 50% 45%,rgba(255,255,255,.24),transparent 48%),
+        linear-gradient(135deg,#f5fbff 0 49.5%,#142940 50% 100%);
+    }
+    img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;padding:8px}
+    .summary{min-height:86px;margin:0;padding:12px 15px;color:#4e667b;font-size:13px;line-height:1.55}
+    .open{display:flex;min-height:48px;align-items:center;justify-content:center;border-top:1px solid var(--line);color:#176fc2;font-size:14px;font-weight:900;text-decoration:none}
+    .open:focus-visible{outline:3px solid #15549d;outline-offset:-4px}
+    footer{padding:0 18px max(24px,env(safe-area-inset-bottom));color:#527086;font-size:12px;line-height:1.6;text-align:center}
+    @media(min-width:860px){main{padding-right:22px;padding-left:22px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+  <header>
+    <small>MONSTER LINKS / RANK HIERARCHY / BATCH 4</small>
+    <h1>ランク階層リニューアル 第4弾</h1>
+    <p>Sは複数の伝説的な象徴と最大の輪郭、Aは主要な象徴を1つに絞り、既存の枠数に合わせて一段小さく配置しました。</p>
+  </header>
+  <main>
+    <p class="notice">ぷる系の見た目、ゲーム仕様、能力、配合、進行、セーブ形式は変更していません。</p>
+    <div class="grid">
+      <article>
+        <div class="label"><b>カオスワーム</b><span class="rank rank-s">S / 3枠</span></div>
+        <figure><a href="../../../assets/images/monsters/chaoswyrm.png?v=8.6-A.64"><img src="../../../assets/images/monsters/chaoswyrm.png?v=8.6-A.64" width="1024" height="1024" alt="大翼、第三眼、破断角冠、黒赤の巨体を持つSランクのカオスワーム正式版" fetchpriority="high"></a></figure>
+        <p class="summary">前景最大900px。巨体・大翼・第三眼という複数の象徴を持つ、今回のSランク基準です。</p>
+        <a class="open" href="../../../assets/images/monsters/chaoswyrm.png?v=8.6-A.64">正式画像だけを大きく開く</a>
+      </article>
+      <article>
+        <div class="label"><b>パールセラフ</b><span class="rank rank-a">A / 1枠</span></div>
+        <figure><a href="../../../assets/images/monsters/pearlseraph.png?v=8.6-A.64"><img src="../../../assets/images/monsters/pearlseraph.png?v=8.6-A.64" width="1024" height="1024" alt="白紺の細身と一対の水翼、小さな真珠核を持つAランクのパールセラフ正式版" loading="lazy"></a></figure>
+        <p class="summary">前景最大760px。一対の水翼だけを主要な象徴とし、多重翼・巨大真珠・過剰な金装飾を避けました。</p>
+        <a class="open" href="../../../assets/images/monsters/pearlseraph.png?v=8.6-A.64">正式画像だけを大きく開く</a>
+      </article>
+      <article>
+        <div class="label"><b>ヴェノムハイドラ</b><span class="rank rank-a">A / 2枠</span></div>
+        <figure><a href="../../../assets/images/monsters/venomhydra.png?v=8.6-A.64"><img src="../../../assets/images/monsters/venomhydra.png?v=8.6-A.64" width="1024" height="1024" alt="三首を唯一の主要な特徴にした紫黒色のAランク・ヴェノムハイドラ正式版" loading="lazy"></a></figure>
+        <p class="summary">前景最大820px。三首だけを主要な象徴にし、翼・巨大発光器官・過剰な角と棘を省きました。</p>
+        <a class="open" href="../../../assets/images/monsters/venomhydra.png?v=8.6-A.64">正式画像だけを大きく開く</a>
+      </article>
+    </div>
+  </main>
+  <footer>v8.6-A.64で正式反映。ランクは象徴の数、sizeはキャンバス内の占有率へ反映しています。</footer>
+</body>
+</html>

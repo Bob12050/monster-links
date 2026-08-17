@@ -1,6 +1,16 @@
-# Monster Links v8.6-A.63
+# Monster Links v8.6-A.64
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.64 update
+
+- Rebuilt Chaos Wyrm, Pearl Seraph, and Venom Hydra with a visible S/A-rank hierarchy: legendary S-rank mass and multiple signatures versus restrained A-rank silhouettes with one signature each.
+- Matched this batch's canvas occupancy to the existing size contract: size-3 Chaos Wyrm at 900px, size-2 Venom Hydra at 820px, and size-1 Pearl Seraph at 760px.
+- Preserved every slime-family monster and all monster IDs, ranks, stats, recipes, progression, rewards, stages, and battle balance.
+- Added true-alpha 1024 x 1024 production art and archived the v8.6-A.63 originals for rollback.
+- Added a responsive [rank-hierarchy batch 4 production-art gallery](docs/design/v8.6-A.64-rank-hierarchy-batch4/index.html).
+- Preserved save schema 1 and all existing save/storage keys.
+- Updated PWA/cache version to v8.6-A.64.
 
 ## v8.6-A.63 update
 
@@ -162,7 +172,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.63 high-rank monster art renewal — batch 3
+v8.6-A.64 rank-aware monster art renewal — batch 4
 ```
 
 ## v8.6-A.49 update

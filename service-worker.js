@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "8.6-A.63";
+const VERSION = "8.6-A.64";
 const CACHE_PREFIX = "monster-links-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const VERSION_QUERY = `v=${VERSION}`;
