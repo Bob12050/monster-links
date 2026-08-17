@@ -1,5 +1,14 @@
 # Version History
 
+## v8.6-A.65 Responsive display repair
+
+- Repaired contrast regressions where Atlas light-theme text colors were applied over legacy dark modal panels.
+- Restored readable Monster Profile, Monster Encyclopedia, fusion/dialog, and backup/restore sheets on mobile.
+- Fixed the Advanced Settings details row that collapsed to an empty strip at the bottom of the screen.
+- Verified primary screens at 320px, 390px, and desktop poster widths, including battle and scroll-end states.
+- Preserved save schema 1, every save/storage key, gameplay, content data, balance, progression, and monster art.
+- Updated PWA/cache version to v8.6-A.65.
+
 ## v8.6-A.64 Rank-aware monster art renewal — batch 4
 
 - Rebuilt Chaos Wyrm, Pearl Seraph, and Venom Hydra with an explicit S/A-rank visual hierarchy.

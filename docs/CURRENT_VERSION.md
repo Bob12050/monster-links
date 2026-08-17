@@ -1,3 +1,15 @@
+v8.6-A.65 responsive display repair
+GAME_VERSION to 8.6-A.65
+
+Main changes:
+- Restored readable dark modal surfaces after the Atlas light-theme bridge caused dark panels and dark text to overlap.
+- Repaired Monster Profile, Monster Encyclopedia, fusion/dialog, and backup/restore modal contrast and header/footer hierarchy.
+- Fixed the Advanced Settings details row so its summary no longer collapses into an empty strip.
+- Verified 320px, 390px, and desktop poster layouts, battle, modal scrolling, and Settings end-of-scroll behavior.
+- Preserved save schema 1, save keys, content IDs, gameplay, balance, progression, and all monster art.
+- Updated PWA/cache version to v8.6-A.65.
+---
+
 v8.6-A.64 rank-aware monster art renewal — batch 4
 GAME_VERSION to 8.6-A.64
 
