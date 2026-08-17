@@ -1,6 +1,15 @@
-# Monster Links v8.6-A.64
+# Monster Links v8.6-A.65
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.65 update
+
+- Repaired unreadable mixed light/dark styling in monster profiles, encyclopedia details, fusion/dialog sheets, and save-backup modals.
+- Restored clear modal hierarchy and contrast without changing any screen IDs, navigation callbacks, gameplay, data, or save behavior.
+- Fixed the collapsed advanced-settings row that appeared as an empty strip at the end of the Settings screen.
+- Verified primary screens at 320px, 390px, and desktop poster widths, including battle, long-screen endings, and common modals.
+- Preserved save schema 1 and all existing save/storage keys.
+- Updated PWA/cache version to v8.6-A.65.
 
 ## v8.6-A.64 update
 
@@ -172,7 +181,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.64 rank-aware monster art renewal — batch 4
+v8.6-A.65 responsive display repair
 ```
 
 ## v8.6-A.49 update
