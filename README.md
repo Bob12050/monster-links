@@ -1,6 +1,14 @@
-# Monster Links v8.6-A.60
+# Monster Links v8.6-A.61
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.61 update
+
+- Rebuilt Zenith Dragon, Demon Lord, and Venom Chimera as mature, organic S-rank monsters with stronger silhouettes and reduced decorative noise.
+- Kept every slime-family monster unchanged, along with monster IDs, stats, recipes, progression, rewards, and battle balance.
+- Added true-alpha, square-safe production art for title, boss, arena, battle, fusion, party, and dex surfaces.
+- Preserved save schema 1 and all existing save/storage keys.
+- Updated PWA/cache version to v8.6-A.61.
 
 ## v8.6-A.60 update
 
@@ -136,7 +144,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.60 Fusion route guidance
+v8.6-A.61 S-rank monster art renewal
 ```
 
 ## v8.6-A.49 update
