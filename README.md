@@ -1,6 +1,17 @@
-# Monster Links v8.6-A.66
+# Monster Links v8.6-A.67
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.67 update
+
+- Rebuilt Demon Lord and Doom Gazer in the approved classic hand-drawn monster direction.
+- Preserved a clear S/A hierarchy: Demon Lord uses great curled horns, broad wings, a third eye, and greater body mass; Doom Gazer uses one giant eye, thick clawed arms, and fangs at a smaller scale.
+- Removed armor, gems, extra eyes, crystals, halos, and excessive visual effects from this pair.
+- Replaced only the two production PNGs while preserving IDs, ranks, stats, recipes, stages, progression, rewards, battle balance, and save data.
+- Kept every slime-family monster unchanged and archived the v8.6-A.66 originals for rollback.
+- Promoted the responsive [batch 2 monster-style gallery](docs/design/style-reference-batch2-preview/index.html) to the production assets.
+- Preserved save schema 1 and all existing save/storage keys.
+- Updated PWA/cache version to v8.6-A.67.
 
 ## v8.6-A.66 update
 
@@ -192,7 +203,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.66 approved monster style reset — batch 1
+v8.6-A.67 approved monster style reset — batch 2
 ```
 
 ## v8.6-A.49 update
