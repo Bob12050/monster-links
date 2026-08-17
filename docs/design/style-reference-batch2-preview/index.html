@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#183d64">
+  <title>モンスター刷新 第2弾・確認用</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #193b60;
+      --muted: #60758a;
+      --paper: #fffdf8;
+      --line: #d7e1e8;
+      --sky: #79c9ef;
+      --s-rank: #c74838;
+      --a-rank: #6f4ab4;
+      font-family: "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(255,255,255,.92), transparent 32rem),
+        linear-gradient(180deg, var(--sky) 0 13rem, #eaf5fb 24rem, #f7f4ed 100%);
+    }
+
+    main {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: max(24px, env(safe-area-inset-top)) 0 max(34px, env(safe-area-inset-bottom));
+    }
+
+    header {
+      max-width: 780px;
+      margin: 0 auto 22px;
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .review {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 13px;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      color: #fff;
+      background: #b13b31;
+      box-shadow: 0 3px 0 rgba(21,62,96,.2);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    h1 {
+      margin: 13px 0 8px;
+      color: #173f69;
+      font-size: clamp(26px, 7vw, 42px);
+      line-height: 1.12;
+      letter-spacing: .03em;
+      text-shadow: 0 2px 0 #fff;
+    }
+
+    header p {
+      margin: 0;
+      color: #355b79;
+      font-size: clamp(14px, 3.8vw, 17px);
+      font-weight: 700;
+      line-height: 1.7;
+    }
+
+    .notice {
+      margin: 14px auto 0;
+      padding: 10px 14px;
+      border: 1px solid rgba(21,84,157,.22);
+      border-radius: 14px;
+      background: rgba(255,255,255,.78);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    article {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--paper);
+      box-shadow: 0 12px 32px rgba(31,72,105,.17), 0 3px 0 rgba(31,72,105,.09);
+    }
+
+    figure {
+      position: relative;
+      margin: 0;
+      padding: 12px;
+      background:
+        linear-gradient(45deg, rgba(34,92,135,.045) 25%, transparent 25% 75%, rgba(34,92,135,.045) 75%),
+        linear-gradient(45deg, rgba(34,92,135,.045) 25%, #edf6fb 25% 75%, rgba(34,92,135,.045) 75%);
+      background-position: 0 0, 10px 10px;
+      background-size: 20px 20px;
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      object-fit: contain;
+      border-radius: 16px;
+      background: #eff7fb;
+    }
+
+    .rank {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(18,38,58,.25);
+      font-size: 25px;
+      font-weight: 1000;
+    }
+
+    .rank-s { background: var(--s-rank); }
+    .rank-a { background: var(--a-rank); }
+
+    .copy { padding: 18px 18px 20px; }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .role {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .copy p {
+      margin: 0;
+      color: #3e5265;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .direct {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      margin-top: 14px;
+      padding: 10px 16px;
+      border: 2px solid #216db0;
+      border-radius: 13px;
+      color: #15549d;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .direct:hover { background: #edf7ff; }
+    .direct:focus-visible { outline: 3px solid #173f69; outline-offset: 3px; }
+
+    footer {
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 18px;
+      color: #334f65;
+      background: rgba(255,255,255,.78);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.65;
+    }
+
+    @media (min-width: 780px) {
+      main { width: min(1120px, calc(100% - 52px)); padding-top: 42px; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+      .copy { min-height: 210px; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      article { transition: transform .18s ease, box-shadow .18s ease; }
+      article:hover { transform: translateY(-3px); box-shadow: 0 16px 38px rgba(31,72,105,.2); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <span class="review">REVIEW ONLY</span>
+      <h1>モンスター刷新 第2弾</h1>
+      <p>参考画像の「手描き感・太い輪郭・魔物らしい個性」へ戻し、SとAの格差が一目で分かるようにしました。</p>
+      <div class="notice"><strong>まだゲームには反映していません。</strong> この2案を見ていただき、承認後にだけ透過・スマホ調整をして正式採用します。</div>
+    </header>
+
+    <section class="grid" aria-label="モンスター確認案">
+      <article>
+        <figure>
+          <img src="demonlord-direction.png?v=review-1" width="1254" height="1254" alt="巨大な巻き角と赤紫の翼を持つ、筋骨隆々の紫色のデモンロード確認案" fetchpriority="high">
+          <span class="rank rank-s" aria-label="Sランク">S</span>
+        </figure>
+        <div class="copy">
+          <h2>デモンロード</h2>
+          <p class="role">Sランク｜魔王系</p>
+          <p>巨大な巻き角、翼、体格、第三の眼で格上感を表現。宝石や発光エフェクトに頼らず、魔物そのものの迫力でSランクに見せています。</p>
+          <a class="direct" href="demonlord-direction.png?v=review-1">画像だけ大きく見る</a>
+        </div>
+      </article>
+
+      <article>
+        <figure>
+          <img src="doomgazer-direction.png?v=review-1" width="1254" height="1254" alt="大きな緑の単眼と小さな翼、四本の触手状の手足を持つ紫色のドゥームゲイザー確認案" loading="lazy">
+          <span class="rank rank-a" aria-label="Aランク">A</span>
+        </figure>
+        <div class="copy">
+          <h2>ドゥームゲイザー</h2>
+          <p class="role">Aランク｜怪眼系</p>
+          <p>特徴を「巨大な単眼」に絞った奇妙な魔物。Sより小さく、装飾・翼・体格を控えめにして、強いが最上位ではないAランクに収めています。</p>
+          <a class="direct" href="doomgazer-direction.png?v=review-1">画像だけ大きく見る</a>
+        </div>
+      </article>
+    </section>
+
+    <footer>確認ポイント：デモンロードが明確に格上に見えるか／ドゥームゲイザーが虫ではなく「奇妙な魔物」に見えるか。ぷる系・能力・配合・ゲーム進行には一切変更を加えていません。</footer>
+  </main>
+</body>
+</html>
