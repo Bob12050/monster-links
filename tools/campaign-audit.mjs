@@ -7,8 +7,8 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createHeadlessGame } from "./lib/headless-game-runtime.mjs";
 
-const TOOL_VERSION = "1.5.0";
-const OUTPUT_SCHEMA_VERSION = 6;
+const TOOL_VERSION = "1.6.0";
+const OUTPUT_SCHEMA_VERSION = 7;
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 const FOCUS_STAGE_IDS = Object.freeze(["tower","prism_sanctuary","deep_sea_temple","sky_ruins"]);
 const SKY_STAGE_ID = "sky_ruins";
@@ -18,7 +18,8 @@ const DEFAULT_BOSS_BOOST = Object.freeze({hp:.45,mp:.2,atk:.12,def:.12,wis:.12})
 const RUSH_SCENARIO_DEFS = Object.freeze({
   "mid-exp-15":Object.freeze({kind:"normal-exp",multiplier:1.15}),
   "mid-boss-hp-25":Object.freeze({kind:"boss-hp",hp:.25}),
-  "boss-defeat-exp-10":Object.freeze({kind:"boss-defeat-exp",rate:.10})
+  "boss-defeat-exp-10":Object.freeze({kind:"boss-defeat-exp",rate:.10}),
+  "offense-emergency-heal-30":Object.freeze({kind:"auto-policy",rate:.30})
 });
 const RUSH_CONTROL_EXP = Object.freeze({
   tower:Object.freeze([100,165]),
@@ -26,6 +27,7 @@ const RUSH_CONTROL_EXP = Object.freeze({
   thunder_ruins:Object.freeze([240,360]),
   prism_sanctuary:Object.freeze([380,580])
 });
+const RUSH_CONTROL_POLICY = Object.freeze({offenseEmergencyHealRate:0});
 const STAGE_OUTPUT_COLUMNS = Object.freeze(["run","profile","stage_index","stage_id","stage_name","req_level","boss_level","unlock_wins","reached","cleared","entry_highest_level","boss_start_highest_level","clear_highest_level","normalBattles","normalCombatWins","scoutWins","normalLosses","scoutEncounters","bossAttempts","bossLosses","bossTurns","recruitmentBossBattles","recruitmentBossLosses","totalBattles","totalTurns","guardTurns","maxGuardStreak","maxBattleTurns","battles50Plus","guardLoopBattles","stalledBattles","kos","trainingBooks","fusions","levelRecoveryBattles","gold_at_entry","gold_at_clear"]);
 const SKY_PRE_TREATMENT_FIELDS = Object.freeze(["run","profile","stage_id","reached","entry_highest_level","boss_start_highest_level","gold_at_entry"]);
 const RUSH_PRIOR_STAGE_FIELDS = Object.freeze(["run","profile","stage_index","stage_id","stage_name","req_level","boss_level","unlock_wins","reached","cleared","entry_highest_level","boss_start_highest_level","clear_highest_level","gold_at_entry","gold_at_clear"]);
@@ -279,6 +281,14 @@ function rushStageSnapshot(D){
   });
 }
 
+function rushPolicySnapshot(D){
+  const rate = Number(D.BALANCE?.autoOffenseEmergencyHealRate ?? 0);
+  if(!Number.isFinite(rate) || rate < 0 || rate > 1){
+    throw new Error(`Rush scenario autoOffenseEmergencyHealRate must be between 0 and 1: ${rate}`);
+  }
+  return {offenseEmergencyHealRate:rate};
+}
+
 function expectedRushControlSnapshot(){
   return RUSH_STAGE_IDS.map(stageId=>({
     stageId,
@@ -289,6 +299,11 @@ function expectedRushControlSnapshot(){
 }
 
 function sameRushSnapshot(left,right){
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+
+function sameRushPolicy(left,right){
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
@@ -337,35 +352,43 @@ function applySkyScenario(runtime,options){
 
 function applyRushScenario(runtime,options){
   const scenarioOption = options.rushProgressionScenario;
-  const before = rushStageSnapshot(runtime.D);
+  const beforeStages = rushStageSnapshot(runtime.D);
+  const beforePolicy = rushPolicySnapshot(runtime.D);
   const expectedControl = expectedRushControlSnapshot();
-  if(scenarioOption.present && !sameRushSnapshot(before,expectedControl)){
-    throw new Error(`Explicit rush progression experiment requires the A.59 control snapshot\nexpected=${JSON.stringify(expectedControl)}\nactual=${JSON.stringify(before)}`);
+  if(scenarioOption.present && (!sameRushSnapshot(beforeStages,expectedControl) || !sameRushPolicy(beforePolicy,RUSH_CONTROL_POLICY))){
+    throw new Error(`Explicit rush progression experiment requires the A.59 control snapshot\nexpected=${JSON.stringify({stages:expectedControl,policy:RUSH_CONTROL_POLICY})}\nactual=${JSON.stringify({stages:beforeStages,policy:beforePolicy})}`);
   }
   if(scenarioOption.kind === "treatment"){
-    for(const stageId of RUSH_STAGE_IDS){
-      const stage = runtime.D.STAGES.find(candidate=>candidate.id === stageId);
-      const definition = scenarioOption.definition;
-      if(definition.kind === "normal-exp"){
-        stage.exp = stage.exp.map(value=>Math.round(Number(value)*definition.multiplier));
-      }else if(definition.kind === "boss-hp"){
-        stage.boss.boost = {...fullBossBoost(stage.boss),hp:definition.hp};
-      }else if(definition.kind === "boss-defeat-exp"){
-        stage.boss.defeatExpRate = definition.rate;
+    const definition = scenarioOption.definition;
+    if(definition.kind === "auto-policy"){
+      runtime.D.BALANCE.autoOffenseEmergencyHealRate = definition.rate;
+    }else{
+      for(const stageId of RUSH_STAGE_IDS){
+        const stage = runtime.D.STAGES.find(candidate=>candidate.id === stageId);
+        if(definition.kind === "normal-exp"){
+          stage.exp = stage.exp.map(value=>Math.round(Number(value)*definition.multiplier));
+        }else if(definition.kind === "boss-hp"){
+          stage.boss.boost = {...fullBossBoost(stage.boss),hp:definition.hp};
+        }else if(definition.kind === "boss-defeat-exp"){
+          stage.boss.defeatExpRate = definition.rate;
+        }
       }
     }
   }
   const effectiveStages = rushStageSnapshot(runtime.D);
-  const identity = {schemaVersion:1,family:"rush-progression",stages:effectiveStages};
+  const effectivePolicy = rushPolicySnapshot(runtime.D);
+  const identity = {schemaVersion:2,family:"rush-progression",stages:effectiveStages,policy:effectivePolicy};
   const hash = sha256(JSON.stringify(identity));
   const changedPaths = [];
-  before.forEach((prior,index)=>{
+  beforeStages.forEach((prior,index)=>{
     const current = effectiveStages[index];
     if(JSON.stringify(prior.exp) !== JSON.stringify(current.exp)) changedPaths.push(`STAGES[${prior.stageId}].exp`);
     if(!sameBossBoost(prior.bossBoost,current.bossBoost)) changedPaths.push(`STAGES[${prior.stageId}].boss.boost`);
     if(prior.defeatExpRate !== current.defeatExpRate) changedPaths.push(`STAGES[${prior.stageId}].boss.defeatExpRate`);
   });
+  if(!sameRushPolicy(beforePolicy,effectivePolicy)) changedPaths.push("BALANCE.autoOffenseEmergencyHealRate");
   const id = scenarioOption.kind === "production" ? "production" : scenarioOption.id;
+  const policyTreatment = scenarioOption.definition?.kind === "auto-policy" || (!scenarioOption.present && effectivePolicy.offenseEmergencyHealRate > 0);
   return {
     schemaVersion:1,
     family:"rush-progression",
@@ -381,10 +404,11 @@ function applyRushScenario(runtime,options){
     identity,
     target:{stageIds:[...RUSH_STAGE_IDS]},
     requested:scenarioOption.present ? {option:"--rush-progression-scenario",value:scenarioOption.id} : null,
-    before:{stages:before},
-    effective:{stages:effectiveStages},
+    before:{stages:beforeStages,policy:beforePolicy},
+    effective:{stages:effectiveStages,policy:effectivePolicy},
     changedPaths,
-    firstAffectedStageId:RUSH_STAGE_IDS[0]
+    firstAffectedStageId:policyTreatment ? "meadow" : RUSH_STAGE_IDS[0],
+    preTreatmentKind:policyTreatment ? "initial-state-hash" : "stage-entry"
   };
 }
 
@@ -392,7 +416,8 @@ function applyScenario(runtime,options){
   if(options.rushProgressionScenario.present) return applyRushScenario(runtime,options);
   if(options.skyBossScenario.present) return applySkyScenario(runtime,options);
   const currentRush = rushStageSnapshot(runtime.D);
-  if(!sameRushSnapshot(currentRush,expectedRushControlSnapshot())){
+  const currentPolicy = rushPolicySnapshot(runtime.D);
+  if(!sameRushSnapshot(currentRush,expectedRushControlSnapshot()) || !sameRushPolicy(currentPolicy,RUSH_CONTROL_POLICY)){
     return applyRushScenario(runtime,options);
   }
   return applySkyScenario(runtime,options);
@@ -691,7 +716,11 @@ function chooseAction(runtime,profile,battle,scoutTarget){
   }
   const hpRatio = ally.hp / Math.max(1,S.stats(ally).hp);
   const heal = bestHealAction(D,S,ally);
-  if(profile.healThreshold > 0 && hpRatio <= profile.healThreshold && heal) return heal;
+  const configuredOffenseThreshold = Number(D.BALANCE?.autoOffenseEmergencyHealRate ?? 0);
+  const healThreshold = profile.autoStrategy === "offense"
+    ? Math.max(0,Math.min(1,Number.isFinite(configuredOffenseThreshold) ? configuredOffenseThreshold : 0))
+    : profile.healThreshold;
+  if(healThreshold > 0 && hpRatio <= healThreshold && heal) return heal;
   if(profile.guard && hpRatio <= .22 && !heal && !battle.lastActionWasAutoGuard) return {kind:"guard",skillId:null};
   return bestDamageAction(D,S,ally,enemy.id);
 }
@@ -913,16 +942,25 @@ function makeStageMetric(stage,index,run,profileId){
   };
 }
 
+function initialCampaignStateHash(runtime){
+  const state = clonePlain(runtime.S.state);
+  delete state.version;
+  delete state.updatedAt;
+  return sha256(JSON.stringify({state,randomCalls:runtime.randomCalls}));
+}
+
 function simulateCampaign(runtime,options,profile,runIndex){
   const {D,S} = runtime;
   const seed = stableSeed(options.seed,profile.id,runIndex);
   runtime.reset(seed);
   S.setSetting("autoStrategy",profile.autoStrategy);
+  const initialStateHash = initialCampaignStateHash(runtime);
   const campaign = {
     run:runIndex+1,
     profile:profile.id,
     profile_label:profile.label,
     seed,
+    initialStateHash,
     status:"running",
     completed:0,
     failed_stage:"",
@@ -1287,6 +1325,7 @@ function loadBaseline(options,runtime,scenario,currentToolSourceHash){
     if(scenario.family === "rush-progression"){
       if(summary.scenario?.family !== "rush-progression") mismatches.push("treatment baseline is not a rush progression control");
       if(!sameRushSnapshot(summary.scenario?.effective?.stages,expectedRushControlSnapshot())) mismatches.push("treatment baseline rush stage snapshot is not the A.59 control");
+      if(!sameRushPolicy(summary.scenario?.effective?.policy,RUSH_CONTROL_POLICY)) mismatches.push("treatment baseline rush auto policy is not the A.59 control");
     }else if(!sameBossBoost(summary.scenario?.effective?.bossBoost,DEFAULT_BOSS_BOOST)){
       mismatches.push("treatment baseline effective boss boost is not the full control boost");
     }
@@ -1298,6 +1337,7 @@ function loadBaseline(options,runtime,scenario,currentToolSourceHash){
     run:numberField(row,"run"),
     profile:row.profile,
     seed:numberField(row,"seed"),
+    initialStateHash:String(row.initialStateHash || ""),
     completed:numberField(row,"completed"),
     totalBattles:numberField(row,"totalBattles"),
     totalTurns:numberField(row,"totalTurns"),
@@ -1306,6 +1346,7 @@ function loadBaseline(options,runtime,scenario,currentToolSourceHash){
     guardLoopBattles:numberField(row,"guardLoopBattles"),
     finalHighestLevel:numberField(row,"finalHighestLevel")
   }));
+  if(campaigns.some(row=>!row.initialStateHash)) throw new Error("Baseline campaign initialStateHash is missing");
   const stageRows = readCsv(path.join(directory,"campaign-stage-runs.csv")).map(normalizedStageOutputRow);
   if(campaigns.length !== options.runs) throw new Error(`Baseline campaign row count ${campaigns.length} != ${options.runs}`);
   if(stageRows.length !== options.runs*D.STAGES.length) throw new Error(`Baseline stage row count ${stageRows.length} != ${options.runs*D.STAGES.length}`);
@@ -1328,9 +1369,36 @@ function loadBaseline(options,runtime,scenario,currentToolSourceHash){
   return {directory,relativePath,summary,artifact,campaigns,stageRows};
 }
 
-function preTreatmentInvarianceReceipt({baseline,D,scenario,stageRows}){
+function preTreatmentInvarianceReceipt({baseline,D,scenario,campaigns,stageRows}){
   if(scenario.mode !== "simulation_treatment"){
     return {required:false,passed:null,reason:"Only simulation treatments require a same-source explicit control receipt"};
+  }
+  if(scenario.preTreatmentKind === "initial-state-hash"){
+    const currentCampaigns = new Map(campaigns.map(row=>[`${row.run}:${row.profile}`,row]));
+    const mismatches = [];
+    for(const prior of baseline.campaigns){
+      const key = `${prior.run}:${prior.profile}`;
+      const current = currentCampaigns.get(key);
+      if(!current || prior.seed !== current.seed || prior.initialStateHash !== current.initialStateHash){
+        mismatches.push({key,controlSeed:prior.seed,treatmentSeed:current?.seed ?? null,controlHash:prior.initialStateHash,treatmentHash:current?.initialStateHash ?? null});
+        if(mismatches.length >= 20) break;
+      }
+    }
+    if(currentCampaigns.size !== baseline.campaigns.length) mismatches.push({field:"campaignPairs",control:baseline.campaigns.length,treatment:currentCampaigns.size});
+    if(mismatches.length){
+      throw new Error(`Initial-state invariance failed for the rush auto-policy experiment:\n${JSON.stringify(mismatches,null,2)}`);
+    }
+    return {
+      required:true,
+      passed:true,
+      family:scenario.family,
+      method:"paired-initial-state-hash",
+      controlScenarioHash:baseline.summary.scenarioHash || baseline.summary.scenario?.hash,
+      treatmentScenarioHash:scenario.hash,
+      initialStatePairs:baseline.campaigns.length,
+      excludedVolatileFields:["version","updatedAt"],
+      mismatchCount:0
+    };
   }
   const currentRows = new Map(stageRows.map(row=>{
     const normalized = normalizedStageOutputRow(row);
@@ -1426,7 +1494,7 @@ function buildComparison({baseline,D,scenario,command,overview,profiles,stages,c
   for(const key of currentStageRows.keys()){
     if(!baselineStageRows.has(key)) throw new Error(`Baseline stage pair is missing: ${key}`);
   }
-  const preTreatmentInvariance = preTreatmentInvarianceReceipt({baseline,D,scenario,stageRows});
+  const preTreatmentInvariance = preTreatmentInvarianceReceipt({baseline,D,scenario,campaigns,stageRows});
   const baselineOverview = baseline.summary.overview;
   const overall = {
     pair_count:pairedCampaigns.length,
@@ -1878,6 +1946,7 @@ function validateSimulation(result,options,D){
   if(result.campaigns.length !== options.runs) errors.push(`campaign count ${result.campaigns.length} != ${options.runs}`);
   if(result.stageRows.length !== options.runs*D.STAGES.length) errors.push(`stage row count ${result.stageRows.length} != ${options.runs*D.STAGES.length}`);
   result.campaigns.forEach(campaign=>{
+    if(!/^[a-f0-9]{64}$/u.test(campaign.initialStateHash || "")) errors.push(`run ${campaign.run}: invalid initialStateHash`);
     if(campaign.totalBattles !== campaign.normalBattles+campaign.bossBattles) errors.push(`run ${campaign.run}: battle subtotal mismatch`);
     if(campaign.wins+campaign.losses+campaign.stalledBattles !== campaign.totalBattles) errors.push(`run ${campaign.run}: outcome count mismatch`);
     if(campaign.completed && campaign.bossesCleared !== D.STAGES.length) errors.push(`run ${campaign.run}: completed without all bosses`);
@@ -2005,7 +2074,7 @@ function main(){
   const artifact = makeArtifact({D:runtime.D,scenario,generatedAt,command,overview,profiles:profileMetrics,stages:stageMetrics,findings,campaigns:result.campaigns,sourceHash:runtime.sourceHash,revision,runSignature:signature,reportSources,comparison,priorityFixVerification});
   fs.mkdirSync(output,{recursive:true});
   fs.mkdirSync(path.join(output,"queries"),{recursive:true});
-  const campaignColumns = ["run","profile","profile_label","seed","status","completed","failed_stage","failure_reason","maxBattles","maxTurnsPerBattle","maxBossLosses","totalBattles","normalBattles","bossBattles","totalTurns","wins","losses","stalledBattles","timerOrTurnCaps","kos","guardTurns","maxGuardStreak","maxBattleTurns","guardLoopBattles","battles50Plus","battles100Plus","scoutAttempts","scoutSuccesses","zeroRewardScoutWins","scoutCharmPurchases","scoutCharmConsumed","scoutCharmWasted","charmWasteRate","fusions","fusionLevelDebt","levelRecoveryBattles","trainingBooks","trainingGold","freeHeals","questClaims","rankClaims","battleGold","questGold","rankGold","defeatGoldLost","goldInflow","goldSink","goldSinkRate","minGold","finalGold","finalHighestLevel","finalPlayerRank","firstBRankBattle","firstARankBattle","firstSRankBattle","finalOwned","finalDexDiscovered","finalDexScouted","bossesCleared","finalParty"];
+  const campaignColumns = ["run","profile","profile_label","seed","initialStateHash","status","completed","failed_stage","failure_reason","maxBattles","maxTurnsPerBattle","maxBossLosses","totalBattles","normalBattles","bossBattles","totalTurns","wins","losses","stalledBattles","timerOrTurnCaps","kos","guardTurns","maxGuardStreak","maxBattleTurns","guardLoopBattles","battles50Plus","battles100Plus","scoutAttempts","scoutSuccesses","zeroRewardScoutWins","scoutCharmPurchases","scoutCharmConsumed","scoutCharmWasted","charmWasteRate","fusions","fusionLevelDebt","levelRecoveryBattles","trainingBooks","trainingGold","freeHeals","questClaims","rankClaims","battleGold","questGold","rankGold","defeatGoldLost","goldInflow","goldSink","goldSinkRate","minGold","finalGold","finalHighestLevel","finalPlayerRank","firstBRankBattle","firstARankBattle","firstSRankBattle","finalOwned","finalDexDiscovered","finalDexScouted","bossesCleared","finalParty"];
   fs.writeFileSync(path.join(output,"audit-summary.json"),JSON.stringify(summary,null,2)+"\n");
   fs.writeFileSync(path.join(output,"priority-fixes-verification.json"),JSON.stringify(priorityFixVerification,null,2)+"\n");
   fs.writeFileSync(path.join(output,"campaigns.csv"),toCsv(result.campaigns,campaignColumns));

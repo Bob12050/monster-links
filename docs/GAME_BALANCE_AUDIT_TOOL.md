@@ -80,11 +80,12 @@ node tools/evaluate-sky-balance-experiment.mjs --phase=discovery --baseline=.aud
 
 ## 速攻進行の1変数実験
 
-A.60では星晶の塔から虹晶聖域までの速攻型進行を、次の3候補で比較します。候補は同時適用せず、各300周を別々に実行します。
+A.60では星晶の塔から虹晶聖域までの速攻型進行を、候補ごとに比較します。候補は同時適用せず、各300周を別々に実行します。
 
 - `mid-exp-15`: 4地域の通常戦EXPレンジだけを15%増加
 - `mid-boss-hp-25`: 4地域のボスHP補正だけを+45%から+25%へ変更
 - `boss-defeat-exp-10`: 4地域のボス敗北時だけ、ボス勝利EXPの10%を学習EXPとして付与
+- `offense-emergency-heal-30`: 攻撃優先オートだけ、使用可能な回復技がある場合にHP30%以下で緊急回復
 
 ```text
 node tools/campaign-audit.mjs --runs=300 --seed=86000 --profiles=rush,balanced,collector --rush-progression-scenario=control --out=.audit-runs/v860-discovery/control --verify-determinism
@@ -93,6 +94,8 @@ node tools/campaign-audit.mjs --runs=300 --seed=86000 --profiles=rush,balanced,c
 
 node tools/evaluate-rush-progression-experiment.mjs --phase=discovery --baseline=.audit-runs/v860-discovery/control --candidate=.audit-runs/v860-discovery/boss-defeat-exp-10 --out=.audit-runs/v860-discovery/boss-defeat-exp-10-evaluation.json
 ```
+
+初期3候補が虹晶聖域を突破できなかったため、攻撃優先オートが習得済み回復技を一切使わない挙動を原因仮説として、`offense-emergency-heal-30` を2026-08-17の事前登録追補で追加しました。この適応的候補の探索seed結果はスクリーニングであり、公開判断には別seedのホールドアウト通過を必須とします。処置前同一性は、版数と更新時刻を除いた初期stateと乱数呼出位置のSHA-256を全300組で照合します。
 
 主指標は速攻型100周における虹晶聖域突破率で、対照より15pt以上改善し、paired bootstrap 95%区間の下限が0を超えることを求めます。星晶の塔突破、バランス/収集型完走、全体P90戦闘数、停止周回、自動防御、対象4地域の初回撃破率をガードレールにします。速攻型の全編完走率は後半地域の新しい壁を含むため、探索時は診断指標として扱います。
 

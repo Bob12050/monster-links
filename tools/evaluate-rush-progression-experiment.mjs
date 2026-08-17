@@ -5,8 +5,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const TOOL_VERSION = "1.0.0";
-const SCHEMA_VERSION = 1;
+const TOOL_VERSION = "1.1.0";
+const SCHEMA_VERSION = 2;
 const DISCOVERY_SEED = 86000;
 const HOLDOUT_SEED = 86100;
 const EXPECTED_RUNS = 300;
@@ -17,6 +17,7 @@ const PRISM_STAGE_ID = "prism_sanctuary";
 const BOOTSTRAP_ITERATIONS = 20000;
 const DEFAULT_BOOST = Object.freeze({hp:.45,mp:.2,atk:.12,def:.12,wis:.12});
 const CONTROL_EXP = Object.freeze({tower:[100,165],snowfield:[170,260],thunder_ruins:[240,360],prism_sanctuary:[380,580]});
+const CONTROL_POLICY = Object.freeze({offenseEmergencyHealRate:0});
 const PRIOR_FIELDS = Object.freeze(["run","profile","stage_index","stage_id","stage_name","req_level","boss_level","unlock_wins","reached","cleared","entry_highest_level","boss_start_highest_level","clear_highest_level","gold_at_entry","gold_at_clear"]);
 const ENTRY_FIELDS = Object.freeze(["run","profile","stage_id","reached","entry_highest_level","gold_at_entry"]);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
@@ -190,12 +191,17 @@ function treatmentStages(id){
   return stages;
 }
 
+function treatmentPolicy(id){
+  return id === "offense-emergency-heal-30" ? {offenseEmergencyHealRate:.30} : {...CONTROL_POLICY};
+}
+
 function classifyScenario(identity){
-  if(identity?.family !== "rush-progression" || !Array.isArray(identity.stages)) return null;
+  if(identity?.family !== "rush-progression" || !Array.isArray(identity.stages) || !identity.policy) return null;
   const actual = JSON.stringify(identity.stages);
-  if(actual === JSON.stringify(controlStages())) return "control";
-  for(const id of ["mid-exp-15","mid-boss-hp-25","boss-defeat-exp-10"]){
-    if(actual === JSON.stringify(treatmentStages(id))) return id;
+  const policy = JSON.stringify(identity.policy);
+  if(actual === JSON.stringify(controlStages()) && policy === JSON.stringify(CONTROL_POLICY)) return "control";
+  for(const id of ["mid-exp-15","mid-boss-hp-25","boss-defeat-exp-10","offense-emergency-heal-30"]){
+    if(actual === JSON.stringify(treatmentStages(id)) && policy === JSON.stringify(treatmentPolicy(id))) return id;
   }
   return null;
 }
@@ -230,12 +236,14 @@ function loadAudit(directoryArg,label){
     run:integer(row.run,`${label} run`),
     profile:row.profile,
     seed:integer(row.seed,`${label} seed`),
+    initialStateHash:String(row.initialStateHash || ""),
     completed:binary(row.completed,`${label} completed`),
     totalBattles:integer(row.totalBattles,`${label} totalBattles`),
     stalledBattles:integer(row.stalledBattles,`${label} stalledBattles`),
     guardLoopBattles:integer(row.guardLoopBattles,`${label} guardLoopBattles`),
     maxGuardStreak:integer(row.maxGuardStreak,`${label} maxGuardStreak`)
   }));
+  if(campaigns.some(row=>!/^[a-f0-9]{64}$/u.test(row.initialStateHash))) throw new Error(`${label}: campaign initialStateHash is missing or invalid`);
   const stageRows = readCsv(path.join(directory,"campaign-stage-runs.csv")).map(row=>({
     raw:row,
     key:`${row.run}:${row.profile}:${row.stage_id}`,
@@ -275,10 +283,25 @@ function auditErrors(audit,label){
   if(Number(summary.command?.maxBossLosses) !== 80) errors.push(`${label}: maxBossLosses must be 80`);
   if(summary.scenarioHash !== summary.scenario?.hash) errors.push(`${label}: top-level scenario hash mismatch`);
   if(summary.scenario?.hash !== sha256(JSON.stringify(summary.scenario?.identity))) errors.push(`${label}: scenario identity hash mismatch`);
+  if(JSON.stringify(summary.scenario?.identity?.stages) !== JSON.stringify(summary.scenario?.effective?.stages)) errors.push(`${label}: scenario effective stages do not match identity`);
+  if(JSON.stringify(summary.scenario?.identity?.policy) !== JSON.stringify(summary.scenario?.effective?.policy)) errors.push(`${label}: scenario effective policy does not match identity`);
+  if(!Array.isArray(summary.scenario?.changedPaths)) errors.push(`${label}: scenario changedPaths is missing`);
   return errors;
 }
 
-function compareInvariant(baseline,candidate){
+function compareInvariant(baseline,candidate,candidateId){
+  if(candidateId === "offense-emergency-heal-30"){
+    const current = new Map(candidate.campaigns.map(row=>[row.key,row]));
+    const mismatches = [];
+    for(const prior of baseline.campaigns){
+      const row = current.get(prior.key);
+      if(!row || prior.seed !== row.seed || prior.initialStateHash !== row.initialStateHash){
+        mismatches.push({key:prior.key,baselineSeed:prior.seed,candidateSeed:row?.seed ?? null,baselineHash:prior.initialStateHash,candidateHash:row?.initialStateHash ?? null});
+        if(mismatches.length >= 20) break;
+      }
+    }
+    return {passed:mismatches.length === 0,method:"paired-initial-state-hash",initialStatePairs:baseline.campaigns.length,excludedVolatileFields:["version","updatedAt"],mismatches};
+  }
   const current = new Map(candidate.stageRows.map(row=>[row.key,row]));
   const mismatches = [];
   for(const prior of baseline.stageRows){
@@ -322,6 +345,7 @@ function main(){
   if(Number(baseline.summary.command?.seed) !== expectedSeed || Number(candidate.summary.command?.seed) !== expectedSeed) errors.push(`${phase}: both audits must use seed ${expectedSeed}`);
   if(baseline.summary.toolSourceHash !== candidate.summary.toolSourceHash) errors.push("campaign audit toolSourceHash differs");
   if(baseline.summary.scenario?.mode !== "explicit_control" || classifyScenario(baseline.summary.scenario?.identity) !== "control") errors.push("baseline is not an explicit rush control");
+  if(JSON.stringify(baseline.summary.scenario?.changedPaths) !== "[]") errors.push("baseline explicit control must not contain changed paths");
   const candidateId = classifyScenario(candidate.summary.scenario?.identity);
   if(!candidateId || candidateId === "control") errors.push("candidate scenario is not a recognized rush treatment");
   if(phase === "discovery"){
@@ -329,8 +353,13 @@ function main(){
     if(candidate.summary.sourceHash !== baseline.summary.sourceHash) errors.push("discovery sourceHash differs from control");
     if(candidate.summary.gameVersion !== baseline.summary.gameVersion) errors.push("discovery GAME_VERSION differs from control");
     if(candidate.summary.scenario?.requested?.value !== candidateId) errors.push("discovery requested scenario does not match effective identity");
+    const expectedPaths = candidateId === "offense-emergency-heal-30"
+      ? ["BALANCE.autoOffenseEmergencyHealRate"]
+      : TARGET_STAGE_IDS.map(stageId=>candidateId === "mid-exp-15" ? `STAGES[${stageId}].exp` : candidateId === "mid-boss-hp-25" ? `STAGES[${stageId}].boss.boost` : `STAGES[${stageId}].boss.defeatExpRate`);
+    if(JSON.stringify(candidate.summary.scenario?.changedPaths) !== JSON.stringify(expectedPaths)) errors.push("discovery changedPaths do not match the selected treatment");
   }else{
     if(candidate.summary.scenario?.mode !== "production_runtime") errors.push("holdout candidate must be the production runtime");
+    if(JSON.stringify(candidate.summary.scenario?.changedPaths) !== "[]") errors.push("holdout production runtime must not contain simulation changed paths");
     const selectedPath = option("selected-receipt");
     if(!selectedPath) errors.push("holdout requires --selected-receipt");
     else{
@@ -348,7 +377,7 @@ function main(){
   if(campaignPairs.some(pair=>!pair.prior || pair.prior.seed !== pair.current.seed)) errors.push("campaign keys or seeds are not paired");
   const baselineStages = new Map(baseline.stageRows.map(row=>[row.key,row]));
   if(candidate.stageRows.some(row=>!baselineStages.has(row.key))) errors.push("stage keys are not paired");
-  const invariant = compareInvariant(baseline,candidate);
+  const invariant = compareInvariant(baseline,candidate,candidateId);
   if(!invariant.passed) errors.push("pre-treatment stage/entry invariance failed");
   if(errors.length) throw new Error(`Experiment evidence is not comparable:\n${errors.join("\n")}`);
 

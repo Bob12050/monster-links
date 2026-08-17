@@ -90,6 +90,11 @@
       .sort((a,b)=>b.skill.power-a.skill.power)[0] || null;
   }
 
+  function offenseEmergencyHealRate(){
+    const configured = Number(balance().autoOffenseEmergencyHealRate);
+    return Number.isFinite(configured) ? U.clamp(configured,0,1) : 0;
+  }
+
   function chooseAutoAction(){
     const b = S.state.battle;
     const ally = active();
@@ -102,6 +107,7 @@
     if(strategy === "healing" && hpPct <= 72 && heal) return {kind:"skill",skillId:heal.id};
     if(strategy === "balanced" && hpPct <= 48 && heal) return {kind:"skill",skillId:heal.id};
     if(strategy === "conserve" && hpPct <= 30 && heal) return {kind:"skill",skillId:heal.id};
+    if(strategy === "offense" && hpPct <= offenseEmergencyHealRate()*100 && heal) return {kind:"skill",skillId:heal.id};
     if(hpPct <= 22 && !heal && strategy !== "offense" && !b.lastActionWasAutoGuard) return {kind:"guard"};
 
     const mpLimit = strategy === "conserve" ? Math.max(4,Math.floor(maxMp * .12)) : Infinity;
