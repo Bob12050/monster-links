@@ -1,5 +1,14 @@
 # Version History
 
+## v8.6-A.61 S-rank monster art renewal
+
+- Rebuilt Zenith Dragon, Demon Lord, and Venom Chimera as mature, organic S-rank monsters with cleaner silhouettes and less decorative noise.
+- Kept all slime-family art unchanged.
+- Replaced only the three existing production PNGs while preserving monster IDs, stats, recipes, progression, rewards, stages, and battle balance.
+- Added true-alpha 1024 x 1024 assets with mobile-safe padding and archived the v8.6-A.60 originals for rollback.
+- Preserved save schema 1 and every existing save/storage key.
+- Updated PWA/cache version to v8.6-A.61.
+
 ## v8.6-A.60 Fusion route guidance
 
 - Added a contextual Adventure-screen guide that routes players to Fusion after reaching the Star Crystal Tower with zero fusions, and again at the Prism Sanctuary with fewer than two fusions.

@@ -1,3 +1,15 @@
+v8.6-A.61 S-rank monster art renewal
+GAME_VERSION to 8.6-A.61
+
+Main changes:
+- Rebuilt Zenith Dragon, Demon Lord, and Venom Chimera with a mature, organic, non-cute S-rank direction and stronger mobile silhouettes.
+- Kept every slime-family monster unchanged.
+- Replaced only the three existing image files; monster IDs, stats, recipes, progression, rewards, stages, and battle balance are unchanged.
+- Added real-alpha 1024 x 1024 assets with square-safe padding and preserved the v8.6-A.60 art in a rollback directory.
+- Preserved save schema 1, save keys, and all content IDs.
+- Updated PWA/cache version to v8.6-A.61.
+---
+
 v8.6-A.60 Fusion route guidance
 GAME_VERSION to 8.6-A.60
 

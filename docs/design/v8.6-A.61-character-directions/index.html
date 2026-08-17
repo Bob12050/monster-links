@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#102b49">
-  <title>Monster Links Sランク 改訂＋最新試作</title>
+  <title>Monster Links Sランク 正式リニューアル</title>
   <style>
     :root{
       color-scheme:light;
@@ -53,9 +53,6 @@
       text-align:center;
     }
     .grid{display:grid;gap:18px}
-    .trial-heading{margin:0 0 10px;text-align:center;font-size:21px;line-height:1.4}
-    .trial-wrap{max-width:700px;margin:0 auto 24px}
-    .trial-note{margin:0;padding:11px 16px 14px;color:var(--muted);font-size:12px;font-weight:700;line-height:1.6;text-align:center}
     article{
       overflow:hidden;
       border:1px solid var(--line);
@@ -73,8 +70,13 @@
     }
     .label b{font-size:19px}
     .label span{color:var(--muted);font-size:12px;font-weight:700}
-    figure{margin:0;background:#eef6fb}
-    img{display:block;width:100%;height:auto}
+    figure{
+      margin:0;
+      background:
+        radial-gradient(circle at 50% 42%,rgba(255,255,255,.18),transparent 48%),
+        linear-gradient(145deg,#1a3554,#0c1c31 72%);
+    }
+    img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;padding:10px}
     .open{
       display:flex;
       min-height:48px;
@@ -98,38 +100,29 @@
 <body>
   <header>
     <small>MONSTER LINKS / S-RANK MONSTERS</small>
-    <h1>Sランク 改訂＋最新試作</h1>
-    <p>最上段に、装飾よりも姿勢とシルエットで格好よさを出したゼニスドラゴンの最新試作を追加しました。画像を押すと大きく確認できます。</p>
+    <h1>Sランク 正式リニューアル</h1>
+    <p>成熟した体格、鋭い目、大きく読める輪郭を軸に、強さがひと目で伝わる3体へ一新しました。画像を押すとゲーム本体で使う透過PNGを大きく確認できます。</p>
   </header>
   <main>
-    <p class="notice">ぷるミンを含むスライム系の見た目は変更しません。今回は「可愛すぎる」を抑えた闇・光竜・毒キマイラの改訂版です。</p>
-    <section aria-labelledby="cool-trial-heading">
-      <h2 class="trial-heading" id="cool-trial-heading">さらに格好よくする試作</h2>
-      <article class="trial-wrap">
-        <div class="label"><b>ゼニスドラゴン</b><span>最新試作 / COOL</span></div>
-        <figure><a href="zenithdragon-cool-trial.webp?rev=cool-trial-v1"><img src="zenithdragon-cool-trial.webp?rev=cool-trial-v1" width="1254" height="1254" alt="長い体を低く構え、鋭い目、巨大な三日月翼、金色の火焔角と円を描く尾を持つゼニスドラゴンの格好よさ重視試作" fetchpriority="high"></a></figure>
-        <p class="trial-note">体を長く、頭を低く、翼と尾を大きな形にまとめた試作です。背景のチェッカー表示は試作画像に含まれ、ゲーム本体にはまだ反映していません。</p>
-        <a class="open" href="zenithdragon-cool-trial.webp?rev=cool-trial-v1">試作画像だけを大きく開く</a>
-      </article>
-    </section>
+    <p class="notice">ぷるミンを含むスライム系の見た目は変更していません。ゲーム仕様・能力・配合・進行もそのままです。</p>
     <div class="grid">
       <article>
         <div class="label"><b>デモンロード</b><span>Sランク / 闇</span></div>
-        <figure><a href="direction-1.webp?rev=menace-v2"><img src="direction-1.webp?rev=menace-v2" width="1536" height="1024" alt="鋭い三つ目、巨大な巻き角、ぼろぼろの翼と大爪を持つ威圧的な紫色のデモンロード改訂案" fetchpriority="high"></a></figure>
-        <a class="open" href="direction-1.webp?rev=menace-v2">画像だけを大きく開く</a>
+        <figure><a href="../../../assets/images/monsters/demonlord.png?v=8.6-A.61"><img src="../../../assets/images/monsters/demonlord.png?v=8.6-A.61" width="1024" height="1024" alt="鋭い三つ目、巨大な巻き角、ぼろぼろの赤黒い翼と大爪を持つ紫黒のデモンロード正式版" fetchpriority="high"></a></figure>
+        <a class="open" href="../../../assets/images/monsters/demonlord.png?v=8.6-A.61">正式画像だけを大きく開く</a>
       </article>
       <article>
         <div class="label"><b>ゼニスドラゴン</b><span>Sランク / 光・竜</span></div>
-        <figure><a href="direction-2.webp?rev=menace-v2"><img src="direction-2.webp?rev=menace-v2" width="1536" height="1024" alt="鋭い青い目、太陽のような金色のたてがみ、大きな赤い翼と鉤爪を持つ白いゼニスドラゴン改訂案" loading="lazy"></a></figure>
-        <a class="open" href="direction-2.webp?rev=menace-v2">画像だけを大きく開く</a>
+        <figure><a href="../../../assets/images/monsters/zenithdragon.png?v=8.6-A.61"><img src="../../../assets/images/monsters/zenithdragon.png?v=8.6-A.61" width="1024" height="1024" alt="鋭い青い目、金色の火焔角、赤い翼と円を描く尾を持つ白金のゼニスドラゴン正式版" loading="lazy"></a></figure>
+        <a class="open" href="../../../assets/images/monsters/zenithdragon.png?v=8.6-A.61">正式画像だけを大きく開く</a>
       </article>
       <article>
         <div class="label"><b>ヴェノムキマイラ</b><span>Sランク / 毒・キマイラ</span></div>
-        <figure><a href="direction-3.webp?rev=menace-v2"><img src="direction-3.webp?rev=menace-v2" width="1536" height="1024" alt="低く身構えた紫の猛獣、緑の毒蛇、黒紫のサソリ尾を合わせた獰猛なヴェノムキマイラ改訂案" loading="lazy"></a></figure>
-        <a class="open" href="direction-3.webp?rev=menace-v2">画像だけを大きく開く</a>
+        <figure><a href="../../../assets/images/monsters/venomchimera.png?v=8.6-A.61"><img src="../../../assets/images/monsters/venomchimera.png?v=8.6-A.61" width="1024" height="1024" alt="低く身構えた紫黒の猛獣、緑の毒蛇、毒針を持つサソリ尾を合わせたヴェノムキマイラ正式版" loading="lazy"></a></figure>
+        <a class="open" href="../../../assets/images/monsters/venomchimera.png?v=8.6-A.61">正式画像だけを大きく開く</a>
       </article>
     </div>
   </main>
-  <footer>最新試作の方向性が合えば、この格好よさを他のSランクにも展開します。</footer>
+  <footer>v8.6-A.61でゲーム本体へ反映。次の強キャラ刷新も、この有機的で格好よい方向を基準にします。</footer>
 </body>
 </html>
