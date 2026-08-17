@@ -1,3 +1,15 @@
+v8.6-A.62 S-rank monster art renewal — batch 2
+GAME_VERSION to 8.6-A.62
+
+Main changes:
+- Rebuilt Prism Dragon, Abyss Levia, and Celestial Seraph with distinct rainbow-crystal, deep-sea, and sacred-beast silhouettes.
+- Kept every slime-family monster unchanged.
+- Replaced only the three existing image files; monster IDs, stats, recipes, progression, rewards, stages, and battle balance are unchanged.
+- Added real-alpha 1024 x 1024 assets with square-safe padding and preserved the v8.6-A.61 art in a rollback directory.
+- Preserved save schema 1, save keys, and all content IDs.
+- Updated PWA/cache version to v8.6-A.62.
+---
+
 v8.6-A.61 S-rank monster art renewal
 GAME_VERSION to 8.6-A.61
 
@@ -900,7 +912,7 @@ GAME_VERSIONを8.6-A.2へ更新
 
 ---
 
-# 現在の安定版
+# v8.6-A.1 当時の安定版メモ
 
 ```text
 v8.6-A.1 全画面UI可読性改善

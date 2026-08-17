@@ -1,6 +1,15 @@
-# Monster Links v8.6-A.61
+# Monster Links v8.6-A.62
 
 スマホでも遊べる、ソロ向けモンスター育成・配合RPGです。
+
+## v8.6-A.62 update
+
+- Rebuilt Prism Dragon, Abyss Levia, and Celestial Seraph as distinct organic S-rank monsters with clearer mobile silhouettes.
+- Preserved every slime-family monster and all monster IDs, stats, recipes, progression, rewards, stages, and battle balance.
+- Added true-alpha 1024 x 1024 production art and archived the v8.6-A.61 originals for rollback.
+- Added a responsive [batch 2 production-art gallery](docs/design/v8.6-A.62-s-rank-batch2/index.html).
+- Preserved save schema 1 and all existing save/storage keys.
+- Updated PWA/cache version to v8.6-A.62.
 
 ## v8.6-A.61 update
 
@@ -144,7 +153,7 @@
 ## 現在の安定版
 
 ```text
-v8.6-A.61 S-rank monster art renewal
+v8.6-A.62 S-rank monster art renewal — batch 2
 ```
 
 ## v8.6-A.49 update
